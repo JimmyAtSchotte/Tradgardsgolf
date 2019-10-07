@@ -7,8 +7,6 @@
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Adapters\" />
-    <Folder Include="SharedKernel\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

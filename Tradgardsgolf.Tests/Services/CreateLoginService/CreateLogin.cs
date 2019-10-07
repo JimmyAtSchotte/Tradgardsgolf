@@ -12,20 +12,20 @@ namespace Tradgardsgolf.Tests.Services.CreateLoginService
 {
 
     [TestFixture]
-    public class CreateLogin : BaseTest<ICreateLoginService, Core.Services.CreateLoginService>
+    public class CreateLogin
     {      
         [Test]
         public void StatusShouldBeInvalidEmail()
-        {          
-            var createLoginService = GetService(container =>
+        {
+            var resolver = new Resolver(config =>
             {
-                container.Register(c =>
-                 {
-                     var mock = new Mock<IEmailValidator>();
-                     mock.Setup(x => x.IsValidEmail(It.IsAny<string>())).Returns(false);
-                     return mock.Object;
-                 });
+                config.UseMock<IEmailValidator>(mock =>
+                {
+                    mock.Setup(x => x.IsValidEmail(It.IsAny<string>())).Returns(false);
+                });
             });
+
+            var createLoginService = resolver.Resolve<ICreateLoginService, Core.Services.CreateLoginService>();
 
             var result = createLoginService.CreateLogin(new CreateLoginModel()
             {
@@ -38,21 +38,21 @@ namespace Tradgardsgolf.Tests.Services.CreateLoginService
         [Test]
         public void StatusShouldBeEmailAllreadyExists()
         {
-            var createLoginService = GetService(container => {
-                container.Register(c =>
+
+            var resolver = new Resolver(config =>
+            {
+                config.UseMock<IEmailValidator>(mock =>
                 {
-                    var mock = new Mock<IEmailValidator>();
                     mock.Setup(x => x.IsValidEmail(It.IsAny<string>())).Returns(true);
-                    return mock.Object;
                 });
 
-                container.Register(c =>
+                config.UseMock<ICreateLoginRepository>(mock =>
                 {
-                    var mock = new Mock<ICreateLoginRepository>();
                     mock.Setup(x => x.EmailExists(It.IsAny<string>())).Returns(true);
-                    return mock.Object;
-                });            
+                });
             });
+
+            var createLoginService = resolver.Resolve<ICreateLoginService, Core.Services.CreateLoginService>();
 
             var result = createLoginService.CreateLogin(new CreateLoginModel() {
                 Email = "example@example.com"
@@ -64,21 +64,21 @@ namespace Tradgardsgolf.Tests.Services.CreateLoginService
         [Test]
         public void StatusShouldBeSuccess()
         {
-            var createLoginService = GetService(container => {
-                container.Register(c =>
+
+            var resolver = new Resolver(config =>
+            {
+                config.UseMock<IEmailValidator>(mock =>
                 {
-                    var mock = new Mock<IEmailValidator>();
                     mock.Setup(x => x.IsValidEmail(It.IsAny<string>())).Returns(true);
-                    return mock.Object;
                 });
 
-                container.Register(c =>
+                config.UseMock<ICreateLoginRepository>(mock =>
                 {
-                    var mock = new Mock<ICreateLoginRepository>();
                     mock.Setup(x => x.EmailExists(It.IsAny<string>())).Returns(false);
-                    return mock.Object;
                 });
             });
+
+            var createLoginService = resolver.Resolve<ICreateLoginService, Core.Services.CreateLoginService>();
 
             var result = createLoginService.CreateLogin(new CreateLoginModel()
             {
@@ -92,18 +92,21 @@ namespace Tradgardsgolf.Tests.Services.CreateLoginService
         public void ShouldInvokeCreateLoginInCreateLoginRepository()
         {
             var createLoginRepositoryMock = new Mock<ICreateLoginRepository>();
-            createLoginRepositoryMock.Setup(x => x.EmailExists(It.IsAny<string>())).Returns(false);
 
-            var createLoginService = GetService(container => {
-                container.Register(c =>
+            var resolver = new Resolver(config =>
+            {
+                config.UseMock<IEmailValidator>(mock =>
                 {
-                    var mock = new Mock<IEmailValidator>();
                     mock.Setup(x => x.IsValidEmail(It.IsAny<string>())).Returns(true);
-                    return mock.Object;
                 });
 
-                container.Register(c => createLoginRepositoryMock.Object);
+                config.UseMock(mock =>
+                {
+                    mock.Setup(x => x.EmailExists(It.IsAny<string>())).Returns(false);
+                }, out createLoginRepositoryMock);
             });
+
+            var createLoginService = resolver.Resolve<ICreateLoginService, Core.Services.CreateLoginService>();
 
             var result = createLoginService.CreateLogin(new CreateLoginModel()
             {
