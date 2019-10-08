@@ -34,13 +34,6 @@ namespace Tradgardsgolf.Tests.EntityFactories
 
 
             var entityStrategy = resolver.Resolve<IEntityFactoryStrategy<Player>, EntityFactoryStrategy<Player>>();
-
-            ICreateLoginModel model = new CreateLoginModel()
-            {
-                Email = "example@example.com",
-                Password = "Password"
-            };
-
             var factory = entityStrategy.Create<ICreateLoginModel>();
 
             Assert.IsInstanceOf<Infrastructure.EntityFactories.CreateLogin>(factory);
