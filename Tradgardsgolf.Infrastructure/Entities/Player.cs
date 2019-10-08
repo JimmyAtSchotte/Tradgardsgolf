@@ -22,26 +22,11 @@ namespace Tradgardsgolf.Infrastructure.Entities
         [Column("dtmCreated")]
         public DateTime Created { get; private set; }
 
-        public void SetEmail(string email)
-        {
-            Email = email;
-        }
-
-        public void SetPassword(string password, ICryptoService cryptoService)
-        {
-            Password = cryptoService.Encrypt(password);
-        }
-
-        public void SetKey(string key)
-        {
-            Key = key;
-        }
-
-        public void Setname(string name)
-        {
-            Name = name;
-        }
-                
+        public void SetEmail(string email) => Email = email;       
+        public void SetPassword(string password, ICryptoService cryptoService) => Password = cryptoService.Encrypt(password);
+        public void SetKey(string key) => Key = key;    
+        public void Setname(string name) => Name = name;
+          
         public override void OnCreate(ISystemClockService systemClockService)
         {
             Created = systemClockService.CurrentDateTime();
