@@ -10,7 +10,7 @@ namespace Tradgardsgolf.Infrastructure.Entities
         [Key]
         public int Id { get; set; }
         [Column("strName")]
-        public String Name { get; set; }
+        public string Name { get; set; }
         [Column("intHoles")]
         public int Holes { get; set; }
         [Column("dblLongitude")]
@@ -21,7 +21,7 @@ namespace Tradgardsgolf.Infrastructure.Entities
         public int CreatedById { get; set; }
         public virtual Player CreatedBy { get; set; }
         [Column("dtmCreated")]
-        public DateTime Created { get; set; }       
-    
+        public DateTime Created { get; internal set; }
+              
     }
 }

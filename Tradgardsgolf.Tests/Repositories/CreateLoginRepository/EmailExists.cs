@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.EntityFrameworkCore;
 using Tradgardsgolf.Infrastructure.Entities;
+using Moq;
 
 namespace Tradgardsgolf.Tests.Repositories.CreateLoginRepository
 {
@@ -33,10 +34,10 @@ namespace Tradgardsgolf.Tests.Repositories.CreateLoginRepository
         public void ShouldReturTrueWhenEmailAllreadyExists()
         {
             Player player = null;
-
+            
             var resolver = new Resolver(config =>
             {
-                config.UseEntity(new Player() { Email = "example@example.com" }, out player);
+                config.UseEntity((player) => player.SetEmail("example@example.com"), out player);
             });
 
             var repsoitory = resolver.Resolve<ICreateLoginRepository, Infrastructure.Repositories.CreateLoginRepository>();
@@ -48,10 +49,10 @@ namespace Tradgardsgolf.Tests.Repositories.CreateLoginRepository
         public void ShouldReturTrueWhenEmailAllreadyExistsWithDiffrentCase()
         {
             Player player = null;
-
+            
             var resolver = new Resolver(config =>
             {
-                config.UseEntity(new Player() { Email = "example@example.com" }, out player);
+                config.UseEntity((player) => player.SetEmail("example@example.com"), out player);
             });
 
             var repsoitory = resolver.Resolve<ICreateLoginRepository, Infrastructure.Repositories.CreateLoginRepository>();

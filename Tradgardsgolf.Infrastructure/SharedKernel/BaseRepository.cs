@@ -8,7 +8,7 @@ namespace Tradgardsgolf.Infrastructure.SharedKernel
     {
         protected readonly TradgardsgolfContext db;
 
-        public BaseRepository(TradgardsgolfContext db)
+        protected BaseRepository(TradgardsgolfContext db)
         {
             this.db = db;
         }
