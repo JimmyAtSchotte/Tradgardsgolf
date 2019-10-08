@@ -19,27 +19,6 @@ namespace Tradgardsgolf.Tests.EntityFactories
     public class CreateLogin
     {
         [Test]
-        public void ShouldCreateInstanceOfCreateLoginFactory()
-        {
-            var resolver = new Resolver(config =>
-            {
-                config.UseDependencies(c =>
-                {
-                    var assembly = typeof(IEntityFactoryStrategy<>).Assembly;
-                    c.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEntityFactoryStrategy<>));
-                    c.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEntityFactoryFactory<>));
-                    c.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEntityFactoryProvider<>));
-                });
-            });
-
-
-            var entityStrategy = resolver.Resolve<IEntityFactoryStrategy<Player>, EntityFactoryStrategy<Player>>();
-            var factory = entityStrategy.Create<ICreateLoginModel>();
-
-            Assert.IsInstanceOf<Infrastructure.EntityFactories.CreateLogin>(factory);
-        }
-
-        [Test]
         public void ShouldCreateNewPlayer()
         {
             var encrypt = "****";
@@ -48,7 +27,6 @@ namespace Tradgardsgolf.Tests.EntityFactories
             var resolver = new Resolver(config =>
             {
                 config.UseMock<ISystemClockService>(mock => mock.Setup(x => x.CurrentDateTime()).Returns(currentDateTime));
-
                 config.UseMock<ICryptoService>(mock => mock.Setup(x => x.Encrypt(It.IsAny<string>())).Returns(encrypt));
 
                 config.UseDependencies(c =>

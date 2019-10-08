@@ -10,7 +10,7 @@ using Tradgardsgolf.Infrastructure.SharedKernel;
 
 namespace Tradgardsgolf.Infrastructure.EntityFactories
 {
-    public class CreateLoginFactory : IEntityFactoryFactory<Player>
+    public class CreateLoginFactory : BaseEntityFactoryFactory<Player>
     {
         private readonly ICryptoService _cryptoService;
         private readonly ISystemClockService _systemClockService;
@@ -22,12 +22,12 @@ namespace Tradgardsgolf.Infrastructure.EntityFactories
             _systemClockService = systemClockService;
         }
 
-        public bool AppliesTo<TArg1>()
+        public override bool AppliesTo<TArg1>()
         {
             return typeof(TArg1) == typeof(ICreateLoginModel);
         }
 
-        public IEntityFactoryProvider<Player> Create()
+        public override IEntityFactoryProvider<Player> Create()
         {
             return new CreateLogin(_cryptoService, _systemClockService);
         }
