@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Tradgardsgolf.Infrastructure.Interfaces
 {
-    public interface IEntityFactoryProvider<T> where T : IEntity
+    public interface IEntityFactory<T, TArg1> where T : IEntity
     {
-        T Create<TArg1>(TArg1 arg1);
+        T Create(TArg1 arg1);
     }
 }

@@ -2,8 +2,6 @@
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Tradgardsgolf.Core.Interfaces;
 using Tradgardsgolf.Core.Interfaces.Models;
 using Tradgardsgolf.Core.Interfaces.Services;
@@ -11,7 +9,6 @@ using Tradgardsgolf.Core.Models;
 using Tradgardsgolf.Infrastructure.Entities;
 using Tradgardsgolf.Infrastructure.EntityFactories;
 using Tradgardsgolf.Infrastructure.Interfaces;
-using Tradgardsgolf.Infrastructure.Strategies;
 
 namespace Tradgardsgolf.Tests.EntityFactories
 {
@@ -31,22 +28,19 @@ namespace Tradgardsgolf.Tests.EntityFactories
 
                 config.UseDependencies(c =>
                 {
-                    var assembly = typeof(IEntityFactoryStrategy<>).Assembly;
-                    c.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEntityFactoryStrategy<>));
-                    c.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEntityFactoryFactory<>));
-                    c.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEntityFactoryProvider<>));
+                    var assembly = typeof(IEntityFactory<,>).Assembly;
+                    c.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEntityFactory<,>));
                 });
             });
 
-            var entityStrategy = resolver.Resolve<IEntityFactoryStrategy<Player>, EntityFactoryStrategy<Player>>();
+            var factory = resolver.Resolve<IEntityFactory<Player, ICreateLoginModel>, CreateLoginFactory>();
 
             ICreateLoginModel model = new CreateLoginModel()
             {
                 Email = "example@example.com",
                 Password = "Password"
             };
-
-            var factory = entityStrategy.Create<ICreateLoginModel>();
+           
             var result = factory.Create(model);
 
             Assert.IsNotNull(result);

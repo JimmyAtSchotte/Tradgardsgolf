@@ -9,45 +9,19 @@ using Tradgardsgolf.Infrastructure.Interfaces;
 using Tradgardsgolf.Infrastructure.SharedKernel;
 
 namespace Tradgardsgolf.Infrastructure.EntityFactories
-{
-    public class CreateLoginFactory : BaseEntityFactoryFactory<Player>
-    {
-        private readonly ICryptoService _cryptoService;
-        private readonly ISystemClockService _systemClockService;
-
-
-        public CreateLoginFactory(ICryptoService cryptoService, ISystemClockService systemClockService)
-        {
-            _cryptoService = cryptoService;
-            _systemClockService = systemClockService;
-        }
-
-        public override bool AppliesTo<TArg1>()
-        {
-            return typeof(TArg1) == typeof(ICreateLoginModel);
-        }
-
-        public override IEntityFactoryProvider<Player> Create()
-        {
-            return new CreateLogin(_cryptoService, _systemClockService);
-        }
-    }
-
-    public class CreateLogin : BaseEntityFactoryProvider<Player>
+{    
+    public class CreateLoginFactory : BaseEntityFactory<Player, ICreateLoginModel>
     {
         private readonly ICryptoService _cryptoService;
 
 
-        public CreateLogin(ICryptoService cryptoService, ISystemClockService systemClockService) : base(systemClockService)
+        public CreateLoginFactory(ICryptoService cryptoService, ISystemClockService systemClockService) : base(systemClockService)
         {
             _cryptoService = cryptoService;
         }
 
-
-        protected override Player TemplateCreate<TArg1>(TArg1 arg1)
+        protected override Player TemplateCreate(ICreateLoginModel createLogin)
         {
-            var createLogin = arg1 as ICreateLoginModel;
-
             var player = new Player();
             player.SetEmail(createLogin.Email);
             player.SetPassword(createLogin.Password, _cryptoService);
