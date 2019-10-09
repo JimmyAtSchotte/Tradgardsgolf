@@ -35,10 +35,8 @@ namespace Tradgardsgolf.Tests.Repositories.CreateLoginRepository
         {
             Player player = null;
             
-            var resolver = new Resolver(config =>
-            {
-                config.UseEntity((player) => player.SetEmail("example@example.com"), out player);
-            });
+            var resolver = new Resolver(config => { config.UseTradgardsgolfContext(); })
+             .UseEntity((player) => player.SetEmail("example@example.com"), out player);
 
             var repsoitory = resolver.Resolve<ICreateLoginRepository, Infrastructure.Repositories.CreateLoginRepository>();
 
@@ -50,10 +48,8 @@ namespace Tradgardsgolf.Tests.Repositories.CreateLoginRepository
         {
             Player player = null;
             
-            var resolver = new Resolver(config =>
-            {
-                config.UseEntity((player) => player.SetEmail("example@example.com"), out player);
-            });
+            var resolver = new Resolver(config => { config.UseTradgardsgolfContext(); })
+                .UseEntity((player) => player.SetEmail("example@example.com"), out player); ;
 
             var repsoitory = resolver.Resolve<ICreateLoginRepository, Infrastructure.Repositories.CreateLoginRepository>();
 

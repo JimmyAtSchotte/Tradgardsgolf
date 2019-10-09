@@ -10,14 +10,13 @@ namespace Tradgardsgolf.Tests
 {
     public class ResolverBuilder
     {
+        private readonly Resolver _resolver;
         private readonly List<Action<ContainerBuilder>> _dependencies;
         private bool tradgardsgolfContextRegisterd;
-        private readonly string _resolverId;
-
-        public ResolverBuilder()
+        public ResolverBuilder(Resolver resolver)
         {
             _dependencies = new List<Action<ContainerBuilder>>();
-            _resolverId = Guid.NewGuid().ToString();
+            _resolver = resolver;
         }
 
         private ResolverBuilder Extend(Action<ContainerBuilder> builder)
@@ -26,51 +25,13 @@ namespace Tradgardsgolf.Tests
 
             return this;
         }
-
-        private IContainer Container()
-        {
-            var containerBuilder = new ContainerBuilder();
-            _dependencies.ForEach(x => x?.Invoke(containerBuilder));
-
-            return containerBuilder.Build();
-        }
-
+              
         public ContainerBuilder GetContainerBuilder()
         {
             var containerBuilder = new ContainerBuilder();
             _dependencies.ForEach(x => x?.Invoke(containerBuilder));
 
             return containerBuilder;
-        }
-
-   
-        public ResolverBuilder UseEntity<T>(Action<T> entiySetup) where T : class
-        {
-            UseTradgardsgolfContext();
-
-            var db = Container().Resolve<Infrastructure.TradgardsgolfContext>();
-            var entity = Activator.CreateInstance<T>();
-            entiySetup(entity);
-
-            db.Set<T>().Add(entity);
-            db.SaveChanges();
-
-            return this;
-        }
-
-        public ResolverBuilder UseEntity<T>(Action<T> entiySetup, out T result) where T : class
-        {
-            UseTradgardsgolfContext();
-
-            var db = Container().Resolve<Infrastructure.TradgardsgolfContext>();
-            var entity = Activator.CreateInstance<T>();
-            entiySetup(entity);
-            db.Set<T>().Add(entity);
-            db.SaveChanges();
-
-            result = entity;
-
-            return this;
         }
 
         public ResolverBuilder UseMock<T>(Action<Mock<T>> mock) where T : class
@@ -100,6 +61,7 @@ namespace Tradgardsgolf.Tests
 
             return this;
         }
+
 
         public void UseTradgardsgolfContext()
         {
