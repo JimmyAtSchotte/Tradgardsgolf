@@ -18,7 +18,7 @@ namespace Tradgardsgolf.Tests.Repositories.CreateLoginRepository
     public class CreateLogin
     {
         [Test]
-        public void ShouldReturTrueWhenEmailAllreadyExistsWithDiffrentCase()
+        public void ShouldCreateAPlayerEntity()
         {
             var encrypt = "****";
             var currentDateTime = DateTime.Now;
