@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>Tradgardsgolf.Core.Services</RootNamespace>
+    </PropertyGroup>
+
+</Project>

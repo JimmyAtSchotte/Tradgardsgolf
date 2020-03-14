@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>Tradgardsgolf</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Tradgardsgolf.Core.Services\Tradgardsgolf.Core.Services.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Core.SharedKernel\Tradgardsgolf.Core.SharedKernel.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="EmailAddress" Version="4.1.0" />
+    </ItemGroup>
+
+</Project>
