@@ -1,19 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using ArrangeDependencies.Autofac;
 using ArrangeDependencies.Autofac.EntityFrameworkCore;
-using ArrangeDependencies.Autofac.Extensions;
-using Autofac;
-using Moq;
 using NUnit.Framework;
 using Tradgardsgolf.Core.Infrastructure.Login;
-using Tradgardsgolf.Core.Services.Crypto;
-using Tradgardsgolf.Core.Services.SystemClock;
-using Tradgardsgolf.Infrastructure;
 using Tradgardsgolf.Infrastructure.Context;
 using Tradgardsgolf.Infrastructure.CreateLogin;
 
-namespace Tradgardsgolf.Tests.Infrastructure.CreateLogin
+namespace Tradgardsgolf.Infrastructure.Tests.CreateLogin
 {
     [TestFixture]
     public static class CreateLoginRepositoryTests
@@ -24,14 +17,8 @@ namespace Tradgardsgolf.Tests.Infrastructure.CreateLogin
             [Test]
             public void ShouldCreateAPlayerEntity()
             {
-                var encrypt = "****";
-                var currentDateTime = DateTime.Now;
-
                 var arrange = Arrange.Dependencies<ICreateLoginRepository, CreateLoginRepository>(config =>
                 {
-                    config.UseMock<ISystemClockService>(mock => mock.Setup(x => x.CurrentDateTime()).Returns(currentDateTime));
-                    config.UseMock<ICryptoService>(mock => mock.Setup(x => x.Encrypt(It.IsAny<string>())).Returns(encrypt));
-                
                     config.UseDbContext<TradgardsgolfContext>();
                 });
 
@@ -45,8 +32,7 @@ namespace Tradgardsgolf.Tests.Infrastructure.CreateLogin
 
                 Assert.IsNotNull(result);
                 Assert.AreEqual(dto.Email, result.Email);
-                Assert.AreEqual(dto.Password, result.Password);
-                Assert.AreEqual(currentDateTime, result.Created);
+                Assert.AreEqual(dto.Password.Value, result.Password);
             }
         }
 
@@ -73,7 +59,7 @@ namespace Tradgardsgolf.Tests.Infrastructure.CreateLogin
 
                 var arrange = Arrange.Dependencies<ICreateLoginRepository, CreateLoginRepository>(
                     dependencies => {
-                        dependencies.UseEntity<Player, TradgardsgolfContext>((player) => player.SetEmail("example@example.com"), out player);
+                        dependencies.UseEntity<Player, TradgardsgolfContext>((player) => player.Email = "example@example.com", out player);
                     });
             
                 var repsoitory = arrange.Resolve<ICreateLoginRepository>();
@@ -82,13 +68,13 @@ namespace Tradgardsgolf.Tests.Infrastructure.CreateLogin
             }
 
             [Test]
-            public void ShouldReturTrueWhenEmailAllreadyExistsWithDiffrentCase()
+            public void ShouldReturnTrueWhenEmailAlreadyExistsWithDifferentCase()
             {
                 Player player = null;
 
                 var arrange = Arrange.Dependencies<ICreateLoginRepository, CreateLoginRepository>(
                     dependencies => {
-                        dependencies.UseEntity<Player, TradgardsgolfContext>((player) => player.SetEmail("example@example.com"), out player);
+                        dependencies.UseEntity<Player, TradgardsgolfContext>((player) => player.Email  = "example@example.com", out player);
                     });
             
                 var repsoitory = arrange.Resolve<ICreateLoginRepository>();

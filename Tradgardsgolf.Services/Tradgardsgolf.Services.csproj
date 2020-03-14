@@ -2,12 +2,13 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <RootNamespace>Tradgardsgolf</RootNamespace>
+        <RootNamespace>Tradgardsgolf.Services</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tradgardsgolf.Core.Services\Tradgardsgolf.Core.Services.csproj" />
-      <ProjectReference Include="..\Tradgardsgolf.Core.SharedKernel\Tradgardsgolf.Core.SharedKernel.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Infrastructure.Core\Tradgardsgolf.Infrastructure.Core.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Services.Core\Tradgardsgolf.Services.Core.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.SharedKernel\Tradgardsgolf.SharedKernel.csproj" />
     </ItemGroup>
 
     <ItemGroup>

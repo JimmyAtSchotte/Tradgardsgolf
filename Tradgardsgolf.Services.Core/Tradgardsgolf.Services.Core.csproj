@@ -5,4 +5,8 @@
         <RootNamespace>Tradgardsgolf.Core.Services</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Tradgardsgolf.SharedKernel\Tradgardsgolf.SharedKernel.csproj" />
+    </ItemGroup>
+
 </Project>

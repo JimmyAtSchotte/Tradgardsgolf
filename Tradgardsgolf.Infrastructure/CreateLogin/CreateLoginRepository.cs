@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Tradgardsgolf.Core.Infrastructure.Login;
-using Tradgardsgolf.Infrastructure.Entities;
-using Tradgardsgolf.Infrastructure.Interfaces;
-using Tradgardsgolf.Infrastructure.SharedKernel;
+using Tradgardsgolf.Infrastructure.Context;
 
-namespace Tradgardsgolf.Infrastructure.Repositories
+namespace Tradgardsgolf.Infrastructure.CreateLogin
 {
     public class CreateLoginRepository : BaseRepository, ICreateLoginRepository
     {
-        private readonly IEntityFactory<Player, ICreateLoginDto> _createLoginFactory;
-
-        public CreateLoginRepository(TradgardsgolfContext db, IEntityFactory<Player, ICreateLoginDto> createLoginFactory) : base(db)
+        public CreateLoginRepository(TradgardsgolfContext db) : base(db)
         {
-            _createLoginFactory = createLoginFactory;
         }
 
         public void CreateLogin(ICreateLoginDto createLoginModel)
         {
-            var entity = _createLoginFactory.Create(createLoginModel);
+            var player = new Player();
 
-            db.Add(entity);
+            player.Email = createLoginModel.Email;
+            player.Password = createLoginModel.Password.Value;
+            
+            db.Add(player);
             db.SaveChanges();
         }
 

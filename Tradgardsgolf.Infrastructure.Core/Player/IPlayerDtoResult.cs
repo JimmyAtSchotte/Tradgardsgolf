@@ -2,7 +2,7 @@
 
 namespace Tradgardsgolf.Core.Infrastructure.Player
 {
-    public interface IPlayerAdapter
+    public interface IPlayerDtoResult
     {
         int Id { get; }
         string Email { get; }

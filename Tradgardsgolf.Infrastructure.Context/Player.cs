@@ -1,35 +1,27 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Tradgardsgolf.Core.Interfaces;
-using Tradgardsgolf.Core.Services.SystemClock;
-using Tradgardsgolf.Infrastructure.SharedKernel;
 
-namespace Tradgardsgolf.Infrastructure.Entities
+namespace Tradgardsgolf.Infrastructure.Context
 {
     public class Player : BaseEntity<Player>
     {
         [Key]
-        public int Id { get; }
+        public int Id { get; set; }
         [Column("strEmail")]
-        public string Email { get; private set; }
+        public string Email { get; set; }
         [Column("strPassword")]
-        public string Password { get; private set; }
+        public string Password { get; set; }
         [Column("strKey")]
-        public string Key { get; private set; }
+        public string Key { get; set; }
         [Column("strName")]
-        public string Name { get; private set; }
+        public string Name { get; set; }
         [Column("dtmCreated")]
         public DateTime Created { get; private set; }
 
-        public void SetEmail(string email) => Email = email;       
-        public void SetPassword(string password) => Password = password;
-        public void SetKey(string key) => Key = key;    
-        public void SetName(string name) => Name = name;
-          
-        public override void OnCreate(ISystemClockService systemClockService)
+        public Player()
         {
-            Created = systemClockService.CurrentDateTime();
+            Created = DateTime.Now;
         }
     }
 }

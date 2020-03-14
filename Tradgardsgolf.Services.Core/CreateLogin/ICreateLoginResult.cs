@@ -1,4 +1,4 @@
-﻿using Tradgardsgolf.Core.SharedKernel.Enums;
+﻿using Tradgardsgolf.Core.Enums;
 
 namespace Tradgardsgolf.Core.Services.CreateLogin
 {

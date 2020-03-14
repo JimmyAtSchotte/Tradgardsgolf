@@ -1,6 +1,6 @@
 ﻿using Tradgardsgolf.Core.Services.CreateLogin;
 
-namespace Tradgardsgolf.Tests.Services.CreateLogin
+namespace Tradgardsgolf.Tests.CreateLogin
 {
     public class StubCreateLoginModel : ICreateLoginModel
     {

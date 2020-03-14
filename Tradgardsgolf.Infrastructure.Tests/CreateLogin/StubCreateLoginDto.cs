@@ -1,16 +1,17 @@
 ﻿using Tradgardsgolf.Core.Infrastructure.Login;
+using Tradgardsgolf.SharedKernel.Encryption;
 
-namespace Tradgardsgolf.Tests.Infrastructure.CreateLogin
+namespace Tradgardsgolf.Infrastructure.Tests.CreateLogin
 {
     public class StubCreateLoginDto : ICreateLoginDto
     {
         public string Email { get; }
-        public string Password { get; }
+        public EncryptedString Password { get; }
 
         public StubCreateLoginDto(string email = "example@example.com", string password = "Password")
         {
             Email = email;
-            Password = password;
+            Password = new EncryptedString(password);
         }
     }
 }

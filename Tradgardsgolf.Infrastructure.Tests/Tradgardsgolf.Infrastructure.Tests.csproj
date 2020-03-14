@@ -1,7 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Tradgardsgolf.Infrastructure.Core\Tradgardsgolf.Infrastructure.Core.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Infrastructure\Tradgardsgolf.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="ArrangeDependencies.Autofac" Version="1.4.0" />
+      <PackageReference Include="ArrangeDependencies.Autofac.EntityFrameworkCore" Version="1.1.1" />
+      <PackageReference Include="ArrangeDependencies.Autofac.MemoryCache" Version="1.0.0" />
+      <PackageReference Include="NUnit" Version="3.12.0" />
+      <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    </ItemGroup>
 
 </Project>

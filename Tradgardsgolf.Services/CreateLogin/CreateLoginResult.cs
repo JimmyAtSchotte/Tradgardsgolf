@@ -1,7 +1,7 @@
-﻿using Tradgardsgolf.Core.Services.CreateLogin;
-using Tradgardsgolf.Core.SharedKernel.Enums;
+﻿using Tradgardsgolf.Core.Enums;
+using Tradgardsgolf.Core.Services.CreateLogin;
 
-namespace Tradgardsgolf.CreateLogin
+namespace Tradgardsgolf.Services.CreateLogin
 {
     public class CreateLoginResult : ICreateLoginResult
     {

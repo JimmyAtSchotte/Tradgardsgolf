@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Tradgardsgolf.Infrastructure.SharedKernel;
 
-namespace Tradgardsgolf.Infrastructure.Entities
+namespace Tradgardsgolf.Infrastructure.Context
 {
     public class RoundScore : BaseEntity<RoundScore>
     {

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Tradgardsgolf.Infrastructure.SharedKernel;
 
-namespace Tradgardsgolf.Infrastructure.Entities
+namespace Tradgardsgolf.Infrastructure.Context
 {
     public class Course : BaseEntity<Course>
     {
@@ -21,7 +20,7 @@ namespace Tradgardsgolf.Infrastructure.Entities
         public int CreatedById { get; set; }
         public virtual Player CreatedBy { get; set; }
         [Column("dtmCreated")]
-        public DateTime Created { get; internal set; }
+        public DateTime Created { get; set; }
               
     }
 }

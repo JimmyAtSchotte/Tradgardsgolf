@@ -1,14 +1,7 @@
-﻿using System;
-using System.Reflection;
-using Tradgardsgolf.Core.Services.SystemClock;
-using Tradgardsgolf.Infrastructure.Interfaces;
-
-namespace Tradgardsgolf.Infrastructure.SharedKernel
+﻿namespace Tradgardsgolf.Infrastructure.Context
 {
-    public class BaseEntity<T> : IEntity where T : class
+    public class BaseEntity<T> 
     {
-        public virtual void OnCreate(ISystemClockService systemClockService) { }
-
-        public virtual void OnModified(ISystemClockService systemClockService) { }        
+                
     }
 }

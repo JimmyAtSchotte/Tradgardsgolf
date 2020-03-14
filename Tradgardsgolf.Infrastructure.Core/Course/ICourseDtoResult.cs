@@ -3,7 +3,7 @@ using Tradgardsgolf.Core.Infrastructure.Player;
 
 namespace Tradgardsgolf.Core.Infrastructure.Course
 {
-    public  interface ICourseAdapter
+    public  interface ICourseDtoResult
     {        
         int Id { get;  }
         String Name { get;  }
@@ -11,7 +11,7 @@ namespace Tradgardsgolf.Core.Infrastructure.Course
         double Longitude { get;  }
         double Latitude { get;  }
         int CreatedById { get; }
-        IPlayerAdapter CreatedBy { get; }
+        IPlayerDtoResult CreatedBy { get; }
         DateTime Created { get;  }
     }
 }

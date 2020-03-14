@@ -2,13 +2,12 @@
 using ArrangeDependencies.Autofac.Extensions;
 using Moq;
 using NUnit.Framework;
+using Tradgardsgolf.Core.Enums;
 using Tradgardsgolf.Core.Infrastructure.Login;
 using Tradgardsgolf.Core.Services.CreateLogin;
 using Tradgardsgolf.Core.Services.EmailValidating;
-using Tradgardsgolf.Core.SharedKernel.Enums;
-using Tradgardsgolf.CreateLogin;
 
-namespace Tradgardsgolf.Tests.Services.CreateLogin
+namespace Tradgardsgolf.Tests.CreateLogin
 {
     [TestFixture]
     public class CreateLoginServiceTests
@@ -16,7 +15,7 @@ namespace Tradgardsgolf.Tests.Services.CreateLogin
         [Test]
         public void StatusShouldBeInvalidEmail()
         {
-            var arrange = Arrange.Dependencies<ICreateLoginService, CreateLoginService>(
+            var arrange = Arrange.Dependencies<ICreateLoginService, Services.CreateLogin.CreateLoginService>(
                 dependencies =>
                 {
                     dependencies.UseMock<IEmailValidator>(mock =>
@@ -34,7 +33,7 @@ namespace Tradgardsgolf.Tests.Services.CreateLogin
         [Test]
         public void StatusShouldBeEmailAlreadyExists()
         {
-            var arrange = Arrange.Dependencies<ICreateLoginService, CreateLoginService>(
+            var arrange = Arrange.Dependencies<ICreateLoginService, Services.CreateLogin.CreateLoginService>(
             dependencies => {
                 dependencies.UseMock<IEmailValidator>(mock =>
                 {
@@ -56,7 +55,7 @@ namespace Tradgardsgolf.Tests.Services.CreateLogin
         [Test]
         public void StatusShouldBeSuccess()
         {
-            var arrange = Arrange.Dependencies<ICreateLoginService, CreateLoginService>(
+            var arrange = Arrange.Dependencies<ICreateLoginService, Services.CreateLogin.CreateLoginService>(
             dependencies => {
                 dependencies.UseMock<IEmailValidator>(mock =>
                 {
@@ -80,7 +79,7 @@ namespace Tradgardsgolf.Tests.Services.CreateLogin
         {
             var createLoginRepositoryMock = new Mock<ICreateLoginRepository>();
 
-            var arrange = Arrange.Dependencies<ICreateLoginService, CreateLoginService>(
+            var arrange = Arrange.Dependencies<ICreateLoginService, Services.CreateLogin.CreateLoginService>(
            dependencies => {
                dependencies.UseMock<IEmailValidator>(mock =>
                {

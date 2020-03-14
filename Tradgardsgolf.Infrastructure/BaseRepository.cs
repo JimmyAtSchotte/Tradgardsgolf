@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Tradgardsgolf.Infrastructure.Context;
 
-namespace Tradgardsgolf.Infrastructure.SharedKernel
+namespace Tradgardsgolf.Infrastructure
 {
     public abstract class BaseRepository
     {

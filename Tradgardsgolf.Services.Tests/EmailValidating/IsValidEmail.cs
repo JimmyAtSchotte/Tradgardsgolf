@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Tradgardsgolf.Tests.Services.EmailValidating
+namespace Tradgardsgolf.Tests.EmailValidating
 {
     [TestFixture]
     public class IsValidEmail 
