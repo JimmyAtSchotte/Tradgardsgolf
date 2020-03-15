@@ -1,9 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <RootNamespace>Tradgardsgolf.SharedKernel.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tradgardsgolf.SharedKernel\Tradgardsgolf.SharedKernel.csproj" />
+    <ProjectReference Include="..\Tradgardsgolf.Core.Types\Tradgardsgolf.Core.Types.csproj" />
   </ItemGroup>
 
 </Project>
