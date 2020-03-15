@@ -57,9 +57,11 @@ namespace Tradgardsgolf.Infrastructure.Tests.CreateLogin
             {
                 Player player = null;
 
+                
+
                 var arrange = Arrange.Dependencies<ICreateLoginRepository, CreateLoginRepository>(
                     dependencies => {
-                        dependencies.UseEntity<Player, TradgardsgolfContext>((player) => player.Email = "example@example.com", out player);
+                        dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(x => x.Email = "example@example.com"), out player);
                     });
             
                 var repsoitory = arrange.Resolve<ICreateLoginRepository>();
@@ -74,7 +76,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.CreateLogin
 
                 var arrange = Arrange.Dependencies<ICreateLoginRepository, CreateLoginRepository>(
                     dependencies => {
-                        dependencies.UseEntity<Player, TradgardsgolfContext>((player) => player.Email  = "example@example.com", out player);
+                        dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(x => x.Email = "example@example.com"), out player);
                     });
             
                 var repsoitory = arrange.Resolve<ICreateLoginRepository>();

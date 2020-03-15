@@ -19,9 +19,21 @@ namespace Tradgardsgolf.Infrastructure.Context
         [Column("dtmCreated")]
         public DateTime Created { get; private set; }
 
-        public Player()
+        private Player()
         {
-            Created = DateTime.Now;
+        }
+
+        private Player(DateTime created)
+        {
+            Created = created;
+        }
+
+        public static Player Create(Action<Player> properties = null)
+        {
+            var player = new Player(DateTime.Now);
+            properties?.Invoke(player);
+
+            return player;
         }
 
         public Course CreateCourse(Action<Course> properties = null)

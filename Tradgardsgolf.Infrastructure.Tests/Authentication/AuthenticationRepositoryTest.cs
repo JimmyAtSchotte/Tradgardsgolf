@@ -35,11 +35,10 @@ namespace Tradgardsgolf.Infrastructure.Tests.Authentication
             var arrange = Arrange.Dependencies<IAuthenticationRepository, Infrastructure.Authentication.AuthenticationRepository>(dependencies => {
                 dependencies.UseDbContext<TradgardsgolfContext>();
 
-                dependencies.UseEntity<Player, TradgardsgolfContext>(x =>
-                {
+                dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(x => {
                     x.Email = dto.Email;
-                    x.Password = dto.Password.Value;
-                }, out player);
+                    x.Password = dto.Password.Value; ;
+                }), out player);
             });
 
             var authenticationRepository = arrange.Resolve<IAuthenticationRepository>();
@@ -62,11 +61,10 @@ namespace Tradgardsgolf.Infrastructure.Tests.Authentication
             var arrange = Arrange.Dependencies<IAuthenticationRepository, Infrastructure.Authentication.AuthenticationRepository>(dependencies => {
                 dependencies.UseDbContext<TradgardsgolfContext>();
 
-                dependencies.UseEntity<Player, TradgardsgolfContext>(x =>
-                {
+                dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(x => {
                     x.Email = dto.Email;
-                    x.Password = dto.Password.Value;
-                }, out player);
+                    x.Password = dto.Password.Value; ;
+                    }), out player);
             });
 
             var authenticationRepository = arrange.Resolve<IAuthenticationRepository>();
