@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
-using Tradgardsgolf.SharedKernel.Encryption;
+using Tradgardsgolf.Core.Encryption;
 
 namespace Tradgardsgolf.SharedKernel.Tests.Encryption
 {
@@ -10,7 +10,7 @@ namespace Tradgardsgolf.SharedKernel.Tests.Encryption
         [Test]
         public void DefauktEncryotionShouldBeNone()
         {
-            Assert.IsInstanceOf<SharedKernel.Encryption.NoneEncryption>(SharedKernel.Encryption.Encryption.Default);
+            Assert.IsInstanceOf<NoneEncryption>(Core.Encryption.Encryption.Default);
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace Tradgardsgolf.SharedKernel.Tests.Encryption
         [Test]
         public void ShouldNotEncryptWithNoneEncryption()
         {
-            var encrypted = new EncryptedString("test", SharedKernel.Encryption.Encryption.None);
+            var encrypted = new EncryptedString("test", Core.Encryption.Encryption.None);
 
             Assert.AreEqual("test", encrypted.Value);
         }

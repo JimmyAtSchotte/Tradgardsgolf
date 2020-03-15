@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tradgardsgolf.SharedKernel\Tradgardsgolf.SharedKernel.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Core.Types\Tradgardsgolf.Core.Types.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
-﻿using Tradgardsgolf.Core.Infrastructure.Authentication;
+﻿using Tradgardsgolf.Core.Encryption;
+using Tradgardsgolf.Core.Infrastructure.Authentication;
 using Tradgardsgolf.Core.Services.Authentication;
-using Tradgardsgolf.SharedKernel.Encryption;
 
-namespace Tradgardsgolf.Authentication
+namespace Tradgardsgolf.Services.Authentication
 {
     public class CredentialsDto : ICredentialsDto
     {

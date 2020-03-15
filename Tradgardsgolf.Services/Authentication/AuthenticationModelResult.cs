@@ -2,7 +2,7 @@
 using Tradgardsgolf.Core.Infrastructure.Authentication;
 using Tradgardsgolf.Core.Services.Authentication;
 
-namespace Tradgardsgolf.Authentication
+namespace Tradgardsgolf.Services.Authentication
 {
     public class AuthenticationModelResult : IAuthenticationModelResult
     {

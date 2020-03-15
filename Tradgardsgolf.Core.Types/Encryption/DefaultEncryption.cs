@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace Tradgardsgolf.SharedKernel.Encryption
+﻿namespace Tradgardsgolf.Core.Encryption
 {
     public class DefaultEncryption : IEncryption
     {

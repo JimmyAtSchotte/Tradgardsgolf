@@ -5,10 +5,10 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Tradgardsgolf.Authentication;
 using Tradgardsgolf.Core.Enums;
 using Tradgardsgolf.Core.Infrastructure.Authentication;
 using Tradgardsgolf.Core.Services.Authentication;
+using Tradgardsgolf.Services.Authentication;
 
 namespace Tradgardsgolf.Tests.Authentication
 {

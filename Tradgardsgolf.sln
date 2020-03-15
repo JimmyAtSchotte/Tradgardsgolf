@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.SharedKernel", "Tradgardsgolf.SharedKernel\Tradgardsgolf.SharedKernel.csproj", "{98A0B30D-4A0F-4D8A-9E6D-17AD39E4444D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Core.Types", "Tradgardsgolf.Core.Types\Tradgardsgolf.Core.Types.csproj", "{98A0B30D-4A0F-4D8A-9E6D-17AD39E4444D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Infrastructure", "Tradgardsgolf.Infrastructure\Tradgardsgolf.Infrastructure.csproj", "{64B34E97-D57C-42DC-B3A7-807B5A6B1DAC}"
 EndProject
@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Services", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Infrastructure.Context", "Tradgardsgolf.Infrastructure.Context\Tradgardsgolf.Infrastructure.Context.csproj", "{F167FDDD-9522-44C9-9BB6-F5F0A962C2B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Services.Core", "Tradgardsgolf.Services.Core\Tradgardsgolf.Services.Core.csproj", "{7B76332E-E266-4C70-9CD8-C113F970797E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Core.Services", "Tradgardsgolf.Core.Services\Tradgardsgolf.Core.Services.csproj", "{7B76332E-E266-4C70-9CD8-C113F970797E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Infrastructure.Core", "Tradgardsgolf.Infrastructure.Core\Tradgardsgolf.Infrastructure.Core.csproj", "{88A61079-F0D3-4333-984A-DA9BFC8D1EE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Core.Infrastructure", "Tradgardsgolf.Core.Infrastructure\Tradgardsgolf.Core.Infrastructure.csproj", "{88A61079-F0D3-4333-984A-DA9BFC8D1EE8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Infrastructure.Tests", "Tradgardsgolf.Infrastructure.Tests\Tradgardsgolf.Infrastructure.Tests.csproj", "{2E540FC6-1172-4169-8426-80FE0B230C02}"
 EndProject
@@ -23,7 +23,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tradgardsgolf.Infrastructur
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tradgardsgolf.Services", "Tradgardsgolf.Services", "{054E7ED7-029D-4A01-B924-B1CA74829684}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.SharedKernel.Tests", "Tradgardsgolf.SharedKernel.Tests\Tradgardsgolf.SharedKernel.Tests.csproj", "{259A628F-31EE-4830-85A3-E50D6DC527F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Core.Types.Tests", "Tradgardsgolf.Core.Types.Tests\Tradgardsgolf.Core.Types.Tests.csproj", "{259A628F-31EE-4830-85A3-E50D6DC527F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tradgardsgolf.Core", "Tradgardsgolf.Core", "{6F3E601E-ACF2-4D91-BADC-6D46961434B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,13 +74,15 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{98A0B30D-4A0F-4D8A-9E6D-17AD39E4444D} = {6F3E601E-ACF2-4D91-BADC-6D46961434B5}
 		{64B34E97-D57C-42DC-B3A7-807B5A6B1DAC} = {CB161799-E6D6-49C2-8EE1-6D0EDCBB45EB}
 		{D1899176-41DD-4000-BF85-997389866A40} = {054E7ED7-029D-4A01-B924-B1CA74829684}
 		{2E3F45AD-A31E-4614-8179-836B73EAB6AC} = {054E7ED7-029D-4A01-B924-B1CA74829684}
 		{F167FDDD-9522-44C9-9BB6-F5F0A962C2B7} = {CB161799-E6D6-49C2-8EE1-6D0EDCBB45EB}
-		{7B76332E-E266-4C70-9CD8-C113F970797E} = {054E7ED7-029D-4A01-B924-B1CA74829684}
-		{88A61079-F0D3-4333-984A-DA9BFC8D1EE8} = {CB161799-E6D6-49C2-8EE1-6D0EDCBB45EB}
+		{7B76332E-E266-4C70-9CD8-C113F970797E} = {6F3E601E-ACF2-4D91-BADC-6D46961434B5}
+		{88A61079-F0D3-4333-984A-DA9BFC8D1EE8} = {6F3E601E-ACF2-4D91-BADC-6D46961434B5}
 		{2E540FC6-1172-4169-8426-80FE0B230C02} = {CB161799-E6D6-49C2-8EE1-6D0EDCBB45EB}
+		{259A628F-31EE-4830-85A3-E50D6DC527F1} = {6F3E601E-ACF2-4D91-BADC-6D46961434B5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CAD078B7-E2D9-49E7-B28E-A49BC8241A1A}

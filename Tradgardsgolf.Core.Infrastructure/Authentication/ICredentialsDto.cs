@@ -1,4 +1,4 @@
-﻿using Tradgardsgolf.SharedKernel.Encryption;
+﻿using Tradgardsgolf.Core.Encryption;
 
 namespace Tradgardsgolf.Core.Infrastructure.Authentication
 {

@@ -1,5 +1,5 @@
 ﻿using Tradgardsgolf.Core.Email;
-using Tradgardsgolf.SharedKernel.Encryption;
+using Tradgardsgolf.Core.Encryption;
 
 namespace Tradgardsgolf.Core.Infrastructure.Login
 {

@@ -26,9 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tradgardsgolf.Core.Types\Tradgardsgolf.Core.Types.csproj" />
     <ProjectReference Include="..\Tradgardsgolf.Infrastructure\Tradgardsgolf.Infrastructure.csproj" />
     <ProjectReference Include="..\Tradgardsgolf.Services\Tradgardsgolf.Services.csproj" />
-    <ProjectReference Include="..\Tradgardsgolf.SharedKernel\Tradgardsgolf.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

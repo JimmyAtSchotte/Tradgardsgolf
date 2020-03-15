@@ -1,4 +1,4 @@
-﻿namespace Tradgardsgolf.SharedKernel.Encryption
+﻿namespace Tradgardsgolf.Core.Encryption
 {
     public class NoneEncryption : IEncryption
     {

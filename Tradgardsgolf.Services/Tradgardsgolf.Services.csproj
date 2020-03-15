@@ -6,9 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tradgardsgolf.Infrastructure.Core\Tradgardsgolf.Infrastructure.Core.csproj" />
-      <ProjectReference Include="..\Tradgardsgolf.Services.Core\Tradgardsgolf.Services.Core.csproj" />
-      <ProjectReference Include="..\Tradgardsgolf.SharedKernel\Tradgardsgolf.SharedKernel.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Core.Infrastructure\Tradgardsgolf.Core.Infrastructure.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Core.Services\Tradgardsgolf.Core.Services.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Core.Types\Tradgardsgolf.Core.Types.csproj" />
     </ItemGroup>
 
     <ItemGroup>

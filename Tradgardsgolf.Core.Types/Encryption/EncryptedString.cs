@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Tradgardsgolf.SharedKernel.Encryption
+﻿namespace Tradgardsgolf.Core.Encryption
 {
 
     public class EncryptedString

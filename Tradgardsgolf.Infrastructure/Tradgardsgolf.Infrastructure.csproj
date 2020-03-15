@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tradgardsgolf.Core.Infrastructure\Tradgardsgolf.Core.Infrastructure.csproj" />
+    <ProjectReference Include="..\Tradgardsgolf.Core.Types\Tradgardsgolf.Core.Types.csproj" />
     <ProjectReference Include="..\Tradgardsgolf.Infrastructure.Context\Tradgardsgolf.Infrastructure.Context.csproj" />
-    <ProjectReference Include="..\Tradgardsgolf.Infrastructure.Core\Tradgardsgolf.Infrastructure.Core.csproj" />
-    <ProjectReference Include="..\Tradgardsgolf.SharedKernel\Tradgardsgolf.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,7 @@
 ﻿using Tradgardsgolf.Core.Email;
+using Tradgardsgolf.Core.Encryption;
 using Tradgardsgolf.Core.Infrastructure.Login;
 using Tradgardsgolf.Core.Services.CreateLogin;
-using Tradgardsgolf.Core.Services.Crypto;
-using Tradgardsgolf.SharedKernel.Encryption;
 
 namespace Tradgardsgolf.Services.CreateLogin
 {

@@ -1,5 +1,5 @@
-﻿using Tradgardsgolf.Core.Infrastructure.Authentication;
-using Tradgardsgolf.SharedKernel.Encryption;
+﻿using Tradgardsgolf.Core.Encryption;
+using Tradgardsgolf.Core.Infrastructure.Authentication;
 
 namespace Tradgardsgolf.Infrastructure.Tests.Authentication
 {
