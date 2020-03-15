@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tradgardsgolf.Infrastructur
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tradgardsgolf.Services", "Tradgardsgolf.Services", "{054E7ED7-029D-4A01-B924-B1CA74829684}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.SharedKernel.Tests", "Tradgardsgolf.SharedKernel.Tests\Tradgardsgolf.SharedKernel.Tests.csproj", "{259A628F-31EE-4830-85A3-E50D6DC527F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.SharedKernel.Tests", "Tradgardsgolf.SharedKernel.Tests\Tradgardsgolf.SharedKernel.Tests.csproj", "{259A628F-31EE-4830-85A3-E50D6DC527F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

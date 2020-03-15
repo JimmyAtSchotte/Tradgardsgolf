@@ -31,7 +31,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.CreateLogin
                 var result = db.Player.FirstOrDefault();
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(dto.Email, result.Email);
+                Assert.AreEqual(dto.Email.Value, result.Email);
                 Assert.AreEqual(dto.Password.Value, result.Password);
             }
         }

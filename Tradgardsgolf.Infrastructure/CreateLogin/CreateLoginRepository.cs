@@ -14,7 +14,7 @@ namespace Tradgardsgolf.Infrastructure.CreateLogin
         {
             var player = Player.Create();
 
-            player.Email = createLoginModel.Email;
+            player.Email = createLoginModel.Email.Value;
             player.Password = createLoginModel.Password.Value;
             
             db.Add(player);
