@@ -10,13 +10,27 @@ namespace Tradgardsgolf.Infrastructure.Context
         public int Id { get; set; }
 
         [Column("intCourseId")]
-        public int CourseId { get; set; }
-        public Course Course { get; set; }
+        public int CourseId { get; private set; }
+        public Course Course { get; private set; }
 
         [Column("dtmDate")]
-        public DateTime Date { get; set; }    
-  
+        public DateTime Date { get; private set; }
 
+        private Round()
+        {
 
+        }
+
+        internal Round(Course course)
+        {
+            CourseId = course.Id;
+            Course = course;
+            Date = DateTime.Now;
+        }
+
+        public RoundScore CreateRoundScore(Player player, int hole, int score)
+        {
+            return new RoundScore(this, player, hole, score);
+        }
     }
 }

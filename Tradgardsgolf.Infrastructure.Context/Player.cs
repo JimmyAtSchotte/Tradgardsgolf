@@ -23,5 +23,13 @@ namespace Tradgardsgolf.Infrastructure.Context
         {
             Created = DateTime.Now;
         }
+
+        public Course CreateCourse(Action<Course> properties = null)
+        {
+            var course = new Course(this);
+            properties?.Invoke(course);
+
+            return course;
+        }
     }
 }

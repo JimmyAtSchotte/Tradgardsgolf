@@ -17,10 +17,27 @@ namespace Tradgardsgolf.Infrastructure.Context
         [Column("dblLatitude")]
         public double Latitude { get; set; }
         [Column("intCreatedBy")]
-        public int CreatedById { get; set; }
-        public virtual Player CreatedBy { get; set; }
+        public int CreatedById { get; private set; }
+        public virtual Player CreatedBy { get; private set; }
         [Column("dtmCreated")]
-        public DateTime Created { get; set; }
+        public DateTime Created { get; private set; }
+
+        private Course()
+        {
+
+        }               
+
+        internal Course(Player player)
+        {
+            Created = DateTime.Now;
+            CreatedById = player.Id;
+            CreatedBy = player;
+        }     
+
+        public Round CreateRound()
+        {
+            return new Round(this);
+        }
               
     }
 }
