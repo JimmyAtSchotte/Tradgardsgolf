@@ -11,10 +11,18 @@ namespace Tradgardsgolf.Services.Authentication
         {
             _authenticationRepository = authenticationRepository;
         }
+          
 
-        public IAuthenticationModelResult AuthenticateWithCredentials(ICredentialsModel credentials)
+        public IAuthenticationModelResult CredentialsAuthentication(ICredentialsModel credentials)
         {
-            var result = _authenticationRepository.AuthenticateWithCredentials(new CredentialsDto(credentials));
+            var result = _authenticationRepository.CredentialsAuthentication(new CredentialsDto(credentials));
+
+            return new AuthenticationModelResult(result);
+        }
+
+        public IAuthenticationModelResult TokenAuthentication(ITokenAuthenticationModel model)
+        {
+            var result = _authenticationRepository.KeyAuthentication(new KeyAuthenticationDto(model));
 
             return new AuthenticationModelResult(result);
         }

@@ -21,7 +21,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.Authentication
 
             var authenticationRepository = arrange.Resolve<IAuthenticationRepository>();
 
-            var result = authenticationRepository.AuthenticateWithCredentials(new StubCredentialsDto());
+            var result = authenticationRepository.CredentialsAuthentication(new StubCredentialsDto());
 
             Assert.AreEqual(AuthenticationStatus.Failed, result.Status);
         }
@@ -43,7 +43,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.Authentication
 
             var authenticationRepository = arrange.Resolve<IAuthenticationRepository>();
 
-            var result = authenticationRepository.AuthenticateWithCredentials(dto);
+            var result = authenticationRepository.CredentialsAuthentication(dto);
 
             Assert.AreEqual(AuthenticationStatus.Success, result.Status);
             Assert.AreEqual(player.Id, result.Id);
@@ -70,7 +70,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.Authentication
             var authenticationRepository = arrange.Resolve<IAuthenticationRepository>();
             var db = arrange.Resolve<TradgardsgolfContext>();
 
-            var result = authenticationRepository.AuthenticateWithCredentials(dto);
+            var result = authenticationRepository.CredentialsAuthentication(dto);
             var playerDb = db.Player.FirstOrDefault(x => x.Id == player.Id);
 
             Assert.AreEqual(playerDb.Key, result.Key);

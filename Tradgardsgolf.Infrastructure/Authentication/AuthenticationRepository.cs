@@ -14,7 +14,7 @@ namespace Tradgardsgolf.Infrastructure.Authentication
 
         }
 
-        public IAuthenticateDtoResult AuthenticateWithCredentials(ICredentialsDto dto)
+        public IAuthenticateDtoResult CredentialsAuthentication(ICredentialsDto dto)
         {
             var player = db.Player.FirstOrDefault(x => x.Email == dto.Email &&
                                               x.Password == dto.Password.Value);
@@ -25,6 +25,22 @@ namespace Tradgardsgolf.Infrastructure.Authentication
             player.Key = Guid.NewGuid().ToString();
             db.SaveChanges();
 
+            return new AuthenticationSucceedDtoResult()
+            {
+                Id = player.Id,
+                Email = player.Email,
+                Name = player.Name,
+                Key = player.Key
+            };
+        }
+
+        public IAuthenticateDtoResult KeyAuthentication(IKeyAuthenticationDto dto)
+        {
+            var player = db.Player.FirstOrDefault(x => x.Id == dto.Id && x.Key == dto.Key);
+
+            if (player == null)
+                return new AuthenticationFailedDtoResult();
+            
             return new AuthenticationSucceedDtoResult()
             {
                 Id = player.Id,

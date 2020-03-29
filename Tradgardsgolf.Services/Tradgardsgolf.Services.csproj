@@ -11,8 +11,4 @@
       <ProjectReference Include="..\Tradgardsgolf.Core.Types\Tradgardsgolf.Core.Types.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="EmailAddress" Version="4.1.0" />
-    </ItemGroup>
-
 </Project>

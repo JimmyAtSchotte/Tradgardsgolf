@@ -2,6 +2,12 @@
 {
     public interface IAuthenticationService
     {
-        IAuthenticationModelResult AuthenticateWithCredentials(ICredentialsModel credentials);
+        IAuthenticationModelResult CredentialsAuthentication(ICredentialsModel model);
+        IAuthenticationModelResult TokenAuthentication(ITokenAuthenticationModel model);
+    }
+
+    public interface ITokenAuthenticationModel
+    {
+        string Token { get; }
     }
 }

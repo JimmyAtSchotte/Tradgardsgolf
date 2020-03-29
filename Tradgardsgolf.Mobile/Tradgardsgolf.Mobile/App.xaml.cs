@@ -24,7 +24,8 @@ namespace Tradgardsgolf.Mobile
                 DependencyService.Register<MockDataStore>();
             else
                 DependencyService.Register<AzureDataStore>();
-            MainPage = new MainPage();
+
+            MainPage = new Login.LoginPage();
         }
 
         protected override void OnStart()

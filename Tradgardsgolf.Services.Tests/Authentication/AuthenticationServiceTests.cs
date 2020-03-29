@@ -24,14 +24,14 @@ namespace Tradgardsgolf.Tests.Authentication
                 {
                     dependencies.UseMock<IAuthenticationRepository>(mock =>
                     {
-                        mock.Setup(x => x.AuthenticateWithCredentials(It.IsAny<ICredentialsDto>()))
+                        mock.Setup(x => x.CredentialsAuthentication(It.IsAny<ICredentialsDto>()))
                             .Returns(new StubAuthenticateDtoResult(AuthenticationStatus.Success));                     
                     });
                 });
 
             var authenticationService = arrange.Resolve<IAuthenticationService>();
 
-            var result = authenticationService.AuthenticateWithCredentials(new StubCredentialsModel());
+            var result = authenticationService.CredentialsAuthentication(new StubCredentialsModel());
 
             Assert.AreEqual(AuthenticationStatus.Success, result.Status);
         }

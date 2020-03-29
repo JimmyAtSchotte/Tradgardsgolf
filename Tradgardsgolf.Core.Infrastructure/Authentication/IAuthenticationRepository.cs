@@ -6,6 +6,13 @@ namespace Tradgardsgolf.Core.Infrastructure.Authentication
 {
     public interface IAuthenticationRepository
     {
-        IAuthenticateDtoResult AuthenticateWithCredentials(ICredentialsDto dto);
+        IAuthenticateDtoResult CredentialsAuthentication(ICredentialsDto dto);
+        IAuthenticateDtoResult KeyAuthentication(IKeyAuthenticationDto dto);
+    }
+
+    public interface IKeyAuthenticationDto
+    {
+        public int Id { get; }
+        public string Key { get; }
     }
 }
