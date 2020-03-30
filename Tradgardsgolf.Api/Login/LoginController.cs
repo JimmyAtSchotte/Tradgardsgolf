@@ -20,7 +20,7 @@ namespace Tradgardsgolf.Api.Login
             _createLoginService = createLoginService;
         }
 
-        [HttpPost("Create")]
+        [HttpPost("Create", Name = "CreateLogin")]
         public ActionResult Create([FromBody] CreateLoginModel login)
         {
             var loginResult = _createLoginService.CreateLogin(login);

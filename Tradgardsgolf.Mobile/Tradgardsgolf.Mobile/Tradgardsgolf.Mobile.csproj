@@ -36,4 +36,8 @@
   <ItemGroup>
     <Folder Include="Courses\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tradgardsgolf.ApiClient\Tradgardsgolf.ApiClient.csproj" />
+  </ItemGroup>
 </Project>

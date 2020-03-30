@@ -13,7 +13,7 @@ namespace Tradgardsgolf.Api.Authorization
     public class AuthorizationController : ControllerBase
     {
         [Authorize]
-        [HttpGet("IsAuthorized")]
+        [HttpGet("IsAuthorized", Name = "IsAuthorized")]
         public ActionResult IsAuthorized()
         {
             return Ok();

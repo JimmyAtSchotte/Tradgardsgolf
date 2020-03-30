@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -37,6 +38,7 @@ namespace Tradgardsgolf.Api
 
             services.AddSwaggerGen(options =>
             {
+                
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Tradgardsgolf API",
@@ -69,6 +71,7 @@ namespace Tradgardsgolf.Api
                         new List<string>()
                     }
                 });
+                              
             });
 
             services.AddDbContext<TradgardsgolfContext>(builder =>
@@ -104,7 +107,7 @@ namespace Tradgardsgolf.Api
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
 
-            app.UseSwagger();
+            app.UseSwagger(options => options.SerializeAsV2 = true);
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("v1/swagger.json", "Tradgardsgolf API");

@@ -19,8 +19,8 @@ namespace Tradgardsgolf.Api.Authentication
             _authenticationService = authenticationService;
         }
 
-        [HttpPost]
-        public ActionResult<AuthenticationResponse> Index([FromBody] CredentialsModel credentials)
+        [HttpPost(Name = "Authenticate")]
+        public ActionResult<AuthenticationResponse> Authenticate([FromBody] CredentialsModel credentials)
         {
             var authenticationModelResult = _authenticationService.CredentialsAuthentication(credentials);
 
