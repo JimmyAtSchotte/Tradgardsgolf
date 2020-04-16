@@ -13,7 +13,7 @@ namespace Tradgardsgolf.Mobile
     {
         Task<bool> AuthenticateAsync(CredentialsModel credentialsModel);
         Task<bool> IsAuthorizedAsync();
-    }
+    }   
 
     public class ApiRepository : IApiRepository
     {
@@ -24,9 +24,9 @@ namespace Tradgardsgolf.Mobile
         
         private  bool IsConnected => Connectivity.NetworkAccess == NetworkAccess.Internet;
 
-        public ApiRepository()
+        public ApiRepository(string url)
         {
-            _api = new TradgardsgolfAPI(new Uri(App.ApiUrl), new FakeServiceClientCredentials());
+            _api = new TradgardsgolfAPI(new Uri(url), new FakeServiceClientCredentials());
             _authorization = new Dictionary<string, List<string>>();
         }
 
@@ -34,7 +34,12 @@ namespace Tradgardsgolf.Mobile
         {
             try
             {
-                _authentication = (await _api.AuthenticateWithHttpMessagesAsync(credentialsModel)).Body;
+                var result = await _api.AuthenticateWithHttpMessagesAsync(credentialsModel);
+
+                if (!result.Response.IsSuccessStatusCode)
+                    return false;
+
+                _authentication = result.Body;
 
                 _authorization.Clear();
                 _authorization.Add("Authorization", new List<string> { $"Bearer {_authentication.Token}" });
@@ -46,18 +51,21 @@ namespace Tradgardsgolf.Mobile
 
             }
 
-            return false;
+            return false;              
         }
 
         public async Task<bool> IsAuthorizedAsync()
-        {
+        {                                 
             try
-            {                
+            {
+                if (_authorization.Count == 0)
+                    return false;
+
                 await _api.IsAuthorizedWithHttpMessagesAsync(_authorization);
 
                 return true;
             }
-            catch
+            catch 
             {
 
             }
@@ -65,7 +73,13 @@ namespace Tradgardsgolf.Mobile
             return false;
         }
 
-
         private class FakeServiceClientCredentials : ServiceClientCredentials {}
+    }
+
+
+    [Serializable]
+    public class UnauthorizedException : Exception
+    {
+        public UnauthorizedException() { }
     }
 }

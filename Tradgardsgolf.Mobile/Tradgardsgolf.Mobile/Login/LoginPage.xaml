@@ -7,15 +7,16 @@
              x:Class="Tradgardsgolf.Mobile.Login.LoginPage">
     <ContentPage.Content Visual="Material">
         <Frame BorderColor="Silver" VerticalOptions="CenterAndExpand" Margin="20" CornerRadius="20" >
-            <StackLayout VerticalOptions="CenterAndExpand" Margin="20">                
+            <StackLayout VerticalOptions="CenterAndExpand" Margin="20">                   
                 <Label Text="E-post" />
                 <Entry x:Name="Email" Placeholder="E-post" HorizontalOptions="FillAndExpand"></Entry>
 
                 <Label Text="Lösenord"/>
                 <Entry x:Name="Password" Placeholder="Lösenord" HorizontalOptions="FillAndExpand" IsPassword="True"></Entry>
 
-                <Button x:Name="Login" Text="Logga in" Clicked="Login_Clicked" HorizontalOptions="FillAndExpand"></Button>              
+                <Button x:Name="Login" Text="Logga in" Clicked="Login_Clicked" HorizontalOptions="FillAndExpand"></Button>                
             </StackLayout>
+
         </Frame>
     </ContentPage.Content>
 </ContentPage>

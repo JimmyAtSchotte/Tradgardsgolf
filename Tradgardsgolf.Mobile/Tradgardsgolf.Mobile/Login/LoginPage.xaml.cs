@@ -6,32 +6,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tradgardsgolf.ApiClient;
+using Tradgardsgolf.Mobile.DataStore;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Tradgardsgolf.Mobile.Login
 {
-    public class StubServiceClientCredentials : ServiceClientCredentials
+    public class LoginPageFactory : BaseAppPageFactory<LoginPage>
     {
+        private readonly IContext _context;
 
+        public LoginPageFactory(IContext context)
+        {
+            _context = context;
+        }
+
+        public override Page Create()
+        {
+            return new LoginPage(_context);
+        }
     }
+
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        private IApiRepository Api => DependencyService.Get<IApiRepository>();
-
-        public LoginPage()
+        private readonly IContext _context;
+        
+        public LoginPage(IContext context)
         {
             InitializeComponent();
+
+            _context = context;
         }
-       
+
         private async void Login_Clicked(object sender, EventArgs e)
         {
-            var credentials = new ApiClient.Models.CredentialsModel(Email.Text, Password.Text);
-            if (await Api.AuthenticateAsync(credentials))
-                ;
-           
+            await _context.Authentication.AuthenticateAsync(Email.Text, Password.Text);
         }
     }
 }

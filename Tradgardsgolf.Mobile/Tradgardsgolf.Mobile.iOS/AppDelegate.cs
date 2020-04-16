@@ -25,7 +25,7 @@ namespace Tradgardsgolf.Mobile.iOS
             global::Xamarin.Forms.Forms.Init();
             global::Xamarin.Forms.Forms.Init();
             global::Xamarin.Forms.FormsMaterial.Init();
-            LoadApplication(new App());
+            LoadApplication(Startup.CreateApplication().GetApp());
 
             return base.FinishedLaunching(app, options);
         }

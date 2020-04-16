@@ -6,13 +6,11 @@ using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 using Tradgardsgolf.Mobile.Models;
-using Tradgardsgolf.Mobile.Services;
 
 namespace Tradgardsgolf.Mobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 
         bool isBusy = false;
         public bool IsBusy

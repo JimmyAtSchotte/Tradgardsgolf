@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Tradgardsgolf.Mobile.Play;
+using Tradgardsgolf.Mobile.Admin;
 
 namespace Tradgardsgolf.Mobile.Views
 {
@@ -13,15 +15,17 @@ namespace Tradgardsgolf.Mobile.Views
     public partial class MenuPage : ContentPage
     {
         MainPage RootPage { get => Application.Current.MainPage as MainPage; }
-        List<HomeMenuItem> menuItems;
+        List<IHomeMenuItem> menuItems;
+
         public MenuPage()
         {
             InitializeComponent();
 
-            menuItems = new List<HomeMenuItem>
+            menuItems = new List<IHomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
+                new HomeMenuItem<Courses>("Spela"),
+                new HomeMenuItem<Account>("Ditt konto"),
+                new HomeMenuItem<CreateCourse>("Skapa en bana")
             };
 
             ListViewMenu.ItemsSource = menuItems;
@@ -32,8 +36,8 @@ namespace Tradgardsgolf.Mobile.Views
                 if (e.SelectedItem == null)
                     return;
 
-                var id = (int)((HomeMenuItem)e.SelectedItem).Id;
-                await RootPage.NavigateFromMenu(id);
+                var appPageType = ((IHomeMenuItem)e.SelectedItem).AppPageType;
+                await RootPage.NavigateFromMenu(appPageType);
             };
         }
     }
