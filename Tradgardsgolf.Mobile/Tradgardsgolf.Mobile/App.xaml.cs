@@ -1,7 +1,4 @@
-﻿using Autofac;
-using Tradgardsgolf.Mobile.DataStore;
-using Tradgardsgolf.Mobile.Login;
-using Tradgardsgolf.Mobile.Views;
+﻿using Tradgardsgolf.Mobile.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 

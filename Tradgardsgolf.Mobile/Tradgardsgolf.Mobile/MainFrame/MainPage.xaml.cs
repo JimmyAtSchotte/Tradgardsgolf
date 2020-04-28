@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Tradgardsgolf.Mobile.Events;
+using Tradgardsgolf.Mobile.Login;
+using Tradgardsgolf.Mobile.Play;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-using Tradgardsgolf.Mobile.Models;
-using Tradgardsgolf.Mobile.DataStore;
 
 namespace Tradgardsgolf.Mobile.Views
 {
@@ -18,38 +17,50 @@ namespace Tradgardsgolf.Mobile.Views
         private readonly IDictionary<Type, NavigationPage> _pageCache;
         private readonly IAppPageStrategy _appPageStrategy;
 
-        public MainPage(IContext context, IAppPageStrategy appPageStrategy)
-        {
-            _appPageStrategy = appPageStrategy;
-            context.Unauthorized += OnUnauthorized;
-
+        public MainPage(IAppPageStrategy appPageStrategy)
+        {           
             InitializeComponent();      
+
             MasterBehavior = MasterBehavior.Popover;
 
             _pageCache = new Dictionary<Type, NavigationPage>();
+            _appPageStrategy = appPageStrategy;
+
+            MessagingCenter.Subscribe<UnauthorizedEvent>(this, nameof(UnauthorizedEvent), async (context) => {  
+                await Navigation.PushModalAsync(GetPage(typeof(LoginPage)));
+            });
+
+            //MessagingCenter.Subscribe<LoginPage>(this, MessageCommands.AUTHORIZED, async (obj) => {
+            //    await Navigation.PopModalAsync();
+            //});
+
+            //Detail = GetPage(typeof(Courses));
         }
 
-        private async Task OnUnauthorized()
+        public async Task NavigateFromMenu(Type pageType)
         {
-            //Navigation.PushModalAsync()
+            await NavigateTo(GetPage(pageType));
         }
 
-        public async Task NavigateFromMenu(Type type)
+        private NavigationPage GetPage(Type pageType)
         {
-            if(!_pageCache.TryGetValue(type, out var displayPage))
-            {
-                var page = _appPageStrategy.Create(type);
-                if (page == null)
-                    return;
+            if (_pageCache.TryGetValue(pageType, out var displayPage))
+                return displayPage;
 
-                displayPage = new NavigationPage(page);
-                _pageCache.Add(type, displayPage);
-            }
+            var page = _appPageStrategy.Create(pageType);
 
-            if (displayPage == Detail)
+            displayPage = new NavigationPage(page);
+            _pageCache.Add(pageType, displayPage);
+
+            return displayPage;
+        }
+
+        private async Task NavigateTo(NavigationPage page)
+        {
+            if (page == Detail)
                 return;
 
-            Detail = displayPage;
+            Detail = page;
 
             if (Device.RuntimePlatform == Device.Android)
                 await Task.Delay(100);

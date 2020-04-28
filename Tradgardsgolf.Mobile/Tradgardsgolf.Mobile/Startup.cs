@@ -6,11 +6,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Tradgardsgolf.Mobile.Admin;
-using Tradgardsgolf.Mobile.DataStore;
-using Tradgardsgolf.Mobile.Login;
-using Tradgardsgolf.Mobile.Play;
+using Tradgardsgolf.ApiClient;
+using Tradgardsgolf.Mobile.Events;
 using Tradgardsgolf.Mobile.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -60,7 +57,7 @@ namespace Tradgardsgolf.Mobile
         private static void Configuration(HostBuilderContext hostContext, IConfigurationBuilder configuration)
         {       
             configuration.AddInMemoryCollection(new Dictionary<string, string>() {               
-                { "ApiUrl", DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:58816" : "http://localhost:58816" } 
+                { "ApiUrl", DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:58816/api" : "http://localhost:58816/api" } 
             });
         }
 
@@ -68,21 +65,15 @@ namespace Tradgardsgolf.Mobile
         {
             services.AddSingleton<App>();
             services.AddTransient<MainPage>();
-            //services.AddTransient<IAppPageStrategy, AppPageStrategy>();
-            //services.AddTransient<IAppPageFactory, AccountFactory>();
-            //services.AddTransient<IAppPageFactory, CreateCourseFactory>();
-            //services.AddTransient<IAppPageFactory, EditCourseFactory>();
-            //services.AddTransient<IAppPageFactory, LoginPageFactory>();
-            //services.AddTransient<IAppPageFactory, CoursesFactory>();
-            //services.AddTransient<IAppPageFactory, ScorecardFactory>();
-            //services.AddTransient<IAppPageFactory, SetupRoundFactory>();
-
+            services.AddTradgradsgolfApiClient(options => {
+                options.Url = hostContext.Configuration.GetValue<string>("ApiUrl");
+                options.OnUnathorized = () => MessagingCenter.Send(new UnauthorizedEvent(), nameof(UnauthorizedEvent));
+            });
         }
 
         private static void ConfigureContainer(HostBuilderContext hostContext, ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(typeof(App).Assembly).AsImplementedInterfaces();
-            builder.Register<IApiRepository>(ctx => new ApiRepository(hostContext.Configuration.GetValue("ApiUrl", string.Empty)));
         }
     }
 }

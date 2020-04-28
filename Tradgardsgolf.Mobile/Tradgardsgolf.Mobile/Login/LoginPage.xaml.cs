@@ -1,12 +1,6 @@
-﻿using Grpc.Net.Client;
-using Microsoft.Rest;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Tradgardsgolf.ApiClient;
-using Tradgardsgolf.Mobile.DataStore;
+using Tradgardsgolf.ApiClient.Authentication;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,16 +8,16 @@ namespace Tradgardsgolf.Mobile.Login
 {
     public class LoginPageFactory : BaseAppPageFactory<LoginPage>
     {
-        private readonly IContext _context;
+        private readonly TradgradsgolfApiClient _apiClient;
 
-        public LoginPageFactory(IContext context)
+        public LoginPageFactory(TradgradsgolfApiClient apiClient)
         {
-            _context = context;
+            _apiClient = apiClient;
         }
 
         public override Page Create()
         {
-            return new LoginPage(_context);
+            return new LoginPage(_apiClient);
         }
     }
 
@@ -31,18 +25,18 @@ namespace Tradgardsgolf.Mobile.Login
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        private readonly IContext _context;
-        
-        public LoginPage(IContext context)
+        private readonly TradgradsgolfApiClient _apiClient;
+
+        public LoginPage(TradgradsgolfApiClient apiClient)
         {
             InitializeComponent();
 
-            _context = context;
+            _apiClient = apiClient;
         }
 
         private async void Login_Clicked(object sender, EventArgs e)
         {
-            await _context.Authentication.AuthenticateAsync(Email.Text, Password.Text);
+            await _apiClient.AuthenticateAsync(new CredentialsModel(Email.Text, Password.Text));
         }
     }
 }
