@@ -1,11 +1,10 @@
-﻿using Tradgardsgolf.Mobile.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using Tradgardsgolf.Mobile.Play;
 using Tradgardsgolf.Mobile.Admin;
+using Tradgardsgolf.Mobile.Events;
+using Tradgardsgolf.Mobile.Models;
+using Tradgardsgolf.Mobile.Play;
+using Xamarin.Forms;
 
 namespace Tradgardsgolf.Mobile.Views
 {
@@ -14,7 +13,6 @@ namespace Tradgardsgolf.Mobile.Views
     [DesignTimeVisible(false)]
     public partial class MenuPage : ContentPage
     {
-        MainPage RootPage { get => Application.Current.MainPage as MainPage; }
         List<IHomeMenuItem> menuItems;
 
         public MenuPage()
@@ -29,16 +27,17 @@ namespace Tradgardsgolf.Mobile.Views
             };
 
             ListViewMenu.ItemsSource = menuItems;
-
             ListViewMenu.SelectedItem = menuItems[0];
-            ListViewMenu.ItemSelected += async (sender, e) =>
-            {
-                if (e.SelectedItem == null)
-                    return;
+            ListViewMenu.ItemSelected += ListViewMenu_ItemSelected;
+        }
 
-                var appPageType = ((IHomeMenuItem)e.SelectedItem).AppPageType;
-                await RootPage.NavigateFromMenu(appPageType);
-            };
+        private async void ListViewMenu_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem == null)
+                return;
+
+            var appPageType = ((IHomeMenuItem)e.SelectedItem).AppPageType;
+            MessagingCenter.Send(new NavigationEvent(appPageType), nameof(NavigationEvent));
         }
     }
 }

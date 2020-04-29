@@ -17,8 +17,7 @@ namespace Tradgardsgolf.Mobile.Play
 
         public ObservableCollection<string> Courses { get; set; }
         public Command LoadCoursesCommand { get; private set; }
-
-
+  
         public CoursesViewModel(TradgradsgolfApiClient apiClient)
         {
             _apiClient = apiClient;
@@ -37,6 +36,7 @@ namespace Tradgardsgolf.Mobile.Play
             try
             {
                 Courses.Clear();
+                await Task.Delay(TimeSpan.FromSeconds(2));
                 var items = await _apiClient.IsAuthorizedAsync();
                 //foreach (var item in items)
                 //{

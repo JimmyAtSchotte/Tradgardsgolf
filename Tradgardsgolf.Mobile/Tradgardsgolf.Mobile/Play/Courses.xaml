@@ -4,12 +4,12 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Tradgardsgolf.Mobile.Play.Courses">
+             x:Class="Tradgardsgolf.Mobile.Play.Courses"
+             xmlns:XamlExtensions="clr-namespace:Tradgardsgolf.Mobile.Extensions.Xaml">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="View courses"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="View courses" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"  IsVisible="{Binding IsBusy, Converter={XamlExtensions:InverseBoolConverter}}" />
+            <ActivityIndicator VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

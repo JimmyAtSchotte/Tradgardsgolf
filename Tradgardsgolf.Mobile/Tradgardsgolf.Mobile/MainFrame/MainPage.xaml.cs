@@ -25,22 +25,23 @@ namespace Tradgardsgolf.Mobile.Views
 
             _pageCache = new Dictionary<Type, NavigationPage>();
             _appPageStrategy = appPageStrategy;
-
-            MessagingCenter.Subscribe<UnauthorizedEvent>(this, nameof(UnauthorizedEvent), async (context) => {  
-                await Navigation.PushModalAsync(GetPage(typeof(LoginPage)));
-            });
-
-            //MessagingCenter.Subscribe<LoginPage>(this, MessageCommands.AUTHORIZED, async (obj) => {
-            //    await Navigation.PopModalAsync();
-            //});
-
-            //Detail = GetPage(typeof(Courses));
+            
+            MessagingCenter.Subscribe<UnauthorizedEvent>(this, nameof(UnauthorizedEvent), OnUnauthorizedEvent);
+            MessagingCenter.Subscribe<NavigationEvent>(this, nameof(NavigationEvent), OnNavigationEvent);
+            MessagingCenter.Subscribe<AuthorizedEvent>(this, nameof(AuthorizedEvent), OnAuthorizedEvent);
         }
 
-        public async Task NavigateFromMenu(Type pageType)
+        protected override void OnAppearing()
         {
-            await NavigateTo(GetPage(pageType));
+            base.OnAppearing();
+
+            if((Detail as NavigationPage)?.CurrentPage is ItemsPage)
+                Task.Factory.StartNew(async () => await NavigateTo(GetPage(typeof(Courses))));
         }
+
+        private async void OnUnauthorizedEvent(UnauthorizedEvent unauthorizedEvent) => await Navigation.PushModalAsync(GetPage(typeof(LoginPage)));
+        private async void OnAuthorizedEvent(AuthorizedEvent authorizedEvent) => await Navigation.PopModalAsync();
+        private async void OnNavigationEvent(NavigationEvent navigationEvent) => await NavigateTo(GetPage(navigationEvent.AppPageType));              
 
         private NavigationPage GetPage(Type pageType)
         {

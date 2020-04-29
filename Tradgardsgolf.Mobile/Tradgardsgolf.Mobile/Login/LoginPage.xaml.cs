@@ -1,6 +1,7 @@
 ﻿using System;
 using Tradgardsgolf.ApiClient;
 using Tradgardsgolf.ApiClient.Authentication;
+using Tradgardsgolf.Mobile.Events;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -36,7 +37,10 @@ namespace Tradgardsgolf.Mobile.Login
 
         private async void Login_Clicked(object sender, EventArgs e)
         {
-            await _apiClient.AuthenticateAsync(new CredentialsModel(Email.Text, Password.Text));
+            var response = await _apiClient.AuthenticateAsync(new CredentialsModel(Email.Text, Password.Text));
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                MessagingCenter.Send(new AuthorizedEvent(), nameof(AuthorizedEvent));
         }
     }
 }

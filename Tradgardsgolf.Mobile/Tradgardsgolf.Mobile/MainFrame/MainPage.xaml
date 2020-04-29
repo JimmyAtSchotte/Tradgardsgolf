@@ -8,7 +8,7 @@
             x:Class="Tradgardsgolf.Mobile.Views.MainPage">
 
     <MasterDetailPage.Master>
-        <views:MenuPage />
+        <views:MenuPage  />
     </MasterDetailPage.Master>
 
     <MasterDetailPage.Detail>
@@ -18,7 +18,7 @@
                     <On Platform="iOS" Value="tab_feed.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
-            <x:Arguments>
+            <x:Arguments>                
                 <views:ItemsPage />
             </x:Arguments>
         </NavigationPage>
