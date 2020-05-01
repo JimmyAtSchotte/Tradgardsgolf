@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using Tradgardsgolf.ApiClient;
 using Tradgardsgolf.Mobile.Events;
-using Tradgardsgolf.Mobile.Views;
+using Tradgardsgolf.Mobile.MainFrame;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 

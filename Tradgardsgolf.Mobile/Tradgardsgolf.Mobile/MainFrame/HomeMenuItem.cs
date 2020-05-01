@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Tradgardsgolf.Mobile.Models
+namespace Tradgardsgolf.Mobile.MainFrame
 {
     public interface IHomeMenuItem
     {

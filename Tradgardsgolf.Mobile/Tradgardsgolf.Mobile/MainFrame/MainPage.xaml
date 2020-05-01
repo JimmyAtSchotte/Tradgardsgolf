@@ -4,8 +4,8 @@
             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             mc:Ignorable="d"
-            xmlns:views="clr-namespace:Tradgardsgolf.Mobile.Views"
-            x:Class="Tradgardsgolf.Mobile.Views.MainPage">
+            xmlns:views="clr-namespace:Tradgardsgolf.Mobile.MainFrame"
+            x:Class="Tradgardsgolf.Mobile.MainFrame.MainPage">
 
     <MasterDetailPage.Master>
         <views:MenuPage  />
@@ -19,7 +19,7 @@
                 </OnPlatform>
             </NavigationPage.Icon>
             <x:Arguments>                
-                <views:ItemsPage />
+                <views:BootUpPage />
             </x:Arguments>
         </NavigationPage>
     </MasterDetailPage.Detail>

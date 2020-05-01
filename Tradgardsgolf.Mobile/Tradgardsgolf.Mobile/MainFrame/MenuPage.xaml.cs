@@ -6,7 +6,7 @@ using Tradgardsgolf.Mobile.Models;
 using Tradgardsgolf.Mobile.Play;
 using Xamarin.Forms;
 
-namespace Tradgardsgolf.Mobile.Views
+namespace Tradgardsgolf.Mobile.MainFrame
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer

@@ -7,7 +7,7 @@ using Tradgardsgolf.Mobile.Login;
 using Tradgardsgolf.Mobile.Play;
 using Xamarin.Forms;
 
-namespace Tradgardsgolf.Mobile.Views
+namespace Tradgardsgolf.Mobile.MainFrame
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
@@ -19,7 +19,7 @@ namespace Tradgardsgolf.Mobile.Views
 
         public MainPage(IAppPageStrategy appPageStrategy)
         {           
-            InitializeComponent();      
+            InitializeComponent();
 
             MasterBehavior = MasterBehavior.Popover;
 
@@ -35,7 +35,7 @@ namespace Tradgardsgolf.Mobile.Views
         {
             base.OnAppearing();
 
-            if((Detail as NavigationPage)?.CurrentPage is ItemsPage)
+            if((Detail as NavigationPage)?.CurrentPage is BootUpPage)
                 Task.Factory.StartNew(async () => await NavigateTo(GetPage(typeof(Courses))));
         }
 
