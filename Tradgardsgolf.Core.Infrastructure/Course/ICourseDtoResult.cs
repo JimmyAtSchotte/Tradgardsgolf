@@ -6,12 +6,17 @@ namespace Tradgardsgolf.Core.Infrastructure.Course
     public  interface ICourseDtoResult
     {        
         int Id { get;  }
-        String Name { get;  }
+        string Name { get;  }
         int Holes { get; }
         double Longitude { get;  }
         double Latitude { get;  }
-        int CreatedById { get; }
-        IPlayerDtoResult CreatedBy { get; }
+        ICourseCreatedByDtoResult CreatedBy { get; }
         DateTime Created { get;  }
+    }
+
+    public interface ICourseCreatedByDtoResult
+    {
+        int Id { get; }
+        string Name { get; }
     }
 }

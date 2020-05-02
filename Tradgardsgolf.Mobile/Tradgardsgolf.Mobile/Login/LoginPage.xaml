@@ -5,14 +5,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Tradgardsgolf.Mobile.Login.LoginPage">
-    <ContentPage.Content Visual="Material">
+    <ContentPage.Content>
         <Frame BorderColor="Silver" VerticalOptions="CenterAndExpand" Margin="20" CornerRadius="20" >
             <StackLayout VerticalOptions="CenterAndExpand" Margin="20">                   
                 <Label Text="E-post" />
-                <Entry x:Name="Email" Placeholder="E-post" HorizontalOptions="FillAndExpand"></Entry>
+                <Entry x:Name="Email" Placeholder="E-post" Text="vaugh@hotmail.se" HorizontalOptions="FillAndExpand"></Entry>
 
                 <Label Text="Lösenord"/>
-                <Entry x:Name="Password" Placeholder="Lösenord" HorizontalOptions="FillAndExpand" IsPassword="True"></Entry>
+                <Entry x:Name="Password" Placeholder="Lösenord" Text="1234" HorizontalOptions="FillAndExpand" IsPassword="True"></Entry>
 
                 <Button x:Name="Login" Text="Logga in" Clicked="Login_Clicked" HorizontalOptions="FillAndExpand"></Button>                
             </StackLayout>

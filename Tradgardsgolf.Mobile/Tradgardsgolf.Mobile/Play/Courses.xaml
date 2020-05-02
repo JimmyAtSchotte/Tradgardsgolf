@@ -8,7 +8,32 @@
              xmlns:XamlExtensions="clr-namespace:Tradgardsgolf.Mobile.Extensions.Xaml">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="View courses" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"  IsVisible="{Binding IsBusy, Converter={XamlExtensions:InverseBoolConverter}}" />
+            <ListView x:Name="ItemsListView"
+                ItemsSource="{Binding Courses}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                RefreshCommand="{Binding LoadCoursesCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                IsVisible="{Binding IsBusy, Converter={XamlExtensions:InverseBoolConverter}}">                
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame BorderColor="Silver" VerticalOptions="CenterAndExpand" Margin="20" CornerRadius="20" >
+                                <StackLayout Padding="10">
+                                    <Label Text="{Binding Name}" d:Text="{Binding .}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" />
+                                    <Label Text="{Binding Holes}" d:Text="Item descripton" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
+
+                                    <Button Text="Spela" Clicked="Play_Clicked" BindingContext="{Binding .}"></Button>
+                                    <Button Text="Statistik" ></Button>
+                                    <Button Text="Säsongstabell"></Button>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <ActivityIndicator VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
         </StackLayout>
     </ContentPage.Content>

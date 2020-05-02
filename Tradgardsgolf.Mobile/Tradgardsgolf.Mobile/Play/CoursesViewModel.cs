@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Tradgardsgolf.ApiClient;
 using Tradgardsgolf.Mobile.ViewModels;
 using Xamarin.Forms;
-using Tradgardsgolf.ApiClient.Authentication;
+using Tradgardsgolf.ApiClient.Course;
 
 namespace Tradgardsgolf.Mobile.Play
 {
@@ -15,14 +15,14 @@ namespace Tradgardsgolf.Mobile.Play
     {
         private readonly TradgradsgolfApiClient _apiClient;
 
-        public ObservableCollection<string> Courses { get; set; }
+        public ObservableCollection<Course> Courses { get; set; }
         public Command LoadCoursesCommand { get; private set; }
   
         public CoursesViewModel(TradgradsgolfApiClient apiClient)
         {
             _apiClient = apiClient;
 
-            Courses = new ObservableCollection<string>();
+            Courses = new ObservableCollection<Course>();
             LoadCoursesCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
@@ -36,12 +36,16 @@ namespace Tradgardsgolf.Mobile.Play
             try
             {
                 Courses.Clear();
-                await Task.Delay(TimeSpan.FromSeconds(2));
-                var items = await _apiClient.IsAuthorizedAsync();
-                //foreach (var item in items)
-                //{
-                //    Items.Add(item);
-                //}
+                var response = await _apiClient.ListAllCourses();
+
+                if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var courses = response.Result;
+
+                    foreach (var course in courses)
+                        Courses.Add(course);
+                }
+                                
             }
             catch (Exception ex)
             {

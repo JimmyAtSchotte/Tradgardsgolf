@@ -1,4 +1,5 @@
 ﻿using Tradgardsgolf.ApiClient;
+using Tradgardsgolf.ApiClient.Course;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -36,6 +37,14 @@ namespace Tradgardsgolf.Mobile.Play
 
             if (_coursesViewModel.Courses.Count == 0)
                 _coursesViewModel.LoadCoursesCommand.Execute(null);
+        }
+
+        private async void Play_Clicked(object sender, System.EventArgs e)
+        {
+            var playButton = sender as Button;
+            var course = playButton.BindingContext as Course;
+
+            await Navigation.PushAsync(new SetupRound(course));
         }
     }
 }

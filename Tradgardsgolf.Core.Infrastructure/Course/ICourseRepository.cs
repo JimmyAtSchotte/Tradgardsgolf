@@ -4,9 +4,18 @@ namespace Tradgardsgolf.Core.Infrastructure.Course
 {
     public interface ICourseRepository
     {
-        IEnumerable<ICourseDtoResult> CreatedByPlayer(int playerId);
-        IEnumerable<ICourseDtoResult> HasPlayedOnCourses(int playerId);
-        IEnumerable<ICourseDtoResult> HasNotPlayedOnCourses(int playerId);
-        IEnumerable<ICourseDtoResult> ListAllWithHasPlayedCheck(int playerId);
+        IEnumerable<ICourseDtoResult> ListAll();
+
+        ICourseDtoResult Add(ICourseAddDto dto);
+
+    }
+
+    public interface ICourseAddDto
+    {
+        string Name { get; }
+        int Holes { get; }
+        double Longitude { get; }
+        double Latitude { get; }
+        int CreatedBy { get; }
     }
 }
