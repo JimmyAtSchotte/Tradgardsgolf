@@ -11,7 +11,7 @@
                    RelativeLayout.WidthConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width}"
                    RelativeLayout.HeightConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Height}" />
 
-            <StackLayout BackgroundColor="#a7e3b6" TranslationY="142" HeightRequest="38" Opacity="0.6" Padding="10" HorizontalOptions="Fill"                         
+            <StackLayout BackgroundColor="#e2e2e2" TranslationY="142" HeightRequest="38" Opacity="0.6" Padding="10" HorizontalOptions="Fill"                         
                    RelativeLayout.WidthConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width}">
                 <Label x:Name="CourseName" XAlign="Center" HorizontalOptions="Start" VerticalOptions="Center" TextColor="Black" FontSize="24" />
             </StackLayout>      
