@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Tradgardsgolf.Mobile.Play.CourseHeader">
+  <ContentView.Content>
+        <RelativeLayout HeightRequest="200" BackgroundColor="Red" HorizontalOptions="Fill">
+            <Image Source="https://picsum.photos/400/200" Aspect="Fill" 
+                   RelativeLayout.WidthConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width}"
+                   RelativeLayout.HeightConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Height}" />
+
+            <StackLayout BackgroundColor="#a7e3b6" TranslationY="142" HeightRequest="38" Opacity="0.6" Padding="10" HorizontalOptions="Fill"                         
+                   RelativeLayout.WidthConstraint= "{ConstraintExpression Type=RelativeToParent, Property=Width}">
+                <Label x:Name="CourseName" XAlign="Center" HorizontalOptions="Start" VerticalOptions="Center" TextColor="Black" FontSize="24" />
+            </StackLayout>      
+        </RelativeLayout>
+    </ContentView.Content>
+</ContentView>
+

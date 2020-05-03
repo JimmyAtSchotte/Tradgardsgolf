@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Tradgardsgolf.Mobile.Play.Courses"
+             xmlns:Play="clr-namespace:Tradgardsgolf.Mobile.Play"
              xmlns:XamlExtensions="clr-namespace:Tradgardsgolf.Mobile.Extensions.Xaml">
     <ContentPage.Content>
         <StackLayout>
@@ -20,12 +21,12 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame BorderColor="Silver" VerticalOptions="CenterAndExpand" Margin="20" CornerRadius="20" >
-                                <StackLayout Padding="10">
-                                    <Label Text="{Binding Name}" d:Text="{Binding .}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" />
-                                    <Label Text="{Binding Holes}" d:Text="Item descripton" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
+                            <Frame BorderColor="Silver" VerticalOptions="CenterAndExpand" Margin="20" Padding="0" CornerRadius="10" >
+                                <StackLayout>
+                                    <Play:CourseHeader Course="{Binding .}"></Play:CourseHeader>
+                                    <Play:CourseQuickStats Margin="10"></Play:CourseQuickStats>
 
-                                    <Button Text="Spela" Clicked="Play_Clicked" BindingContext="{Binding .}"></Button>
+                                    <Button Text="Spela" Clicked="Play_Clicked" BindingContext="{Binding .}" Margin="10"></Button>
                                     <Button Text="Statistik" ></Button>
                                     <Button Text="Säsongstabell"></Button>
                                 </StackLayout>
