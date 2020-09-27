@@ -18,8 +18,8 @@
             @foreach (var player in SelectedPlayers)
             {
                 <tr>
-                    <td>@player</td>
-                    <td><button class="btn btn-primary" @onclick="() => RemovePlayer(player)">Ta bort</button></td>
+                    <td>@player.Name</td>
+                    <td><button class="btn btn-primary" @onclick="() => RemovePlayer(player.Name)">Ta bort</button></td>
                 </tr>
             }
         </tbody>

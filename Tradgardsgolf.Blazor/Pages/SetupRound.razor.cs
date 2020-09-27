@@ -20,16 +20,17 @@ namespace Tradgardsgolf.Blazor.Pages
 
         protected string PlayerName { get; set; } 
 
-        protected List<string> SelectedPlayers { get; set; }
+        protected List<PlayerScore> SelectedPlayers { get; set; }
 
-        protected List<string> AvailablePlayers { get; set; }
+        private List<string> _availablePlayers;
+        protected List<string> AvailablePlayers => _availablePlayers.Where(x => SelectedPlayers.All(player => player.Name != x)).ToList();
 
 
         public SetupRoundBase()
         {
-            SelectedPlayers = new List<string>();
-            AvailablePlayers = new List<string>();
+            SelectedPlayers = new List<PlayerScore>();
             SelectedCourse = new Course();
+            _availablePlayers = new List<string>();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -39,14 +40,12 @@ namespace Tradgardsgolf.Blazor.Pages
             
             SelectedCourse = await ScorecardState.GetSelectedCourseAsync();
             SelectedPlayers = (await ScorecardState.GetPlayersAsync()).ToList();
-            
+
             //TODO: Call a service to get players played on course
-            AvailablePlayers = new List<string>()
+            _availablePlayers = new List<string>()
             {
                 "Jimmy", "Hanna"
             };
-
-            AvailablePlayers = AvailablePlayers.Except(SelectedPlayers).ToList();
 
             StateHasChanged();            
         }
@@ -56,8 +55,7 @@ namespace Tradgardsgolf.Blazor.Pages
             if (string.IsNullOrWhiteSpace(player))
                 return;
 
-            SelectedPlayers.Add(player);
-            AvailablePlayers.Remove(player);
+            SelectedPlayers.Add(PlayerScore.Create(player, SelectedCourse.Holes));
             PlayerName = string.Empty;
 
             await ScorecardState.SetPlayersAsync(SelectedPlayers);
@@ -65,9 +63,7 @@ namespace Tradgardsgolf.Blazor.Pages
 
         protected async Task RemovePlayer(string player)
         {
-            AvailablePlayers.Add(player);
-            SelectedPlayers.Remove(player);
-
+            SelectedPlayers.RemoveAll(x => x.Name == player);
             await ScorecardState.SetPlayersAsync(SelectedPlayers);
         }
 

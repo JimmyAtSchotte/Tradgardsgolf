@@ -3,7 +3,6 @@
 
 <h3>Spela</h3>
 
-
 <table>
     <thead>
         <tr>
@@ -16,13 +15,15 @@
     </thead>
 
     <tbody>
-        @for (int hole = 1; hole <= Course.Holes; hole++)
+        @for (int i = 1; i <= Course.Holes; i++)
         {
+            var hole = i;
+
             <tr>
                 <td>@hole</td>
                 @foreach (var player in Players)
                 {
-                    <td><input @bind="player.Scores[hole]" /></td>
+                    <td><input @bind="player.Scores[hole-1].Score" /></td>
                 }
             </tr>
         }
@@ -32,11 +33,15 @@
             <td>Totalt</td>
             @foreach (var player in Players)
             {
-                <td>@player.Total</td>
+                <td>@player.Total()</td>
             }
         </tr>
     </tfoot>
 </table>
+
+
+<button class="btn btn-primary" @onclick="() => ChangePlayers()" >Byt spelare</button>
+<button class="btn btn-primary" disabled="@ScoresMissing">Spara runda</button>
 
 
 
