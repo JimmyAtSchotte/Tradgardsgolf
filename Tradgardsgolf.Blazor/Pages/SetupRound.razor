@@ -1,0 +1,59 @@
+﻿
+@inherits SetupRoundBase
+@page "/SetupRound"
+
+<h3>Spela på @SelectedCourse.Name</h3>
+
+@if (SelectedPlayers.Any())
+{
+    <h4>Valda spelare</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Namn</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in SelectedPlayers)
+            {
+                <tr>
+                    <td>@player</td>
+                    <td><button class="btn btn-primary" @onclick="() => RemovePlayer(player)">Ta bort</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button class="btn btn-primary" @onclick="() => Play()">Börja spela</button>
+}
+
+
+<h4>Lägg till spelare</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Namn</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input @bind="PlayerName" placeholder="Ny spelare" /></td>
+            <td><button class="btn btn-primary" @onclick="() => AddPlayer(PlayerName)">Lägg till</button></td>
+        </tr>
+
+        @foreach (var player in AvailablePlayers)
+        {
+            <tr>
+                <td>@player</td>
+                <td><button class="btn btn-primary" @onclick="() => AddPlayer(player)">Lägg till</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
