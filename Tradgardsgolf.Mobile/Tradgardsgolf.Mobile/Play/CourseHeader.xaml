@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Tradgardsgolf.Mobile.Play.CourseHeader">
+   
   <ContentView.Content>
         <RelativeLayout HeightRequest="200" BackgroundColor="Red" HorizontalOptions="Fill">
             <Image Source="https://picsum.photos/400/200" Aspect="Fill" 

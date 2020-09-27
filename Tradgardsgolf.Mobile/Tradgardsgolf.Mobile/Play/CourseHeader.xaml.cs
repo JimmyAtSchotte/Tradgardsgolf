@@ -12,11 +12,11 @@ namespace Tradgardsgolf.Mobile.Play
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CourseHeader : ContentView
     {
-        public static readonly BindableProperty CourseProperty = BindableProperty.Create("Course", typeof(Course), typeof(CourseHeader), null);
+        public static readonly BindableProperty CourseProperty = BindableProperty.Create(nameof(Course), typeof(Course), typeof(CourseHeader), default);
 
         public Course Course
         {
-            get => (Course)GetValue(CourseProperty);
+            get => GetValue(CourseProperty) as Course;                
             set => SetValue(CourseProperty, value);
         }
 

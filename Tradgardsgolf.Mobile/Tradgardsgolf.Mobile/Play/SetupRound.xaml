@@ -3,13 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             x:Class="Tradgardsgolf.Mobile.Play.SetupRound">
+             mc:Ignorable="d"             
+             xmlns:Play="clr-namespace:Tradgardsgolf.Mobile.Play"
+             x:Class="Tradgardsgolf.Mobile.Play.SetupRound"
+             Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="TODO: Setup round"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Play:CourseHeader Course="{Binding Course}"/>
+            <Label Text="{Binding Course.Name}" d:Text="Item name" FontSize="Small"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

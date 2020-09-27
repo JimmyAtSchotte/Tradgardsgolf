@@ -42,9 +42,10 @@ namespace Tradgardsgolf.Mobile.Play
         private async void Play_Clicked(object sender, System.EventArgs e)
         {
             var playButton = sender as Button;
-            var course = playButton.BindingContext as Course;
+            var setupRoundViewModel = new SetupRoundViewModel(playButton.BindingContext as Course);
+            var setupRound = new SetupRound(setupRoundViewModel);
 
-            await Navigation.PushAsync(new SetupRound(course));
+            await Navigation.PushAsync(setupRound);
         }
     }
 }

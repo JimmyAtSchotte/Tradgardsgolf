@@ -7,10 +7,11 @@
              x:Class="Tradgardsgolf.Mobile.Play.Courses"
              xmlns:Play="clr-namespace:Tradgardsgolf.Mobile.Play"
              xmlns:XamlExtensions="clr-namespace:Tradgardsgolf.Mobile.Extensions.Xaml"
-             Visual="Material">
+             Visual="Material"
+             Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
-            <ListView x:Name="ItemsListView"
+            <ListView 
                 ItemsSource="{Binding Courses}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
@@ -24,12 +25,10 @@
                         <ViewCell>
                             <Frame BorderColor="White" VerticalOptions="CenterAndExpand" Margin="20" Padding="0" CornerRadius="10" HasShadow ="True" OutlineColor ="White" >
                                 <StackLayout>
-                                    <Play:CourseHeader Course="{Binding .}"></Play:CourseHeader>
+                                    <Play:CourseHeader />
                                     <Play:CourseQuickStats Margin="10"></Play:CourseQuickStats>
-
-                                    <Button Text="Spela" Clicked="Play_Clicked" BindingContext="{Binding .}" Margin="10"></Button>
-                                    <Button Text="Statistik" ></Button>
-                                    <Button Text="Säsongstabell"></Button>
+                                    <Label Text="{Binding Name}" d:Text="Course name" FontSize="Small"/>
+                                    <Button Text="Spela" Clicked="Play_Clicked" BindingContext="{Binding .}" Margin="10"></Button>                                   
                                 </StackLayout>
                             </Frame>
                         </ViewCell>

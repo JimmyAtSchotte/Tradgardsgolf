@@ -24,6 +24,7 @@ namespace Tradgardsgolf.Mobile.Play
 
             Courses = new ObservableCollection<Course>();
             LoadCoursesCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            Title = "Spela";
         }
 
         async Task ExecuteLoadItemsCommand()
