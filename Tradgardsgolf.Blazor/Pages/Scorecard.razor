@@ -1,7 +1,45 @@
-﻿@page "/Scorecard"
+﻿@inherits ScorecardBase
+@page "/Scorecard"
 
-<h3>Scorecard</h3>
+<h3>Spela</h3>
 
-@code {
 
-}
+<table>
+    <thead>
+        <tr>
+            <td>Hål</td>
+            @foreach (var player in Players)
+            {
+                <td>@player.Name</td>
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @for (int hole = 1; hole <= Course.Holes; hole++)
+        {
+            <tr>
+                <td>@hole</td>
+                @foreach (var player in Players)
+                {
+                    <td><input @bind="player.Scores[hole]" /></td>
+                }
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>Totalt</td>
+            @foreach (var player in Players)
+            {
+                <td>@player.Total</td>
+            }
+        </tr>
+    </tfoot>
+</table>
+
+
+
+
+
+
