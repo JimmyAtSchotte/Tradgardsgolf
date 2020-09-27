@@ -23,7 +23,7 @@
                 <td>@hole</td>
                 @foreach (var player in Players)
                 {
-                    <td><input @bind="player.Scores[hole-1].Score" /></td>
+                    <td><input @bind="player.Scores[hole].Score" /></td>
                 }
             </tr>
         }
