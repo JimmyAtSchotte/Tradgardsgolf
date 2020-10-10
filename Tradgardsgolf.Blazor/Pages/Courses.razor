@@ -1,9 +1,7 @@
 ﻿@inherits CoursesBase
 @page "/"
-
-<h3>Banor</h3>
-
-<p>This component demonstrates fetching data from a service.</p>
+@using Tradgardsgolf.Blazor.Components.Course
+@using Tradgardsgolf.Blazor.Components.Forms
 
 @if (Courses == null)
 {
@@ -11,23 +9,13 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Namn</th>
-                <th>Hål</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var course in Courses)
-            {
-                <tr>
-                    <td>@course.Name</td>
-                    <td>@course.Holes</td>
-                    <td><button class="btn btn-primary" @onclick="() => SetupRound(course)">Spela</button></td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    @foreach (var course in Courses)
+    {
+        <CourseCard Course="course">
+            <CourseHead></CourseHead>                       
+            <CourseButtons>
+                <ImageButton OnClick="() => SetupRound(course)" Text="Spela" Icon="golf_course"></ImageButton>
+            </CourseButtons>
+        </CourseCard>
+    }
 }

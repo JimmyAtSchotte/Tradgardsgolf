@@ -58,11 +58,19 @@ namespace Tradgardsgolf.Blazor.Data
         {
             return new HoleScore(hole);
         }
+
+        public override string ToString()
+        {
+            if (Score.HasValue)
+                return Score.ToString();
+
+            return "-";
+        }
     }
 
     public class PlayerScore
     {
-        public string Name { get; set; }
+        public Player Player { get; set; }
 
         public HoleScoreCollection Scores { get; set; }
 
@@ -72,9 +80,9 @@ namespace Tradgardsgolf.Blazor.Data
 
         }
 
-        private PlayerScore(string name, HoleScoreCollection scores)
+        private PlayerScore(Player player, HoleScoreCollection scores)
         {
-            Name = name;
+            Player = player;
             Scores = scores;
         }
 
@@ -85,7 +93,10 @@ namespace Tradgardsgolf.Blazor.Data
             for (int hole = 1; hole <= holes; hole++)
                 scores.Add(HoleScore.Create(hole));
 
-            return new PlayerScore(name, scores);
+            return new PlayerScore(new Player()
+            {
+                Name = name
+            }, scores);
         }
 
         public int Total() => Scores.Select(x => x.Score.GetValueOrDefault(0)).Sum();

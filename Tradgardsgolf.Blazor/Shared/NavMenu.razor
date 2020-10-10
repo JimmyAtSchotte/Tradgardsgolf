@@ -1,32 +1,22 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Tradgardsgolf.Blazor</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿<nav>
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo">Trädgårdsgolf</a>
+        <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            <li>
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <i class="material-icons left">house</i>Home
+                </NavLink>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-    </ul>
-</div>
+<ul class="sidenav" id="mobile-menu">
+    <li>
+        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <i class="material-icons left">house</i>Home
+        </NavLink>
+    </li>
+</ul>
 
-@code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}

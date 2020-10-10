@@ -23,10 +23,19 @@ namespace Tradgardsgolf.Blazor.Pages
 
         protected bool ScoresMissing => Players.Any(x => x.MissingScores());
 
+        public bool IsModalOpened { get; set; }
+        public string SelectedButton { get; set; }
+
+        protected PlayerScore EditPlayerScore { get; set; }
+        protected int EditHole { get; set; } 
+
+        protected int ModalMaxScore { get; set; }
+
         public ScorecardBase()
         {
             Players = new List<PlayerScore>();
             Course = new Course();
+            ModalMaxScore = 12;
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -45,6 +54,33 @@ namespace Tradgardsgolf.Blazor.Pages
             await ScorecardState.SetPlayersAsync(Players);
 
             NavigationManager.NavigateTo("SetupRound");
+        }
+
+        protected void SetScore(PlayerScore playerScore, int hole)
+        {
+            if (IsModalOpened)
+                return;
+
+            EditPlayerScore = playerScore;
+            EditHole = hole;
+
+            IsModalOpened = true;
+
+            StateHasChanged();
+        }
+
+        protected void OnClose(string value)
+        {
+            EditPlayerScore.Scores[EditHole].Score = Convert.ToInt32(value);
+
+            StateHasChanged();
+        }
+
+        protected void AddModalMaxScore()
+        {
+            ModalMaxScore += 3;
+
+            StateHasChanged();
         }
     }
 }

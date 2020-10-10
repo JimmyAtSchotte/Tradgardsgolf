@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinTemplate.iOS", "Xama
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinTemplate", "XamarinTemplate\XamarinTemplate\XamarinTemplate.csproj", "{30EE2CDE-2F20-4E66-9E70-BDA5CF335C41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Blazor", "Tradgardsgolf.Blazor\Tradgardsgolf.Blazor.csproj", "{B501A975-6115-467D-A4E7-8A8A407DE89E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Blazor", "Tradgardsgolf.Blazor\Tradgardsgolf.Blazor.csproj", "{B501A975-6115-467D-A4E7-8A8A407DE89E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

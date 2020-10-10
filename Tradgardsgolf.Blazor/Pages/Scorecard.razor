@@ -1,47 +1,79 @@
 ﻿@inherits ScorecardBase
 @page "/Scorecard"
 
-<h3>Spela</h3>
+@using Tradgardsgolf.Blazor.Components.Course
+@using Tradgardsgolf.Blazor.Components.Forms
+@using Tradgardsgolf.Blazor.Components.Player
 
-<table>
-    <thead>
-        <tr>
-            <td>Hål</td>
-            @foreach (var player in Players)
-            {
-                <td>@player.Name</td>
-            }
-        </tr>
-    </thead>
+<CourseCard Course="Course">
+    <CourseHead></CourseHead>
+    <CourseContent>
+        <table class="centered">
+            <thead>
+                <tr>
+                    <th>Hål</th>
+                    @foreach (var player in Players)
+                    {
+                        <th><Avatar Player="player.Player"></Avatar></th>
+                    }
+                </tr>
+            </thead>
 
-    <tbody>
-        @for (int i = 1; i <= Course.Holes; i++)
-        {
-            var hole = i;
-
-            <tr>
-                <td>@hole</td>
-                @foreach (var player in Players)
+            <tbody>
+                @for (int i = 1; i <= Course.Holes; i++)
                 {
-                    <td><input @bind="player.Scores[hole].Score" /></td>
+                    var hole = i;
+
+                    <tr>
+                        <td>@hole</td>
+                        @foreach (var player in Players)
+                        {
+                            <td align="center"><Button Text="@player.Scores[hole].ToString()" OnClick="() => SetScore(player, hole)"></Button> </td>
+                        }
+                    </tr>
                 }
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td>Totalt</td>
-            @foreach (var player in Players)
-            {
-                <td>@player.Total()</td>
-            }
-        </tr>
-    </tfoot>
-</table>
 
+                <tr>
+                    <td>Totalt</td>
+                    @foreach (var player in Players)
+                    {
+                        <td>@player.Total()</td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </CourseContent>
+    <CourseButtons>
+        <ImageButton OnClick=" async () => await ChangePlayers()" Text="Byt spelare" Icon="sync"></ImageButton>
+        <ImageButton OnClick=" async () => await ChangePlayers()" Text="Klart" Icon="check" Disabled="@ScoresMissing"></ImageButton>
+    </CourseButtons>
+</CourseCard>
 
-<button class="btn btn-primary" @onclick="() => ChangePlayers()" >Byt spelare</button>
-<button class="btn btn-primary" disabled="@ScoresMissing">Spara runda</button>
+<Modal @bind-Open="IsModalOpened" Close="OnClose">    
+    <div class="modal" style="display: block; position: relative">
+        <div class="modal-content">
+            <h4>Hur gick det för @EditPlayerScore?.Player.Name på hål @EditHole?</h4>
+            <div class="container">
+                <form method="dialog">
+                    <div class="row">
+                        @for (var i = 1; i <= ModalMaxScore; i++)
+                        {
+                            <div class="col s4 center-align" style="margin-bottom: 1rem;">
+                                <Button Text="@i.ToString()" Value="@i.ToString()"></Button>
+                            </div>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>              
+
+        <div class="modal-footer">
+            <ImageButton OnClick=" () => AddModalMaxScore()" Text="Det gick inge vidare..." Icon="sentiment_dissatisfied"></ImageButton>
+        </div>
+    </div>
+  
+</Modal>
+
 
 
 

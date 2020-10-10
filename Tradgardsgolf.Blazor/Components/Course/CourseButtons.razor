@@ -1,9 +1,14 @@
-﻿@inherits CourseCardBase
+﻿@inherits CourseButtonsBase
 
-    <div class="card">
+@if (Visible)
+{
+    <div class="card-action">
         <CascadingValue Value="Course">
             @ChildContent
         </CascadingValue>
     </div>
+}
+
+
 
 

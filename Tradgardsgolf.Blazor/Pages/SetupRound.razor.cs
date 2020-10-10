@@ -22,15 +22,15 @@ namespace Tradgardsgolf.Blazor.Pages
 
         protected List<PlayerScore> SelectedPlayers { get; set; }
 
-        private List<string> _availablePlayers;
-        protected List<string> AvailablePlayers => _availablePlayers.Where(x => SelectedPlayers.All(player => player.Name != x)).ToList();
+        private List<Player> _availablePlayers;
+        protected List<Player> AvailablePlayers => _availablePlayers.Where(x => SelectedPlayers.All(player => player.Player.Name != x.Name)).ToList();
 
 
         public SetupRoundBase()
         {
             SelectedPlayers = new List<PlayerScore>();
             SelectedCourse = new Course();
-            _availablePlayers = new List<string>();
+            _availablePlayers = new List<Player>();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -42,9 +42,13 @@ namespace Tradgardsgolf.Blazor.Pages
             SelectedPlayers = (await ScorecardState.GetPlayersAsync()).ToList();
 
             //TODO: Call a service to get players played on course
-            _availablePlayers = new List<string>()
+            _availablePlayers = new List<Player>()
             {
-                "Jimmy", "Hanna"
+                new Player(){
+                    Name="Jimmy"
+                }, new Player(){
+                    Name = "Hanna" 
+                }
             };
 
             StateHasChanged();            
@@ -59,12 +63,16 @@ namespace Tradgardsgolf.Blazor.Pages
             PlayerName = string.Empty;
 
             await ScorecardState.SetPlayersAsync(SelectedPlayers);
+
+            StateHasChanged();
         }
 
         protected async Task RemovePlayer(string player)
         {
-            SelectedPlayers.RemoveAll(x => x.Name == player);
+            SelectedPlayers.RemoveAll(x => x.Player.Name == player);
             await ScorecardState.SetPlayersAsync(SelectedPlayers);
+
+            StateHasChanged();
         }
 
         protected async Task Play()
