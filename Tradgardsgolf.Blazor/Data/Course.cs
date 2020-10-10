@@ -28,21 +28,21 @@ namespace Tradgardsgolf.Blazor.Data
                 Created = course.Created,
                 CreatedBy = CourseCreatedBy.Create(course.CreatedBy)
             };         
-        }       
-    }
+        }
 
-    public class CourseCreatedBy 
-    {      
-        public int Id { get; set; }
-        public string Name { get; set; }
-        
-        public static CourseCreatedBy Create(ICourseCreatedByModelResult createdBy)
+        public class CourseCreatedBy
         {
-            return new CourseCreatedBy()
+            public int Id { get; set; }
+            public string Name { get; set; }
+
+            public static CourseCreatedBy Create(ICourseCreatedByModelResult createdBy)
             {
-                Id = createdBy.Id,
-                Name = createdBy.Name
-            };
+                return new CourseCreatedBy()
+                {
+                    Id = createdBy.Id,
+                    Name = createdBy.Name
+                };
+            }
         }
     }
 }
