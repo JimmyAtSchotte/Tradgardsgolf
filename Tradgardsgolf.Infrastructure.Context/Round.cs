@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,7 +16,7 @@ namespace Tradgardsgolf.Infrastructure.Context
 
         [Column("dtmDate")]
         public DateTime Date { get; private set; }
-
+        
         private Round()
         {
 

@@ -3,11 +3,12 @@
 namespace Tradgardsgolf.Infrastructure.Context
 {
     public class RoundScore : BaseEntity<RoundScore>
-    {
+    {        
+        public int Id { get; set; }
+
         [Column("intRoundId")]
         public int RoundId { get; private set; }
         public Round Round { get; private set; }
-
 
         [Column("intHole")]
         public int Hole { get; private set; }

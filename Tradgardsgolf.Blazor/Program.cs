@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Tradgardsgolf.Core.Services.Course;
 using Tradgardsgolf.Core.Services.CreateLogin;
+using Tradgardsgolf.Core.Services.Scorecard;
 
 namespace Tradgardsgolf.Blazor
 {
@@ -28,9 +29,20 @@ namespace Tradgardsgolf.Blazor
 
             var courseService = host.Services.GetService(typeof(ICourseService)) as ICourseService;
 
-            courseService.Add(new CourseAddModel("Kumhof", 6, 17.052026, 59.605530, 1));
-            courseService.Add(new CourseAddModel("Törnehof", 6, 17.063828, 59.630690, 2));
-            courseService.Add(new CourseAddModel("Sördeby karlsäng", 6, 18.437326, 60.292925, 3));
+            var kumhof = courseService.Add(new CourseAddModel("Kumhof", 6, 17.052026, 59.605530, 1));
+            var tornehof = courseService.Add(new CourseAddModel("Törnehof", 6, 17.063828, 59.630690, 2));
+            var soderby = courseService.Add(new CourseAddModel("Sördeby karlsäng", 6, 18.437326, 60.292925, 3));
+
+            var scorecardSerivce = host.Services.GetService(typeof(IScorecardService)) as IScorecardService;
+
+            scorecardSerivce.Add(new ScorecardModel(kumhof, 
+                new PlayerScoreModel("Jimmy", 4, 4, 4, 3, 3, 3),
+                new PlayerScoreModel("Hanna", 3, 3, 3, 3, 3, 3)));
+
+            scorecardSerivce.Add(new ScorecardModel(kumhof,
+               new PlayerScoreModel("Jimmy", 4, 4, 4, 3, 3, 3),
+               new PlayerScoreModel("Patrik", 2, 2, 2, 3, 3, 3),
+               new PlayerScoreModel("Hanna", 3, 3, 3, 3, 3, 3)));
 
             host.Run();
         }
@@ -42,6 +54,34 @@ namespace Tradgardsgolf.Blazor
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+    }
+
+    public class ScorecardModel : IScorecardModel
+    {
+        private readonly ICourseModelResult _course;
+
+        public int CourseId => _course.Id;
+        public IEnumerable<IPlayerScoreModel> PlayerScores { get; }
+
+        public ScorecardModel(ICourseModelResult course, params IPlayerScoreModel[] playerScores)
+        {
+            _course = course;
+            PlayerScores = playerScores;
+        }
+
+
+    }
+
+    public class PlayerScoreModel : IPlayerScoreModel
+    {
+        public string Name { get; }
+        public int[] Scores { get; }
+
+        public PlayerScoreModel(string name, params int[] scores)
+        {
+            Name = name;
+            Scores = scores;
+        }
     }
 
     public class CreateLoginModel : ICreateLoginModel

@@ -16,8 +16,7 @@ namespace Tradgardsgolf.Infrastructure.Context
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<RoundScore>().HasNoKey();
+        {         
         }
     }
 }

@@ -28,7 +28,7 @@
                         <td>@hole</td>
                         @foreach (var player in Players)
                         {
-                            <td align="center"><Button Text="@player.Scores[hole].ToString()" OnClick="() => SetScore(player, hole)"></Button> </td>
+                            <td align="center"><Button Text="@player.Scores[hole].ToString()" OnClick="() => SetScore(player, hole)" Disabled="@Saving"></Button> </td>
                         }
                     </tr>
                 }
@@ -44,12 +44,36 @@
         </table>
     </CourseContent>
     <CourseButtons>
-        <ImageButton OnClick=" async () => await ChangePlayers()" Text="Byt spelare" Icon="sync"></ImageButton>
-        <ImageButton OnClick=" async () => await ChangePlayers()" Text="Klart" Icon="check" Disabled="@ScoresMissing"></ImageButton>
+        <ImageButton OnClick=" async () => await ChangePlayers()" Text="Byt spelare" Icon="sync" Disabled="@Saving"></ImageButton>
+        <ImageButton OnClick="() => CompleteRound()" Text="Klart" Icon="check" Disabled="@DisableCompleteButton"></ImageButton>
     </CourseButtons>
 </CourseCard>
 
-<Modal @bind-Open="IsModalOpened" Close="OnClose">    
+@if (@Saving && !@DisplayPlayAgain)
+{
+    <div class="card green lighten-5">
+        <div class="card-content">
+            <span class="card-title">Sparar</span>
+        </div>
+    </div>
+}
+
+@if (@DisplayPlayAgain)
+{
+    <div class="card green lighten-5">
+        <div class="card-content">
+            <span class="card-title">Rundan är klar och sparad</span>
+        </div>
+        <div class="card-action">
+            <ImageButton OnClick=" async () => await ChangePlayers()" Text="Byt spelare" Icon="sync"></ImageButton>
+            <ImageButton OnClick="async () => await PlayAgain()" Text="Spela igen" Icon="play_arrow"></ImageButton>
+        </div>
+    </div>
+}
+
+
+
+<Modal @bind-Open="IsModalOpened" Close="OnClose">
     <div class="modal" style="display: block; position: relative">
         <div class="modal-content">
             <h4>Hur gick det för @EditPlayerScore?.Player.Name på hål @EditHole?</h4>
@@ -65,13 +89,13 @@
                     </div>
                 </form>
             </div>
-        </div>              
+        </div>
 
         <div class="modal-footer">
             <ImageButton OnClick=" () => AddModalMaxScore()" Text="Det gick inge vidare..." Icon="sentiment_dissatisfied"></ImageButton>
         </div>
     </div>
-  
+
 </Modal>
 
 

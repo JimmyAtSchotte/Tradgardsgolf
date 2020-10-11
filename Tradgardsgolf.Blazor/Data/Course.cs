@@ -15,6 +15,7 @@ namespace Tradgardsgolf.Blazor.Data
         public double Latitude { get; set; }
         public CourseCreatedBy CreatedBy { get; set; }
         public DateTime Created { get; set; }
+        public string Image { get; set; }
 
         public static Course Create(ICourseModelResult course)
         {
@@ -26,6 +27,7 @@ namespace Tradgardsgolf.Blazor.Data
                 Longitude = course.Longitude,
                 Latitude = course.Latitude,
                 Created = course.Created,
+                Image = course.Image,
                 CreatedBy = CourseCreatedBy.Create(course.CreatedBy)
             };         
         }

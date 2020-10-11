@@ -9,7 +9,7 @@ namespace Tradgardsgolf.Core.Infrastructure.Course
         string Name { get;  }
         int Holes { get; }
         double Longitude { get;  }
-        double Latitude { get;  }
+        double Latitude { get;  }        
         ICourseCreatedByDtoResult CreatedBy { get; }
         DateTime Created { get;  }
     }

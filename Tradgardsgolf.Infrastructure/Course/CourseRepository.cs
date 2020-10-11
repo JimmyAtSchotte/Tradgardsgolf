@@ -7,6 +7,7 @@ using Tradgardsgolf.Infrastructure.Context;
 
 namespace Tradgardsgolf.Infrastructure.Course
 {
+
     public class CourseRepository : BaseRepository, ICourseRepository
     {
         public CourseRepository(TradgardsgolfContext db) : base(db)
@@ -37,6 +38,22 @@ namespace Tradgardsgolf.Infrastructure.Course
             return new CourseDtoResult(course);
         }
 
+        public IEnumerable<ICoursePlayerDtoResult> Players(ICoursePlayerDto dto)
+        {
+            return (from roundscore in db.RoundScore
+                    join round in db.Round on roundscore.RoundId equals round.Id
+                    join player in db.Player on roundscore.PlayerId equals player.Id
+                    where round.CourseId == dto.Id
+                    select new CoursePlayerDtoResult()
+                    {
+                        Name = player.Name
+                    }).Distinct().ToList();
+        }
+    }
+
+    public class CoursePlayerDtoResult : ICoursePlayerDtoResult
+    {
+        public string Name { get; set; }
     }
 
     public class CourseDtoResult : ICourseDtoResult
@@ -66,7 +83,7 @@ namespace Tradgardsgolf.Infrastructure.Course
         public int Id => _player.Id;
         public string Name => _player.Name;
 
-        public CourseCreatedByDtoResult(Player player)
+        public CourseCreatedByDtoResult(Context.Player player)
         {
             _player = player;
         }

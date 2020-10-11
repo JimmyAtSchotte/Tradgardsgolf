@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Tradgardsgolf.Blazor.Data;
+using Tradgardsgolf.Blazor.State;
 using Tradgardsgolf.Infrastructure.Context;
 
 namespace Tradgardsgolf.Blazor
@@ -49,6 +49,7 @@ namespace Tradgardsgolf.Blazor
                 Assembly.Load("Tradgardsgolf.Core.Types"),
                 Assembly.Load("Tradgardsgolf.Infrastructure"),
                 Assembly.Load("Tradgardsgolf.Services"),
+                Assembly.Load("Tradgardsgolf.Blazor"),
             };
 
             builder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();

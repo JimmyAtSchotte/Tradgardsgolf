@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tradgardsgolf.Blazor.Data;
+using Tradgardsgolf.Blazor.ServiceAdapters;
+using Tradgardsgolf.Blazor.State;
 
 namespace Tradgardsgolf.Blazor.Pages
 {
-   
+
 
     public class ScorecardBase : ComponentBase
     {
@@ -17,12 +19,13 @@ namespace Tradgardsgolf.Blazor.Pages
         [Inject]
         NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        IScorecardServiceAdapter ScorecardService { get; set; }
+
         protected List<PlayerScore> Players { get; set; }
                 
         protected Course Course { get; private set; }
-
-        protected bool ScoresMissing => Players.Any(x => x.MissingScores());
-
+        
         public bool IsModalOpened { get; set; }
         public string SelectedButton { get; set; }
 
@@ -30,12 +33,17 @@ namespace Tradgardsgolf.Blazor.Pages
         protected int EditHole { get; set; } 
 
         protected int ModalMaxScore { get; set; }
+        
+        protected bool DisableCompleteButton => Players.Any(x => x.MissingScores()) || Saving;
+        protected bool Saving { get; set; }
+
+        protected bool DisplayPlayAgain { get; set; }
 
         public ScorecardBase()
         {
             Players = new List<PlayerScore>();
             Course = new Course();
-            ModalMaxScore = 12;
+            ModalMaxScore = 12;           
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -51,10 +59,39 @@ namespace Tradgardsgolf.Blazor.Pages
 
         protected async Task ChangePlayers()
         {
-            await ScorecardState.SetPlayersAsync(Players);
+            if (Saving)
+            {
+                Saving = false;
+                await ScorecardState.ResetScores();
+            }
+            else
+                await ScorecardState.SetPlayersAsync(Players);
 
             NavigationManager.NavigateTo("SetupRound");
         }
+
+        protected void CompleteRound()
+        {
+            Saving = true;
+            StateHasChanged();
+
+            ScorecardService.Add(Course, Players);
+
+            DisplayPlayAgain = true;
+            StateHasChanged();
+        }
+
+        protected async Task PlayAgain()
+        {
+            Saving = false;
+            DisplayPlayAgain = false;
+
+            await ScorecardState.ResetScores();
+            Players = (await ScorecardState.GetPlayersAsync()).ToList();
+
+            StateHasChanged();            
+        }
+                
 
         protected void SetScore(PlayerScore playerScore, int hole)
         {
@@ -69,9 +106,11 @@ namespace Tradgardsgolf.Blazor.Pages
             StateHasChanged();
         }
 
-        protected void OnClose(string value)
+        protected async Task OnClose(string value)
         {
             EditPlayerScore.Scores[EditHole].Score = Convert.ToInt32(value);
+
+            await ScorecardState.SetPlayersAsync(Players);
 
             StateHasChanged();
         }

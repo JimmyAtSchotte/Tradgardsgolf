@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Tradgardsgolf.Core.Infrastructure.Course;
@@ -27,55 +26,33 @@ namespace Tradgardsgolf.Services.Course
         {
             return _courseRepository.ListAll().Select(x => new CourseModelResult(x));
         }
-    }
 
-    public class CourseModelResult : ICourseModelResult
-    {
-        private readonly ICourseDtoResult _course;
-
-        public int Id => _course.Id;
-        public string Name => _course.Name;
-        public int Holes => _course.Holes;
-        public double Longitude => _course.Longitude;
-        public double Latitude => _course.Latitude;
-        public ICourseCreatedByModelResult CreatedBy { get; }
-        public DateTime Created => _course.Created;
-
-        public CourseModelResult(ICourseDtoResult course)
+        public IEnumerable<ICoursePlayerModelResult> Players(ICoursePlayerModel model)
         {
-            _course = course;
-            CreatedBy = new CourseCreatedByModelResult(course.CreatedBy);
+            return _courseRepository.Players(new CoursePlayerDto(model)).Select(x => new CoursePlayerModelResult(x));
         }
     }
 
-    public class CourseCreatedByModelResult : ICourseCreatedByModelResult
+
+    public class CoursePlayerDto : ICoursePlayerDto
     {
-        private readonly ICourseCreatedByDtoResult _createdBy;
-
-
-
-        public int Id => _createdBy.Id;
-        public string Name => _createdBy.Name;
-
-        public CourseCreatedByModelResult(ICourseCreatedByDtoResult createdBy)
+        private readonly ICoursePlayerModel _model;        
+        public int Id => _model.Id;
+        public CoursePlayerDto(ICoursePlayerModel model)
         {
-            _createdBy = createdBy;
+            _model = model;
         }
     }
 
-    public class CourseAddDto : ICourseAddDto
+    public class CoursePlayerModelResult : ICoursePlayerModelResult
     {
-        private readonly ICourseAddModel _course;
+        private readonly ICoursePlayerDtoResult _player;
 
-        public string Name => _course.Name;
-        public int Holes => _course.Holes;
-        public double Longitude => _course.Longitude;
-        public double Latitude => _course.Latitude;
-        public int CreatedBy => _course.CreatedBy;
+        public string Name => _player.Name;
 
-        public CourseAddDto(ICourseAddModel course)
+        public CoursePlayerModelResult(ICoursePlayerDtoResult player)
         {
-            _course = course;
+            _player = player;
         }
     }
 }

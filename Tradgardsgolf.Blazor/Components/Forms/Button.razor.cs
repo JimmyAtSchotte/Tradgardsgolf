@@ -14,9 +14,16 @@ namespace Tradgardsgolf.Blazor.Components.Forms
         [Parameter]
         public string Text { get; set; }
 
-
         [Parameter]
         public string Value { get; set; }
+
+        [Parameter]
+        public bool Disabled { get; set; }
+
+        public ButtonBase()
+        {
+            Disabled = false;
+        }
 
         protected async Task InvokeOnClick()
         {

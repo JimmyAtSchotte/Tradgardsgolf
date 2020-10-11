@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.ProtectedBrowserStorage;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tradgardsgolf.Blazor.Data;
+using Tradgardsgolf.Blazor.State;
 
 namespace Tradgardsgolf.Blazor.Pages
 {
     public class SetupRoundBase : ComponentBase
     {
+        [Inject]
+        ICourseServiceAdapter CourseService { get; set; }
+
         [Inject]
         ScorecardState ScorecardState { get; set; }
 
@@ -40,16 +42,7 @@ namespace Tradgardsgolf.Blazor.Pages
             
             SelectedCourse = await ScorecardState.GetSelectedCourseAsync();
             SelectedPlayers = (await ScorecardState.GetPlayersAsync()).ToList();
-
-            //TODO: Call a service to get players played on course
-            _availablePlayers = new List<Player>()
-            {
-                new Player(){
-                    Name="Jimmy"
-                }, new Player(){
-                    Name = "Hanna" 
-                }
-            };
+            _availablePlayers = (await CourseService.Players(SelectedCourse)).ToList();
 
             StateHasChanged();            
         }
