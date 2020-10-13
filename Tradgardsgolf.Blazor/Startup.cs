@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Reflection;
 using Tradgardsgolf.Blazor.State;
 using Tradgardsgolf.Infrastructure.Context;
@@ -31,7 +32,7 @@ namespace Tradgardsgolf.Blazor
 
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                builder.UseMySQL(Configuration.GetConnectionString("DefaultConnection"));
+                builder.UseMySQL(Environment.GetEnvironmentVariable("DATABASE"));
 
                 //builder.UseInMemoryDatabase("Memory");
             });
