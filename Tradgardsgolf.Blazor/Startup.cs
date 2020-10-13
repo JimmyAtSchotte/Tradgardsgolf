@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 using Tradgardsgolf.Blazor.State;
 using Tradgardsgolf.Infrastructure.Context;
 
@@ -37,7 +31,9 @@ namespace Tradgardsgolf.Blazor
 
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                builder.UseInMemoryDatabase("Memory");
+                builder.UseMySQL(Configuration.GetConnectionString("DefaultConnection"));
+
+                //builder.UseInMemoryDatabase("Memory");
             });
         }
 

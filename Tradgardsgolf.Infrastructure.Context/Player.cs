@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tradgardsgolf.Infrastructure.Context
 {
+    [Table("player")]
+
     public class Player : BaseEntity<Player>
     {
         [Key]

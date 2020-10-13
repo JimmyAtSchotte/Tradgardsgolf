@@ -2,6 +2,8 @@
 
 namespace Tradgardsgolf.Infrastructure.Context
 {
+    [Table("roundscore")]
+
     public class RoundScore : BaseEntity<RoundScore>
     {        
         public int Id { get; set; }

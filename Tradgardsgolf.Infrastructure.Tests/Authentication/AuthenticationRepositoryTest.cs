@@ -30,12 +30,12 @@ namespace Tradgardsgolf.Infrastructure.Tests.Authentication
         public void ShouldSucceedWhenCorrectCreadentials()
         {
             var dto = new StubCredentialsDto();
-            Player player = null;
+            Context.Player player = null;
 
             var arrange = Arrange.Dependencies<IAuthenticationRepository, Infrastructure.Authentication.AuthenticationRepository>(dependencies => {
                 dependencies.UseDbContext<TradgardsgolfContext>();
 
-                dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(x => {
+                dependencies.UseEntity<Context.Player, TradgardsgolfContext>(Context.Player.Create(x => {
                     x.Email = dto.Email;
                     x.Password = dto.Password.Value; ;
                 }), out player);
@@ -56,12 +56,12 @@ namespace Tradgardsgolf.Infrastructure.Tests.Authentication
         public void ShouldSetNewKeyOnSuccessfullLogin()
         {
             var dto = new StubCredentialsDto();
-            Player player = null;
+            Context.Player player = null;
 
             var arrange = Arrange.Dependencies<IAuthenticationRepository, Infrastructure.Authentication.AuthenticationRepository>(dependencies => {
                 dependencies.UseDbContext<TradgardsgolfContext>();
 
-                dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(x => {
+                dependencies.UseEntity<Context.Player, TradgardsgolfContext>(Context.Player.Create(x => {
                     x.Email = dto.Email;
                     x.Password = dto.Password.Value; ;
                     }), out player);

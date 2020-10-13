@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tradgardsgolf.Infrastructure.Context
 {
+    [Table("round")]
+
     public class Round : BaseEntity<Round>
     {
         [Key]

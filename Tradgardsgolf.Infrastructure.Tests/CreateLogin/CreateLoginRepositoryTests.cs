@@ -55,13 +55,13 @@ namespace Tradgardsgolf.Infrastructure.Tests.CreateLogin
             [Test]
             public void ShouldReturTrueWhenEmailAllreadyExists()
             {
-                Player player = null;
+                Context.Player player = null;
 
                 
 
                 var arrange = Arrange.Dependencies<ICreateLoginRepository, CreateLoginRepository>(
                     dependencies => {
-                        dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(x => x.Email = "example@example.com"), out player);
+                        dependencies.UseEntity<Context.Player, TradgardsgolfContext>(Context.Player.Create(x => x.Email = "example@example.com"), out player);
                     });
             
                 var repsoitory = arrange.Resolve<ICreateLoginRepository>();
@@ -72,11 +72,11 @@ namespace Tradgardsgolf.Infrastructure.Tests.CreateLogin
             [Test]
             public void ShouldReturnTrueWhenEmailAlreadyExistsWithDifferentCase()
             {
-                Player player = null;
+                Context.Player player = null;
 
                 var arrange = Arrange.Dependencies<ICreateLoginRepository, CreateLoginRepository>(
                     dependencies => {
-                        dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(x => x.Email = "example@example.com"), out player);
+                        dependencies.UseEntity<Context.Player, TradgardsgolfContext>(Context.Player.Create(x => x.Email = "example@example.com"), out player);
                     });
             
                 var repsoitory = arrange.Resolve<ICreateLoginRepository>();

@@ -21,28 +21,28 @@ namespace Tradgardsgolf.Blazor
         {
             var host = CreateHostBuilder(args).Build();
 
-            var createLoginService = host.Services.GetService(typeof(ICreateLoginService)) as ICreateLoginService;
+            //var createLoginService = host.Services.GetService(typeof(ICreateLoginService)) as ICreateLoginService;
 
-            createLoginService.CreateLogin(new CreateLoginModel("vaugh@hotmail.se", "1234"));
-            createLoginService.CreateLogin(new CreateLoginModel("patrik@hotmail.se", "1234"));
-            createLoginService.CreateLogin(new CreateLoginModel("conny@hotmail.se", "1234"));
+            //createLoginService.CreateLogin(new CreateLoginModel("vaugh@hotmail.se", "1234"));
+            //createLoginService.CreateLogin(new CreateLoginModel("patrik@hotmail.se", "1234"));
+            //createLoginService.CreateLogin(new CreateLoginModel("conny@hotmail.se", "1234"));
 
-            var courseService = host.Services.GetService(typeof(ICourseService)) as ICourseService;
+            //var courseService = host.Services.GetService(typeof(ICourseService)) as ICourseService;
 
-            var kumhof = courseService.Add(new CourseAddModel("Kumhof", 6, 17.052026, 59.605530, 1));
-            var tornehof = courseService.Add(new CourseAddModel("Törnehof", 6, 17.063828, 59.630690, 2));
-            var soderby = courseService.Add(new CourseAddModel("Sördeby karlsäng", 6, 18.437326, 60.292925, 3));
+            //var kumhof = courseService.Add(new CourseAddModel("Kumhof", 6, 17.052026, 59.605530, 1));
+            //var tornehof = courseService.Add(new CourseAddModel("Törnehof", 6, 17.063828, 59.630690, 2));
+            //var soderby = courseService.Add(new CourseAddModel("Sördeby karlsäng", 6, 18.437326, 60.292925, 3));
 
-            var scorecardSerivce = host.Services.GetService(typeof(IScorecardService)) as IScorecardService;
+            //var scorecardSerivce = host.Services.GetService(typeof(IScorecardService)) as IScorecardService;
 
-            scorecardSerivce.Add(new ScorecardModel(kumhof, 
-                new PlayerScoreModel("Jimmy", 4, 4, 4, 3, 3, 3),
-                new PlayerScoreModel("Hanna", 3, 3, 3, 3, 3, 3)));
+            //scorecardSerivce.Add(new ScorecardModel(kumhof, 
+            //    new PlayerScoreModel("Jimmy", 4, 4, 4, 3, 3, 3),
+            //    new PlayerScoreModel("Hanna", 3, 3, 3, 3, 3, 3)));
 
-            scorecardSerivce.Add(new ScorecardModel(kumhof,
-               new PlayerScoreModel("Jimmy", 4, 4, 4, 3, 3, 3),
-               new PlayerScoreModel("Patrik", 2, 2, 2, 3, 3, 3),
-               new PlayerScoreModel("Hanna", 3, 3, 3, 3, 3, 3)));
+            //scorecardSerivce.Add(new ScorecardModel(kumhof,
+            //   new PlayerScoreModel("Jimmy", 4, 4, 4, 3, 3, 3),
+            //   new PlayerScoreModel("Patrik", 2, 2, 2, 3, 3, 3),
+            //   new PlayerScoreModel("Hanna", 3, 3, 3, 3, 3, 3)));
 
             host.Run();
         }
