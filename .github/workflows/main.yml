@@ -30,8 +30,9 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.5.7
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}} 
           heroku_email:  ${{secrets.HEROKU_EMAIL}} 
+          docker_heroku_process_type: web
           usedocker: true
           docker_build_args: CONNECTIONSTRING            
         env:
