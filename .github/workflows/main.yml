@@ -33,8 +33,5 @@ jobs:
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}} 
           heroku_email:  ${{secrets.HEROKU_EMAIL}} 
           docker_heroku_process_type: "web"
-          usedocker: true
-          docker_build_args: CONNECTIONSTRING            
-        env:
-          CONNECTIONSTRING: ${{ secrets.CONNECTIONSTRING }}
+          usedocker: true          
        

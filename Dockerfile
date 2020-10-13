@@ -1,7 +1,5 @@
 # Dockerfile
 
-ENV CONNECTIONSTRING = ""
-
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 
@@ -13,4 +11,4 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
 
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet Tradgardsgolf.Blazor.dll -e ConnectionStrings:DefaultConnection=CONNECTIONSTRING
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet Tradgardsgolf.Blazor.dll
