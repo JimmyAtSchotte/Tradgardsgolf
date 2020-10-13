@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.ProtectedBrowserStorage;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tradgardsgolf.Blazor.Data;
 
 namespace Tradgardsgolf.Blazor.State
 {
-
     public class ScorecardState
     {
-        private readonly ProtectedSessionStorage _storage;
+        private readonly IStorage _storage;
         public async Task<Course> GetSelectedCourseAsync() => await _storage.GetAsync<Course>("SelectedCourse");
         public async Task SetSelectedCourseAsync(Course course) => await _storage.SetAsync("SelectedCourse", course);
         public async Task<IEnumerable<PlayerScore>> GetPlayersAsync() => await _storage.GetAsync<IEnumerable<PlayerScore>>("Players") ?? new List<PlayerScore>();
@@ -27,7 +24,7 @@ namespace Tradgardsgolf.Blazor.State
             await SetPlayersAsync(players);
         }
 
-        public ScorecardState(ProtectedSessionStorage storage)
+        public ScorecardState(IStorage storage)
         {
             _storage = storage;
         }

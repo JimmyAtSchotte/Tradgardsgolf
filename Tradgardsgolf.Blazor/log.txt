@@ -1,0 +1,56 @@
+2020-10-13 20:29:11.434 +02:00 [INF] Starting up
+2020-10-13 20:29:13.857 +02:00 [INF] User profile is available. Using 'C:\Users\Jimmy\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2020-10-13 20:29:14.349 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2020-10-13 20:29:14.350 +02:00 [INF] Hosting environment: Development
+2020-10-13 20:29:14.350 +02:00 [INF] Content root path: D:\Projekt\Tradgardsgolf\Tradgardsgolf.Blazor
+2020-10-13 20:29:14.372 +02:00 [INF] Request starting HTTP/2.0 GET https://localhost:44371/  
+2020-10-13 20:29:14.464 +02:00 [INF] Executing endpoint '/_Host'
+2020-10-13 20:29:14.537 +02:00 [INF] Route matched with {page = "/_Host"}. Executing page /_Host
+2020-10-13 20:29:14.560 +02:00 [INF] Executing an implicit handler method - ModelState is "Valid"
+2020-10-13 20:29:14.563 +02:00 [INF] Executed an implicit handler method, returned result Microsoft.AspNetCore.Mvc.RazorPages.PageResult.
+2020-10-13 20:29:14.651 +02:00 [INF] Executed page /_Host in 106.5514ms
+2020-10-13 20:29:14.652 +02:00 [INF] Executed endpoint '/_Host'
+2020-10-13 20:29:14.669 +02:00 [INF] Request finished in 300.8202ms 200 text/html; charset=utf-8
+2020-10-13 20:29:14.700 +02:00 [INF] Request starting HTTP/2.0 GET https://localhost:44371/css/materialize.css  
+2020-10-13 20:29:14.722 +02:00 [INF] Request starting HTTP/2.0 GET https://localhost:44371/_framework/blazor.server.js  
+2020-10-13 20:29:14.722 +02:00 [INF] Request starting HTTP/2.0 GET https://localhost:44371/_content/Microsoft.AspNetCore.ProtectedBrowserStorage/protectedBrowserStorage.js  
+2020-10-13 20:29:14.722 +02:00 [INF] Request starting HTTP/2.0 GET https://localhost:44371/js/blazor-modal.js  
+2020-10-13 20:29:14.737 +02:00 [INF] Request starting HTTP/2.0 GET https://localhost:44371/js/materialize.js  
+2020-10-13 20:29:14.740 +02:00 [INF] The file /js/blazor-modal.js was not modified
+2020-10-13 20:29:14.741 +02:00 [INF] The file /css/materialize.css was not modified
+2020-10-13 20:29:14.741 +02:00 [INF] The file /js/materialize.js was not modified
+2020-10-13 20:29:14.740 +02:00 [INF] The file /_content/Microsoft.AspNetCore.ProtectedBrowserStorage/protectedBrowserStorage.js was not modified
+2020-10-13 20:29:14.740 +02:00 [INF] The file /_framework/blazor.server.js was not modified
+2020-10-13 20:29:14.743 +02:00 [INF] Request finished in 21.3592ms 304 application/javascript
+2020-10-13 20:29:14.743 +02:00 [INF] Request finished in 42.9984ms 304 text/css
+2020-10-13 20:29:14.744 +02:00 [INF] Request finished in 22.4004ms 304 application/javascript
+2020-10-13 20:29:14.744 +02:00 [INF] Request finished in 22.7042ms 304 application/javascript
+2020-10-13 20:29:14.745 +02:00 [INF] Request finished in 7.8902ms 304 application/javascript
+2020-10-13 20:29:14.874 +02:00 [INF] Request starting HTTP/2.0 POST https://localhost:44371/_blazor/negotiate?negotiateVersion=1 text/plain;charset=UTF-8 0
+2020-10-13 20:29:14.881 +02:00 [INF] Executing endpoint '/_blazor/negotiate'
+2020-10-13 20:29:14.891 +02:00 [INF] Executed endpoint '/_blazor/negotiate'
+2020-10-13 20:29:14.892 +02:00 [INF] Request finished in 17.5018ms 200 application/json
+2020-10-13 20:29:15.001 +02:00 [INF] Request starting HTTP/1.1 GET https://localhost:44371/_blazor?id=3obqC0IXgFPVWFs4MfxEEg  
+2020-10-13 20:29:15.002 +02:00 [INF] Executing endpoint '/_blazor'
+2020-10-13 20:29:16.225 +02:00 [INF] Entity Framework Core 3.1.6 initialized 'TradgardsgolfContext' using provider 'MySql.Data.EntityFrameworkCore' with options: None
+2020-10-13 20:29:17.203 +02:00 [INF] Executed DbCommand (35ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`dtmCreated`, `c`.`intCreatedBy`, `c`.`intHoles`, `c`.`dblLatitude`, `c`.`dblLongitude`, `c`.`strName`, `p`.`Id`, `p`.`dtmCreated`, `p`.`strEmail`, `p`.`strKey`, `p`.`strName`, `p`.`strPassword`
+FROM `course` AS `c`
+INNER JOIN `player` AS `p` ON `c`.`intCreatedBy` = `p`.`Id`
+2020-10-13 20:29:17.305 +02:00 [INF] Request starting HTTP/2.0 GET https://localhost:44371/images/grass.jpg  
+2020-10-13 20:29:17.305 +02:00 [INF] The file /images/grass.jpg was not modified
+2020-10-13 20:29:17.305 +02:00 [INF] Request finished in 0.8128ms 304 image/jpeg
+2020-10-13 20:29:20.901 +02:00 [INF] Get SelectedCourse
+2020-10-13 20:29:20.923 +02:00 [INF] Get Players
+2020-10-13 20:29:21.054 +02:00 [INF] Executed DbCommand (38ms) [Parameters=[@__dto_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT DISTINCT `p`.`strName` AS `Name`
+FROM `roundscore` AS `r`
+INNER JOIN `round` AS `r0` ON `r`.`intRoundId` = `r0`.`Id`
+INNER JOIN `player` AS `p` ON `r`.`intPlayerId` = `p`.`Id`
+WHERE `r0`.`intCourseId` = @__dto_Id_0
+2020-10-13 20:30:18.553 +02:00 [INF] Request starting HTTP/2.0 POST https://localhost:44371/_blazor/disconnect multipart/form-data; boundary=----WebKitFormBoundary1W5hcOjnR8wIBeAA 359
+2020-10-13 20:30:18.566 +02:00 [INF] Executing endpoint 'Blazor disconnect'
+2020-10-13 20:30:18.616 +02:00 [INF] Executed endpoint '/_blazor'
+2020-10-13 20:30:18.617 +02:00 [INF] Request finished in 63615.7844ms 101 
+2020-10-13 20:30:18.629 +02:00 [INF] Executed endpoint 'Blazor disconnect'
+2020-10-13 20:30:18.630 +02:00 [INF] Request finished in 78.0129ms 200 

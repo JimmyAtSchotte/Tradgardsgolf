@@ -30,6 +30,8 @@ namespace Tradgardsgolf.Blazor
             services.AddServerSideBlazor();
             services.AddProtectedBrowserStorage();
 
+            services.AddLogging();
+
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
                 builder.UseMySQL(Environment.GetEnvironmentVariable("DATABASE"));
@@ -50,7 +52,7 @@ namespace Tradgardsgolf.Blazor
             };
 
             builder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();
-            builder.Register(context => new ScorecardState(context.Resolve<ProtectedSessionStorage>()));
+            builder.Register(context => new ScorecardState(context.Resolve<IStorage>()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
