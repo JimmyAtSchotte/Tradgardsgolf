@@ -1,3 +1,4 @@
+using AspNetMonsters.Blazor.Geolocation;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using System;
 using System.Reflection;
 using Tradgardsgolf.Blazor.State;
 using Tradgardsgolf.Infrastructure.Context;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace Tradgardsgolf.Blazor
 {
@@ -32,9 +34,16 @@ namespace Tradgardsgolf.Blazor
 
             services.AddLogging();
 
+            services.AddScoped<LocationService>();
+            
+            
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                builder.UseMySQL(Environment.GetEnvironmentVariable("DATABASE"));
+                var connectionString = Environment.GetEnvironmentVariable("DATABASE") ??
+                                       throw new NullReferenceException(
+                                           "Enviroment varaible for database cannot be null");
+                
+                builder.UseMySql(connectionString, new MySqlServerVersion(new Version(5, 7, 32)));
 
                 //builder.UseInMemoryDatabase("Memory");
             });
