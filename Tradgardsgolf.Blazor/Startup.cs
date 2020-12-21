@@ -2,7 +2,6 @@ using AspNetMonsters.Blazor.Geolocation;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,8 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
 using Tradgardsgolf.Blazor.State;
-using Tradgardsgolf.Infrastructure.Context;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Tradgardsgolf.Infrastructure;
 
 namespace Tradgardsgolf.Blazor
 {
@@ -52,8 +50,6 @@ namespace Tradgardsgolf.Blazor
         public void ConfigureContainer(ContainerBuilder builder)
         {
             var assemblies = new[] {
-                Assembly.Load("Tradgardsgolf.Core.Infrastructure"),
-                Assembly.Load("Tradgardsgolf.Core.Services"),
                 Assembly.Load("Tradgardsgolf.Core"),
                 Assembly.Load("Tradgardsgolf.Infrastructure"),
                 Assembly.Load("Tradgardsgolf.Services"),

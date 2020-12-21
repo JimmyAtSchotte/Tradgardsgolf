@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tradgardsgolf.Core\Tradgardsgolf.Core.csproj" />
-    <ProjectReference Include="..\Tradgardsgolf.Infrastructure.Context\Tradgardsgolf.Infrastructure.Context.csproj" />
     <ProjectReference Include="..\Tradgardsgolf.Infrastructure\Tradgardsgolf.Infrastructure.csproj" />
     <ProjectReference Include="..\Tradgardsgolf.Services\Tradgardsgolf.Services.csproj" />
   </ItemGroup>
