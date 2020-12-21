@@ -1,7 +1,7 @@
 ﻿using Tradgardsgolf.Core.Enums;
 using Tradgardsgolf.Core.Infrastructure.Authentication;
 
-namespace Tradgardsgolf.Infrastructure.Authentication
+namespace Tradgardsgolf.Infrastructure
 {
     public class AuthenticationFailedDtoResult : IAuthenticateDtoResult
     {

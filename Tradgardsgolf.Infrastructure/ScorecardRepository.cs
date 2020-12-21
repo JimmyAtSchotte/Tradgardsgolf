@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tradgardsgolf.Core.Infrastructure.Scorecard;
-using Tradgardsgolf.Infrastructure.Context;
+﻿using Tradgardsgolf.Core.Infrastructure.Scorecard;
 
-namespace Tradgardsgolf.Infrastructure.Scorecard
+namespace Tradgardsgolf.Infrastructure
 {
     public class ScorecardRepository : BaseRepository, IScorecardRepository
     {

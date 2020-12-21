@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure.Course;
-using Tradgardsgolf.Infrastructure.Context;
 
-namespace Tradgardsgolf.Infrastructure.Course
+namespace Tradgardsgolf.Infrastructure
 {
 
     public class CourseRepository : BaseRepository, ICourseRepository
@@ -58,7 +58,7 @@ namespace Tradgardsgolf.Infrastructure.Course
 
     public class CourseDtoResult : ICourseDtoResult
     {
-        private readonly Context.Course _course;
+        private readonly Course _course;
 
 
         public int Id => _course.Id;
@@ -69,7 +69,7 @@ namespace Tradgardsgolf.Infrastructure.Course
         public ICourseCreatedByDtoResult CreatedBy { get; }
         public DateTime Created => _course.Created;
 
-        public CourseDtoResult(Context.Course course)
+        public CourseDtoResult(Course course)
         {
             _course = course;
             CreatedBy = new CourseCreatedByDtoResult(course.CreatedBy);
@@ -78,12 +78,12 @@ namespace Tradgardsgolf.Infrastructure.Course
 
     public class CourseCreatedByDtoResult : ICourseCreatedByDtoResult
     {
-        private readonly Context.Player _player;
+        private readonly Player _player;
 
         public int Id => _player.Id;
         public string Name => _player.Name;
 
-        public CourseCreatedByDtoResult(Context.Player player)
+        public CourseCreatedByDtoResult(Player player)
         {
             _player = player;
         }

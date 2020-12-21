@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Ardalis.Specification;
 
 namespace Tradgardsgolf.Core.Infrastructure.Player
 {
-    public interface IPlayerRepository 
+    public interface IPlayerRepository : IRepositoryBase<Entities.Player>
     {
         bool CheackIfMailExists(string email);
         IPlayerDtoResult GetByEmail(string email);

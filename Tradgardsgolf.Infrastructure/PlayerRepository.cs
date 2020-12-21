@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure.Player;
-using Tradgardsgolf.Infrastructure.Context;
 
-namespace Tradgardsgolf.Infrastructure.Player
+namespace Tradgardsgolf.Infrastructure
 {
-    public class PlayerRepository : BaseRepository, IPlayerRepository
+    public class PlayerRepository : BaseRepository<Player>, IPlayerRepository
     {
         public PlayerRepository(TradgardsgolfContext db) : base(db)
         {
@@ -15,7 +14,7 @@ namespace Tradgardsgolf.Infrastructure.Player
 
         public IPlayerDtoResult Add(IAddPlayerDto dto)
         {
-            var player = Context.Player.Create(x =>  x.Name = dto.Name);
+            var player = Player.Create(x =>  x.Name = dto.Name);
 
             db.Player.Add(player);
             db.SaveChanges();

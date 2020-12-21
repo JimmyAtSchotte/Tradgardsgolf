@@ -2,9 +2,9 @@
 using ArrangeDependencies.Autofac.EntityFrameworkCore;
 using NUnit.Framework;
 using System.Linq;
+using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Enums;
 using Tradgardsgolf.Core.Infrastructure.Authentication;
-using Tradgardsgolf.Infrastructure.Context;
 
 namespace Tradgardsgolf.Infrastructure.Tests.Authentication
 {
@@ -15,7 +15,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.Authentication
         [Test]
         public void ShouldFailWhenNoPlayers()
         {
-            var arrange = Arrange.Dependencies<IAuthenticationRepository, Infrastructure.Authentication.AuthenticationRepository>(dependencies => {
+            var arrange = Arrange.Dependencies<IAuthenticationRepository, AuthenticationRepository>(dependencies => {
                 dependencies.UseDbContext<TradgardsgolfContext>();
             });
 
@@ -30,12 +30,12 @@ namespace Tradgardsgolf.Infrastructure.Tests.Authentication
         public void ShouldSucceedWhenCorrectCreadentials()
         {
             var dto = new StubCredentialsDto();
-            Context.Player player = null;
+            Player player = null;
 
-            var arrange = Arrange.Dependencies<IAuthenticationRepository, Infrastructure.Authentication.AuthenticationRepository>(dependencies => {
+            var arrange = Arrange.Dependencies<IAuthenticationRepository, AuthenticationRepository>(dependencies => {
                 dependencies.UseDbContext<TradgardsgolfContext>();
 
-                dependencies.UseEntity<Context.Player, TradgardsgolfContext>(Context.Player.Create(x => {
+                dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(x => {
                     x.Email = dto.Email;
                     x.Password = dto.Password.Value; ;
                 }), out player);
@@ -56,12 +56,12 @@ namespace Tradgardsgolf.Infrastructure.Tests.Authentication
         public void ShouldSetNewKeyOnSuccessfullLogin()
         {
             var dto = new StubCredentialsDto();
-            Context.Player player = null;
+            Player player = null;
 
-            var arrange = Arrange.Dependencies<IAuthenticationRepository, Infrastructure.Authentication.AuthenticationRepository>(dependencies => {
+            var arrange = Arrange.Dependencies<IAuthenticationRepository, AuthenticationRepository>(dependencies => {
                 dependencies.UseDbContext<TradgardsgolfContext>();
 
-                dependencies.UseEntity<Context.Player, TradgardsgolfContext>(Context.Player.Create(x => {
+                dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(x => {
                     x.Email = dto.Email;
                     x.Password = dto.Password.Value; ;
                     }), out player);

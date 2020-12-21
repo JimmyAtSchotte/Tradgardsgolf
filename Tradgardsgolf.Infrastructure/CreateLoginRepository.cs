@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure.Login;
-using Tradgardsgolf.Infrastructure.Context;
 
-namespace Tradgardsgolf.Infrastructure.CreateLogin
+namespace Tradgardsgolf.Infrastructure
 {
     public class CreateLoginRepository : BaseRepository, ICreateLoginRepository
     {
@@ -12,7 +12,7 @@ namespace Tradgardsgolf.Infrastructure.CreateLogin
 
         public void CreateLogin(ICreateLoginDto createLoginModel)
         {
-            var player = Context.Player.Create();
+            var player = Player.Create();
 
             player.Email = createLoginModel.Email.Value;
             player.Password = createLoginModel.Password.Value;

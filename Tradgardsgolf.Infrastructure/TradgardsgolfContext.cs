@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tradgardsgolf.Core.Entities;
 
-namespace Tradgardsgolf.Infrastructure.Context
+namespace Tradgardsgolf.Infrastructure
 {
     public class TradgardsgolfContext : DbContext
     {

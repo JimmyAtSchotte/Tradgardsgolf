@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Tradgardsgolf.Core.Infrastructure.Authentication;
-using Tradgardsgolf.Infrastructure.Context;
 
-namespace Tradgardsgolf.Infrastructure.Authentication
+namespace Tradgardsgolf.Infrastructure
 {
     public class AuthenticationRepository : BaseRepository, IAuthenticationRepository
     {
@@ -16,8 +13,7 @@ namespace Tradgardsgolf.Infrastructure.Authentication
 
         public IAuthenticateDtoResult CredentialsAuthentication(ICredentialsDto dto)
         {
-            var player = db.Player.FirstOrDefault(x => x.Email == dto.Email &&
-                                              x.Password == dto.Password.Value);
+            var player = db.Player.FirstOrDefault(x => x.Email == dto.Email && x.Password == dto.Password.Value);
 
             if(player == null)
                 return new AuthenticationFailedDtoResult();

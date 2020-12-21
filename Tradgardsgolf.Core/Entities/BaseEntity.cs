@@ -1,4 +1,4 @@
-﻿namespace Tradgardsgolf.Infrastructure.Context
+﻿namespace Tradgardsgolf.Core.Entities
 {
     public class BaseEntity<T> 
     {
