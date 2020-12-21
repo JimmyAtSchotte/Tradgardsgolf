@@ -5,4 +5,9 @@
     <RootNamespace>Tradgardsgolf.Core</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure" />
+    <Folder Include="Services" />
+  </ItemGroup>
+
 </Project>

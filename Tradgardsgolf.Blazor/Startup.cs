@@ -54,7 +54,7 @@ namespace Tradgardsgolf.Blazor
             var assemblies = new[] {
                 Assembly.Load("Tradgardsgolf.Core.Infrastructure"),
                 Assembly.Load("Tradgardsgolf.Core.Services"),
-                Assembly.Load("Tradgardsgolf.Core.Types"),
+                Assembly.Load("Tradgardsgolf.Core"),
                 Assembly.Load("Tradgardsgolf.Infrastructure"),
                 Assembly.Load("Tradgardsgolf.Services"),
                 Assembly.Load("Tradgardsgolf.Blazor"),

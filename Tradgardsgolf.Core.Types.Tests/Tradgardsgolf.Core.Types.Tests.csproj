@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tradgardsgolf.Core.Types\Tradgardsgolf.Core.Types.csproj" />
+    <ProjectReference Include="..\Tradgardsgolf.Core\Tradgardsgolf.Core.csproj" />
   </ItemGroup>
 
 </Project>

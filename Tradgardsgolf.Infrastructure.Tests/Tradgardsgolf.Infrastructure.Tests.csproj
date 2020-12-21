@@ -5,7 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tradgardsgolf.Core.Infrastructure\Tradgardsgolf.Core.Infrastructure.csproj" />
       <ProjectReference Include="..\Tradgardsgolf.Infrastructure\Tradgardsgolf.Infrastructure.csproj" />
     </ItemGroup>
 
