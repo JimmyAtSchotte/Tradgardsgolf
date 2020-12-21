@@ -1,0 +1,21 @@
+﻿@inherits CoursesBase
+@page "/"
+@using Tradgardsgolf.Blazor.Wasm.Components.Course
+@using Tradgardsgolf.Blazor.Wasm.Components.Forms
+
+@if (Courses == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (var course in Courses)
+    {
+        <CourseCard Course="course">
+            <CourseHead></CourseHead>                       
+            <CourseButtons>
+                <ImageButton OnClick="() => SetupRound(course)" Text="Spela" Icon="golf_course"></ImageButton>
+            </CourseButtons>
+        </CourseCard>
+    }
+}

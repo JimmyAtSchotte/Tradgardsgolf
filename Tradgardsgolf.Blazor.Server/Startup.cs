@@ -1,17 +1,14 @@
-using AspNetMonsters.Blazor.Geolocation;
-using Autofac;
+using System;
+using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Reflection;
-using Tradgardsgolf.Blazor.State;
-using Tradgardsgolf.Infrastructure;
+using Tradgardsgolf.Blazor.Wasm.ServiceAdapters;
+using Tradgardsgolf.Blazor.Wasm.State;
 
-namespace Tradgardsgolf.Blazor
+namespace Tradgardsgolf.Blazor.Server
 {
     public class Startup
     {
@@ -28,38 +25,17 @@ namespace Tradgardsgolf.Blazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddProtectedBrowserStorage();
-
-            services.AddLogging();
             
-
-            services.AddScoped<LocationService>();
-         
-            services.AddDbContext<TradgardsgolfContext>(builder =>
+            services.AddScoped(sp => new HttpClient
             {
-                var connectionString = Environment.GetEnvironmentVariable("DATABASE") ??
-                                       throw new NullReferenceException(
-                                           "Enviroment varaible for database cannot be null");
-                
-                builder.UseMySql(connectionString, new MySqlServerVersion(new Version(5, 7, 32)));
-
-                //builder.UseInMemoryDatabase("Memory");
+                BaseAddress = new Uri("https://localhost:5001")
             });
-        }
 
-        
-
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            var assemblies = new[] {
-                Assembly.Load("Tradgardsgolf.Core"),
-                Assembly.Load("Tradgardsgolf.Infrastructure"),
-                Assembly.Load("Tradgardsgolf.Services"),
-                Assembly.Load("Tradgardsgolf.Blazor"),
-            };
-
-            builder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();
-            builder.Register(context => new ScorecardState(context.Resolve<IStorage>()));
+            services.AddScoped<ICourseServiceAdapter, CourseServiceAdapter>();
+            services.AddScoped<IScorecardServiceAdapter, ScorecardServiceAdapter>();
+            services.AddScoped<IStorage, Storage>();
+            services.AddScoped<ScorecardState>();
+            services.AddScoped<ProtectedSessionStorage>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,7 +56,7 @@ namespace Tradgardsgolf.Blazor
             app.UseStaticFiles();
 
             app.UseRouting();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();

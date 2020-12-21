@@ -1,0 +1,106 @@
+﻿@inherits ScorecardBase
+@page "/Scorecard"
+
+@using Tradgardsgolf.Blazor.Wasm.Components.Course
+@using Tradgardsgolf.Blazor.Wasm.Components.Forms
+@using Tradgardsgolf.Blazor.Wasm.Components.Player
+
+<CourseCard Course="Course">
+    <CourseHead></CourseHead>
+    <CourseContent>
+        <table class="centered">
+            <thead>
+                <tr>
+                    <th>Hål</th>
+                    @foreach (var player in Players)
+                    {
+                        <th><Avatar Player="player.Player"></Avatar></th>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (int i = 1; i <= Course.Holes; i++)
+                {
+                    var hole = i;
+
+                    <tr>
+                        <td>@hole</td>
+                        @foreach (var player in Players)
+                        {
+                            <td align="center"><Button Text="@player.Scores[hole].ToString()" OnClick="() => SetScore(player, hole)" Disabled="@Saving"></Button> </td>
+                        }
+                    </tr>
+                }
+
+                <tr>
+                    <td>Totalt</td>
+                    @foreach (var player in Players)
+                    {
+                        <td>@player.Total()</td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </CourseContent>
+    <CourseButtons>
+        <ImageButton OnClick=" async () => await ChangePlayers()" Text="Byt spelare" Icon="sync" Disabled="@Saving"></ImageButton>
+        <ImageButton OnClick="() => CompleteRound()" Text="Klart" Icon="check" Disabled="@DisableCompleteButton"></ImageButton>
+    </CourseButtons>
+</CourseCard>
+
+@if (@Saving && !@DisplayPlayAgain)
+{
+    <div class="card green lighten-5">
+        <div class="card-content">
+            <span class="card-title">Sparar</span>
+        </div>
+    </div>
+}
+
+@if (@DisplayPlayAgain)
+{
+    <div class="card green lighten-5">
+        <div class="card-content">
+            <span class="card-title">Rundan är klar och sparad</span>
+        </div>
+        <div class="card-action">
+            <ImageButton OnClick=" async () => await ChangePlayers()" Text="Byt spelare" Icon="sync"></ImageButton>
+            <ImageButton OnClick="async () => await PlayAgain()" Text="Spela igen" Icon="play_arrow"></ImageButton>
+        </div>
+    </div>
+}
+
+
+
+<Modal @bind-Open="IsModalOpened" Close="OnClose">
+    <div class="modal" style="display: block; position: relative">
+        <div class="modal-content">
+            <h4>Hur gick det för @EditPlayerScore?.Player.Name på hål @EditHole?</h4>
+            <div class="container">
+                <form method="dialog">
+                    <div class="row">
+                        @for (var i = 1; i <= ModalMaxScore; i++)
+                        {
+                            <div class="col s4 center-align" style="margin-bottom: 1rem;">
+                                <Button Text="@i.ToString()" Value="@i.ToString()"></Button>
+                            </div>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <ImageButton OnClick=" () => AddModalMaxScore()" Text="Det gick inge vidare..." Icon="sentiment_dissatisfied"></ImageButton>
+        </div>
+    </div>
+
+</Modal>
+
+
+
+
+
+
+

@@ -11,6 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:7001;http://localhost:7000",
       "environmentVariables": {
         "ConnectionStrings:DefaultConnection": "Data Source=mysql34.unoeuro.com;Initial Catalog=tradgardsgolf_se_db;User ID=tradgardsgo_se;Password=a4esza4esz",
         "DATABASE": "Data Source=mysql34.unoeuro.com;Initial Catalog=tradgardsgolf_se_db;User ID=tradgardsgo_se;Password=a4esza4esz",
