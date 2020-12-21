@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Ardalis.Specification;
 
 namespace Tradgardsgolf.Core.Infrastructure.Course
 {
-    public interface ICourseRepository
+    public interface ICourseRepository : IRepositoryBase<Entities.Course>
     {
         IEnumerable<ICourseDtoResult> ListAll();
 

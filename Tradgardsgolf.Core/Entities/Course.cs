@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,6 +24,8 @@ namespace Tradgardsgolf.Core.Entities
         public virtual Player CreatedBy { get; private set; }
         [Column("dtmCreated")]
         public DateTime Created { get; private set; }
+        
+        public virtual ICollection<Round> Rounds { get; set; }
 
         private Course()
         {

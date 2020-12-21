@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Tradgardsgolf.Core.Services.Player
 {
     public interface IPlayerService
     {
-        object Create(string input, out string password, bool emailIsRequierd = false);
-
-        IEnumerable<object> GetPlayersThatHasPlayedOnCourse(int courseId);
+        Task<IEnumerable<Entities.Player>> ListPlayersThatHasPlayedOnCourseAsync(int courseId);
     }
 }
