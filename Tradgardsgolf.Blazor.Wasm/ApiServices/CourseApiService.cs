@@ -1,23 +1,23 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Tradgardsgolf.Blazor.Wasm.Data;
 
-namespace Tradgardsgolf.Blazor.Wasm.ServiceAdapters
+namespace Tradgardsgolf.Blazor.Wasm.ApiServices
 {
-    public interface ICourseServiceAdapter
+    public interface ICourseApiService
     {
         Task<IEnumerable<Course>> ListAll();
         Task<IEnumerable<Player>> Players(Course course);
+        Task SaveScorecard(Course course, IEnumerable<PlayerScore> playerScores);
     }
 
-    public class CourseServiceAdapter : ICourseServiceAdapter
+    public class CourseApiService : ICourseApiService
     {
         private readonly HttpClient _httpClient;
 
-        public CourseServiceAdapter(HttpClient httpClient)
+        public CourseApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -29,7 +29,12 @@ namespace Tradgardsgolf.Blazor.Wasm.ServiceAdapters
 
         public async Task<IEnumerable<Player>> Players(Course course)
         {
-            return Enumerable.Empty<Player>();
+            return await _httpClient.GetFromJsonAsync<IEnumerable<Player>>($"Courses/{course.Id}/Players");
+        }
+
+        public async Task SaveScorecard(Course course, IEnumerable<PlayerScore> playerScores)
+        {
+            await _httpClient.PostAsJsonAsync($"Courses/{course.Id}/Scorecards", playerScores);
         }
     }
 }

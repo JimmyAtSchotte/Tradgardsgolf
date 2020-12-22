@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Tradgardsgolf.Blazor.Wasm.ServiceAdapters;
+using Tradgardsgolf.Blazor.Wasm.ApiServices;
 using Tradgardsgolf.Blazor.Wasm.State;
 
 namespace Tradgardsgolf.Blazor.Server
@@ -31,8 +31,7 @@ namespace Tradgardsgolf.Blazor.Server
                 BaseAddress = new Uri("https://localhost:5001")
             });
 
-            services.AddScoped<ICourseServiceAdapter, CourseServiceAdapter>();
-            services.AddScoped<IScorecardServiceAdapter, ScorecardServiceAdapter>();
+            services.AddScoped<ICourseApiService, CourseApiService>();
             services.AddScoped<IStorage, Storage>();
             services.AddScoped<ScorecardState>();
             services.AddScoped<ProtectedSessionStorage>();

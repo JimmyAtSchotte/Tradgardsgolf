@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Tradgardsgolf.Blazor.Wasm.ApiServices;
 using Tradgardsgolf.Blazor.Wasm.Data;
-using Tradgardsgolf.Blazor.Wasm.ServiceAdapters;
 using Tradgardsgolf.Blazor.Wasm.State;
 
 namespace Tradgardsgolf.Blazor.Wasm.Pages
@@ -20,7 +20,7 @@ namespace Tradgardsgolf.Blazor.Wasm.Pages
         NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        IScorecardServiceAdapter ScorecardService { get; set; }
+        ICourseApiService CourseApiService { get; set; }
 
         protected List<PlayerScore> Players { get; set; }
                 
@@ -75,7 +75,7 @@ namespace Tradgardsgolf.Blazor.Wasm.Pages
             Saving = true;
             StateHasChanged();
 
-            ScorecardService.Add(Course, Players);
+            CourseApiService.SaveScorecard(Course, Players);
 
             DisplayPlayAgain = true;
             StateHasChanged();

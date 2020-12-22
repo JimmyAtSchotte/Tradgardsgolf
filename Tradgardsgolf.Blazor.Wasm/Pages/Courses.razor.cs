@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Tradgardsgolf.Blazor.Wasm.ApiServices;
 using Tradgardsgolf.Blazor.Wasm.Data;
-using Tradgardsgolf.Blazor.Wasm.ServiceAdapters;
 using Tradgardsgolf.Blazor.Wasm.State;
 
 namespace Tradgardsgolf.Blazor.Wasm.Pages
@@ -10,7 +10,7 @@ namespace Tradgardsgolf.Blazor.Wasm.Pages
     public class CoursesBase : ComponentBase
     {
         [Inject]
-        ICourseServiceAdapter CourseService { get; set; }
+        ICourseApiService CourseApiService { get; set; }
 
         [Inject]
         NavigationManager NavigationManager { get; set; }
@@ -22,7 +22,7 @@ namespace Tradgardsgolf.Blazor.Wasm.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            Courses = await CourseService.ListAll();
+            Courses = await CourseApiService.ListAll();
         }
 
         protected async Task SetupRound(Course course)

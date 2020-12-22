@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Tradgardsgolf.Blazor.Wasm.ApiServices;
 using Tradgardsgolf.Blazor.Wasm.Data;
-using Tradgardsgolf.Blazor.Wasm.ServiceAdapters;
 using Tradgardsgolf.Blazor.Wasm.State;
 
 namespace Tradgardsgolf.Blazor.Wasm.Pages
@@ -11,7 +11,7 @@ namespace Tradgardsgolf.Blazor.Wasm.Pages
     public class SetupRoundBase : ComponentBase
     {
         [Inject]
-        ICourseServiceAdapter CourseService { get; set; }
+        ICourseApiService CourseApiService { get; set; }
 
         [Inject]
         ScorecardState ScorecardState { get; set; }
@@ -43,7 +43,7 @@ namespace Tradgardsgolf.Blazor.Wasm.Pages
             
             SelectedCourse = await ScorecardState.GetSelectedCourseAsync();
             SelectedPlayers = (await ScorecardState.GetPlayersAsync()).ToList();
-            _availablePlayers = (await CourseService.Players(SelectedCourse)).ToList();
+            _availablePlayers = (await CourseApiService.Players(SelectedCourse)).ToList();
 
             StateHasChanged();            
         }

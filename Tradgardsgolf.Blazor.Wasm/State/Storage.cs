@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
@@ -46,14 +47,25 @@ namespace Tradgardsgolf.Blazor.Wasm.State
 
     public class ProtectedSessionStorage
     {
+        private static IDictionary<string, object> Store = new Dictionary<string, object>();
+        
+        
         public ValueTask SetAsync(string key, object value)
         {
-            throw new NotImplementedException();
+            if (Store.ContainsKey(key))
+                Store[key] = value;
+            else
+                Store.Add(key, value);
+
+            return ValueTask.CompletedTask;
         }
 
         public async Task<T> GetAsync<T>(string key)
         {
-            throw new NotImplementedException();
+            if (Store.TryGetValue(key, out var value) && value is T result)
+                return await Task.FromResult(result);
+
+            return default(T);
         }
     }
 }
