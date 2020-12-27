@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Tradgardsgolf.Blazor.Wasm.ApiServices;
-using Tradgardsgolf.Blazor.Wasm.State;
 
 namespace Tradgardsgolf.Blazor.Server
 {
@@ -37,9 +36,6 @@ namespace Tradgardsgolf.Blazor.Server
             });
 
             services.AddScoped<ICourseApiService, CourseApiService>();
-            services.AddScoped<IStorage, Storage>();
-            services.AddScoped<ScorecardState>();
-            services.AddScoped<ProtectedSessionStorage>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

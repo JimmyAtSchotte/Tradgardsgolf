@@ -6,7 +6,6 @@ using Blazored.Modal;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Tradgardsgolf.Blazor.Wasm.ApiServices;
-using Tradgardsgolf.Blazor.Wasm.State;
 
 namespace Tradgardsgolf.Blazor.Wasm
 {
@@ -26,9 +25,6 @@ namespace Tradgardsgolf.Blazor.Wasm
             builder.Services.AddBlazoredModal();
 
             builder.Services.AddScoped<ICourseApiService, CourseApiService>();
-            builder.Services.AddScoped<IStorage, Storage>();
-            builder.Services.AddScoped<ScorecardState>();
-            builder.Services.AddScoped<ProtectedSessionStorage>();
             
             await builder.Build().RunAsync();
         }
