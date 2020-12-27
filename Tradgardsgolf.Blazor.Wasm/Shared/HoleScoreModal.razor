@@ -1,0 +1,33 @@
+﻿<div class="container">
+    <div class="row">
+        @for (var i = 1; i <= ModalMaxScore; i++)
+        {
+            var score = i;
+            <div class="col s4 center-align" style="margin-bottom: 1rem;">
+                <Button Text="@score.ToString()" OnClick="() => ReturnResult(score)"></Button>
+            </div>
+        }
+    </div>
+</div>
+
+<ImageButton OnClick="() => AddModalMaxScore()" Text="Det gick inge vidare..." Icon="sentiment_dissatisfied"></ImageButton>
+
+@code {
+
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+
+    private int ModalMaxScore { get; set; } = 12;
+
+    private void AddModalMaxScore()
+    {
+        ModalMaxScore += 3;
+        StateHasChanged();
+    }
+
+    private void ReturnResult(int score)
+    {
+        ModalInstance.Close(ModalResult.Ok(score));
+    }
+
+}

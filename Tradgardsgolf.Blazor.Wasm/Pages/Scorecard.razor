@@ -1,6 +1,7 @@
 ﻿@page "/Scorecard"
 @inject NavigationManager NavigationManager
 @inject ICourseApiService CourseApiService
+@inject IModalService Modal
 
 <CourseCard Course="State.AppState.ScorecardState.Course">
     <CourseHead></CourseHead>
@@ -73,30 +74,7 @@
 }
 
 
-<Modal @bind-Open="IsModalOpened" Close="OnClose">
-    <div class="modal" style="display: block; position: relative">
-        <div class="modal-content">
-            <h4>Hur gick det för @EditPlayerScore?.Player.Name på hål @EditHole?</h4>
-            <div class="container">
-                <form method="dialog">
-                    <div class="row">
-                        @for (var i = 1; i <= ModalMaxScore; i++)
-                        {
-                            <div class="col s4 center-align" style="margin-bottom: 1rem;">
-                                <Button Text="@i.ToString()" Value="@i.ToString()"></Button>
-                            </div>
-                        }
-                    </div>
-                </form>
-            </div>
-        </div>
 
-        <div class="modal-footer">
-            <ImageButton OnClick="() => AddModalMaxScore()" Text="Det gick inge vidare..." Icon="sentiment_dissatisfied"></ImageButton>
-        </div>
-    </div>
-
-</Modal>
 
 
 @code
@@ -104,19 +82,10 @@
     [CascadingParameter] 
     public CascadingStateProvider State { get; set; }
     
-    public bool IsModalOpened { get; set; }
-    public string SelectedButton { get; set; }
-
-    private PlayerScore EditPlayerScore { get; set; }
-    private int EditHole { get; set; }
-
-    private int ModalMaxScore { get; set; } = 12;
-
     private bool DisableCompleteButton => State.AppState.ScorecardState.PlayerScores.Any(x => x.MissingScores()) || Saving;
     private bool Saving { get; set; }
 
     private bool DisplayPlayAgain { get; set; }
-       
 
     private async Task ChangePlayers()
     {
@@ -152,31 +121,15 @@
     }
 
 
-    private void SetScore(PlayerScore playerScore, int hole)
+    private async Task SetScore(PlayerScore playerScore, int hole)
     {
-        if (IsModalOpened)
+        var modal = Modal.Show<HoleScoreModal>($"Hur gick det för {playerScore.Player.Name} på hål {hole}?");
+        var result = await modal.Result;
+        if(result.Cancelled)
             return;
 
-        EditPlayerScore = playerScore;
-        EditHole = hole;
-
-        IsModalOpened = true;
-
-        StateHasChanged();
-    }
-
-    private async Task OnClose(string value)
-    {
-        EditPlayerScore.Scores[EditHole].Score = Convert.ToInt32(value);
-
-        await State.AppState.ScorecardState.SetScore(this, EditPlayerScore.Player.Name, EditHole, Convert.ToInt32(value));
-        
-        StateHasChanged();
-    }
-
-    private void AddModalMaxScore()
-    {
-        ModalMaxScore += 3;
+        var score = Convert.ToInt32(result.Data);
+        await State.AppState.ScorecardState.SetScore(this, playerScore.Player.Name, hole, score);
 
         StateHasChanged();
     }

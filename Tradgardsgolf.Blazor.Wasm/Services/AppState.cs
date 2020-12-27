@@ -113,9 +113,7 @@ namespace Tradgardsgolf.Blazor.Wasm.Services
                 return;
 
             player.Scores[hole].Score = score;
-            
             await Task.Delay(1);
-            
             base.NotifyStateChange(source, nameof(PlayerScores));
         }
     }

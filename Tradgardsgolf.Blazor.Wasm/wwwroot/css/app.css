@@ -1,13 +1,4 @@
-﻿dialog {
-    border: none;
-    background: none;
-}
-dialog > modal {
-    display: block;
-    position: relative
-}
-
-.card .card-image .card-title {
+﻿.card .card-image .card-title {
     text-shadow: 2px 2px 5px black;
     font-weight: 700;
 }

@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using Blazored.Modal;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Tradgardsgolf.Blazor.Wasm.ApiServices;
@@ -22,6 +23,7 @@ namespace Tradgardsgolf.Blazor.Wasm
             });
 
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddBlazoredModal();
 
             builder.Services.AddScoped<ICourseApiService, CourseApiService>();
             builder.Services.AddScoped<IStorage, Storage>();
