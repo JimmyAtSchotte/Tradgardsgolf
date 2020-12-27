@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AspNetMonsters.Blazor.Geolocation;
 using Blazored.LocalStorage;
 using Blazored.Modal;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -23,6 +24,7 @@ namespace Tradgardsgolf.Blazor.Wasm
 
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredModal();
+            builder.Services.AddScoped<LocationService>();
 
             builder.Services.AddScoped<ICourseApiService, CourseApiService>();
             

@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AspNetMonsters.Blazor.Geolocation" Version="0.5.0-preview1" />
         <PackageReference Include="Autofac" Version="6.1.0" />
         <PackageReference Include="Blazored.LocalStorage" Version="3.0.0" />
         <PackageReference Include="Blazored.Modal" Version="5.1.0" />

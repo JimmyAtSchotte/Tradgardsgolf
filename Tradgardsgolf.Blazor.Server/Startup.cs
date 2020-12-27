@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using AspNetMonsters.Blazor.Geolocation;
 using Blazored.LocalStorage;
 using Blazored.Modal;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,8 @@ namespace Tradgardsgolf.Blazor.Server
 
             services.AddBlazoredLocalStorage();
             services.AddBlazoredModal();
+            
+            services.AddScoped<LocationService>();
             
             services.AddScoped(sp => new HttpClient
             {

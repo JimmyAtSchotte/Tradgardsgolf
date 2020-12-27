@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject ICourseApiService CourseApiService
 @inject NavigationManager NavigationManager
+@inject LocationService LocationService
 
 @if (_courses == null)
 {
@@ -8,11 +9,20 @@
 }
 else
 {
-    @foreach (var course in _courses)
+    @if (_location == null)
+    {
+        <div class="card red">
+            <div class="card-content white-text">
+                <p>För att kunna spela så behöver du tillåta delning av din position.</p>
+            </div>
+        </div>
+    }
+
+    @foreach (var course in _courses.OrderBy(Distance))
     {
         <CourseCard Course="course">
-            <CourseHead></CourseHead>                       
-            <CourseButtons>
+            <CourseHead></CourseHead>
+            <CourseButtons Visible="AllowPlay(course)">
                 <ImageButton OnClick="async () => await SetupRound(course)" Text="Spela" Icon="golf_course"></ImageButton>
             </CourseButtons>
         </CourseCard>
@@ -24,16 +34,44 @@ else
     public CascadingStateProvider State { get; set; }
     
     private IEnumerable<Course> _courses;
+    private Location _location;
     
     protected override async Task OnInitializedAsync()
     {
         _courses = await CourseApiService.ListAll();
+
+        await LocationService.WatchLocation(LocationCallback);
+    }
+
+    private double Distance(Course course)
+    {
+        if(_location == null)
+            return int.MaxValue;
+        
+        var d1 = course.Latitude * (Math.PI / 180.0);
+        var num1 = course.Longitude * (Math.PI / 180.0);
+        var d2 = (double)_location.Latitude * (Math.PI / 180.0);
+        var num2 = (double)_location.Longitude * (Math.PI / 180.0) - num1;
+        var d3 = Math.Pow(Math.Sin((d2 - d1) / 2.0), 2.0) + Math.Cos(d1) * Math.Cos(d2) * Math.Pow(Math.Sin(num2 / 2.0), 2.0);
+
+        return 6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3)));
+    }
+
+    private void LocationCallback(Location location)
+    {
+        _location = location;
+        StateHasChanged();
+    }
+    
+    private bool AllowPlay(Course course)
+    {
+        return Distance(course) < 400;
     }
 
     private async Task SetupRound(Course course)
     {
         State.AppState.NewScorecard(this, course);
         await Task.Delay(1);
-        NavigationManager.NavigateTo("SetupRound");
+        NavigationManager.NavigateTo(nameof(SetupRound));
     }
 }
