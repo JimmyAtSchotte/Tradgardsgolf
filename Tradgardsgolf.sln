@@ -30,6 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SoultionItems", "SoultionIt
 ProjectSection(SolutionItems) = preProject
 	.dockerignore = .dockerignore
 	Dockerfile = Dockerfile
+	nginx.conf = nginx.conf
 EndProjectSection
 EndProject
 Global
