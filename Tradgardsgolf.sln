@@ -18,11 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\main.yml = .github\workflows\main.yml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E0BDC37-3F12-4943-A058-BA4BACD226B9}"
-	ProjectSection(SolutionItems) = preProject
-		Dockerfile = Dockerfile
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Blazor.Shared", "Tradgardsgolf.Blazor.Shared\Tradgardsgolf.Blazor.Shared.csproj", "{A392164E-117B-4B3F-9325-7796C31695A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Blazor.Server", "Tradgardsgolf.Blazor.Server\Tradgardsgolf.Blazor.Server.csproj", "{4581DF9B-BD1D-4696-829C-A38E9A8A8132}"
@@ -30,6 +25,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Blazor.Wasm", "Tradgardsgolf.Blazor.Wasm\Tradgardsgolf.Blazor.Wasm.csproj", "{E4BC82A9-A928-4788-807D-67FFBEB6B5D5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Api", "Tradgardsgolf.Api\Tradgardsgolf.Api.csproj", "{047EFF05-4560-4B3D-B911-91DBBFFFC28D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SoultionItems", "SoultionItems", "{DFAFD9C5-6AFE-4C1F-AC0C-9603CA53FBE7}"
+ProjectSection(SolutionItems) = preProject
+	.dockerignore = .dockerignore
+	Dockerfile = Dockerfile
+EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
