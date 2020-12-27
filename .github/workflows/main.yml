@@ -34,7 +34,9 @@ jobs:
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           docker_heroku_process_type: "web"
           usedocker: true
-          docker_build_args: "ENV=api"
+          docker_build_args: ENV
+        env:
+          ENV: api
 
   deploy_wasm:
     needs: build
@@ -48,5 +50,7 @@ jobs:
           heroku_email:  ${{secrets.HEROKU_EMAIL}} 
           docker_heroku_process_type: "web"
           usedocker: true
-          docker_build_args: "ENV=wasm"
+          docker_build_args: ENV
+        env:
+          ENV: wasm
        
