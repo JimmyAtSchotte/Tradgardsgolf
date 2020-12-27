@@ -1,62 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Tradgardsgolf.Blazor.Wasm.Data;
 
-namespace Tradgardsgolf.Blazor.Wasm.Services
+namespace Tradgardsgolf.Blazor.Wasm.State
 {
-    public abstract class BaseState
-    {
-        public event Action<ComponentBase, string> StateChanged;
-        
-        protected virtual void NotifyStateChange(ComponentBase source, string property)
-        {
-            StateChanged?.Invoke(source, property);
-        }
-    }
-
-    public class AppState : BaseState
-    {
-        private readonly TimeSpan _stateValidTime = TimeSpan.FromHours(1);
-        
-        [JsonProperty] 
-        public ScorecardState ScorecardState { get; private set; }
-
-        [JsonProperty] 
-        public DateTime LastAccessed { get; private set; }
-        
-        public AppState()
-        {
-            LastAccessed = DateTime.Now;
-        }
-
-        public void NewScorecard(ComponentBase source, Course course)
-        {
-            ScorecardState = ScorecardState.Create(course);
-            ScorecardState.StateChanged += ScorecardStateOnStateChanged;
-            NotifyStateChange(source, nameof(ScorecardState));
-        }
-
-        private void ScorecardStateOnStateChanged(ComponentBase source, string property)
-        {
-            NotifyStateChange(source, $"{nameof(ScorecardState)}.{property}");
-        }
-
-        protected override void NotifyStateChange(ComponentBase source, string property)
-        {
-            LastAccessed = DateTime.Now;
-            base.NotifyStateChange(source, property);
-        }
-
-        public bool IsValid()
-        {
-            return DateTime.Now <= LastAccessed.Add(_stateValidTime);
-        }
-    }
-
     public class ScorecardState : BaseState
     {
         private ScorecardState()
