@@ -1,9 +1,17 @@
-﻿@inherits PlayerListItemBase
-
-<li class="collection-item avatar">
+﻿<li class="collection-item avatar">
     <Avatar Player="Player"></Avatar>
     <span class="title">@Player.Name</span>
     <div class="secondary-content">
         @ChildContent
     </div>
 </li>
+
+@code
+{
+    [Parameter]
+    public Player Player { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    
+}

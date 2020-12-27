@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,8 @@ namespace Tradgardsgolf.Blazor.Server
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            services.AddBlazoredLocalStorage();
             
             services.AddScoped(sp => new HttpClient
             {

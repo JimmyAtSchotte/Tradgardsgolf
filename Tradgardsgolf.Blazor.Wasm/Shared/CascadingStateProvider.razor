@@ -1,0 +1,59 @@
+﻿@using Newtonsoft.Json
+@implements IDisposable
+@inject ILocalStorageService LocalStorageService
+
+@if (_hasLoaded)
+{
+    <CascadingValue Value="this">@ChildContent</CascadingValue>
+}
+
+@code {
+    private bool _hasLoaded;
+    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    
+    [Parameter]
+    public AppState AppState { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var json = await LocalStorageService.GetItemAsStringAsync(nameof(AppState));
+
+        if (!string.IsNullOrEmpty(json))
+        {
+            var storedState = JsonConvert.DeserializeObject<AppState>(json);
+
+            if (storedState.IsValid())
+                AppState = storedState;
+        }
+        
+        AppState ??= new AppState();
+        AppState.StateChanged += async (source, property) => await SaveAppStateAsync();
+
+        await SaveAppStateAsync();
+        
+        _hasLoaded = true;
+    }
+
+    private async Task SaveAppStateAsync()
+    {
+        try
+        {
+            var json = JsonConvert.SerializeObject(AppState);
+            await LocalStorageService.SetItemAsync(nameof(AppState), json);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
+    }
+
+    void IDisposable.Dispose()
+    {
+        AppState.StateChanged -= async (source, property) => await SaveAppStateAsync();
+    }
+
+}

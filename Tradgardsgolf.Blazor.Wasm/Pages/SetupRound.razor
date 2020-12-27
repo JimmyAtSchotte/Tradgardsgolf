@@ -1,17 +1,13 @@
-﻿
-@inherits SetupRoundBase
-@page "/SetupRound"
-@using Tradgardsgolf.Blazor.Wasm.Components.Course
-@using Tradgardsgolf.Blazor.Wasm.Components.Forms
-@using Tradgardsgolf.Blazor.Wasm.Components.Layout
-@using Tradgardsgolf.Blazor.Wasm.Components.Player
+﻿@page "/SetupRound"
+@inject ICourseApiService CourseApiService
+@inject NavigationManager NavigationManager
 
-<CourseCard Course="SelectedCourse">
+<CourseCard Course="State.AppState.ScorecardState.Course">
     <CourseHead></CourseHead>
-    <CourseContent Title="Börja med att lägga till spelare" Visible="!SelectedPlayers.Any()"></CourseContent>
-    <CourseContent Title="Valda spelare" Visible="SelectedPlayers.Any()">
+    <CourseContent Title="Börja med att lägga till spelare" Visible="!State.AppState.ScorecardState.PlayerScores.Any()"></CourseContent>
+    <CourseContent Title="Valda spelare" Visible="State.AppState.ScorecardState.PlayerScores.Any()">
         <List>
-            @foreach (var player in SelectedPlayers)
+            @foreach (var player in State.AppState.ScorecardState.PlayerScores)
             {
                 <PlayerListItem Player="player.Player">
                     <IconButton OnClick="async () => await RemovePlayer(player.Player.Name)" Icon="delete"></IconButton>
@@ -19,17 +15,20 @@
             }
         </List>
     </CourseContent>
-    <CourseButtons Visible="SelectedPlayers.Any()">
-        <ImageButton OnClick="async () => await  Play()" Text="Börja spela" Icon="play_arrow"></ImageButton>
+    <CourseButtons Visible="State.AppState.ScorecardState.PlayerScores.Any()">
+        <ImageButton OnClick="async () => await Play()" Text="Börja spela" Icon="play_arrow"></ImageButton>
     </CourseButtons>
 </CourseCard>
 
-@if (AvailablePlayers.Any())
+@if (_availablePlayers == null)
+{
+    <Loading></Loading>
+}
+else if (AvailablePlayers.Any())
 {
     <div class="card">
         <div class="card-content">
-            <span class="card-title">Har tidigare spelat på @SelectedCourse.Name</span>     
-
+            <span class="card-title">Har tidigare spelat på @State.AppState.ScorecardState.Course.Name</span>     
             <List>
                 @foreach (var player in AvailablePlayers)
                 {
@@ -55,7 +54,48 @@
     </div>
 </div>
 
+@code 
+{
+    [CascadingParameter] 
+    public CascadingStateProvider State { get; set; }
+    
+    private string PlayerName { get; set; }
+    private IEnumerable<Player> _availablePlayers;
+    private IEnumerable<Player> AvailablePlayers => _availablePlayers
+        .Where(x => State.AppState.ScorecardState.PlayerScores.All(player => player.Player.Name != x.Name)) ?? Enumerable.Empty<Player>();
 
+    protected override async Task OnInitializedAsync()
+    {
+        _availablePlayers = (await CourseApiService.Players(State.AppState.ScorecardState.Course)).ToList();
+        
+        await base.OnInitializedAsync();
+    }
+
+    private async Task AddPlayer(string player)
+    {
+        if (string.IsNullOrWhiteSpace(player))
+            return;
+
+        await State.AppState.ScorecardState.AddPlayer(this, player);
+        PlayerName = string.Empty;
+        StateHasChanged();
+    }
+
+    private async Task RemovePlayer(string player)
+    {
+        await State.AppState.ScorecardState.RemovePlayer(this, player);
+        StateHasChanged();
+    }
+
+    private async Task Play()
+    {
+        if (!State.AppState.ScorecardState.PlayerScores.Any())
+            return;
+        await Task.Delay(1);
+        NavigationManager.NavigateTo("Scorecard");
+    }
+    
+}
 
 
 

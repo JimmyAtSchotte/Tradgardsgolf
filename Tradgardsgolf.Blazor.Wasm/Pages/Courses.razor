@@ -1,21 +1,39 @@
-﻿@inherits CoursesBase
-@page "/"
-@using Tradgardsgolf.Blazor.Wasm.Components.Course
-@using Tradgardsgolf.Blazor.Wasm.Components.Forms
+﻿@page "/"
+@inject ICourseApiService CourseApiService
+@inject NavigationManager NavigationManager
 
-@if (Courses == null)
+@if (_courses == null)
 {
-    <p><em>Loading...</em></p>
+    <Loading></Loading>
 }
 else
 {
-    @foreach (var course in Courses)
+    @foreach (var course in _courses)
     {
         <CourseCard Course="course">
             <CourseHead></CourseHead>                       
             <CourseButtons>
-                <ImageButton OnClick="() => SetupRound(course)" Text="Spela" Icon="golf_course"></ImageButton>
+                <ImageButton OnClick="async () => await SetupRound(course)" Text="Spela" Icon="golf_course"></ImageButton>
             </CourseButtons>
         </CourseCard>
+    }
+}
+
+@code {
+    [CascadingParameter] 
+    public CascadingStateProvider State { get; set; }
+    
+    private IEnumerable<Course> _courses;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _courses = await CourseApiService.ListAll();
+    }
+
+    private async Task SetupRound(Course course)
+    {
+        State.AppState.NewScorecard(this, course);
+        await Task.Delay(1);
+        NavigationManager.NavigateTo("SetupRound");
     }
 }

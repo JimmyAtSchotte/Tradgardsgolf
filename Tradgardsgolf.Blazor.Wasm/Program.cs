@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Tradgardsgolf.Blazor.Wasm.ApiServices;
@@ -19,6 +20,8 @@ namespace Tradgardsgolf.Blazor.Wasm
             {
                 BaseAddress = new Uri("https://localhost:5001")
             });
+
+            builder.Services.AddBlazoredLocalStorage();
 
             builder.Services.AddScoped<ICourseApiService, CourseApiService>();
             builder.Services.AddScoped<IStorage, Storage>();
