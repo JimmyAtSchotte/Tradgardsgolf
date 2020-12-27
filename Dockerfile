@@ -25,5 +25,6 @@ FROM nginx:alpine AS final-wasm
 WORKDIR /usr/share/nginx/html
 COPY --from=publish-wasm /app/out/wwwroot .
 COPY nginx.conf /etc/nginx/nginx.conf
+CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
 
 FROM final-${ENV} AS final
