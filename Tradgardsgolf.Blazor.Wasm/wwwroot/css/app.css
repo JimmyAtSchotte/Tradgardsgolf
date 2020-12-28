@@ -1,6 +1,23 @@
 ﻿.card .card-image .card-title {
-    text-shadow: 2px 2px 5px black;
+    text-shadow: 2px 2px 2px black;
     font-weight: 700;
+}
+
+.card .card-statistics 
+{
+    text-shadow: 2px 2px 2px black;
+    font-weight: 500;
+    color: #fff;
+    position: absolute;
+    top: 0;
+    right: 0;
+    max-width: 100%;
+    padding: 0px 10px
+}
+
+.card .card-statistics i {
+    margin-right: 10px;
+    vertical-align: middle;
 }
 
 #blazor-error-ui {

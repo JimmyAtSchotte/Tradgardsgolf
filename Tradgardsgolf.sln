@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\main.yml = .github\workflows\main.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Blazor.Shared", "Tradgardsgolf.Blazor.Shared\Tradgardsgolf.Blazor.Shared.csproj", "{A392164E-117B-4B3F-9325-7796C31695A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Api.Shared", "Tradgardsgolf.Api.Shared\Tradgardsgolf.Api.Shared.csproj", "{A392164E-117B-4B3F-9325-7796C31695A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Blazor.Server", "Tradgardsgolf.Blazor.Server\Tradgardsgolf.Blazor.Server.csproj", "{4581DF9B-BD1D-4696-829C-A38E9A8A8132}"
 EndProject

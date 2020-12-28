@@ -1,0 +1,41 @@
+﻿@using Tradgardsgolf.Api.Shared
+
+@if (Statistics != null && _bestScore != null && !Statistics.Loading)
+{
+    <i class="material-icons">emoji_events</i><span>@_bestScore.Player (@_bestScore.ToatalScore)</span>
+}
+
+@code {
+    [CascadingParameter]
+    public Statistics Statistics { get; set; }
+
+    private BestScoreModel _bestScore;
+    
+    protected override void OnParametersSet()
+    {
+        if(Statistics?.CourseStatistic == null)
+            return;
+
+        _bestScore = Statistics.CourseStatistic.Rounds.Select(x => new
+        {
+            Rounds = x.Scores.GroupBy(score => score.Player)
+                .Select(p => new BestScoreModel()
+                {
+                    Date = x.Date,
+                    Player = p.Key,
+                    ToatalScore = p.Sum(s => s.Score)
+                })
+        }).SelectMany(x => x.Rounds)
+            .OrderBy(x => x.ToatalScore)
+            .ThenBy(x => x.Date)
+            .FirstOrDefault();
+    }
+
+    private class BestScoreModel
+    {
+        public string Player { get; set; }
+        public DateTime Date { get; set; }
+        public int ToatalScore { get; set; }
+    }
+
+}

@@ -1,9 +1,16 @@
-﻿@inherits CourseHeadBase
+﻿<div class="card-image">
+    <img src="@Course.Image" alt=" @Course.Name">
+    <span class="card-title ">@Course.Name</span>
+    <div class="card-statistics">@ChildContent</div>
+</div>
 
-    <div class="card-image">
-        <img src="@Course.Image" alt=" @Course.Name">
-        <span class="card-title ">@Course.Name</span>
-    </div>
+@code {
+    [CascadingParameter]
+    public Data.Course Course { get; set; }
+    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}
 
 
 

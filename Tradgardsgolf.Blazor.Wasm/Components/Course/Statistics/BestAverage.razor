@@ -1,0 +1,44 @@
+﻿@using Tradgardsgolf.Api.Shared
+
+@if (Statistics != null && _bestAverageModel != null && !Statistics.Loading)
+{
+    <i class="material-icons">insights</i><span>@_bestAverageModel.Player (@Math.Round(_bestAverageModel.Average, 1))</span>
+}
+
+@code {
+    [CascadingParameter]
+    public Statistics Statistics { get; set; }
+
+    private BestAverageModel _bestAverageModel;
+
+    protected override void OnParametersSet()
+    {
+        if(Statistics?.CourseStatistic == null)
+            return;
+        
+        _bestAverageModel = Statistics.CourseStatistic.Rounds.Select(x => new
+        {
+            Rounds = x.Scores.GroupBy(score => score.Player)
+                .Select(p => new
+                {
+                    Player = p.Key,
+                    ToatalScore = p.Sum(s => s.Score)
+                })
+        }).SelectMany(x => x.Rounds)
+            .GroupBy(x => x.Player)
+            .Select(x => new BestAverageModel
+            {
+                Player = x.Key,
+                Average = (double) x.Sum(score => score.ToatalScore) / (double) x.Count()
+            })
+            .OrderBy(x => x.Average)
+            .FirstOrDefault();
+    }
+
+    private class BestAverageModel
+    {
+        public string Player { get; set; }
+        public double Average { get; set; }
+    }
+
+}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Tradgardsgolf.Core.Services.Course
 {
@@ -9,6 +10,7 @@ namespace Tradgardsgolf.Core.Services.Course
         ICourseModelResult Add(ICourseAddModel model);
         IEnumerable<ICoursePlayerModelResult> Players(ICoursePlayerModel model);
 
+        Task<IEnumerable<Entities.Round>> ListAllRounds(int requestId);
     }
 
     public interface ICoursePlayerModelResult

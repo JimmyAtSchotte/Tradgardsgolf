@@ -1,18 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure.Course;
+using Tradgardsgolf.Core.Infrastructure.Round;
 using Tradgardsgolf.Core.Services.Course;
+using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Services.Course
 {
     public class CourseService : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
+        private readonly IRoundRepository _roundRepository;
 
-        public CourseService(ICourseRepository courseRepository)
+        public CourseService(ICourseRepository courseRepository, IRoundRepository roundRepository)
         {
             _courseRepository = courseRepository;
+            _roundRepository = roundRepository;
         }
 
         public ICourseModelResult Add(ICourseAddModel model)
@@ -30,6 +36,11 @@ namespace Tradgardsgolf.Services.Course
         public IEnumerable<ICoursePlayerModelResult> Players(ICoursePlayerModel model)
         {
             return _courseRepository.Players(new CoursePlayerDto(model)).Select(x => new CoursePlayerModelResult(x));
+        }
+
+        public async Task<IEnumerable<Round>> ListAllRounds(int courseId)
+        {
+            return await _roundRepository.ListAsync(new AllRoundsByCourse(courseId));
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,6 +19,8 @@ namespace Tradgardsgolf.Core.Entities
         [Column("dtmDate")]
         public DateTime Date { get; private set; }
         
+        
+        public virtual Collection<RoundScore> RoundScores { get; set; }
         private Round()
         {
 

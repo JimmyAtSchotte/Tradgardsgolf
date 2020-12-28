@@ -1,0 +1,24 @@
+﻿@using Tradgardsgolf.Api.Shared
+@inject ICourseApiService CourseApiService
+
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [CascadingParameter]
+    public Data.Course Course { get; set; }
+    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    
+    public CourseStatistic CourseStatistic { get; set; }
+    public bool Loading { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Loading = true;
+        CourseStatistic = await CourseApiService.Statistics(Course);
+        Loading = false;
+    }
+}

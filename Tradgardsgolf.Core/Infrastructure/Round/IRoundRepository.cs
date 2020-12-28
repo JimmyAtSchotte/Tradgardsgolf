@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using Ardalis.Specification;
 
 namespace Tradgardsgolf.Core.Infrastructure.Round
 {
-    public interface IRoundRepository 
+    public interface IRoundRepository : IRepositoryBase<Entities.Round>
     {
-        IEnumerable<object> ListAllByCourse(int courseId);
     }
 }

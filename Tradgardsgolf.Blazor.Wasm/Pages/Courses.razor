@@ -21,7 +21,14 @@ else
     @foreach (var course in _courses.OrderBy(Distance))
     {
         <CourseCard Course="course">
-            <CourseHead></CourseHead>
+            <CourseHead>
+                 <Statistics>
+                    <ul>
+                        <li><BestScore></BestScore></li>
+                        <li><BestAverage></BestAverage></li>
+                    </ul>
+                </Statistics>
+            </CourseHead>
             <CourseButtons Visible="AllowPlay(course)">
                 <ImageButton OnClick="async () => await SetupRound(course)" Text="Spela" Icon="golf_course"></ImageButton>
             </CourseButtons>

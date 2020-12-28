@@ -1,4 +1,6 @@
-﻿namespace Tradgardsgolf.Core.Services.Round
+﻿using System.Collections.Generic;
+
+namespace Tradgardsgolf.Core.Services.Round
 {
     public interface IRoundService
     {

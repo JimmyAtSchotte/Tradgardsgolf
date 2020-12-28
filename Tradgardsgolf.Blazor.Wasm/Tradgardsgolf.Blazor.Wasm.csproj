@@ -16,10 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tradgardsgolf.Blazor.Shared\Tradgardsgolf.Blazor.Shared.csproj" />      
-    </ItemGroup>
-
-    <ItemGroup>
       <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
         <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\5.0.0\ref\net5.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
       </Reference>
@@ -27,6 +23,8 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+      <_ContentIncludedByDefault Remove="Components\Statistics\CourseRecord.razor" />
+      <_ContentIncludedByDefault Remove="Components\Statistics\Statistics.razor" />
     </ItemGroup>
 
     <ItemGroup>
@@ -36,6 +34,10 @@
       <Content Update="wwwroot\appsettings.Development.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Tradgardsgolf.Api.Shared\Tradgardsgolf.Api.Shared.csproj" />
     </ItemGroup>
 
 </Project>

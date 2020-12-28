@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tradgardsgolf.Blazor.Shared\Tradgardsgolf.Blazor.Shared.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Api.Shared\Tradgardsgolf.Api.Shared.csproj" />
       <ProjectReference Include="..\Tradgardsgolf.Blazor.Wasm\Tradgardsgolf.Blazor.Wasm.csproj" />
     </ItemGroup>
 
