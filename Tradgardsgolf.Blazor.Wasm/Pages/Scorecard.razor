@@ -123,7 +123,7 @@
 
     private async Task SetScore(PlayerScore playerScore, int hole)
     {
-        var modal = Modal.Show<HoleScoreModal>($"Hur gick det för {playerScore.Player.Name} på hål {hole}?");
+        var modal = Modal.Show<HoleScoreModal>($"{playerScore.Player.Name}, hål {hole}?");
         var result = await modal.Result;
         if(result.Cancelled)
             return;
