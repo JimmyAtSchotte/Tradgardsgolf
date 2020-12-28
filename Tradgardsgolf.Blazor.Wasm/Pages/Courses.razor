@@ -47,6 +47,9 @@ else
     {
         if(_location == null)
             return int.MaxValue;
+
+        if (course.Name == "Testbanan")
+            return 0;
         
         var d1 = course.Latitude * (Math.PI / 180.0);
         var num1 = course.Longitude * (Math.PI / 180.0);
