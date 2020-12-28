@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AspNetMonsters.Blazor.Geolocation;
 using Blazored.LocalStorage;
 using Blazored.Modal;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tradgardsgolf.Blazor.Wasm.ApiServices;
 
@@ -17,9 +19,14 @@ namespace Tradgardsgolf.Blazor.Wasm
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             
             builder.RootComponents.Add<App>("#app");
-            builder.Services.AddScoped(sp => new HttpClient
+            builder.Services.AddSingleton(services =>
             {
-                BaseAddress = new Uri("https://localhost:5001")
+                var configuration = services.GetService<IConfiguration>();
+                
+                return new HttpClient
+                {
+                    BaseAddress = new Uri(configuration.GetValue<string>("API_URL"))
+                };
             });
 
             builder.Services.AddBlazoredLocalStorage();
