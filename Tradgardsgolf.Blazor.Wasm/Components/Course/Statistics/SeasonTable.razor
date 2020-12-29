@@ -1,0 +1,105 @@
+﻿
+@if (Display())
+{
+    @foreach (var year in _years)
+    {
+        <Button OnClick="() => DisplayYear(year)" Text="@year.ToString()"></Button>
+    }
+    
+    <table>
+        @foreach (var model in _seasonTableModels)
+        {
+            <tr>
+                <td>@model.Player</td>
+                @for (var i = 0; i < Course.SeasonTableRounds; i++)
+                {
+                    <td>@model.GetScore(i)</td>
+                }
+                <td>@model.Scores.Sum()</td>
+            </tr>
+        }
+    </table>
+}
+
+@code {
+    [CascadingParameter]
+    public Statistics Statistics { get; set; }
+    
+    [CascadingParameter]
+    public CourseModel Course { get; set; }
+
+    private IEnumerable<SeasonTableModel> _seasonTableModels;
+
+    private int[] _years;
+    private int _year;
+
+    protected override void OnParametersSet()
+    {
+        if(Statistics?.CourseStatisticModel == null)
+            return;
+
+        _years = Statistics.CourseStatisticModel.Rounds
+            .Select(x => x.Date.Year)
+            .Distinct()
+            .OrderByDescending(x => x)
+            .ToArray();
+
+        _year = _years.FirstOrDefault();
+        
+        RenderSeasonTable();
+    }
+
+    private void RenderSeasonTable()
+    {
+        _seasonTableModels = Statistics.CourseStatisticModel.Rounds
+            .Where(x => x.Date.Year == _year)
+            .Select(x => new
+            {
+                Rounds = x.Scores.GroupBy(score => score.Player)
+                    .Select(p => new
+                    {
+                        Player = p.Key,
+                        ToatalScore = p.Sum(s => s.Score)
+                    })
+            }).SelectMany(x => x.Rounds)
+            .GroupBy(x => x.Player)
+            .Select(x => new SeasonTableModel
+            {
+                Player = x.Key,
+                Scores = x.OrderBy(s => s.ToatalScore)
+                    .Take(Course.SeasonTableRounds)
+                    .Select(s => s.ToatalScore)
+                    .ToArray()
+            })
+            .OrderByDescending(x => x.Scores.Count())
+            .ThenBy(x => x.Scores.Sum());
+    }
+
+    private bool Display()
+    {
+        return Statistics != null && _seasonTableModels != null && !Statistics.Loading;
+    }
+
+    private class SeasonTableModel
+    {
+        public string Player { get; set; }
+        public int[] Scores { get; set; }
+
+        public string GetScore(int i)
+        {
+            if (Scores.Length <= i)
+                return "-";
+
+            return Scores[i].ToString();
+        }
+    }
+
+    private void DisplayYear(int year)
+    {
+        _year = year;
+        RenderSeasonTable();
+        StateHasChanged();
+        
+    }
+
+}

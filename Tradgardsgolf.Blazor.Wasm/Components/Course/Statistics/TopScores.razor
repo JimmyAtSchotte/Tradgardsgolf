@@ -1,0 +1,70 @@
+﻿@if (Display())
+{
+    <table>
+        @for (var i = 0; i < _topScore.Count(); i++)
+        {
+            <tr>
+                <td>
+                    @if (i == 0)
+                    {
+                        <i class="material-icons">emoji_events</i>
+                    }
+                    else
+                    {
+                        @(i + 1)
+                    }
+                </td>
+                <td>@_topScore[i].Player</td>
+                <td>@_topScore[i].ToatalScore</td>
+                <td>@_topScore[i].Date.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+        <tr>
+
+        </tr>
+    </table>
+}
+
+@code {
+    [CascadingParameter]
+    public Statistics Statistics { get; set; }
+
+    private TopScoreModel[] _topScore;
+    private int _listCount = 10;
+    
+    protected override void OnParametersSet()
+    {
+        if(Statistics?.CourseStatisticModel == null)
+            return;
+
+        _topScore = Statistics.CourseStatisticModel.Rounds.Select(x => new
+        {
+            Rounds = x.Scores.GroupBy(score => score.Player)
+                .Select(p => new TopScoreModel()
+                {
+                    Date = x.Date,
+                    Player = p.Key,
+                    ToatalScore = p.Sum(s => s.Score)
+                })
+        }).SelectMany(x => x.Rounds)
+            .OrderBy(x => x.ToatalScore)
+            .ThenBy(x => x.Date)
+            .Take(_listCount)
+            .ToArray();
+    }
+
+    private class TopScoreModel
+    {
+        public string Player { get; set; }
+        public DateTime Date { get; set; }
+        public int ToatalScore { get; set; }
+    }
+
+  
+
+    private bool Display()
+    {
+        return Statistics != null && _topScore != null && !Statistics.Loading;
+    }
+
+}

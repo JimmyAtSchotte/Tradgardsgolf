@@ -1,0 +1,72 @@
+﻿@if (Display())
+{
+    <table>
+        @for (var i = 0; i < _topAverages.Count(); i++)
+        {
+            <tr>
+                <td>
+                    @if (i == 0)
+                    {
+                        <i class="material-icons">insights</i>
+                    }
+                    else
+                    {
+                        @(i + 1)
+                    }
+                </td>
+                <td>@_topAverages[i].Player</td>
+                <td>@Math.Round(_topAverages[i].Average, 1)</td>
+            </tr>
+        }
+        <tr>
+
+        </tr>
+    </table>
+}
+
+@code {
+
+    [CascadingParameter]
+    public Statistics Statistics { get; set; }
+
+    private TopAverageModel[] _topAverages;
+    private int _listCount = 10;
+
+
+    protected override void OnParametersSet()
+    {
+        if (Statistics?.CourseStatisticModel == null)
+            return;
+
+        _topAverages = Statistics.CourseStatisticModel.Rounds.Select(x => new
+        {
+            Rounds = x.Scores.GroupBy(score => score.Player)
+                .Select(p => new
+                {
+                    Player = p.Key,
+                    ToatalScore = p.Sum(s => s.Score)
+                })
+        }).SelectMany(x => x.Rounds)
+            .GroupBy(x => x.Player)
+            .Select(x => new TopAverageModel
+            {
+                Player = x.Key,
+                Average = (double) x.Sum(score => score.ToatalScore) / (double) x.Count()
+            })
+            .OrderBy(x => x.Average)
+            .Take(_listCount)
+            .ToArray();
+    }
+
+    private class TopAverageModel
+    {
+        public string Player { get; set; }
+        public double Average { get; set; }
+    }
+
+    private bool Display()
+    {
+        return Statistics != null && _topAverages != null && !Statistics.Loading;
+    }
+
+}

@@ -14,5 +14,6 @@ namespace Tradgardsgolf.Api.Shared
         
         public DateTime Created { get; set; }
         public string Image { get; set; }
+        public int SeasonTableRounds => 6;
     }
 }

@@ -1,6 +1,4 @@
-﻿@using Tradgardsgolf.Api.Shared
-
-@if (Statistics != null && _bestScore != null && !Statistics.Loading)
+﻿@if (Display())
 {
     <i class="material-icons">emoji_events</i><span>@_bestScore.Player (@_bestScore.ToatalScore)</span>
 }
@@ -36,6 +34,11 @@
         public string Player { get; set; }
         public DateTime Date { get; set; }
         public int ToatalScore { get; set; }
+    }
+
+    private bool Display()
+    {
+        return Statistics != null && _bestScore != null && !Statistics.Loading;
     }
 
 }

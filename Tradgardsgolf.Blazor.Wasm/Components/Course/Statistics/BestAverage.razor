@@ -1,22 +1,20 @@
-﻿@using Tradgardsgolf.Api.Shared
-
-@if (Statistics != null && _bestAverageModel != null && !Statistics.Loading)
+﻿@if (Display())
 {
-    <i class="material-icons">insights</i><span>@_bestAverageModel.Player (@Math.Round(_bestAverageModel.Average, 1))</span>
+    <i class="material-icons">insights</i><span>@_bestAverageModels.Player (@Math.Round(_bestAverageModels.Average, 1))</span>
 }
 
 @code {
     [CascadingParameter]
     public Statistics Statistics { get; set; }
 
-    private BestAverageModel _bestAverageModel;
+    private BestAverageModel _bestAverageModels;
 
     protected override void OnParametersSet()
     {
         if(Statistics?.CourseStatisticModel == null)
             return;
         
-        _bestAverageModel = Statistics.CourseStatisticModel.Rounds.Select(x => new
+        _bestAverageModels = Statistics.CourseStatisticModel.Rounds.Select(x => new
         {
             Rounds = x.Scores.GroupBy(score => score.Player)
                 .Select(p => new
@@ -39,6 +37,11 @@
     {
         public string Player { get; set; }
         public double Average { get; set; }
+    }
+
+    private bool Display()
+    {
+        return Statistics != null && _bestAverageModels != null && !Statistics.Loading;
     }
 
 }
