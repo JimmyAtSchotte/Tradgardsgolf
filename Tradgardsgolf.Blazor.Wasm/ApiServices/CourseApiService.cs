@@ -4,16 +4,15 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Tradgardsgolf.Api.Shared;
-using Tradgardsgolf.Blazor.Wasm.Data;
 
 namespace Tradgardsgolf.Blazor.Wasm.ApiServices
 {
     public interface ICourseApiService
     {
-        Task<IEnumerable<Course>> ListAll();
-        Task<IEnumerable<Player>> Players(Course course);
-        Task SaveScorecard(Course course, IEnumerable<PlayerScore> playerScores);
-        Task<CourseStatistic> Statistics(Course course);
+        Task<IEnumerable<CourseModel>> ListAll();
+        Task<IEnumerable<PlayerModel>> Players(CourseModel courseModel);
+        Task SaveScorecard(CourseModel courseModel, IEnumerable<PlayerScoreModel> playerScores);
+        Task<CourseStatisticModel> Statistics(CourseModel courseModel);
     }
 
     public class CourseApiService : ICourseApiService
@@ -25,24 +24,24 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<Course>> ListAll()
+        public async Task<IEnumerable<CourseModel>> ListAll()
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<Course>>("Courses");
+            return await _httpClient.GetFromJsonAsync<IEnumerable<CourseModel>>("Courses");
         }
 
-        public async Task<IEnumerable<Player>> Players(Course course)
+        public async Task<IEnumerable<PlayerModel>> Players(CourseModel courseModel)
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<Player>>($"Courses/{course.Id}/Players");
+            return await _httpClient.GetFromJsonAsync<IEnumerable<PlayerModel>>($"Courses/{courseModel.Id}/Players");
         }
         
-        public async Task<CourseStatistic> Statistics(Course course)
+        public async Task<CourseStatisticModel> Statistics(CourseModel courseModel)
         {
-            return await _httpClient.GetFromJsonAsync<CourseStatistic>($"Courses/{course.Id}/Statistics");
+            return await _httpClient.GetFromJsonAsync<CourseStatisticModel>($"Courses/{courseModel.Id}/Statistics");
         }
 
-        public async Task SaveScorecard(Course course, IEnumerable<PlayerScore> playerScores)
+        public async Task SaveScorecard(CourseModel courseModel, IEnumerable<PlayerScoreModel> playerScores)
         {
-            await _httpClient.PostAsJsonAsync($"Courses/{course.Id}/Scorecards", playerScores);
+            await _httpClient.PostAsJsonAsync($"Courses/{courseModel.Id}/Scorecards", playerScores);
         }
     }
 

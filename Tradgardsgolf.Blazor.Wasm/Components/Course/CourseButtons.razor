@@ -1,6 +1,4 @@
-﻿@inherits CourseButtonsBase
-
-@if (Visible)
+﻿@if (Visible)
 {
     <div class="card-action">
         <CascadingValue Value="Course">
@@ -9,6 +7,17 @@
     </div>
 }
 
+@code
+{
+    [CascadingParameter]
+    public Api.Shared.CourseModel Course { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public bool Visible { get; set; } = true;
+}
 
 
 

@@ -4,11 +4,12 @@ using System.Linq;
 using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.Swagger.Annotations;
+using Tradgardsgolf.Api.Shared;
 using Tradgardsgolf.Core.Services.Course;
 
 namespace Tradgardsgolf.Api.Endpoints.Courses
 {
-    public class List : BaseEndpoint<CourseListRequest, IEnumerable<CourseListResponse>>
+    public class List : BaseEndpoint<IEnumerable<CourseModel>>
     {
         private readonly ICourseService _courseService;
 
@@ -22,33 +23,27 @@ namespace Tradgardsgolf.Api.Endpoints.Courses
             OperationId = "Course.List",
             Tags = new[] { "Courses" })
         ]
-        public override ActionResult<IEnumerable<CourseListResponse>> Handle([FromQuery] CourseListRequest request)
+        public override ActionResult<IEnumerable<CourseModel>> Handle()
         {
             var courses = _courseService.ListAll();
 
-            return Ok(courses.Select(x => new CourseListResponse(x)));
+            var models = courses.Select(x => new CourseModel()
+            {
+                Created = x.Created,
+                Holes = x.Holes,
+                Id = x.Id,
+                Image = x.Image,
+                Latitude = x.Latitude,
+                Longitude = x.Longitude,
+                Name = x.Name,
+                CreatedBy = new PlayerModel()
+                {
+                    Id = x.CreatedBy.Id,
+                    Name = x.Name
+                }
+            });
+
+            return Ok(models);
         }
-    }
-
-    public class CourseListResponse
-    {
-        private readonly ICourseModelResult _courseModelResult;
-
-        public int Id => _courseModelResult.Id;
-        public string Name => _courseModelResult.Name;
-        public int Holes => _courseModelResult.Holes;
-        public double Longitude => _courseModelResult.Longitude;
-        public double Latitude => _courseModelResult.Latitude;
-        public string Image => _courseModelResult.Image;
-        public DateTime Created => _courseModelResult.Created;
-        
-        public CourseListResponse(ICourseModelResult courseModelResult)
-        {
-            _courseModelResult = courseModelResult;
-        }
-    }
-
-    public class CourseListRequest
-    {
     }
 }

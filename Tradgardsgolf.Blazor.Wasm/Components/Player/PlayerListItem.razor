@@ -1,4 +1,5 @@
-﻿<li class="collection-item avatar">
+﻿@using Tradgardsgolf.Api.Shared
+<li class="collection-item avatar">
     <Avatar Player="Player"></Avatar>
     <span class="title">@Player.Name</span>
     <div class="secondary-content">
@@ -9,7 +10,7 @@
 @code
 {
     [Parameter]
-    public Player Player { get; set; }
+    public PlayerModel Player { get; set; }
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }

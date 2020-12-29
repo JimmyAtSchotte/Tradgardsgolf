@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Tradgardsgolf.Api.Shared
 @inject ICourseApiService CourseApiService
 @inject NavigationManager NavigationManager
 @inject LocationService LocationService
@@ -40,7 +41,7 @@ else
     [CascadingParameter] 
     public CascadingStateProvider State { get; set; }
     
-    private IEnumerable<Course> _courses;
+    private IEnumerable<CourseModel> _courses;
     private Location _location;
     
     protected override async Task OnInitializedAsync()
@@ -50,16 +51,16 @@ else
         await LocationService.WatchLocation(LocationCallback);
     }
 
-    private double Distance(Course course)
+    private double Distance(CourseModel courseModel)
     {
         if(_location == null)
             return int.MaxValue;
 
-        if (course.Name == "Testbanan")
+        if (courseModel.Name == "Testbanan")
             return 0;
         
-        var d1 = course.Latitude * (Math.PI / 180.0);
-        var num1 = course.Longitude * (Math.PI / 180.0);
+        var d1 = courseModel.Latitude * (Math.PI / 180.0);
+        var num1 = courseModel.Longitude * (Math.PI / 180.0);
         var d2 = (double)_location.Latitude * (Math.PI / 180.0);
         var num2 = (double)_location.Longitude * (Math.PI / 180.0) - num1;
         var d3 = Math.Pow(Math.Sin((d2 - d1) / 2.0), 2.0) + Math.Cos(d1) * Math.Cos(d2) * Math.Pow(Math.Sin(num2 / 2.0), 2.0);
@@ -81,14 +82,14 @@ else
         StateHasChanged();
     }
     
-    private bool AllowPlay(Course course)
+    private bool AllowPlay(CourseModel courseModel)
     {
-        return Distance(course) < 400;
+        return Distance(courseModel) < 400;
     }
 
-    private async Task SetupRound(Course course)
+    private async Task SetupRound(CourseModel courseModel)
     {
-        State.AppState.NewScorecard(this, course);
+        State.AppState.NewScorecard(this, courseModel);
         await Task.Delay(1);
         NavigationManager.NavigateTo(nameof(SetupRound));
     }

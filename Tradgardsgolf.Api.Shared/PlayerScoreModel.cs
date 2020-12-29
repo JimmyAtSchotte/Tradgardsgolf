@@ -1,33 +1,32 @@
 ﻿using System.Linq;
 
-namespace Tradgardsgolf.Blazor.Wasm.Data
+namespace Tradgardsgolf.Api.Shared
 {
-    public class PlayerScore
+    public class PlayerScoreModel
     {
-        public Player Player { get; set; }
+        public PlayerModel Player { get; set; }
 
         public HoleScoreCollection Scores { get; set; }
 
-
-        public PlayerScore()
+        public PlayerScoreModel()
         {
 
         }
 
-        private PlayerScore(Player player, HoleScoreCollection scores)
+        private PlayerScoreModel(PlayerModel player, HoleScoreCollection scores)
         {
             Player = player;
             Scores = scores;
         }
 
-        public static PlayerScore Create(string name, int holes)
+        public static PlayerScoreModel Create(string name, int holes)
         {
             var scores = new HoleScoreCollection();
 
             for (int hole = 1; hole <= holes; hole++)
-                scores.Add(HoleScore.Create(hole));
+                scores.Add(HoleScoreModel.Create(hole));
 
-            return new PlayerScore(new Player()
+            return new PlayerScoreModel(new PlayerModel()
             {
                 Name = name
             }, scores);

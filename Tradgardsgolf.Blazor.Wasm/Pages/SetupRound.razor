@@ -1,8 +1,9 @@
 ﻿@page "/SetupRound"
+@using Tradgardsgolf.Api.Shared
 @inject ICourseApiService CourseApiService
 @inject NavigationManager NavigationManager
 
-<CourseCard Course="State.AppState.ScorecardState.Course">
+<CourseCard Course="State.AppState.ScorecardState.CourseModel">
     <CourseHead></CourseHead>
     <CourseContent Title="Börja med att lägga till spelare" Visible="!State.AppState.ScorecardState.PlayerScores.Any()"></CourseContent>
     <CourseContent Title="Valda spelare" Visible="State.AppState.ScorecardState.PlayerScores.Any()">
@@ -28,7 +29,7 @@ else if (AvailablePlayers.Any())
 {
     <div class="card">
         <div class="card-content">
-            <span class="card-title">Har tidigare spelat på @State.AppState.ScorecardState.Course.Name</span>     
+            <span class="card-title">Har tidigare spelat på @State.AppState.ScorecardState.CourseModel.Name</span>     
             <List>
                 @foreach (var player in AvailablePlayers)
                 {
@@ -60,13 +61,13 @@ else if (AvailablePlayers.Any())
     public CascadingStateProvider State { get; set; }
     
     private string PlayerName { get; set; }
-    private IEnumerable<Player> _availablePlayers;
-    private IEnumerable<Player> AvailablePlayers => _availablePlayers
-        .Where(x => State.AppState.ScorecardState.PlayerScores.All(player => player.Player.Name != x.Name)) ?? Enumerable.Empty<Player>();
+    private IEnumerable<PlayerModel> _availablePlayers;
+    private IEnumerable<PlayerModel> AvailablePlayers => _availablePlayers
+        .Where(x => State.AppState.ScorecardState.PlayerScores.All(player => player.Player.Name != x.Name)) ?? Enumerable.Empty<PlayerModel>();
 
     protected override async Task OnInitializedAsync()
     {
-        _availablePlayers = (await CourseApiService.Players(State.AppState.ScorecardState.Course)).ToList();
+        _availablePlayers = (await CourseApiService.Players(State.AppState.ScorecardState.CourseModel)).ToList();
         
         await base.OnInitializedAsync();
     }

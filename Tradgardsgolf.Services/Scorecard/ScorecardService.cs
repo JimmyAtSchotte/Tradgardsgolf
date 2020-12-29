@@ -21,13 +21,13 @@ namespace Tradgardsgolf.Services.Scorecard
             _playerRepository = playerRepository;
         }
 
-        public void Add(IScorecardModel model)
+        public void Add(IAddScorecardCommand command)
         {
-            var scorecard = new ScorecardDto(model);
+            var scorecard = new ScorecardDto(command);
 
-            foreach (var score in model.PlayerScores)
+            foreach (var score in command.PlayerScores)
             {
-                var player = _playerRepository.Find(new FindPlayerPlayedOnCourseDto(model.CourseId, score.Name)) ??
+                var player = _playerRepository.Find(new FindPlayerPlayedOnCourseDto(command.CourseId, score.Name)) ??
                              _playerRepository.Add(new AddPlayerDto(score.Name));
 
                 scorecard.AddScore(new PlayerScoreDto(player.Id, score.Scores));
@@ -61,15 +61,15 @@ namespace Tradgardsgolf.Services.Scorecard
 
     public class ScorecardDto : IScorecardDto
     {
-        private readonly IScorecardModel _model;
+        private readonly IAddScorecardCommand _command;
         private readonly IList<IPlayerScoreDto> _playerScores;
 
-        public int CourseId => _model.CourseId;
+        public int CourseId => _command.CourseId;
         public IEnumerable<IPlayerScoreDto> PlayerScores => _playerScores;
 
-        public ScorecardDto(IScorecardModel model)
+        public ScorecardDto(IAddScorecardCommand command)
         {
-            _model = model;
+            _command = command;
             _playerScores = new List<IPlayerScoreDto>();
         }
 

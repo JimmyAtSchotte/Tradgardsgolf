@@ -6,16 +6,16 @@ namespace Tradgardsgolf.Core.Services.Scorecard
 {
     public interface IScorecardService
     {
-        void Add(IScorecardModel model);
+        void Add(IAddScorecardCommand command);
     }
 
-    public interface IScorecardModel
+    public interface IAddScorecardCommand
     {
         int CourseId { get; }
-        IEnumerable<IPlayerScoreModel> PlayerScores { get; }
+        IEnumerable<IPlayerScoreCommand> PlayerScores { get; }
     }
 
-    public interface IPlayerScoreModel
+    public interface IPlayerScoreCommand
     {
         string Name { get; }
         int[] Scores { get; }

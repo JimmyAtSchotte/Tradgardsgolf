@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Tradgardsgolf.Api.Shared
 {
-    public class Round
+    public class RoundModel
     {
         public DateTime Date { get; set; }
-        public IEnumerable<RoundScore> Scores { get; set; }
+        public IEnumerable<RoundScoreModel> Scores { get; set; }
     }
 }

@@ -1,9 +1,10 @@
 ﻿@page "/Scorecard"
+@using Tradgardsgolf.Api.Shared
 @inject NavigationManager NavigationManager
 @inject ICourseApiService CourseApiService
 @inject IModalService Modal
 
-<CourseCard Course="State.AppState.ScorecardState.Course">
+<CourseCard Course="State.AppState.ScorecardState.CourseModel">
     <CourseHead></CourseHead>
     <CourseContent>
         <table class="centered">
@@ -20,7 +21,7 @@
             </thead>
 
             <tbody>
-            @for (int i = 1; i <= State.AppState.ScorecardState.Course.Holes; i++)
+            @for (int i = 1; i <= State.AppState.ScorecardState.CourseModel.Holes; i++)
             {
                 var hole = i;
 
@@ -103,7 +104,7 @@
         Saving = true;
         StateHasChanged();
 
-        CourseApiService.SaveScorecard(State.AppState.ScorecardState.Course, 
+        CourseApiService.SaveScorecard(State.AppState.ScorecardState.CourseModel, 
             State.AppState.ScorecardState.PlayerScores);
 
         DisplayPlayAgain = true;
@@ -121,15 +122,15 @@
     }
 
 
-    private async Task SetScore(PlayerScore playerScore, int hole)
+    private async Task SetScore(PlayerScoreModel playerScoreModel, int hole)
     {
-        var modal = Modal.Show<HoleScoreModal>($"{playerScore.Player.Name}, hål {hole}?");
+        var modal = Modal.Show<HoleScoreModal>($"{playerScoreModel.Player.Name}, hål {hole}?");
         var result = await modal.Result;
         if(result.Cancelled)
             return;
 
         var score = Convert.ToInt32(result.Data);
-        await State.AppState.ScorecardState.SetScore(this, playerScore.Player.Name, hole, score);
+        await State.AppState.ScorecardState.SetScore(this, playerScoreModel.Player.Name, hole, score);
 
         StateHasChanged();
     }

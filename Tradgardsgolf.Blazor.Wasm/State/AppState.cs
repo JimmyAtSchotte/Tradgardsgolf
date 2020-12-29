@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using Tradgardsgolf.Blazor.Wasm.Data;
+using Tradgardsgolf.Api.Shared;
 
 namespace Tradgardsgolf.Blazor.Wasm.State
 {
@@ -30,9 +30,9 @@ namespace Tradgardsgolf.Blazor.Wasm.State
             LastAccessed = DateTime.Now;
         }
 
-        public void NewScorecard(ComponentBase source, Course course)
+        public void NewScorecard(ComponentBase source, CourseModel courseModel)
         {
-            ScorecardState = ScorecardState.Create(course);
+            ScorecardState = ScorecardState.Create(courseModel);
             ScorecardState.StateChanged += ScorecardStateOnStateChanged;
             NotifyStateChange(source, nameof(ScorecardState));
         }

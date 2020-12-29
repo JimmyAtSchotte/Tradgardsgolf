@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.Swagger.Annotations;
+using Tradgardsgolf.Api.Shared;
 using Tradgardsgolf.Core.Services.Scorecard;
 
 namespace Tradgardsgolf.Api.Endpoints.Courses.Scorecards
@@ -25,40 +26,44 @@ namespace Tradgardsgolf.Api.Endpoints.Courses.Scorecards
         ]
         public override async Task<ActionResult<CourseScorecardAddResponse>> HandleAsync([FromBody] CourseScorecardAddRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            _scorecardService.Add(new ScorecardModel(request));
+            _scorecardService.Add(new AddScorecardCommand(request));
 
             return Ok(await Task.FromResult(new CourseScorecardAddResponse()));
         }
     }
 
-    public class ScorecardModel : IScorecardModel
+    public class AddScorecardCommand : IAddScorecardCommand
     {
         private readonly CourseScorecardAddRequest _request;
 
-        public ScorecardModel(CourseScorecardAddRequest request)
+        public AddScorecardCommand(CourseScorecardAddRequest request)
         {
             _request = request;
         }
 
         public int CourseId => _request.Id;
-        public IEnumerable<IPlayerScoreModel> PlayerScores => _request.PlayerScores.Select(x => new PlayerScoreModel(x));
+        public IEnumerable<IPlayerScoreCommand> PlayerScores => _request.PlayerScores.Select(x => new PlayerScoreCommand(x));
     }
 
-    public class PlayerScoreModel : IPlayerScoreModel
+    public class PlayerScoreCommand : IPlayerScoreCommand
     {
-        private readonly PlayerScoreRequest _playerScoreRequest;
+        private readonly PlayerScoreModel _playerScoreRequest;
 
-        public PlayerScoreModel(PlayerScoreRequest playerScoreRequest)
+        public PlayerScoreCommand(PlayerScoreModel playerScoreRequest)
         {
             _playerScoreRequest = playerScoreRequest;
         }
 
-        public string Name => _playerScoreRequest.Name;
-        public int[] Scores => _playerScoreRequest.Scores;
+        public string Name => _playerScoreRequest.Player.Name;
+        public int[] Scores => _playerScoreRequest.Scores
+            .OrderBy(x => x.Hole)
+            .Select(x => x.Score.GetValueOrDefault())
+            .ToArray();
     }
 
     public class CourseScorecardAddResponse
     {
+        
     }
 
     public class CourseScorecardAddRequest
@@ -66,12 +71,6 @@ namespace Tradgardsgolf.Api.Endpoints.Courses.Scorecards
         [FromRoute]
         public int Id { get; set; }
 
-        public IEnumerable<PlayerScoreRequest> PlayerScores { get; set; }
-    }
-
-    public class PlayerScoreRequest
-    {
-        public string Name { get; set; }
-        public int[] Scores { get; set; }
+        public IEnumerable<PlayerScoreModel> PlayerScores { get; set; }
     }
 }

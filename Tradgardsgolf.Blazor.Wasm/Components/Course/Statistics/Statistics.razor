@@ -7,18 +7,18 @@
 
 @code {
     [CascadingParameter]
-    public Data.Course Course { get; set; }
+    public CourseModel CourseModel { get; set; }
     
     [Parameter]
     public RenderFragment ChildContent { get; set; }
     
-    public CourseStatistic CourseStatistic { get; set; }
+    public CourseStatisticModel CourseStatisticModel { get; set; }
     public bool Loading { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
         Loading = true;
-        CourseStatistic = await CourseApiService.Statistics(Course);
+        CourseStatisticModel = await CourseApiService.Statistics(CourseModel);
         Loading = false;
     }
 }

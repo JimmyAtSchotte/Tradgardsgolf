@@ -13,10 +13,10 @@
     
     protected override void OnParametersSet()
     {
-        if(Statistics?.CourseStatistic == null)
+        if(Statistics?.CourseStatisticModel == null)
             return;
 
-        _bestScore = Statistics.CourseStatistic.Rounds.Select(x => new
+        _bestScore = Statistics.CourseStatisticModel.Rounds.Select(x => new
         {
             Rounds = x.Scores.GroupBy(score => score.Player)
                 .Select(p => new BestScoreModel()

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.Swagger.Annotations;
-using Tradgardsgolf.Core.Entities;
+using Tradgardsgolf.Api.Shared;
 using Tradgardsgolf.Core.Services.Player;
 
 namespace Tradgardsgolf.Api.Endpoints.Courses
 {
-    public class Players : BaseAsyncEndpoint<CoursePlayerRequest, IEnumerable<CoursePlayerResponse> >
+    public class Players : BaseAsyncEndpoint<CoursePlayerRequest, IEnumerable<PlayerModel> >
     {
         private readonly IPlayerService _playerService;
 
@@ -24,26 +24,20 @@ namespace Tradgardsgolf.Api.Endpoints.Courses
             OperationId = "Course.Players",
             Tags = new[] { "Courses" })
         ]
-        public override async Task<ActionResult<IEnumerable<CoursePlayerResponse>>> HandleAsync([FromRoute] CoursePlayerRequest request, CancellationToken cancellationToken = new CancellationToken())
+        public override async Task<ActionResult<IEnumerable<PlayerModel>>> HandleAsync([FromRoute] CoursePlayerRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
             var players = await _playerService.ListPlayersThatHasPlayedOnCourseAsync(request.Id);
 
-            return Ok(players.Select(x => new CoursePlayerResponse(x)));
+            var models = players.Select(x => new PlayerModel()
+            {
+                Id = x.Id,
+                Name = x.Name
+            });
+
+            return Ok(models);
         }
     }
-
-    public class CoursePlayerResponse
-    {
-        private readonly Player _player;
-
-        public int Id => _player.Id;
-        public string Name => _player.Name;
-        public CoursePlayerResponse(Player player)
-        {
-            _player = player;
-        }
-    }
-
+    
     public class CoursePlayerRequest
     {
         public int Id { get; set; }

@@ -1,9 +1,10 @@
-﻿<span class="circle green lighten-4 center-align" style="width: 42px; height: 42px; display: inline-block">
+﻿@using Tradgardsgolf.Api.Shared
+<span class="circle green lighten-4 center-align" style="width: 42px; height: 42px; display: inline-block">
     <h5 style="line-height: 42px; vertical-align: middle; margin-top: 0px;">@Player.Name.Substring(0, 1).ToUpper()</h5>
 </span>
 
 
 @code{
     [Parameter]
-    public Player Player { get; set; }
+    public PlayerModel Player { get; set; }
 }

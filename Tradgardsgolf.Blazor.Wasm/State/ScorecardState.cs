@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using Tradgardsgolf.Blazor.Wasm.Data;
+using Tradgardsgolf.Api.Shared;
 
 namespace Tradgardsgolf.Blazor.Wasm.State
 {
@@ -12,30 +12,30 @@ namespace Tradgardsgolf.Blazor.Wasm.State
         private ScorecardState()
         {
         }
-        public static ScorecardState Create(Course course, params PlayerScore[] playerScores)
+        public static ScorecardState Create(CourseModel courseModel, params PlayerScoreModel[] playerScores)
         {
             return new ()
             {
-                Course = course,
+                CourseModel = courseModel,
                 PlayerScores = playerScores.ToList(),
             };
         }
 
-        public ScorecardState(Course course, IEnumerable<PlayerScore> playerScores)
+        public ScorecardState(CourseModel courseModel, IEnumerable<PlayerScoreModel> playerScores)
         {
-            Course = course;
+            CourseModel = courseModel;
             PlayerScores = playerScores.ToList();
         }
         
         [JsonProperty] 
-        public Course Course { get; private set; }
+        public CourseModel CourseModel { get; private set; }
         
         [JsonProperty] 
-        public List<PlayerScore> PlayerScores { get; private set; }
+        public List<PlayerScoreModel> PlayerScores { get; private set; }
 
         public async Task AddPlayer(ComponentBase source, string name)
         {
-            var player = PlayerScore.Create(name, Course.Holes);
+            var player = PlayerScoreModel.Create(name, CourseModel.Holes);
             PlayerScores.Add(player);
             await Task.Delay(1);
             base.NotifyStateChange(source, nameof(PlayerScores));

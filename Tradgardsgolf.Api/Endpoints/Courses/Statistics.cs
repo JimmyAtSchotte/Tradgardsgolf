@@ -8,12 +8,10 @@ using Tradgardsgolf.Api.Shared;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Services.Course;
 using Tradgardsgolf.Core.Services.Round;
-using Round = Tradgardsgolf.Api.Shared.Round;
-using RoundScore = Tradgardsgolf.Api.Shared.RoundScore;
 
 namespace Tradgardsgolf.Api.Endpoints.Courses
 {
-    public class Statistics : BaseAsyncEndpoint<CourseStatisticsRequest, CourseStatistic>
+    public class Statistics : BaseAsyncEndpoint<CourseStatisticsRequest, CourseStatisticModel>
     {
         private readonly ICourseService _courseService;
 
@@ -27,16 +25,16 @@ namespace Tradgardsgolf.Api.Endpoints.Courses
             OperationId = "Course.Statistics",
             Tags = new[] { "Courses" })
         ]
-        public override async Task<ActionResult<CourseStatistic>> HandleAsync([FromRoute] CourseStatisticsRequest request, CancellationToken cancellationToken = new CancellationToken())
+        public override async Task<ActionResult<CourseStatisticModel>> HandleAsync([FromRoute] CourseStatisticsRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
            var rounds = await _courseService.ListAllRounds(request.Id);
            
-           var courseStatistic = new CourseStatistic()
+           var courseStatistic = new CourseStatisticModel()
            {
-               Rounds = rounds.Select(round => new Round()
+               Rounds = rounds.Select(round => new RoundModel()
                {
                    Date = round.Date,
-                   Scores = round.RoundScores.Select(score => new RoundScore()
+                   Scores = round.RoundScores.Select(score => new RoundScoreModel()
                    {
                         Player = score.Player.Name,
                         Hole = score.Hole,

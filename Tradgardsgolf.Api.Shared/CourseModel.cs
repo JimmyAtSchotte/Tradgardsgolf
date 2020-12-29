@@ -1,23 +1,18 @@
 ﻿using System;
 
-namespace Tradgardsgolf.Blazor.Wasm.Data
+namespace Tradgardsgolf.Api.Shared
 {
-    public class Course 
+    public class CourseModel 
     {             
         public int Id { get; set; }
         public string Name { get; set; }
         public int Holes { get; set; }
         public double Longitude { get; set;  }
         public double Latitude { get; set; }
-        public CourseCreatedBy CreatedBy { get; set; }
+        
+        public PlayerModel CreatedBy { get; set; }
         
         public DateTime Created { get; set; }
         public string Image { get; set; }
-
-        public class CourseCreatedBy
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-        }
     }
 }
