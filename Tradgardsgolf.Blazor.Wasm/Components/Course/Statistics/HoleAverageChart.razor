@@ -1,0 +1,65 @@
+﻿@if (Display())
+{
+    <table>
+        <tr>
+            <th>Hål</th>
+            <th>Snitt</th>
+            <th>Hole in one</th>
+        </tr>
+           @foreach (var holeAverage in _holeAverageModels)
+            {
+                <tr>
+                    <td>@holeAverage.Hole</td>
+                    <td>@Math.Round(holeAverage.Average, 1)</td>
+                    <td>@holeAverage.HoleInOnes</td>
+                </tr>
+            }
+    </table>
+}
+
+@code {
+    [CascadingParameter]
+    public Statistics Statistics { get; set; }
+
+    private HoleStatisticModel[] _holeAverageModels;
+
+    protected override void OnParametersSet()
+    {
+        if(Statistics?.CourseStatisticModel == null)
+            return;
+        
+        _holeAverageModels = Statistics.CourseStatisticModel.Rounds.Select(x => new
+        {
+            Rounds = x.Scores.GroupBy(score => score.Hole)
+                .Select(p => new
+                {
+                    Hole = p.Key,
+                    Scores = p.Select(s => s.Score),
+                    PlayerCount = p.Count(),
+                    HoleInOnes = p.Count(s => s.Score == 1)
+                })
+        }).SelectMany(x => x.Rounds)
+            .GroupBy(x => x.Hole)
+            .Select(x => new HoleStatisticModel
+            {
+                Hole = x.Key,
+                Average = (double) x.Sum(score => score.Scores.Sum()) / (double) x.Sum(p => p.PlayerCount),
+                HoleInOnes = x.Sum(s => s.HoleInOnes)
+            })
+            .OrderBy(x => x.Hole)
+            .ToArray();
+    }
+
+    private bool Display()
+    {
+        return Statistics != null && _holeAverageModels != null && !Statistics.Loading;
+    }
+
+    private class HoleStatisticModel
+    {
+        public int Hole { get; set; }
+        public double Average { get; set; }
+        public int HoleInOnes { get; set; }
+    }
+
+}
