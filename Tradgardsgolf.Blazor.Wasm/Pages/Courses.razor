@@ -18,7 +18,7 @@ else
         </div>
     }
 
-    @foreach (var course in _courses.OrderBy(Distance))
+    @foreach (var course in _courses)
     {
         <CourseCard Course="course">
             <CourseHead>
@@ -70,6 +70,14 @@ else
     private void LocationCallback(Location location)
     {
         _location = location;
+
+        var distanceOrdered = _courses.OrderBy(Distance).ToList();
+        
+        if(_courses.SequenceEqual(distanceOrdered))
+            return;
+
+        _courses = distanceOrdered;
+        
         StateHasChanged();
     }
     
