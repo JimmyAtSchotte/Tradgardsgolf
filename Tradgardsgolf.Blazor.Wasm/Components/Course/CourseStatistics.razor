@@ -1,0 +1,35 @@
+﻿
+<Tabs SelectedTab="@_selectedTab" 
+      SelectedTabChanged="@OnSelectedTabChanged"
+      FullWidth="true"
+      Pills="true">
+    <Items>
+        <Tab Name="@nameof(SeasonTable)">Säsongstabell</Tab>
+        <Tab Name="@nameof(TopScores)">Bästa resultaten</Tab>
+        <Tab Name="@nameof(TopAverages)">Bästa snitt</Tab>
+        <Tab Name="@nameof(HoleAverageChart)">Snitt per hål</Tab>
+    </Items>
+    <Content>
+        <TabPanel Name="@nameof(SeasonTable)">
+            <SeasonTableTabs></SeasonTableTabs>
+        </TabPanel>
+        <TabPanel Name="@nameof(TopScores)">
+            <TopScores></TopScores>
+        </TabPanel>
+        <TabPanel Name="@nameof(TopAverages)">
+            <TopAverages></TopAverages>
+        </TabPanel>
+        <TabPanel Name="@nameof(HoleAverageChart)">
+            <HoleAverageChart></HoleAverageChart>
+        </TabPanel>
+    </Content>
+</Tabs>
+
+@code{
+    private string _selectedTab = string.Empty;
+
+    private void OnSelectedTabChanged( string name )
+    {
+        _selectedTab = name;
+    }
+}

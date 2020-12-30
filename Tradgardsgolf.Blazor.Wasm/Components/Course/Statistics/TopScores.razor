@@ -1,28 +1,32 @@
 ﻿@if (Display())
 {
-    <table>
+    <Table>
+        <TableHeader>
+            <TableHeaderCell>#</TableHeaderCell>
+            <TableHeaderCell>Spelare</TableHeaderCell>
+            <TableHeaderCell>Resultat</TableHeaderCell>
+            <TableHeaderCell>Datum</TableHeaderCell>
+        </TableHeader>
         @for (var i = 0; i < _topScore.Count(); i++)
         {
-            <tr>
-                <td>
-                    @if (i == 0)
+            var index = i;
+            <TableRow>
+                <TableRowCell>
+                    @if (index == 0)
                     {
                         <i class="material-icons">emoji_events</i>
                     }
                     else
                     {
-                        @(i + 1)
+                        @(index + 1)
                     }
-                </td>
-                <td>@_topScore[i].Player</td>
-                <td>@_topScore[i].ToatalScore</td>
-                <td>@_topScore[i].Date.ToString("yyyy-MM-dd")</td>
-            </tr>
+                </TableRowCell>
+                <TableRowCell>@_topScore[index].Player</TableRowCell>
+                <TableRowCell>@_topScore[index].ToatalScore</TableRowCell>
+                <TableRowCell>@_topScore[index].Date.ToString("yyyy-MM-dd")</TableRowCell>
+            </TableRow>
         }
-        <tr>
-
-        </tr>
-    </table>
+    </Table>
 }
 
 @code {

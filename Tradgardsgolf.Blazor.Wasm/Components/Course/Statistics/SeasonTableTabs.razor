@@ -1,0 +1,47 @@
+﻿<Tabs SelectedTab="@_selectedTab"
+      SelectedTabChanged="@OnSelectedTabChanged"
+      FullWidth="true"
+      Pills="true">
+    <Items>
+        @foreach (var year in _years)
+        {
+            <Tab Name="@year.ToString()">@year</Tab>
+        }
+    </Items>
+    <Content>
+        @foreach (var y in _years)
+        {
+            var year = y;
+            <TabPanel Name="@year.ToString()">
+                <SeasonTable Year="@year"></SeasonTable>
+            </TabPanel>
+        }
+    </Content>
+</Tabs>
+
+@code {
+
+    [CascadingParameter]
+    public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+
+    private string _selectedTab = string.Empty;
+    private int[] _years = Enumerable.Empty<int>().ToArray();
+
+    private void OnSelectedTabChanged(string name)
+    {
+        _selectedTab = name;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (CascadingCourseStatistics?.CourseStatisticModel == null)
+            return;
+
+        _years = CascadingCourseStatistics.CourseStatisticModel.Rounds
+            .Select(x => x.Date.Year)
+            .Distinct()
+            .OrderByDescending(x => x)
+            .ToArray();
+    }
+
+}

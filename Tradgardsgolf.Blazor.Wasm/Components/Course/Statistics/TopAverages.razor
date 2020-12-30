@@ -1,27 +1,33 @@
 ﻿@if (Display())
 {
-    <table>
+    <Table>
+        <TableHeader>
+            <TableHeaderCell>#</TableHeaderCell>
+            <TableHeaderCell>Spelare</TableHeaderCell>
+            <TableHeaderCell>Snitt</TableHeaderCell>
+        </TableHeader>
         @for (var i = 0; i < _topAverages.Count(); i++)
         {
-            <tr>
-                <td>
-                    @if (i == 0)
+            var index = i;
+            <TableRow>
+                <TableRowCell>
+                    @if (index == 0)
                     {
                         <i class="material-icons">insights</i>
                     }
                     else
                     {
-                        @(i + 1)
+                        @(index + 1)
                     }
-                </td>
-                <td>@_topAverages[i].Player</td>
-                <td>@Math.Round(_topAverages[i].Average, 1)</td>
-            </tr>
+                </TableRowCell>
+                <TableRowCell>@_topAverages[index].Player</TableRowCell>
+                <TableRowCell>@Math.Round(_topAverages[index].Average, 1)</TableRowCell>
+            </TableRow>
         }
         <tr>
 
         </tr>
-    </table>
+    </Table>
 }
 
 @code {

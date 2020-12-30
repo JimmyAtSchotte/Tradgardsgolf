@@ -1,20 +1,20 @@
 ﻿@if (Display())
 {
-    <table>
-        <tr>
-            <th>Hål</th>
-            <th>Snitt</th>
-            <th>Hole in one</th>
-        </tr>
+    <Table>
+        <TableHeader>
+            <TableHeaderCell>Hål</TableHeaderCell>
+            <TableHeaderCell>Snitt</TableHeaderCell>
+            <TableHeaderCell>Hole in one</TableHeaderCell>
+        </TableHeader>
            @foreach (var holeAverage in _holeAverageModels)
             {
-                <tr>
-                    <td>@holeAverage.Hole</td>
-                    <td>@Math.Round(holeAverage.Average, 1)</td>
-                    <td>@holeAverage.HoleInOnes</td>
-                </tr>
+                <TableRow>
+                    <TableRowCell>@holeAverage.Hole</TableRowCell>
+                    <TableRowCell>@Math.Round(holeAverage.Average, 1)</TableRowCell>
+                    <TableRowCell>@holeAverage.HoleInOnes</TableRowCell>
+                </TableRow>
             }
-    </table>
+    </Table>
 }
 
 @code {
