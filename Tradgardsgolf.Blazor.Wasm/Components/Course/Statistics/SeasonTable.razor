@@ -2,23 +2,24 @@
 @if (Display())
 {
     <Table>
-        
-        <TableRow>
-            <TableRowCell>Spelare</TableRowCell>
-            <TableRowCell ColumnSpan="@CascadingCourse.Course.SeasonTableRounds">Bästa rundor</TableRowCell>
-            <TableRowCell>Totalt</TableRowCell>
-        </TableRow>
-        
-        @foreach (var model in _seasonTableModels)
+        @foreach (var obj in _seasonTableModels.Select((model, i) => new
+        {
+            Position = i +1,
+            Model = model
+        }))
         {
             <TableRow>
-                <TableRowCell>@model.Player</TableRowCell>
+                <TableRowCell ColumnSpan="@(CascadingCourse.Course.SeasonTableRounds + 1)">
+                    <strong>@obj.Position. @obj.Model.Player</strong>
+                </TableRowCell>
+            </TableRow>
+            <TableRow>
                 @for (var i = 0; i < CascadingCourse.Course.SeasonTableRounds; i++)
                 {
                     var index = i;
-                    <TableRowCell>@model.GetScore(index)</TableRowCell>
+                    <TableRowCell Style="border-top: none">@obj.Model.GetScore(index)</TableRowCell>
                 }
-                <TableRowCell>@model.Scores.Sum()</TableRowCell>
+                <TableRowCell Style="border-top: none"><strong>@obj.Model.Scores.Sum()</strong></TableRowCell>
             </TableRow>
         }
     </Table>
