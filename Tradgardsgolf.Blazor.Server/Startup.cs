@@ -3,6 +3,9 @@ using System.Net.Http;
 using AspNetMonsters.Blazor.Geolocation;
 using Blazored.LocalStorage;
 using Blazored.Modal;
+using Blazorise;
+using Blazorise.Icons.Material;
+using Blazorise.Material;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +42,14 @@ namespace Tradgardsgolf.Blazor.Server
             });
 
             services.AddScoped<ICourseApiService, CourseApiService>();
+            
+            services
+                .AddBlazorise( options =>
+                {
+                    options.ChangeTextOnKeyPress = true; // optional
+                } )
+                .AddMaterialProviders()
+                .AddMaterialIcons();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +70,10 @@ namespace Tradgardsgolf.Blazor.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+            
+            app.ApplicationServices
+                .UseMaterialProviders()
+                .UseMaterialIcons();
 
             app.UseEndpoints(endpoints =>
             {

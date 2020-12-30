@@ -7,7 +7,7 @@
 
 @code {
     [CascadingParameter]
-    public CourseModel CourseModel { get; set; }
+    public CascadingCourse CascadingCourse { get; set; }
     
     [Parameter]
     public RenderFragment ChildContent { get; set; }
@@ -18,7 +18,7 @@
     protected override async Task OnParametersSetAsync()
     {
         Loading = true;
-        CourseStatisticModel = await CourseApiService.Statistics(CourseModel);
+        CourseStatisticModel = await CourseApiService.Statistics(CascadingCourse.Course);
         Loading = false;
     }
 }

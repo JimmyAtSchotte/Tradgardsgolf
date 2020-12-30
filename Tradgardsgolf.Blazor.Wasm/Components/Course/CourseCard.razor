@@ -1,17 +1,11 @@
-﻿<div class="card">
-    <CascadingValue Value="Course">
-        @ChildContent
-    </CascadingValue>
-</div>
+﻿<Card Class="course" Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+    @ChildContent
+</Card>
 
 @code
 {
     [Parameter] 
     public RenderFragment ChildContent { get; set; }
-
-
-    [Parameter]
-    public Api.Shared.CourseModel Course { get; set; }
 }
 
 

@@ -1,11 +1,12 @@
 ﻿@using Tradgardsgolf.Api.Shared
-<li class="collection-item avatar">
-    <Avatar Player="Player"></Avatar>
-    <span class="title">@Player.Name</span>
-    <div class="secondary-content">
+
+<Fields Class="player">
+     <Column ColumnSize="ColumnSize.Is2"><Avatar Player="Player"></Avatar></Column>
+     <Column ColumnSize="ColumnSize.Is8"><span>@Player.Name</span></Column>
+     <Column ColumnSize="ColumnSize.Is2">
         @ChildContent
-    </div>
-</li>
+     </Column>
+ </Fields>
 
 @code
 {

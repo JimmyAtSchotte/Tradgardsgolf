@@ -1,13 +1,14 @@
 ﻿@using Tradgardsgolf.Api.Shared
-<div class="card-image">
-    <img src="@CourseModel.Image" alt=" @CourseModel.Name">
-    <span class="card-title ">@CourseModel.Name</span>
-    <div class="card-statistics">@ChildContent</div>
-</div>
+
+<CardHeader>
+    <CardImage Source="@CascadingCourse.Course.Image"></CardImage>
+    <h1>@CascadingCourse.Course.Name</h1>
+    @ChildContent
+</CardHeader>
 
 @code {
     [CascadingParameter]
-    public CourseModel CourseModel { get; set; }
+    public CascadingCourse CascadingCourse { get; set; }
     
     [Parameter]
     public RenderFragment ChildContent { get; set; }

@@ -27,17 +27,17 @@
 
 @code {
     [CascadingParameter]
-    public Statistics Statistics { get; set; }
+    public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
 
     private TopScoreModel[] _topScore;
     private int _listCount = 10;
     
     protected override void OnParametersSet()
     {
-        if(Statistics?.CourseStatisticModel == null)
+        if(CascadingCourseStatistics?.CourseStatisticModel == null)
             return;
 
-        _topScore = Statistics.CourseStatisticModel.Rounds.Select(x => new
+        _topScore = CascadingCourseStatistics.CourseStatisticModel.Rounds.Select(x => new
         {
             Rounds = x.Scores.GroupBy(score => score.Player)
                 .Select(p => new TopScoreModel()
@@ -64,7 +64,7 @@
 
     private bool Display()
     {
-        return Statistics != null && _topScore != null && !Statistics.Loading;
+        return CascadingCourseStatistics != null && _topScore != null && !CascadingCourseStatistics.Loading;
     }
 
 }

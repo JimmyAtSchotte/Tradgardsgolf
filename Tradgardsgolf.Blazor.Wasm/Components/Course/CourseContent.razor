@@ -1,27 +1,14 @@
 ﻿@if(Visible)
 {
-    <div class="card-content">
-        @if(!string.IsNullOrEmpty(Title))
-        {
-            <h5>@Title</h5>
-        }
-
-        <CascadingValue Value="CourseModel">
-            @ChildContent
-        </CascadingValue>
-    </div>
+    <CardBody>
+        @ChildContent
+    </CardBody>
 }
 
 @code
 {
-    [CascadingParameter]
-    public Api.Shared.CourseModel CourseModel { get; set; }
-
     [Parameter]
     public RenderFragment ChildContent { get; set; }
-
-    [Parameter]
-    public string Title { get; set; }
 
     [Parameter]
     public bool Visible { get; set; } = true;

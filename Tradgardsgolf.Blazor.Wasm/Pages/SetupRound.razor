@@ -1,25 +1,43 @@
 ﻿@page "/SetupRound"
-@using Tradgardsgolf.Api.Shared
 @inject ICourseApiService CourseApiService
 @inject NavigationManager NavigationManager
 
-<CourseCard Course="State.AppState.ScorecardState.CourseModel">
-    <CourseHead></CourseHead>
-    <CourseContent Title="Börja med att lägga till spelare" Visible="!State.AppState.ScorecardState.PlayerScores.Any()"></CourseContent>
-    <CourseContent Title="Valda spelare" Visible="State.AppState.ScorecardState.PlayerScores.Any()">
-        <List>
-            @foreach (var player in State.AppState.ScorecardState.PlayerScores)
-            {
-                <PlayerListItem Player="player.Player">
-                    <IconButton OnClick="async () => await RemovePlayer(player.Player.Name)" Icon="delete"></IconButton>
-                </PlayerListItem>
-            }
-        </List>
-    </CourseContent>
-    <CourseButtons Visible="State.AppState.ScorecardState.PlayerScores.Any()">
-        <ImageButton OnClick="async () => await Play()" Text="Börja spela" Icon="play_arrow"></ImageButton>
-    </CourseButtons>
-</CourseCard>
+<CascadingCourse Course="State.AppState.ScorecardState.CourseModel">
+    <CascadingCourseStatistics>
+        <CourseCard>
+            <CourseHead>
+                <CourseHeaderStatistics/>
+            </CourseHead>
+            <CourseContent>
+                @if (State.AppState.ScorecardState.PlayerScores.Any())
+                {
+                    <CardTitle>Valda spelare</CardTitle>
+
+                    @foreach (var player in State.AppState.ScorecardState.PlayerScores)
+                    {
+                        <PlayerListItem Player="player.Player">
+                            <Button Clicked="async () => await RemovePlayer(player.Player.Name)" Float="Float.Right" Color="Color.Danger">
+                                <Icon Name="Blazorise.Icons.Material.MaterialIcons.Delete"></Icon>
+                            </Button>
+                        </PlayerListItem>
+                    }
+                }
+                else
+                {
+                    <CardTitle>Börja med att lägga till spelare</CardTitle>
+                }
+            </CourseContent>
+            <CourseButtons>
+                @* <Button Float="Float.Left">Lägg till spelare <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon></Button> *@
+                <Button Clicked="async () => await Play()" 
+                        Float="Float.Right" 
+                        Disabled="!State.AppState.ScorecardState.PlayerScores.Any()"
+                        Color="Color.Primary">Börja spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.PlayArrow"></Icon></Button>
+            </CourseButtons>
+        </CourseCard>
+
+    </CascadingCourseStatistics>
+</CascadingCourse>
 
 @if (_availablePlayers == null)
 {
@@ -27,48 +45,49 @@
 }
 else if (AvailablePlayers.Any())
 {
-    <div class="card">
-        <div class="card-content">
-            <span class="card-title">Har tidigare spelat på @State.AppState.ScorecardState.CourseModel.Name</span>     
-            <List>
-                @foreach (var player in AvailablePlayers)
-                {
-                    <PlayerListItem Player="player">
-                        <IconButton OnClick="async () => await AddPlayer(player.Name)" Icon="add"></IconButton>
-                    </PlayerListItem>
-                }
-            </List>
-        </div>
-    </div>
+    <Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+        <CardBody>
+            <CardTitle>Har tidigare spelat på @State.AppState.ScorecardState.CourseModel.Name</CardTitle>
+            @foreach (var player in AvailablePlayers)
+            {
+                <PlayerListItem Player="player">
+                    <Button Clicked="async () => await AddPlayer(player.Name)" Float="Float.Right" Color="Color.Primary">
+                        <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon>
+                    </Button>
+                </PlayerListItem>
+            }
+        </CardBody>
+    </Card>
 }
 
-<div class="card green lighten-5">
-    <div class="card-content">
-        <span class="card-title">Ny spelare</span>
-        <div class="input-field">
-            <input @bind="PlayerName" id="new_player" type="text" />
-            <label for="new_player">Namn</label>
-        </div>
-    </div>
-    <div class="card-action">
-        <ImageButton OnClick="async () => await AddPlayer(PlayerName)" Text="Lägg till" Icon="add"></ImageButton>
-    </div>
-</div>
+<Card Background="Background.Light" Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+    <CardBody>
+        <CardTitle>Ny spelare</CardTitle>
+        <Field>
+            <FieldLabel>Namn</FieldLabel>
+            <TextEdit Placeholder="Skriv namn" TextChanged="s => PlayerName = s"/>
+        </Field>
+    </CardBody>
+    <CardFooter>
+        <Button Clicked="async () => await AddPlayer(PlayerName)" Float="Float.Right" Color="Color.Primary">Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon></Button>
+    </CardFooter>
+</Card>
 
-@code 
+@code
 {
-    [CascadingParameter] 
+    [CascadingParameter]
     public CascadingStateProvider State { get; set; }
-    
+
     private string PlayerName { get; set; }
     private IEnumerable<PlayerModel> _availablePlayers;
+
     private IEnumerable<PlayerModel> AvailablePlayers => _availablePlayers
         .Where(x => State.AppState.ScorecardState.PlayerScores.All(player => player.Player.Name != x.Name)) ?? Enumerable.Empty<PlayerModel>();
 
     protected override async Task OnInitializedAsync()
     {
         _availablePlayers = (await CourseApiService.Players(State.AppState.ScorecardState.CourseModel)).ToList();
-        
+
         await base.OnInitializedAsync();
     }
 
@@ -95,11 +114,5 @@ else if (AvailablePlayers.Any())
         await Task.Delay(1);
         NavigationManager.NavigateTo("Scorecard");
     }
-    
+
 }
-
-
-
-
-
-

@@ -1,24 +1,58 @@
-﻿.card .card-image .card-title {
-    text-shadow: 2px 2px 2px black;
-    font-weight: 700;
+﻿.course .card-header
+{
+    position: relative;
+    padding: 0;
 }
 
-.card .card-statistics 
+.course .card-header h1 {
+    color: #ffffff;
+    text-shadow: 2px 2px 2px black;    
+    font-size: 1.6em;
+    font-weight: 700;
+    position: absolute;
+    bottom: 0;
+    left: 1em;
+    line-height: 3rem;
+}
+
+.course .card-header ul
 {
     text-shadow: 2px 2px 2px black;
     font-weight: 500;
     color: #fff;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 1em;
+    right: 1em;
     max-width: 100%;
-    padding: 0px 10px
+    list-style-type: none;
 }
 
-.card .card-statistics i {
+.course .card-header ul i {
     margin-right: 10px;
     vertical-align: middle;
 }
+
+.avatar {
+    border-radius: 50%;
+    width: 3em;
+    height: 3em;
+}
+
+.avatar h5
+{
+    text-align: center;
+    line-height: 1.8em;
+    vertical-align: middle;
+}
+
+.player span
+{
+    line-height: 3em;
+    vertical-align: middle;
+}
+
+/*hack*/
+.hacked-navbar-toggler-icon { color: #ffffff}
 
 #blazor-error-ui {
     background: lightyellow;

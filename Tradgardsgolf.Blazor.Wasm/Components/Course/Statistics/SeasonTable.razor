@@ -3,7 +3,7 @@
 {
     @foreach (var year in _years)
     {
-        <Button OnClick="() => DisplayYear(year)" Text="@year.ToString()"></Button>
+        <Button Clicked="() => DisplayYear(year)">@year.ToString()</Button>
     }
     
     <table>
@@ -23,7 +23,7 @@
 
 @code {
     [CascadingParameter]
-    public Statistics Statistics { get; set; }
+    public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
     
     [CascadingParameter]
     public CourseModel Course { get; set; }
@@ -35,10 +35,10 @@
 
     protected override void OnParametersSet()
     {
-        if(Statistics?.CourseStatisticModel == null)
+        if(CascadingCourseStatistics?.CourseStatisticModel == null)
             return;
 
-        _years = Statistics.CourseStatisticModel.Rounds
+        _years = CascadingCourseStatistics.CourseStatisticModel.Rounds
             .Select(x => x.Date.Year)
             .Distinct()
             .OrderByDescending(x => x)
@@ -51,7 +51,7 @@
 
     private void RenderSeasonTable()
     {
-        _seasonTableModels = Statistics.CourseStatisticModel.Rounds
+        _seasonTableModels = CascadingCourseStatistics.CourseStatisticModel.Rounds
             .Where(x => x.Date.Year == _year)
             .Select(x => new
             {
@@ -77,7 +77,7 @@
 
     private bool Display()
     {
-        return Statistics != null && _seasonTableModels != null && !Statistics.Loading;
+        return CascadingCourseStatistics != null && _seasonTableModels != null && !CascadingCourseStatistics.Loading;
     }
 
     private class SeasonTableModel

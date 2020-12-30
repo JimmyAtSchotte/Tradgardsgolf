@@ -27,7 +27,7 @@
 @code {
 
     [CascadingParameter]
-    public Statistics Statistics { get; set; }
+    public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
 
     private TopAverageModel[] _topAverages;
     private int _listCount = 10;
@@ -35,10 +35,10 @@
 
     protected override void OnParametersSet()
     {
-        if (Statistics?.CourseStatisticModel == null)
+        if (CascadingCourseStatistics?.CourseStatisticModel == null)
             return;
 
-        _topAverages = Statistics.CourseStatisticModel.Rounds.Select(x => new
+        _topAverages = CascadingCourseStatistics.CourseStatisticModel.Rounds.Select(x => new
         {
             Rounds = x.Scores.GroupBy(score => score.Player)
                 .Select(p => new
@@ -66,7 +66,7 @@
 
     private bool Display()
     {
-        return Statistics != null && _topAverages != null && !Statistics.Loading;
+        return CascadingCourseStatistics != null && _topAverages != null && !CascadingCourseStatistics.Loading;
     }
 
 }

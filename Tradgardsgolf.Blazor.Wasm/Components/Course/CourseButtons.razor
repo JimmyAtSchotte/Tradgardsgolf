@@ -1,17 +1,12 @@
 ﻿@if (Visible)
 {
-    <div class="card-action">
-        <CascadingValue Value="Course">
-            @ChildContent
-        </CascadingValue>
-    </div>
+    <CardFooter Class="bg-light">
+        @ChildContent
+    </CardFooter>
 }
 
 @code
 {
-    [CascadingParameter]
-    public Api.Shared.CourseModel Course { get; set; }
-
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 

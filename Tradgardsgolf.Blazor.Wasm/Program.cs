@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using AspNetMonsters.Blazor.Geolocation;
 using Blazored.LocalStorage;
 using Blazored.Modal;
+using Blazorise;
+using Blazorise.Icons.Material;
+using Blazorise.Material;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +38,22 @@ namespace Tradgardsgolf.Blazor.Wasm
 
             builder.Services.AddScoped<ICourseApiService, CourseApiService>();
             
-            await builder.Build().RunAsync();
+            builder.Services
+                .AddBlazorise( options =>
+                {
+                    options.ChangeTextOnKeyPress = true;
+                } )
+                .AddMaterialProviders()
+                .AddMaterialIcons();
+            
+            
+            var host = builder.Build();
+
+            host.Services
+                .UseMaterialProviders()
+                .UseMaterialIcons();
+
+            await host.RunAsync();
         }
     }
 }

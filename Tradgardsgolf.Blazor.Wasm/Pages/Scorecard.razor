@@ -1,56 +1,64 @@
 ﻿@page "/Scorecard"
-@using Tradgardsgolf.Api.Shared
 @inject NavigationManager NavigationManager
 @inject ICourseApiService CourseApiService
 @inject IModalService Modal
 
-<CourseCard Course="State.AppState.ScorecardState.CourseModel">
-    <CourseHead></CourseHead>
-    <CourseContent>
-        <table class="centered">
-            <thead>
-            <tr>
-                <th>Hål</th>
-                @foreach (var player in State.AppState.ScorecardState.PlayerScores)
-                {
-                    <th>
-                        <Avatar Player="player.Player"></Avatar>
-                    </th>
-                }
-            </tr>
-            </thead>
+<CascadingCourse Course="State.AppState.ScorecardState.CourseModel">
+    <CascadingCourseStatistics>
+        <CourseCard>
+            <CourseHead>
+                <CourseHeaderStatistics />
+            </CourseHead>
+            <CourseContent>
+                <Table>
+                    <TableHeader>
+                        <TableHeaderCell>Hål</TableHeaderCell>
+                        @foreach (var player in State.AppState.ScorecardState.PlayerScores)
+                        {
+                            <TableHeaderCell>
+                                <Avatar Player="player.Player"></Avatar>
+                            </TableHeaderCell>
+                        }
+                    </TableHeader>
+                    <TableBody>
+                        @for (int i = 1; i <= State.AppState.ScorecardState.CourseModel.Holes; i++)
+                        {
+                            var hole = i;
 
-            <tbody>
-            @for (int i = 1; i <= State.AppState.ScorecardState.CourseModel.Holes; i++)
-            {
-                var hole = i;
+                            <TableRow>
+                                <TableRowCell>@hole</TableRowCell>
+                                @foreach (var player in State.AppState.ScorecardState.PlayerScores)
+                                {
+                                    <TableRowCell>
+                                        <Button Clicked="() => SetScore(player, hole)" Disabled="@Saving">@player.Scores[hole].ToString()</Button>
+                                    </TableRowCell>
+                                }
+                            </TableRow>
+                        }
+                        <TableRow>
+                            <TableRowCell>Totalt</TableRowCell>
+                            @foreach (var player in State.AppState.ScorecardState.PlayerScores)
+                            {
+                                <TableRowCell>@player.Total()</TableRowCell>
+                            }
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </CourseContent>
+            <CourseButtons Visible="State.AppState.ScorecardState.PlayerScores.Any()">
+                <Button Clicked="async () => await ChangePlayers()" 
+                        Disabled="@Saving" 
+                        Float="Float.Left"
+                        Color="Color.Warning">Byt spelare <Icon Name="Blazorise.Icons.Material.MaterialIcons.Sync"></Icon></Button>
+                <Button Clicked="() => CompleteRound()" 
+                        Disabled="@DisableCompleteButton" 
+                        Float="Float.Right"
+                        Color="Color.Primary">Klart <Icon Name="Blazorise.Icons.Material.MaterialIcons.Check"></Icon></Button>
+            </CourseButtons>
+        </CourseCard>
 
-                <tr>
-                    <td>@hole</td>
-                    @foreach (var player in State.AppState.ScorecardState.PlayerScores)
-                    {
-                        <td align="center">
-                            <Button Text="@player.Scores[hole].ToString()" OnClick="() => SetScore(player, hole)" Disabled="@Saving"></Button>
-                        </td>
-                    }
-                </tr>
-            }
-
-            <tr>
-                <td>Totalt</td>
-                @foreach (var player in State.AppState.ScorecardState.PlayerScores)
-                {
-                    <td>@player.Total()</td>
-                }
-            </tr>
-            </tbody>
-        </table>
-    </CourseContent>
-    <CourseButtons>
-        <ImageButton OnClick="async () => await ChangePlayers()" Text="Byt spelare" Icon="sync" Disabled="@Saving"></ImageButton>
-        <ImageButton OnClick="() => CompleteRound()" Text="Klart" Icon="check" Disabled="@DisableCompleteButton"></ImageButton>
-    </CourseButtons>
-</CourseCard>
+    </CascadingCourseStatistics>
+</CascadingCourse>
 
 @if (@Saving && !@DisplayPlayAgain)
 {
@@ -75,14 +83,11 @@
 }
 
 
-
-
-
 @code
 {
-    [CascadingParameter] 
+    [CascadingParameter]
     public CascadingStateProvider State { get; set; }
-    
+
     private bool DisableCompleteButton => State.AppState.ScorecardState.PlayerScores.Any(x => x.MissingScores()) || Saving;
     private bool Saving { get; set; }
 
@@ -95,7 +100,7 @@
             Saving = false;
             await State.AppState.ScorecardState.ResetScores(this);
         }
-       
+
         NavigationManager.NavigateTo("SetupRound");
     }
 
@@ -104,7 +109,7 @@
         Saving = true;
         StateHasChanged();
 
-        CourseApiService.SaveScorecard(State.AppState.ScorecardState.CourseModel, 
+        CourseApiService.SaveScorecard(State.AppState.ScorecardState.CourseModel,
             State.AppState.ScorecardState.PlayerScores);
 
         DisplayPlayAgain = true;
@@ -117,16 +122,16 @@
         DisplayPlayAgain = false;
 
         await State.AppState.ScorecardState.ResetScores(this);
-        
+
         StateHasChanged();
     }
 
 
     private async Task SetScore(PlayerScoreModel playerScoreModel, int hole)
     {
-        var modal = Modal.Show<HoleScoreModal>($"{playerScoreModel.Player.Name}, hål {hole}?");
+        var modal = Modal.Show<HoleScoreModal>($"Hål {hole}: {playerScoreModel.Player.Name}");
         var result = await modal.Result;
-        if(result.Cancelled)
+        if (result.Cancelled)
             return;
 
         var score = Convert.ToInt32(result.Data);

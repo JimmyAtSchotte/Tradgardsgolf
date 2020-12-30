@@ -1,16 +1,17 @@
-﻿<div class="container">
-    <div class="row">
+﻿
+<Container>
+    <Row >
         @for (var i = 1; i <= ModalMaxScore; i++)
         {
             var score = i;
-            <div class="col s4 center-align" style="margin-bottom: 1rem;">
-                <Button Text="@score.ToString()" OnClick="() => ReturnResult(score)"></Button>
-            </div>
+            <Column ColumnSize="ColumnSize.Is3" Margin="Margin.Is2" >
+                <Button Clicked="() => ReturnResult(score)">@score.ToString()</Button>
+            </Column>
         }
-    </div>
-</div>
+    </Row>
+</Container>
 
-<ImageButton OnClick="() => AddModalMaxScore()" Text="Det gick inge vidare..." Icon="sentiment_dissatisfied"></ImageButton>
+<Button Clicked="AddModalMaxScore">Det gick inge vidare... <Icon Name="Blazorise.Icons.Material.MaterialIcons.SentimentDissatisfied" /></Button>
 
 @code {
 
