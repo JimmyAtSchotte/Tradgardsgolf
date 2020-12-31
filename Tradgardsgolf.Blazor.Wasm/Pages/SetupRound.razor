@@ -1,6 +1,7 @@
 ﻿@page "/SetupRound"
 @inject ICourseApiService CourseApiService
 @inject NavigationManager NavigationManager
+@inject IModalService Modal
 
 <CascadingCourse Course="State.AppState.ScorecardState.CourseModel">
     <CascadingCourseStatistics>
@@ -28,7 +29,9 @@
                 }
             </CourseContent>
             <CourseButtons>
-                @* <Button Float="Float.Left">Lägg till spelare <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon></Button> *@
+                <Button Clicked="async () => await NewPlayer()"
+                    Color="Color.Primary"
+                        Float="Float.Left">Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon></Button> 
                 <Button Clicked="async () => await Play()" 
                         Float="Float.Right" 
                         Disabled="!State.AppState.ScorecardState.PlayerScores.Any()"
@@ -59,19 +62,6 @@ else if (AvailablePlayers.Any())
         </CardBody>
     </Card>
 }
-
-<Card Background="Background.Light" Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
-    <CardBody>
-        <CardTitle>Ny spelare</CardTitle>
-        <Field>
-            <FieldLabel>Namn</FieldLabel>
-            <TextEdit Placeholder="Skriv namn" TextChanged="s => PlayerName = s"/>
-        </Field>
-    </CardBody>
-    <CardFooter>
-        <Button Clicked="async () => await AddPlayer(PlayerName)" Float="Float.Right" Color="Color.Primary">Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon></Button>
-    </CardFooter>
-</Card>
 
 @code
 {
@@ -115,4 +105,15 @@ else if (AvailablePlayers.Any())
         NavigationManager.NavigateTo("Scorecard");
     }
 
+    private async Task NewPlayer()
+    {
+        var playAgain = Modal.Show<NewPlayerModal>("Lägg till ny spelare");
+        
+        var result = await playAgain.Result;
+        if (result.Cancelled)
+            return;
+
+        await AddPlayer(result.Data.ToString());
+
+    }
 }

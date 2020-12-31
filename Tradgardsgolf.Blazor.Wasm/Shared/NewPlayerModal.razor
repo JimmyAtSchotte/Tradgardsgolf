@@ -1,0 +1,18 @@
+﻿<Field>
+    <FieldLabel>Namn</FieldLabel>
+    <TextEdit Placeholder="Skriv namn" TextChanged="s => PlayerName = s"/>
+</Field>
+<Button Color="Color.Primary" Clicked="Add">Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add" /></Button>
+
+@code {
+    [CascadingParameter] 
+    BlazoredModalInstance ModalInstance { get; set; }
+    
+    private string PlayerName { get; set; }
+    
+    
+    private void Add()
+    {
+        ModalInstance.Close(ModalResult.Ok(PlayerName));
+    }
+}
