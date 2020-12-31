@@ -24,7 +24,7 @@ namespace Tradgardsgolf.Api.Endpoints.Courses.Scorecards
             OperationId = "Course.Scorecards.Add",
             Tags = new[] { "Courses" })
         ]
-        public override async Task<ActionResult<CourseScorecardAddResponse>> HandleAsync([FromBody] CourseScorecardAddRequest request, CancellationToken cancellationToken = new CancellationToken())
+        public override async Task<ActionResult<CourseScorecardAddResponse>> HandleAsync([FromRoute] CourseScorecardAddRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
             _scorecardService.Add(new AddScorecardCommand(request));
 
@@ -68,9 +68,9 @@ namespace Tradgardsgolf.Api.Endpoints.Courses.Scorecards
 
     public class CourseScorecardAddRequest
     {
-        [FromRoute]
         public int Id { get; set; }
 
+        [FromBody]
         public IEnumerable<PlayerScoreModel> PlayerScores { get; set; }
     }
 }
