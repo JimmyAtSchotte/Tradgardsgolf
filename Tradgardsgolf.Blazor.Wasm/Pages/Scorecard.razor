@@ -50,8 +50,9 @@
                         Disabled="@Saving" 
                         Float="Float.Left"
                         Color="Color.Warning">Byt spelare <Icon Name="Blazorise.Icons.Material.MaterialIcons.Sync"></Icon></Button>
-                <Button Clicked="() => CompleteRound()" 
+                <Button Clicked="async () => await CompleteRound()" 
                         Disabled="@DisableCompleteButton" 
+                        Loading="Saving"
                         Float="Float.Right"
                         Color="Color.Primary">Klart <Icon Name="Blazorise.Icons.Material.MaterialIcons.Check"></Icon></Button>
             </CourseButtons>
@@ -59,28 +60,6 @@
 
     </CascadingCourseStatistics>
 </CascadingCourse>
-
-@if (@Saving && !@DisplayPlayAgain)
-{
-    <div class="card green lighten-5">
-        <div class="card-content">
-            <span class="card-title">Sparar</span>
-        </div>
-    </div>
-}
-
-@if (@DisplayPlayAgain)
-{
-    <div class="card green lighten-5">
-        <div class="card-content">
-            <span class="card-title">Rundan är klar och sparad</span>
-        </div>
-        <div class="card-action">
-            <ImageButton OnClick="async () => await ChangePlayers()" Text="Byt spelare" Icon="sync"></ImageButton>
-            <ImageButton OnClick="async () => await PlayAgain()" Text="Spela igen" Icon="play_arrow"></ImageButton>
-        </div>
-    </div>
-}
 
 
 @code
@@ -90,8 +69,6 @@
 
     private bool DisableCompleteButton => State.AppState.ScorecardState.PlayerScores.Any(x => x.MissingScores()) || Saving;
     private bool Saving { get; set; }
-
-    private bool DisplayPlayAgain { get; set; }
 
     private async Task ChangePlayers()
     {
@@ -104,28 +81,39 @@
         NavigationManager.NavigateTo("SetupRound");
     }
 
-    private void CompleteRound()
+    private async Task CompleteRound()
     {
         Saving = true;
         StateHasChanged();
-
-        CourseApiService.SaveScorecard(State.AppState.ScorecardState.CourseModel,
+        
+        await CourseApiService.SaveScorecard(State.AppState.ScorecardState.CourseModel,
             State.AppState.ScorecardState.PlayerScores);
-
-        DisplayPlayAgain = true;
-        StateHasChanged();
+        
+        var playAgain = Modal.Show<PlayAgainModal>("Rundan är klar och sparad");
+        
+        var result = await playAgain.Result;
+        if (result.Cancelled)
+            return;
+        
+        var command = (PlayAgainModal.Results)result.Data;
+        switch (command)
+        {
+            case PlayAgainModal.Results.No:
+                NavigationManager.NavigateTo("");
+                break;
+            case PlayAgainModal.Results.ChangePlayers:
+                await State.AppState.ScorecardState.ResetScores(this);
+                NavigationManager.NavigateTo(nameof(SetupRound));
+                break;
+            case PlayAgainModal.Results.Yes:
+                Saving = false;
+                await State.AppState.ScorecardState.ResetScores(this);
+                StateHasChanged();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
-
-    private async Task PlayAgain()
-    {
-        Saving = false;
-        DisplayPlayAgain = false;
-
-        await State.AppState.ScorecardState.ResetScores(this);
-
-        StateHasChanged();
-    }
-
 
     private async Task SetScore(PlayerScoreModel playerScoreModel, int hole)
     {
