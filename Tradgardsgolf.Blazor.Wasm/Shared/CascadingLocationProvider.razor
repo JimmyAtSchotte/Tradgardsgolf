@@ -1,0 +1,44 @@
+﻿@inject LocationService LocationService
+
+@if (Location != null)
+{
+    <CascadingValue Value="this">@ChildContent</CascadingValue>
+}
+else
+{
+    <Container Fluid="true">
+        <Heading Size="HeadingSize.Is5">Hittar din position</Heading>
+    
+        <Loading></Loading>
+    
+        <Alert Color="Color.Warning" Display="Display.Always">
+            <AlertDescription>För att använda appen så behöver du tillåta att dela din position.</AlertDescription>
+        </Alert>
+    </Container>
+}
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    
+    [Parameter]
+    public Location Location { get; set; }
+    
+    public event Action<ComponentBase> LocationChanged;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await LocationService.WatchLocation(LocationCallback);
+    }
+ 
+    private void LocationCallback(Location location)
+    {
+        if(Location?.Latitude == location.Latitude && 
+           Location?.Longitude == location.Longitude)
+            return;
+
+        Location = location;
+        LocationChanged?.Invoke(this);
+        StateHasChanged();
+    }
+}

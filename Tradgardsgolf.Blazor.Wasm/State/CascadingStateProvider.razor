@@ -16,7 +16,7 @@
     
     [Parameter]
     public AppState AppState { get; set; }
-
+    
     protected override async Task OnParametersSetAsync()
     {
         var json = await LocalStorageService.GetItemAsStringAsync(nameof(AppState));
