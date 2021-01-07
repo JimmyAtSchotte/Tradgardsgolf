@@ -1,46 +1,26 @@
-﻿@inherits LayoutComponentBase
+﻿@using Blazorise.Icons.Material
+@inherits LayoutComponentBase
 
-<Layout Sider="true">
-    <LayoutSider>
-        <LayoutSiderContent>
-            <Bar @ref="@sidebar"
-                  Visible="false"
-                  Mode="BarMode.VerticalInline"
-                  Background="Background.Primary"
-                  ThemeContrast="ThemeContrast.Dark"
-                  CollapseMode="BarCollapseMode.Hide">
-                <BarToggler Class="hacked-navbar-toggler-icon"/>
-                <BarBrand>
-                    <BarItem>
-                        <BarLink To=""></BarLink>
-                    </BarItem>
-                </BarBrand>
-                <BarMenu>
-                    <BarStart>
-                        <BarItem>
-                            <BarLink To="">Spela</BarLink>
-                        </BarItem>
-                    </BarStart>
-                </BarMenu>
-            </Bar>
-        </LayoutSiderContent>
-    </LayoutSider>
-    <Layout>
-        <LayoutHeader Fixed="true">
-            <Bar
-                Breakpoint="Breakpoint.None"
-                Background="Background.Primary"
-                ThemeContrast="ThemeContrast.Dark">
-                <BarToggler Bar="sidebar"/>
-            </Bar>
-        </LayoutHeader>
-        <LayoutContent Padding="Padding.Is2.OnX">
-            @Body
-        </LayoutContent>
-    </Layout>
+
+<Layout>
+    <LayoutHeader Fixed="true">
+        <Bar Breakpoint="Breakpoint.Desktop"
+            Background="Background.Primary"
+            ThemeContrast="ThemeContrast.Dark">
+            <BarBrand>Tradgårdsgolf</BarBrand>
+            <BarToggler  Mode="BarTogglerMode.Popout"/>
+            <BarMenu>
+                <BarStart>
+                  <BarItem>
+                      <BarLink To="">
+                          <BarIcon IconName="MaterialIcons.GolfCourse" /> Spela
+                      </BarLink>
+                  </BarItem>
+                </BarStart>
+              </BarMenu>
+        </Bar>
+    </LayoutHeader>
+    <LayoutContent Padding="Padding.Is2.OnX">
+        @Body
+    </LayoutContent>
 </Layout>
-
-@code {
-    private Bar sidebar;
-    private string brandName = "Tradgårdsgolf";
-}
