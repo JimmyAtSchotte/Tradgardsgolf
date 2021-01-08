@@ -1,6 +1,7 @@
 <Blazorise.ThemeProvider Theme="@theme">
-    <CascadingLocationProvider>
-        <CascadingStateProvider>
+   
+    <CascadingStateProvider>
+         <CascadingLocationProvider>
             <CascadingBlazoredModal>
                 <Router AppAssembly="@typeof(Program).Assembly">
                     <Found Context="routeData">
@@ -12,9 +13,10 @@
                         </LayoutView>
                     </NotFound>
                 </Router>
-            </CascadingBlazoredModal>
-        </CascadingStateProvider>
-    </CascadingLocationProvider>
+            </CascadingBlazoredModal>  
+         </CascadingLocationProvider>
+    </CascadingStateProvider>
+  
 </Blazorise.ThemeProvider>
 
 @code{
