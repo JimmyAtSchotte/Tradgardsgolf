@@ -10,11 +10,6 @@
 }
 else
 {
-    <p>
-        Latitude: @LocationProvider.Location.Latitude<br/>
-        Longitude: @LocationProvider.Location.Longitude
-    </p>
-    
     @foreach (var course in _courses)
     {
         <CascadingCourse Course="course">
@@ -24,11 +19,6 @@ else
                         <CourseHeaderStatistics />
                     </CourseHead>
                     <CourseContent>
-                        <p>
-                            Latitude: @course.Latitude<br/>
-                            Longitude: @course.Longitude
-                        </p>
-                        
                         <CourseStatistics></CourseStatistics>
                     </CourseContent>
                     <CourseButtons Visible="AllowPlay(course)">
