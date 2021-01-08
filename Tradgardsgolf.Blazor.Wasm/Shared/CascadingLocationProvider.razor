@@ -1,21 +1,19 @@
 ﻿@inject LocationService LocationService
 
-@if (Location != null)
-{
-    <CascadingValue Value="this">@ChildContent</CascadingValue>
-}
-else
-{
-    <Container Fluid="true">
-        <Heading Size="HeadingSize.Is5">Hittar din position</Heading>
+<Loading IsLoading="Location == null">
+    <LoadingTemplate>
+        <Container Fluid="true">
+            <Loading IsLoading="true" LoadingText="Hittar din position..."></Loading>
+            <Alert Color="Color.Warning" Display="Display.Always">
+                <AlertDescription>För att använda appen så behöver du tillåta att dela din position.</AlertDescription>
+            </Alert>
+        </Container>
+    </LoadingTemplate>
     
-        <Loading></Loading>
-    
-        <Alert Color="Color.Warning" Display="Display.Always">
-            <AlertDescription>För att använda appen så behöver du tillåta att dela din position.</AlertDescription>
-        </Alert>
-    </Container>
-}
+    <ChildContent>
+        <CascadingValue Value="this">@ChildContent</CascadingValue>
+    </ChildContent>
+</Loading>
 
 @code {
     [Parameter]

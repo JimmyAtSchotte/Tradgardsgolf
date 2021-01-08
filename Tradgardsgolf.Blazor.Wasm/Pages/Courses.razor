@@ -4,31 +4,27 @@
 @inject LocationService LocationService
 @implements IDisposable
 
-@if (_courses == null)
-{
-    <Loading></Loading>
-}
-else
-{
+<Loading IsLoading="_courses == null" LoadingText="Laddar banor i närheten...">
     @foreach (var course in _courses)
-    {
-        <CascadingCourse Course="course">
-            <CascadingCourseStatistics>
-                <CourseCard>
-                    <CourseHead>
-                        <CourseHeaderStatistics />
-                    </CourseHead>
-                    <CourseContent>
-                        <CourseStatistics></CourseStatistics>
-                    </CourseContent>
-                    <CourseButtons Visible="AllowPlay(course)">
-                        <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.Right">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
-                    </CourseButtons>
-                </CourseCard>
-            </CascadingCourseStatistics>
-        </CascadingCourse>
-    }
-}
+        {
+            <CascadingCourse Course="course">
+                <CascadingCourseStatistics>
+                    <CourseCard>
+                        <CourseHead>
+                            <CourseHeaderStatistics />
+                        </CourseHead>
+                        <CourseContent>
+                            <CourseStatistics></CourseStatistics>
+                        </CourseContent>
+                        <CourseButtons Visible="AllowPlay(course)">
+                            <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.Right">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
+                        </CourseButtons>
+                    </CourseCard>
+                </CascadingCourseStatistics>
+            </CascadingCourse>
+        }
+</Loading>
+
 
 @code {
 
