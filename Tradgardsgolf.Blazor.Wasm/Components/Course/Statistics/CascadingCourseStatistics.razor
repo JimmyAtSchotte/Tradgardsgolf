@@ -15,7 +15,7 @@
     public CourseStatisticModel CourseStatisticModel { get; set; }
     public bool Loading { get; set; }
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         Loading = true;
         CourseStatisticModel = await CourseApiService.Statistics(CascadingCourse.Course);
