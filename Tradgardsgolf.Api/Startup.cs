@@ -79,7 +79,7 @@ namespace Tradgardsgolf.Api
             if (databaseUri.Host != "127.0.0.1")
             {
                 connectionStringBuilder.Append("Pooling=true;");
-                connectionStringBuilder.Append("DSSL Mode=Require;");
+                connectionStringBuilder.Append("SSL Mode=Require;");
                 connectionStringBuilder.Append("Trust Server Certificate=True;");
             }
 
