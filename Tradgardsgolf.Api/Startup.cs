@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
@@ -53,12 +54,36 @@ namespace Tradgardsgolf.Api
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                var connectionString = Environment.GetEnvironmentVariable("DATABASE") ??
-                                       throw new NullReferenceException(
-                                           "Enviroment varaible for database cannot be null");
-                
-                builder.UseMySql(connectionString, new MySqlServerVersion(new Version(5, 7, 32)));
+                builder.UseNpgsql(GetPostgresConnectionString());
             });
+        }
+        
+        private string GetPostgresConnectionString() {
+            // Get the connection string from the ENV variables
+            var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL") ??
+                                throw new NullReferenceException("Enviroment varaible for database cannot be null");
+
+            // parse the connection string
+            var databaseUri = new Uri(connectionUrl);
+
+            var db = databaseUri.LocalPath.TrimStart('/');
+            var userInfo = databaseUri.UserInfo.Split(':', StringSplitOptions.RemoveEmptyEntries);
+
+            var connectionStringBuilder = new StringBuilder();
+            connectionStringBuilder.Append($"User ID={userInfo[0]};");
+            connectionStringBuilder.Append($"Password={userInfo[1]};");
+            connectionStringBuilder.Append($"Host={databaseUri.Host};");
+            connectionStringBuilder.Append($"Port={databaseUri.Port};");
+            connectionStringBuilder.Append($"Database={db};");
+
+            if (databaseUri.Host != "127.0.0.1")
+            {
+                connectionStringBuilder.Append("Pooling=true;");
+                connectionStringBuilder.Append("DSSL Mode=Require;");
+                connectionStringBuilder.Append("Trust Server Certificate=True;");
+            }
+
+            return connectionStringBuilder.ToString();
         }
         
         public void ConfigureContainer(ContainerBuilder builder)
