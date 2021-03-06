@@ -32,6 +32,7 @@ ProjectSection(SolutionItems) = preProject
 	Dockerfile = Dockerfile
 	nginx.conf = nginx.conf
 	.gitignore = .gitignore
+	AddMigration.ps1 = AddMigration.ps1
 EndProjectSection
 EndProject
 Global
