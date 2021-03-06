@@ -4,10 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Tradgardsgolf.Infrastructure;
 
 namespace Tradgardsgolf.Api
 {
@@ -24,6 +27,10 @@ namespace Tradgardsgolf.Api
             {
                 Log.Information("Starting up");
                 var host = CreateHostBuilder(args).Build();
+                
+                using (var scope = host.Services.CreateScope())
+                await using (var context = scope.ServiceProvider.GetService<TradgardsgolfContext>())
+                    await context.Database.MigrateAsync();
 
                 await host.RunAsync();
             }
@@ -44,6 +51,7 @@ namespace Tradgardsgolf.Api
                 .UseSerilog(Log.Logger)
                 .ConfigureAppConfiguration(config => {
                     config.AddEnvironmentVariables();
+                    config.AddCommandLine(args);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

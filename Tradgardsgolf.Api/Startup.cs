@@ -54,13 +54,17 @@ namespace Tradgardsgolf.Api
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                builder.UseNpgsql(GetPostgresConnectionString());
+                builder.UseNpgsql(GetPostgresConnectionString(), options =>
+                {
+                    options.MigrationsAssembly(typeof(Program).Assembly.GetName().ToString());
+                });
+                
             });
         }
         
         private string GetPostgresConnectionString() {
             // Get the connection string from the ENV variables
-            var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL") ??
+            var connectionUrl = Configuration.GetValue<string>("DATABASE_URL") ??
                                 throw new NullReferenceException("Enviroment varaible for database cannot be null");
 
             // parse the connection string
