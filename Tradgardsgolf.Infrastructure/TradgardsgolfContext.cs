@@ -15,9 +15,5 @@ namespace Tradgardsgolf.Infrastructure
         {
 
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {         
-        }
     }
 }

@@ -36,6 +36,7 @@ namespace Tradgardsgolf.Api.Endpoints.Courses
                 Latitude = x.Latitude,
                 Longitude = x.Longitude,
                 Name = x.Name,
+                ScoreReset = x.ScoreReset,
                 CreatedBy = new PlayerModel()
                 {
                     Id = x.CreatedBy.Id,

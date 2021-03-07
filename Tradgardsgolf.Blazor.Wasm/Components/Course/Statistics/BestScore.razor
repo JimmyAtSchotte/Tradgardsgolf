@@ -15,7 +15,7 @@
             return;
 
         var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
-        
+    
         _bestScore = CascadingCourseStatistics.CourseStatisticModel.Rounds
             .Where(x => x.Date > scoreReset)
             .Select(x => new
