@@ -15,6 +15,8 @@ namespace Tradgardsgolf.Services.Course
         public double Latitude => _course.Latitude;
         public ICourseCreatedByModelResult CreatedBy { get; }
         public DateTime Created => _course.Created;
+        
+        public DateTime? ScoreReset => _course.ScoreReset;
 
         public string Image => "images/grass.jpg";
 

@@ -34,6 +34,7 @@ namespace Tradgardsgolf.Core.Services.Course
         string Image { get; }
         ICourseCreatedByModelResult CreatedBy { get; }
         DateTime Created { get; }
+        DateTime? ScoreReset { get; }
     }
 
     public interface ICourseCreatedByModelResult

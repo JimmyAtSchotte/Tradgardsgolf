@@ -12,6 +12,7 @@ namespace Tradgardsgolf.Core.Infrastructure.Course
         double Latitude { get;  }        
         ICourseCreatedByDtoResult CreatedBy { get; }
         DateTime Created { get;  }
+        DateTime? ScoreReset { get; }
     }
 
     public interface ICourseCreatedByDtoResult

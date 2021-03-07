@@ -28,7 +28,11 @@
         if(CascadingCourseStatistics?.CourseStatisticModel == null)
             return;
         
-        _holeAverageModels = CascadingCourseStatistics.CourseStatisticModel.Rounds.Select(x => new
+        var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
+        
+        _holeAverageModels = CascadingCourseStatistics.CourseStatisticModel.Rounds
+            .Where(x => x.Date > scoreReset)
+            .Select(x => new
         {
             Rounds = x.Scores.GroupBy(score => score.Hole)
                 .Select(p => new

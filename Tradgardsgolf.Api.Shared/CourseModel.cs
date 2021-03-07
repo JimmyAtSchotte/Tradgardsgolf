@@ -11,6 +11,8 @@ namespace Tradgardsgolf.Api.Shared
         public double Latitude { get; set; }
         public PlayerModel CreatedBy { get; set; }
         public DateTime Created { get; set; }
+        
+        public DateTime? ScoreReset { get; set; }
         public string Image { get; set; }
         public int SeasonTableRounds => 6;
         

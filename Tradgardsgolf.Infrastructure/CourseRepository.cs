@@ -68,6 +68,7 @@ namespace Tradgardsgolf.Infrastructure
         public double Latitude => _course.Latitude;
         public ICourseCreatedByDtoResult CreatedBy { get; }
         public DateTime Created => _course.Created;
+        public DateTime? ScoreReset => _course.ScoreReset;
 
         public CourseDtoResult(Course course)
         {

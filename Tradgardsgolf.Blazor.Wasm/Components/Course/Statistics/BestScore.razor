@@ -14,7 +14,11 @@
         if(CascadingCourseStatistics?.CourseStatisticModel == null)
             return;
 
-        _bestScore = CascadingCourseStatistics.CourseStatisticModel.Rounds.Select(x => new
+        var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
+        
+        _bestScore = CascadingCourseStatistics.CourseStatisticModel.Rounds
+            .Where(x => x.Date > scoreReset)
+            .Select(x => new
         {
             Rounds = x.Scores.GroupBy(score => score.Player)
                 .Select(p => new BestScoreModel()

@@ -25,6 +25,10 @@ namespace Tradgardsgolf.Core.Entities
         [Column("dtmCreated")]
         public DateTime Created { get; private set; }
         
+        [Column("dtmScoreReset")]
+        public DateTime? ScoreReset { get; set; }
+        
+        
         public virtual ICollection<Round> Rounds { get; set; }
 
         private Course()

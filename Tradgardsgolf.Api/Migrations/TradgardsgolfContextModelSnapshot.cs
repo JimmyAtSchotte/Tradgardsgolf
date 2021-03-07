@@ -50,6 +50,10 @@ namespace Tradgardsgolf.Api.Migrations
                         .HasColumnType("text")
                         .HasColumnName("strName");
 
+                    b.Property<DateTime?>("ScoreReset")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("dtmScoreReset");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
