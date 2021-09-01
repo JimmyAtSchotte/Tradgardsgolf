@@ -8,6 +8,8 @@
         <PackageReference Include="Ardalis.ApiEndpoints" Version="2.0.0" />
         <PackageReference Include="Autofac" Version="6.0.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+        <PackageReference Include="MediatR" Version="9.0.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
@@ -31,10 +33,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Tradgardsgolf.Api.RequestHandling\Tradgardsgolf.Api.RequestHandling.csproj" />
       <ProjectReference Include="..\Tradgardsgolf.Api.Shared\Tradgardsgolf.Api.Shared.csproj" />
-      <ProjectReference Include="..\Tradgardsgolf.Core\Tradgardsgolf.Core.csproj" />
-      <ProjectReference Include="..\Tradgardsgolf.Infrastructure\Tradgardsgolf.Infrastructure.csproj" />
-      <ProjectReference Include="..\Tradgardsgolf.Services\Tradgardsgolf.Services.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Application.Core\Tradgardsgolf.Application.Core.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Application.Infrastructure\Tradgardsgolf.Application.Infrastructure.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Application.Services\Tradgardsgolf.Application.Services.csproj" />
     </ItemGroup>
 
 </Project>

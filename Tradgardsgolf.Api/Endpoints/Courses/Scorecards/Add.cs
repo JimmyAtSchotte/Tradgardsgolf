@@ -47,9 +47,9 @@ namespace Tradgardsgolf.Api.Endpoints.Courses.Scorecards
 
     public class PlayerScoreCommand : IPlayerScoreCommand
     {
-        private readonly PlayerScoreModel _playerScoreRequest;
+        private readonly PlayerScores _playerScoreRequest;
 
-        public PlayerScoreCommand(PlayerScoreModel playerScoreRequest)
+        public PlayerScoreCommand(PlayerScores playerScoreRequest)
         {
             _playerScoreRequest = playerScoreRequest;
         }
@@ -71,6 +71,6 @@ namespace Tradgardsgolf.Api.Endpoints.Courses.Scorecards
         public int Id { get; set; }
 
         [FromBody]
-        public IEnumerable<PlayerScoreModel> PlayerScores { get; set; }
+        public IEnumerable<PlayerScores> PlayerScores { get; set; }
     }
 }

@@ -13,10 +13,10 @@
                 <Table>
                     <TableHeader>
                         <TableHeaderCell>Hål</TableHeaderCell>
-                        @foreach (var player in State.AppState.ScorecardState.PlayerScores)
+                        @foreach (var playerScore in State.AppState.ScorecardState.PlayerScores)
                         {
                             <TableHeaderCell>
-                                <Avatar Player="player.Player"></Avatar>
+                                <Avatar Player="playerScore.Player"></Avatar>
                             </TableHeaderCell>
                         }
                     </TableHeader>
@@ -115,15 +115,15 @@
         }
     }
 
-    private async Task SetScore(PlayerScoreModel playerScoreModel, int hole)
+    private async Task SetScore(PlayerScores playerScores, int hole)
     {
-        var modal = Modal.Show<HoleScoreModal>($"Hål {hole}: {playerScoreModel.Player.Name}");
+        var modal = Modal.Show<HoleScoreModal>($"Hål {hole}: {playerScores.Player.Name}");
         var result = await modal.Result;
         if (result.Cancelled)
             return;
 
         var score = Convert.ToInt32(result.Data);
-        await State.AppState.ScorecardState.SetScore(this, playerScoreModel.Player.Name, hole, score);
+        await State.AppState.ScorecardState.SetScore(this, playerScores.Player.Name, hole, score);
 
         StateHasChanged();
     }

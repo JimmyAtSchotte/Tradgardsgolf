@@ -21,7 +21,7 @@ namespace Tradgardsgolf.Api.Migrations
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Tradgardsgolf.Core.Entities.Course", b =>
+            modelBuilder.Entity("Tradgardsgolf.Application.Core.Entities.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +59,7 @@ namespace Tradgardsgolf.Api.Migrations
                     b.ToTable("course");
                 });
 
-            modelBuilder.Entity("Tradgardsgolf.Core.Entities.Player", b =>
+            modelBuilder.Entity("Tradgardsgolf.Application.Core.Entities.Player", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,7 +91,7 @@ namespace Tradgardsgolf.Api.Migrations
                     b.ToTable("player");
                 });
 
-            modelBuilder.Entity("Tradgardsgolf.Core.Entities.Round", b =>
+            modelBuilder.Entity("Tradgardsgolf.Application.Core.Entities.Round", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,7 +113,7 @@ namespace Tradgardsgolf.Api.Migrations
                     b.ToTable("round");
                 });
 
-            modelBuilder.Entity("Tradgardsgolf.Core.Entities.RoundScore", b =>
+            modelBuilder.Entity("Tradgardsgolf.Application.Core.Entities.RoundScore", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -145,9 +145,9 @@ namespace Tradgardsgolf.Api.Migrations
                     b.ToTable("roundscore");
                 });
 
-            modelBuilder.Entity("Tradgardsgolf.Core.Entities.Course", b =>
+            modelBuilder.Entity("Tradgardsgolf.Application.Core.Entities.Course", b =>
                 {
-                    b.HasOne("Tradgardsgolf.Core.Entities.Player", "CreatedBy")
+                    b.HasOne("Tradgardsgolf.Application.Core.Entities.Player", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -156,9 +156,9 @@ namespace Tradgardsgolf.Api.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("Tradgardsgolf.Core.Entities.Round", b =>
+            modelBuilder.Entity("Tradgardsgolf.Application.Core.Entities.Round", b =>
                 {
-                    b.HasOne("Tradgardsgolf.Core.Entities.Course", "Course")
+                    b.HasOne("Tradgardsgolf.Application.Core.Entities.Course", "Course")
                         .WithMany("Rounds")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -167,15 +167,15 @@ namespace Tradgardsgolf.Api.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("Tradgardsgolf.Core.Entities.RoundScore", b =>
+            modelBuilder.Entity("Tradgardsgolf.Application.Core.Entities.RoundScore", b =>
                 {
-                    b.HasOne("Tradgardsgolf.Core.Entities.Player", "Player")
+                    b.HasOne("Tradgardsgolf.Application.Core.Entities.Player", "Player")
                         .WithMany("RoundScores")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tradgardsgolf.Core.Entities.Round", "Round")
+                    b.HasOne("Tradgardsgolf.Application.Core.Entities.Round", "Round")
                         .WithMany("RoundScores")
                         .HasForeignKey("RoundId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -186,17 +186,17 @@ namespace Tradgardsgolf.Api.Migrations
                     b.Navigation("Round");
                 });
 
-            modelBuilder.Entity("Tradgardsgolf.Core.Entities.Course", b =>
+            modelBuilder.Entity("Tradgardsgolf.Application.Core.Entities.Course", b =>
                 {
                     b.Navigation("Rounds");
                 });
 
-            modelBuilder.Entity("Tradgardsgolf.Core.Entities.Player", b =>
+            modelBuilder.Entity("Tradgardsgolf.Application.Core.Entities.Player", b =>
                 {
                     b.Navigation("RoundScores");
                 });
 
-            modelBuilder.Entity("Tradgardsgolf.Core.Entities.Round", b =>
+            modelBuilder.Entity("Tradgardsgolf.Application.Core.Entities.Round", b =>
                 {
                     b.Navigation("RoundScores");
                 });

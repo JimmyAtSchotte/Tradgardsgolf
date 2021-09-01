@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,6 +37,8 @@ namespace Tradgardsgolf.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Tradgardsgolf.Api", Version = "v1"});
             });
+
+            services.AddMediatR(typeof(Startup));
             
             services.AddCors(options =>
             {
@@ -93,9 +96,10 @@ namespace Tradgardsgolf.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             var assemblies = new[] {
-                Assembly.Load("Tradgardsgolf.Core"),
-                Assembly.Load("Tradgardsgolf.Infrastructure"),
-                Assembly.Load("Tradgardsgolf.Services")
+                Assembly.Load("Tradgardsgolf.Application.Core"),
+                Assembly.Load("Tradgardsgolf.Application.Infrastructure"),
+                Assembly.Load("Tradgardsgolf.Application.Services"),
+                Assembly.Load("Tradgardsgolf.Api.RequestHandling"), 
             };
 
             builder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();

@@ -1,13 +1,11 @@
 ﻿using System.Linq;
-using System.Net;
 using Ardalis.Specification;
-using Tradgardsgolf.Core.Entities;
 
-namespace Tradgardsgolf.Core.Specifications
+namespace Tradgardsgolf.Core.Specifications.Player
 {
-    public class PlayerPlayedOnCourse : Specification<Player>
+    public class HasPlayedOnCourse : Specification<Entities.Player>
     {
-        public PlayerPlayedOnCourse(int courseId)
+        public HasPlayedOnCourse(int courseId)
         {
             Query.Where(x => x.RoundScores.Any(score => score.Round.Course.Id == courseId));
             Query.Include(x => x.RoundScores)

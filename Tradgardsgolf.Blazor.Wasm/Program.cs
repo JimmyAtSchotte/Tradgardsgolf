@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AspNetMonsters.Blazor.Geolocation;
@@ -26,9 +25,11 @@ namespace Tradgardsgolf.Blazor.Wasm
             {
                 var configuration = services.GetService<IConfiguration>();
                 
+               
                 return new HttpClient
                 {
-                    BaseAddress = new Uri(configuration.GetValue<string>("API_URL"))
+                    //BaseAddress = new Uri(configuration.GetValue<string>("API_URL"))
+                    BaseAddress = new Uri("https://localhost:5001")
                 };
             });
 
@@ -37,6 +38,7 @@ namespace Tradgardsgolf.Blazor.Wasm
             builder.Services.AddScoped<LocationService>();
 
             builder.Services.AddScoped<ICourseApiService, CourseApiService>();
+            builder.Services.AddScoped<IApiDispatcher, ApiDispatcher>();
             
             builder.Services
                 .AddBlazorise( options =>

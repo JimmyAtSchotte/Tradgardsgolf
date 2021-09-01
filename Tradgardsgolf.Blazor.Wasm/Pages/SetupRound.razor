@@ -1,5 +1,7 @@
 ﻿@page "/SetupRound"
+@using Tradgardsgolf.Contracts.Players
 @inject ICourseApiService CourseApiService
+@inject IApiDispatcher ApiDispatcher
 @inject NavigationManager NavigationManager
 @inject IModalService Modal
 
@@ -69,15 +71,18 @@ else if (AvailablePlayers.Any())
     public CascadingStateProvider State { get; set; }
 
     private string PlayerName { get; set; }
-    private IEnumerable<PlayerModel> _availablePlayers;
+    private IEnumerable<Player> _availablePlayers;
 
-    private IEnumerable<PlayerModel> AvailablePlayers => _availablePlayers
-        .Where(x => State.AppState.ScorecardState.PlayerScores.All(player => player.Player.Name != x.Name)) ?? Enumerable.Empty<PlayerModel>();
+    private IEnumerable<Player> AvailablePlayers => _availablePlayers?
+        .Where(x => State.AppState.ScorecardState.PlayerScores.All(player => player.Player.Name != x.Name)) ?? Enumerable.Empty<Player>();
 
     protected override async Task OnInitializedAsync()
     {
-        _availablePlayers = (await CourseApiService.Players(State.AppState.ScorecardState.CourseModel)).ToList();
-
+        _availablePlayers = (await ApiDispatcher.Dispatch(new HasPlayedOnCourse()
+        {
+            CourseId = State.AppState.ScorecardState.CourseModel.Id
+        }) ?? Array.Empty<Player>()).ToList();
+        
         await base.OnInitializedAsync();
     }
 

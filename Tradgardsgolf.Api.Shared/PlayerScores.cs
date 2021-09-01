@@ -1,32 +1,33 @@
 ﻿using System.Linq;
+using Tradgardsgolf.Contracts.Players;
 
 namespace Tradgardsgolf.Api.Shared
 {
-    public class PlayerScoreModel
+    public class PlayerScores
     {
-        public PlayerModel Player { get; set; }
+        public Player Player { get; set; }
 
         public HoleScoreCollection Scores { get; set; }
 
-        public PlayerScoreModel()
+        public PlayerScores()
         {
 
         }
 
-        private PlayerScoreModel(PlayerModel player, HoleScoreCollection scores)
+        private PlayerScores(Player player, HoleScoreCollection scores)
         {
             Player = player;
             Scores = scores;
         }
 
-        public static PlayerScoreModel Create(string name, int holes)
+        public static PlayerScores Create(string name, int holes)
         {
             var scores = new HoleScoreCollection();
 
             for (int hole = 1; hole <= holes; hole++)
                 scores.Add(HoleScoreModel.Create(hole));
 
-            return new PlayerScoreModel(new PlayerModel()
+            return new PlayerScores(new Player()
             {
                 Name = name
             }, scores);

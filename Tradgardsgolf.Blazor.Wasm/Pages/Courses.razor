@@ -69,6 +69,7 @@
 
     private bool AllowPlay(CourseModel course)
     {
+        return true;
         return course.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude) < 400;
     }
 

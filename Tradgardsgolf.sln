@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Core", "Tradgardsgolf.Core\Tradgardsgolf.Core.csproj", "{98A0B30D-4A0F-4D8A-9E6D-17AD39E4444D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Application.Core", "Tradgardsgolf.Application.Core\Tradgardsgolf.Application.Core.csproj", "{98A0B30D-4A0F-4D8A-9E6D-17AD39E4444D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Infrastructure", "Tradgardsgolf.Infrastructure\Tradgardsgolf.Infrastructure.csproj", "{64B34E97-D57C-42DC-B3A7-807B5A6B1DAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Application.Infrastructure", "Tradgardsgolf.Application.Infrastructure\Tradgardsgolf.Application.Infrastructure.csproj", "{64B34E97-D57C-42DC-B3A7-807B5A6B1DAC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Services", "Tradgardsgolf.Services\Tradgardsgolf.Services.csproj", "{2E3F45AD-A31E-4614-8179-836B73EAB6AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Application.Services", "Tradgardsgolf.Application.Services\Tradgardsgolf.Application.Services.csproj", "{2E3F45AD-A31E-4614-8179-836B73EAB6AC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tradgardsgolf.Tests", "Tradgardsgolf.Tests\Tradgardsgolf.Tests.csproj", "{2E540FC6-1172-4169-8426-80FE0B230C02}"
 EndProject
@@ -34,6 +34,16 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	AddMigration.ps1 = AddMigration.ps1
 EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Api.Contracts", "Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj", "{3E6860C1-7515-4E91-8957-74BFA092ABEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Api.RequestHandling", "Tradgardsgolf.Api.RequestHandling\Tradgardsgolf.Api.RequestHandling.csproj", "{A09C0436-B3FC-4065-9604-C1C54E81E220}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 API", "02 API", "{3071A007-93D1-45C8-A783-557C4ED12A6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Application", "01 Application", "{ED3C73CD-89D6-40EF-B732-74D2BDEC14A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Blazor", "03 Blazor", "{A6CCD1B7-6B55-471A-A51B-61A04AB29316}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,12 +151,45 @@ Global
 		{047EFF05-4560-4B3D-B911-91DBBFFFC28D}.Release|iPhone.Build.0 = Release|Any CPU
 		{047EFF05-4560-4B3D-B911-91DBBFFFC28D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{047EFF05-4560-4B3D-B911-91DBBFFFC28D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Release|iPhone.Build.0 = Release|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Release|iPhone.Build.0 = Release|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{A09C0436-B3FC-4065-9604-C1C54E81E220}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{33DBF908-DAC3-42CC-803A-A2ED024481D3} = {E041D4F0-F651-4529-B5F6-F307C041C2E3}
+		{047EFF05-4560-4B3D-B911-91DBBFFFC28D} = {3071A007-93D1-45C8-A783-557C4ED12A6E}
+		{3E6860C1-7515-4E91-8957-74BFA092ABEA} = {3071A007-93D1-45C8-A783-557C4ED12A6E}
+		{A09C0436-B3FC-4065-9604-C1C54E81E220} = {3071A007-93D1-45C8-A783-557C4ED12A6E}
+		{A392164E-117B-4B3F-9325-7796C31695A4} = {3071A007-93D1-45C8-A783-557C4ED12A6E}
+		{98A0B30D-4A0F-4D8A-9E6D-17AD39E4444D} = {ED3C73CD-89D6-40EF-B732-74D2BDEC14A1}
+		{64B34E97-D57C-42DC-B3A7-807B5A6B1DAC} = {ED3C73CD-89D6-40EF-B732-74D2BDEC14A1}
+		{2E3F45AD-A31E-4614-8179-836B73EAB6AC} = {ED3C73CD-89D6-40EF-B732-74D2BDEC14A1}
+		{4581DF9B-BD1D-4696-829C-A38E9A8A8132} = {A6CCD1B7-6B55-471A-A51B-61A04AB29316}
+		{E4BC82A9-A928-4788-807D-67FFBEB6B5D5} = {A6CCD1B7-6B55-471A-A51B-61A04AB29316}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CAD078B7-E2D9-49E7-B28E-A49BC8241A1A}

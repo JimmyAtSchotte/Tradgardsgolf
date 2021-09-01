@@ -1,4 +1,5 @@
 ﻿@using Tradgardsgolf.Api.Shared
+@using Tradgardsgolf.Contracts.Players
 
 <Tooltip Text="@Player.Name" Placement="Placement.Bottom">
     <Figure Size="FigureSize.Is24x24" Class="avatar border-black" Style="@AvatarStyle()">
@@ -8,7 +9,7 @@
 
 @code{
     [Parameter]
-    public PlayerModel Player { get; set; }
+    public Player Player { get; set; }
 
     public string AvatarStyle()
     {

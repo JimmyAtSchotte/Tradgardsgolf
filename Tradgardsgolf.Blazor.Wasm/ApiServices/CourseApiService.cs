@@ -11,7 +11,7 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
     {
         Task<IEnumerable<CourseModel>> ListAll();
         Task<IEnumerable<PlayerModel>> Players(CourseModel courseModel);
-        Task SaveScorecard(CourseModel courseModel, IEnumerable<PlayerScoreModel> playerScores);
+        Task SaveScorecard(CourseModel courseModel, IEnumerable<PlayerScores> playerScores);
         Task<CourseStatisticModel> Statistics(CourseModel courseModel);
     }
 
@@ -39,7 +39,7 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
             return await _httpClient.GetFromJsonAsync<CourseStatisticModel>($"Courses/{courseModel.Id}/Statistics");
         }
 
-        public async Task SaveScorecard(CourseModel courseModel, IEnumerable<PlayerScoreModel> playerScores)
+        public async Task SaveScorecard(CourseModel courseModel, IEnumerable<PlayerScores> playerScores)
         {
             await _httpClient.PostAsJsonAsync($"Courses/{courseModel.Id}/Scorecards", playerScores);
         }

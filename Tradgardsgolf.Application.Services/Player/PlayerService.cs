@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Tradgardsgolf.Core.Infrastructure.Player;
 using Tradgardsgolf.Core.Services.Player;
 using Tradgardsgolf.Core.Specifications;
+using Tradgardsgolf.Core.Specifications.Player;
 
 namespace Tradgardsgolf.Services.Player
 {
@@ -18,7 +19,7 @@ namespace Tradgardsgolf.Services.Player
         
         public async Task<IEnumerable<Core.Entities.Player>> ListPlayersThatHasPlayedOnCourseAsync(int courseId)
         {
-            return await _playerRepository.ListAsync(new PlayerPlayedOnCourse(courseId));
+            return await _playerRepository.ListAsync(new HasPlayedOnCourse(courseId));
         }
     }
 }

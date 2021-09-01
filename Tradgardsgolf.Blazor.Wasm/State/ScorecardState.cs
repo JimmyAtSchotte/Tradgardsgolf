@@ -12,7 +12,7 @@ namespace Tradgardsgolf.Blazor.Wasm.State
         private ScorecardState()
         {
         }
-        public static ScorecardState Create(CourseModel courseModel, params PlayerScoreModel[] playerScores)
+        public static ScorecardState Create(CourseModel courseModel, params PlayerScores[] playerScores)
         {
             return new ()
             {
@@ -21,7 +21,7 @@ namespace Tradgardsgolf.Blazor.Wasm.State
             };
         }
 
-        public ScorecardState(CourseModel courseModel, IEnumerable<PlayerScoreModel> playerScores)
+        public ScorecardState(CourseModel courseModel, IEnumerable<PlayerScores> playerScores)
         {
             CourseModel = courseModel;
             PlayerScores = playerScores.ToList();
@@ -31,11 +31,11 @@ namespace Tradgardsgolf.Blazor.Wasm.State
         public CourseModel CourseModel { get; private set; }
         
         [JsonProperty] 
-        public List<PlayerScoreModel> PlayerScores { get; private set; }
+        public List<PlayerScores> PlayerScores { get; private set; }
 
         public async Task AddPlayer(ComponentBase source, string name)
         {
-            var player = PlayerScoreModel.Create(name, CourseModel.Holes);
+            var player = Api.Shared.PlayerScores.Create(name, CourseModel.Holes);
             PlayerScores.Add(player);
             await Task.Delay(1);
             base.NotifyStateChange(source, nameof(PlayerScores));

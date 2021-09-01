@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure.Player;
 using Tradgardsgolf.Core.Specifications;
+using Tradgardsgolf.Core.Specifications.Player;
 
 namespace Tradgardsgolf.Infrastructure.Tests.Specifications
 {
@@ -29,7 +30,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.Specifications
                 });
             
             var repository = arrange.Resolve<IPlayerRepository>();
-            var result = await repository.ListAsync(new PlayerPlayedOnCourse(course.Id));
+            var result = await repository.ListAsync(new HasPlayedOnCourse(course.Id));
             
             Assert.AreEqual(1, result.Count(x => x.Id == player1.Id));
         }
@@ -52,7 +53,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.Specifications
                 });
             
             var repository = arrange.Resolve<IPlayerRepository>();
-            var result = await repository.ListAsync(new PlayerPlayedOnCourse(course.Id));
+            var result = await repository.ListAsync(new HasPlayedOnCourse(course.Id));
             
             Assert.AreEqual(0, result.Count(x => x.Id == player1.Id));
         }
