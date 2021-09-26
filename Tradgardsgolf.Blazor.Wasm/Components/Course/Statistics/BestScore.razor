@@ -11,12 +11,12 @@
     
     protected override void OnParametersSet()
     {
-        if(CascadingCourseStatistics?.CourseStatisticModel == null)
+        if(CascadingCourseStatistics?.CourseStatistic == null)
             return;
 
         var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
     
-        _bestScore = CascadingCourseStatistics.CourseStatisticModel.Rounds
+        _bestScore = CascadingCourseStatistics.CourseStatistic.Rounds
             .Where(x => x.Date > scoreReset)
             .Select(x => new
         {

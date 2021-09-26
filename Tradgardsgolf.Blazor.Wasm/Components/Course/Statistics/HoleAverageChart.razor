@@ -25,12 +25,12 @@
 
     protected override void OnParametersSet()
     {
-        if(CascadingCourseStatistics?.CourseStatisticModel == null)
+        if(CascadingCourseStatistics?.CourseStatistic == null)
             return;
         
         var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
         
-        _holeAverageModels = CascadingCourseStatistics.CourseStatisticModel.Rounds
+        _holeAverageModels = CascadingCourseStatistics.CourseStatistic.Rounds
             .Where(x => x.Date > scoreReset)
             .Select(x => new
         {

@@ -10,9 +10,7 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
     public interface ICourseApiService
     {
         Task<IEnumerable<CourseModel>> ListAll();
-        Task<IEnumerable<PlayerModel>> Players(CourseModel courseModel);
         Task SaveScorecard(CourseModel courseModel, IEnumerable<PlayerScores> playerScores);
-        Task<CourseStatisticModel> Statistics(CourseModel courseModel);
     }
 
     public class CourseApiService : ICourseApiService
@@ -28,16 +26,7 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
         {
             return await _httpClient.GetFromJsonAsync<IEnumerable<CourseModel>>("Courses");
         }
-
-        public async Task<IEnumerable<PlayerModel>> Players(CourseModel courseModel)
-        {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<PlayerModel>>($"Courses/{courseModel.Id}/Players");
-        }
-        
-        public async Task<CourseStatisticModel> Statistics(CourseModel courseModel)
-        {
-            return await _httpClient.GetFromJsonAsync<CourseStatisticModel>($"Courses/{courseModel.Id}/Statistics");
-        }
+ 
 
         public async Task SaveScorecard(CourseModel courseModel, IEnumerable<PlayerScores> playerScores)
         {

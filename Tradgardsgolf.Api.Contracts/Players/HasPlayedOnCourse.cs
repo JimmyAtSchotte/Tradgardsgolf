@@ -7,9 +7,4 @@ namespace Tradgardsgolf.Contracts.Players
     {
         public int CourseId { get; init; }
     }
-    
-    public record Player
-    {
-        public string Name { get; init; }
-    }
 }

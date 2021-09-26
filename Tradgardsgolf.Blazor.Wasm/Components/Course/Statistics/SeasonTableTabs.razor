@@ -34,10 +34,10 @@
 
     protected override void OnParametersSet()
     {
-        if (CascadingCourseStatistics?.CourseStatisticModel == null)
+        if (CascadingCourseStatistics?.CourseStatistic == null)
             return;
 
-        _years = CascadingCourseStatistics.CourseStatisticModel.Rounds
+        _years = CascadingCourseStatistics.CourseStatistic.Rounds
             .Select(x => x.Date.Year)
             .Distinct()
             .OrderByDescending(x => x)

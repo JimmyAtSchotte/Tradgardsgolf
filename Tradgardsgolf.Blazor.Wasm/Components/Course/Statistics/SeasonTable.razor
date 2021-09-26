@@ -39,7 +39,7 @@
 
     protected override void OnParametersSet()
     {
-        if(CascadingCourseStatistics?.CourseStatisticModel == null)
+        if(CascadingCourseStatistics?.CourseStatistic == null)
             return;
         
         if(!Year.HasValue)
@@ -50,7 +50,7 @@
 
     private void RenderSeasonTable()
     {
-        _seasonTableModels = CascadingCourseStatistics.CourseStatisticModel.Rounds
+        _seasonTableModels = CascadingCourseStatistics.CourseStatistic.Rounds
                 .Where(x => x.Date.Year == Year.GetValueOrDefault(0))
                 .Select(x => new
                 {

@@ -1,5 +1,5 @@
-﻿@using Tradgardsgolf.Api.Shared
-@inject ICourseApiService CourseApiService
+﻿@using Tradgardsgolf.Contracts.Statistics
+@inject IApiDispatcher apiDispatcher
 
 <CascadingValue Value="this">
     @ChildContent
@@ -12,13 +12,16 @@
     [Parameter]
     public RenderFragment ChildContent { get; set; }
     
-    public CourseStatisticModel CourseStatisticModel { get; set; }
+    public CourseStatistic CourseStatistic { get; set; }
     public bool Loading { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Loading = true;
-        CourseStatisticModel = await CourseApiService.Statistics(CascadingCourse.Course);
+        CourseStatistic = await apiDispatcher.Dispatch(new RequestCourseStatistic()
+        {
+            CourseId = CascadingCourse.Course.Id
+        });
         Loading = false;
     }
 }
