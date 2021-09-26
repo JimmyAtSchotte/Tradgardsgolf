@@ -9,11 +9,11 @@ using Tradgardsgolf.Core.Services.Course;
 
 namespace Tradgardsgolf.Tasks
 {
-    public class CourseStatisticHandler : IRequestHandler<RequestCourseStatistic, CourseStatistic>
+    public class RequestCourseStatisticHandler : IRequestHandler<RequestCourseStatistic, CourseStatistic>
     {
         private readonly ICourseService _courseService;
 
-        public CourseStatisticHandler(ICourseService courseService)
+        public RequestCourseStatisticHandler(ICourseService courseService)
         {
             _courseService = courseService;
         }
@@ -40,6 +40,3 @@ namespace Tradgardsgolf.Tasks
     }
 }
 
-namespace Tradgardsgolf.Course.Players
-{
-}

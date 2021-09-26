@@ -1,4 +1,6 @@
-﻿<CascadingValue Value="this">
+﻿@using Tradgardsgolf.Contracts.Course
+
+<CascadingValue Value="this">
     @ChildContent
 </CascadingValue>
 
@@ -7,5 +9,5 @@
     public RenderFragment ChildContent { get; set; }
     
     [Parameter]
-    public CourseModel Course { get; set; }
+    public Course Course { get; set; }
 }

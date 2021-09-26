@@ -3,7 +3,7 @@
 @inject ICourseApiService CourseApiService
 @inject IModalService Modal
 
-<CascadingCourse Course="State.AppState.ScorecardState.CourseModel">
+<CascadingCourse Course="State.AppState.ScorecardState.Course">
     <CascadingCourseStatistics>
         <CourseCard>
             <CourseHead>
@@ -21,7 +21,7 @@
                         }
                     </TableHeader>
                     <TableBody>
-                        @for (int i = 1; i <= State.AppState.ScorecardState.CourseModel.Holes; i++)
+                        @for (int i = 1; i <= State.AppState.ScorecardState.Course.Holes; i++)
                         {
                             var hole = i;
 
@@ -86,8 +86,7 @@
         Saving = true;
         StateHasChanged();
         
-        await CourseApiService.SaveScorecard(State.AppState.ScorecardState.CourseModel,
-            State.AppState.ScorecardState.PlayerScores);
+        await CourseApiService.SaveScorecard(State.AppState.ScorecardState.Course, State.AppState.ScorecardState.PlayerScores);
         
         var playAgain = Modal.Show<PlayAgainModal>("Rundan är klar och sparad");
         

@@ -1,7 +1,8 @@
 ﻿@page "/"
-@inject ICourseApiService CourseApiService
+@inject IApiDispatcher apiDispatcher;
 @inject NavigationManager NavigationManager
 @inject LocationService LocationService
+@using Tradgardsgolf.Contracts.Course
 @implements IDisposable
 
 <Loading IsLoading="_courses == null" LoadingText="Laddar banor i närheten...">
@@ -34,13 +35,13 @@
     [CascadingParameter]
     public CascadingLocationProvider LocationProvider { get; set; }
 
-    private IEnumerable<CourseModel> _models;
-    private IList<CourseModel> _courses;
+    private IEnumerable<Course> _models;
+    private IList<Course> _courses;
 
     protected override async Task OnInitializedAsync()
     {
-        _models = await CourseApiService.ListAll();
-
+        _models = await apiDispatcher.Dispatch(new RequestCourseList());
+        
         OrderCoursesByDistance();
 
         LocationProvider.LocationChanged += LocationProviderOnLocationChanged;
@@ -67,13 +68,12 @@
         StateHasChanged();
     }
 
-    private bool AllowPlay(CourseModel course)
+    private bool AllowPlay(Course course)
     {
-        return true;
         return course.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude) < 400;
     }
 
-    private async Task SetupRound(CourseModel courseModel)
+    private async Task SetupRound(Course courseModel)
     {
         StateProvider.AppState.NewScorecard(this, courseModel);
         await Task.Delay(1);

@@ -5,7 +5,7 @@
 @inject NavigationManager NavigationManager
 @inject IModalService Modal
 
-<CascadingCourse Course="State.AppState.ScorecardState.CourseModel">
+<CascadingCourse Course="State.AppState.ScorecardState.Course">
     <CascadingCourseStatistics>
         <CourseCard>
             <CourseHead>
@@ -52,7 +52,7 @@ else if (AvailablePlayers.Any())
 {
     <Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
         <CardBody>
-            <CardTitle>Har tidigare spelat på @State.AppState.ScorecardState.CourseModel.Name</CardTitle>
+            <CardTitle>Har tidigare spelat på @State.AppState.ScorecardState.Course.Name</CardTitle>
             @foreach (var player in AvailablePlayers)
             {
                 <PlayerListItem Player="player">
@@ -80,7 +80,7 @@ else if (AvailablePlayers.Any())
     {
         _availablePlayers = (await ApiDispatcher.Dispatch(new HasPlayedOnCourse()
         {
-            CourseId = State.AppState.ScorecardState.CourseModel.Id
+            CourseId = State.AppState.ScorecardState.Course.Id
         }) ?? Array.Empty<Player>()).ToList();
         
         await base.OnInitializedAsync();
