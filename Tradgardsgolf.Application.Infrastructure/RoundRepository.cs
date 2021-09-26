@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Tradgardsgolf.Core.Entities;
-using Tradgardsgolf.Core.Infrastructure.Round;
+using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Infrastructure
 {

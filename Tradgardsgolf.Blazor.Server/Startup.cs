@@ -40,9 +40,7 @@ namespace Tradgardsgolf.Blazor.Server
             {
                 BaseAddress = new Uri(Configuration.GetValue<string>("API_URL"))
             });
-
-            services.AddScoped<ICourseApiService, CourseApiService>();
-            
+           
             services
                 .AddBlazorise( options =>
                 {

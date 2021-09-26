@@ -5,38 +5,33 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Contracts.Players;
-using Tradgardsgolf.Core.Services.Course;
+using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Tasks
 {
     public class RequestCourseListHandler : IRequestHandler<RequestCourseList, IEnumerable<Course>>
     {
-        private readonly ICourseService _courseService;
+        private readonly ICourseRepository _courseRepository;
 
-        public RequestCourseListHandler(ICourseService courseService)
+        public RequestCourseListHandler(ICourseRepository courseRepository)
         {
-            _courseService = courseService;
+            _courseRepository = courseRepository;
         }
 
         public async Task<IEnumerable<Course>> Handle(RequestCourseList request, CancellationToken cancellationToken)
         {
-            var courses = _courseService.ListAll();
+            var courses = await _courseRepository.ListAsync();
 
             return courses.Select(x => new Course()
             {
                 Created = x.Created,
                 Holes = x.Holes,
                 Id = x.Id,
-                Image = x.Image,
+                Image = "images/grass.jpg",
                 Latitude = x.Latitude,
                 Longitude = x.Longitude,
                 Name = x.Name,
-                ScoreReset = x.ScoreReset,
-                CreatedBy = new Player()
-                {
-                    Id = x.CreatedBy.Id,
-                    Name = x.Name
-                }
+                ScoreReset = x.ScoreReset
             });
         }
     }

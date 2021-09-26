@@ -1,5 +1,4 @@
-﻿using Tradgardsgolf.Core.Infrastructure.Course;
-using Tradgardsgolf.Core.Services.Course;
+﻿using Tradgardsgolf.Core.Services.Course;
 
 namespace Tradgardsgolf.Services.Course
 {

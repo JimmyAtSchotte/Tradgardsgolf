@@ -1,6 +1,7 @@
 ﻿@page "/Scorecard"
+@using Tradgardsgolf.Contracts.Scorecard
 @inject NavigationManager NavigationManager
-@inject ICourseApiService CourseApiService
+@inject IApiDispatcher apiDispatcher
 @inject IModalService Modal
 
 <CascadingCourse Course="State.AppState.ScorecardState.Course">
@@ -85,8 +86,16 @@
     {
         Saving = true;
         StateHasChanged();
-        
-        await CourseApiService.SaveScorecard(State.AppState.ScorecardState.Course, State.AppState.ScorecardState.PlayerScores);
+
+        await apiDispatcher.Dispatch(new SaveScorecard()
+        {
+            CourseId = State.AppState.ScorecardState.Course.Id,
+            PlayerScores = State.AppState.ScorecardState.PlayerScores.Select(x => new PlayerScore()
+            {
+                Name = x.Player.Name,
+                HoleScores = x.Scores.Select(score => score.Score.GetValueOrDefault())
+            })
+        });
         
         var playAgain = Modal.Show<PlayAgainModal>("Rundan är klar och sparad");
         

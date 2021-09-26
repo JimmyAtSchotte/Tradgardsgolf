@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Tradgardsgolf.Core.Infrastructure.Course;
-using Tradgardsgolf.Core.Infrastructure.Player;
+using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Infrastructure.Scorecard;
 using Tradgardsgolf.Core.Services.Scorecard;
 

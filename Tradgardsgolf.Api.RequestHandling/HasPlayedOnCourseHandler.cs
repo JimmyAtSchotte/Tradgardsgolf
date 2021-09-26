@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Players;
-using Tradgardsgolf.Core.Infrastructure.Player;
+using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using HasPlayedOnCourse = Tradgardsgolf.Core.Specifications.Player.HasPlayedOnCourse;
+using HasPlayedOnCourse = Tradgardsgolf.Core.Specifications.HasPlayedOnCourse;
 
 namespace Tradgardsgolf.Tasks
 {

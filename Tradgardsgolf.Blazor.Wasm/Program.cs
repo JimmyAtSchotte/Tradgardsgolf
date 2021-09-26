@@ -36,8 +36,6 @@ namespace Tradgardsgolf.Blazor.Wasm
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredModal();
             builder.Services.AddScoped<LocationService>();
-
-            builder.Services.AddScoped<ICourseApiService, CourseApiService>();
             builder.Services.AddScoped<IApiDispatcher, ApiDispatcher>();
             
             builder.Services

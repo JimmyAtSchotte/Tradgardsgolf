@@ -1,27 +1,26 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Tradgardsgolf.Contracts.Players;
 using Tradgardsgolf.Contracts.Statistics;
-using Tradgardsgolf.Core.Services.Course;
+using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Tasks
 {
     public class RequestCourseStatisticHandler : IRequestHandler<RequestCourseStatistic, CourseStatistic>
     {
-        private readonly ICourseService _courseService;
+        private readonly IRoundRepository _roundRepository;
 
-        public RequestCourseStatisticHandler(ICourseService courseService)
+        public RequestCourseStatisticHandler(IRoundRepository roundRepository)
         {
-            _courseService = courseService;
+            _roundRepository = roundRepository;
         }
 
 
         public async Task<CourseStatistic> Handle(RequestCourseStatistic request, CancellationToken cancellationToken)
         {
-            var rounds = await _courseService.ListAllRounds(request.CourseId);
+            var rounds =  await _roundRepository.ListAsync(new AllRoundsByCourse(request.CourseId));
            
             return new CourseStatistic()
             {

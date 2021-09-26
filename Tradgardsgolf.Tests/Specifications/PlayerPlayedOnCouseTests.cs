@@ -4,9 +4,8 @@ using ArrangeDependencies.Autofac;
 using ArrangeDependencies.Autofac.EntityFrameworkCore;
 using NUnit.Framework;
 using Tradgardsgolf.Core.Entities;
-using Tradgardsgolf.Core.Infrastructure.Player;
+using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using Tradgardsgolf.Core.Specifications.Player;
 
 namespace Tradgardsgolf.Infrastructure.Tests.Specifications
 {

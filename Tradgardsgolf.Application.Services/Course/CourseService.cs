@@ -3,8 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tradgardsgolf.Core.Entities;
-using Tradgardsgolf.Core.Infrastructure.Course;
-using Tradgardsgolf.Core.Infrastructure.Round;
+using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Services.Course;
 using Tradgardsgolf.Core.Specifications;
 
