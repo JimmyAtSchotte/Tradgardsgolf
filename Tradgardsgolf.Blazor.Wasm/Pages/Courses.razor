@@ -54,6 +54,12 @@
 
     private void OrderCoursesByDistance()
     {
+        if (LocationProvider is null)
+            throw new NullReferenceException($"{nameof(LocationProvider)} is null");
+        
+        if (LocationProvider.Location is null)
+            throw new NullReferenceException($"{nameof(LocationProvider)}.{nameof(LocationProvider.Location)}  is null");
+
         var distanceOrdered = _models
             .OrderBy(x => x.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude))
             .ToList();
