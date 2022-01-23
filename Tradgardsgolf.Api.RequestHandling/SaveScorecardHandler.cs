@@ -2,52 +2,56 @@
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Scorecard;
+using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using Player = Tradgardsgolf.Core.Entities.Player;
+using Tradgardsgolf.Core.UnitOfWork;
 
 namespace Tradgardsgolf.Tasks
 {
-    public class SaveScorecardHandler : IRequestHandler<SaveScorecard, Scorecard>
+    public class SaveScorecardHandler : IRequestHandler<SaveScorecard, Contracts.Scorecard.Scorecard>
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IPlayerRepository _playerRepository;
-        private readonly IRoundRepository _roundRepository;
-        private readonly IRoundScoreRepository _roundScoreRepository;
 
-        public SaveScorecardHandler(ICourseRepository courseRepository, IPlayerRepository playerRepository, IRoundRepository roundRepository, IRoundScoreRepository roundScoreRepository)
+        public SaveScorecardHandler(ICourseRepository courseRepository, IPlayerRepository playerRepository)
         {
             _courseRepository = courseRepository;
             _playerRepository = playerRepository;
-            _roundRepository = roundRepository;
-            _roundScoreRepository = roundScoreRepository;
         }
 
 
-        public async Task<Scorecard> Handle(SaveScorecard request, CancellationToken cancellationToken)
+        public async Task<Contracts.Scorecard.Scorecard> Handle(SaveScorecard request, CancellationToken cancellationToken)
         {
             var course = await _courseRepository.GetByIdAsync(request.CourseId);
-            var round = await _roundRepository.AddAsync(course.CreateRound());
-
+            var round = course.CreateRound();
+            
+            var createScoreCard = new RoundUnitOfWork(round);
+            
             foreach (var score in request.PlayerScores)
             {
-                var player = await _playerRepository.GetBySpecAsync(CoursePlayer.Specification(request.CourseId, score.Name)) ??
-                             await _playerRepository.AddAsync(Player.Create(x => x.Name = score.Name));
+                var player = await GetOrCreatePlayer(request, score);
 
-                var hole = 1;
                 foreach (var holeScore in score.HoleScores)
-                {
-                    await _roundScoreRepository.AddAsync(round.CreateRoundScore(player, hole, holeScore));
-                    hole++;
-                }
+                    createScoreCard.AddScore(player, holeScore);
             }
 
-            return new Scorecard()
+            await _courseRepository.UpdateAsync(course);
+
+            return new Contracts.Scorecard.Scorecard()
             {
                 Id = round.Id,
                 CourseId = course.Id,
                 PlayerScores = request.PlayerScores
             };
+        }
+
+        private async Task<Player> GetOrCreatePlayer(SaveScorecard request, PlayerScore score)
+        {
+            var player = await _playerRepository.GetBySpecAsync(CoursePlayer.Specification(request.CourseId, score.Name)) ??
+                         await _playerRepository.AddAsync(Player.Create(x => x.Name = score.Name));
+            
+            return player;
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Tradgardsgolf.Core.Entities
     [Table("course")]
     public class Course : BaseEntity<Course>
     {
+        private ICollection<Round> _rounds;
+
         [Key]
         public int Id { get; set; }
         [Column("strName")]
@@ -27,11 +29,15 @@ namespace Tradgardsgolf.Core.Entities
         
         [Column("dtmScoreReset")]
         public DateTime? ScoreReset { get; set; }
-        
-        
-        public virtual ICollection<Round> Rounds { get; set; }
 
-        private Course()
+
+        public virtual ICollection<Round> Rounds
+        {
+            get => _rounds ??= new List<Round>();
+            set => _rounds = value;
+        }
+
+        public Course()
         {
 
         }               
@@ -45,7 +51,11 @@ namespace Tradgardsgolf.Core.Entities
 
         public Round CreateRound()
         {
-            return new Round(this);
+            var round = new Round(this);
+
+            Rounds.Add(round);
+            
+            return round;
         }
               
     }

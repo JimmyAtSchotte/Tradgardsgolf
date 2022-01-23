@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,6 +10,8 @@ namespace Tradgardsgolf.Core.Entities
 
     public class Round : BaseEntity<Round>
     {
+        private ICollection<RoundScore> _roundScores;
+
         [Key]
         public int Id { get; set; }
 
@@ -18,9 +21,14 @@ namespace Tradgardsgolf.Core.Entities
 
         [Column("dtmDate")]
         public DateTime Date { get; private set; }
-        
-        
-        public virtual Collection<RoundScore> RoundScores { get; set; }
+
+
+        public virtual ICollection<RoundScore> RoundScores
+        {
+            get => _roundScores ??= new List<RoundScore>();
+            set => _roundScores = value;
+        }
+
         private Round()
         {
 
@@ -35,7 +43,11 @@ namespace Tradgardsgolf.Core.Entities
 
         public RoundScore CreateRoundScore(Player player, int hole, int score)
         {
-            return new RoundScore(this, player, hole, score);
+            var roundScore = new RoundScore(this, player, hole, score);
+            
+            RoundScores.Add(roundScore);
+            
+            return roundScore;
         }
     }
 }

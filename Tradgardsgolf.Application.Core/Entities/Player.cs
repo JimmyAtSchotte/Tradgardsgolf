@@ -25,7 +25,7 @@ namespace Tradgardsgolf.Core.Entities
         
         public virtual ICollection<RoundScore> RoundScores { get; set; }
 
-        private Player()
+        public Player()
         {
         }
 
