@@ -28,13 +28,40 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
             var dispatchUrl = DispatchUrlBuilder.Build(request);
             var requestBody = JsonSerializer.Serialize(request, request.GetType());
 
-            var response = await _httpClient.PostAsync(dispatchUrl, new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            try
+            {
+                var response = await _httpClient.PostAsync(dispatchUrl, new StringContent(requestBody, Encoding.UTF8, "application/json"));
             
-            if(response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<TResponse>()
-                       ?? throw new InvalidOperationException("Could not read response message");
+                if(response.IsSuccessStatusCode)
+                    return await response.Content.ReadFromJsonAsync<TResponse>()
+                           ?? throw new InvalidOperationException("Could not read response message");
+                
+                throw new DispatchException(response, dispatchUrl, requestBody);
+            }
+            catch (DispatchException e)
+            {
+                Console.WriteLine($"Error: {e.Url} {e.Body}  {e.Response.StatusCode}");
+                throw;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {dispatchUrl} {requestBody} {e.Message}");
+                throw;
+            }
+        }
+    }
 
-            throw new Exception($"[{response.StatusCode}] {dispatchUrl} {requestBody}");
+    public class DispatchException : Exception
+    {
+        public HttpResponseMessage Response { get; }
+        public string Url { get; }        
+        public string Body { get; }
+
+        public DispatchException(HttpResponseMessage response, string url, string body) : base()
+        {
+            Response = response;
+            Url = url;
+            Body = body;
         }
     }
 
