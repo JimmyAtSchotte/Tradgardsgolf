@@ -19,17 +19,15 @@ namespace Tradgardsgolf.Blazor.Wasm
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            
+
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddSingleton(services =>
             {
                 var configuration = services.GetService<IConfiguration>();
-                
-               
+
                 return new HttpClient
                 {
                     BaseAddress = new Uri(configuration.GetValue<string>("API_URL"))
-                    //BaseAddress = new Uri("https://localhost:5001")
                 };
             });
 
