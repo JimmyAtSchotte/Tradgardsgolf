@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @inject LocationService LocationService
 @using Tradgardsgolf.Contracts.Course
+@using Newtonsoft.Json
 @implements IDisposable
 
 <Loading IsLoading="_courses == null" LoadingText="Laddar banor i närheten...">
@@ -59,7 +60,9 @@
         
         if (LocationProvider.Location is null)
             throw new NullReferenceException($"{nameof(LocationProvider)}.{nameof(LocationProvider.Location)}  is null");
-
+        
+        Console.WriteLine(JsonConvert.SerializeObject(_models));
+        
         var distanceOrdered = _models
             .OrderBy(x => x.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude))
             .ToList();
