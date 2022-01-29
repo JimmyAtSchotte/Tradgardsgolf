@@ -27,27 +27,15 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
         {
             var dispatchUrl = DispatchUrlBuilder.Build(request);
             var requestBody = JsonSerializer.Serialize(request, request.GetType());
-
-            try
-            {
-                var response = await _httpClient.PostAsync(dispatchUrl, new StringContent(requestBody, Encoding.UTF8, "application/json"));
             
-                if(response.IsSuccessStatusCode)
-                    return await response.Content.ReadFromJsonAsync<TResponse>()
-                           ?? throw new InvalidOperationException("Could not read response message");
-                
-                throw new DispatchException(response, dispatchUrl, requestBody);
-            }
-            catch (DispatchException e)
-            {
-                Console.WriteLine($"Error: {e.Url} {e.Body}  {e.Response.StatusCode}");
-                throw;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {dispatchUrl} {requestBody} {e.Message}");
-                throw;
-            }
+            var response = await _httpClient.PostAsync(dispatchUrl, new StringContent(requestBody, Encoding.UTF8, "application/json"));
+        
+            if(response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<TResponse>()
+                       ?? throw new InvalidOperationException("Could not read response message");
+            
+            throw new DispatchException(response, dispatchUrl, requestBody);
+     
         }
     }
 

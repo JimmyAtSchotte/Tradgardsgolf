@@ -28,8 +28,8 @@ namespace Tradgardsgolf.Blazor.Wasm
                
                 return new HttpClient
                 {
-                    //BaseAddress = new Uri(configuration.GetValue<string>("API_URL"))
-                    BaseAddress = new Uri("https://localhost:5001")
+                    BaseAddress = new Uri(configuration.GetValue<string>("API_URL"))
+                    //BaseAddress = new Uri("https://localhost:5001")
                 };
             });
 
