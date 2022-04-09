@@ -20,7 +20,7 @@
         Loading = true;
         CourseStatisticResponse = await apiDispatcher.Dispatch(new CourseStatisticCommand()
         {
-            CourseId = CascadingCourse.CourseResponse.Id
+            CourseId = CascadingCourse.Course.Id
         });
         Loading = false;
     }

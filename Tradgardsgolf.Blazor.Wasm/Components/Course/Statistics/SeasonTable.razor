@@ -9,12 +9,12 @@
         }))
         {
             <TableRow>
-                <TableRowCell ColumnSpan="@(CascadingCourse.CourseResponse.SeasonTableRounds + 1)">
+                <TableRowCell ColumnSpan="@(CascadingCourse.Course.SeasonTableRounds + 1)">
                     <strong>@obj.Position. @obj.Model.Player</strong>
                 </TableRowCell>
             </TableRow>
             <TableRow>
-                @for (var i = 0; i < CascadingCourse.CourseResponse.SeasonTableRounds; i++)
+                @for (var i = 0; i < CascadingCourse.Course.SeasonTableRounds; i++)
                 {
                     var index = i;
                     <TableRowCell Style="border-top: none">@obj.Model.GetScore(index)</TableRowCell>
@@ -67,7 +67,7 @@
                 {
                     Player = x.Key,
                     Scores = x.OrderBy(s => s.ToatalScore)
-                        .Take(CascadingCourse.CourseResponse.SeasonTableRounds)
+                        .Take(CascadingCourse.Course.SeasonTableRounds)
                         .Select(s => s.ToatalScore)
                         .ToArray()
                 })

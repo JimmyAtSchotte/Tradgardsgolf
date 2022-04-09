@@ -28,7 +28,7 @@
         if(CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
         
-        var scoreReset = CascadingCourseStatistics.CascadingCourse.CourseResponse.ScoreReset.GetValueOrDefault(DateTime.MinValue);
+        var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
         
         _holeAverageModels = CascadingCourseStatistics.CourseStatisticResponse.Rounds
             .Where(x => x.Date > scoreReset)
