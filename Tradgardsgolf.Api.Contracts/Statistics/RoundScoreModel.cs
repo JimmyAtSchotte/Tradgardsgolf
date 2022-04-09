@@ -1,9 +1,9 @@
 ﻿namespace Tradgardsgolf.Contracts.Statistics
 {
-    public class RoundScoreModel
+    public record RoundScoreModel
     {
-        public string Player { get; set; }
-        public int Hole { get; set; }
-        public int Score { get; set; }
+        public string Player { get; init; }
+        public int Hole { get; init; }
+        public int Score { get; init; }
     }
 }

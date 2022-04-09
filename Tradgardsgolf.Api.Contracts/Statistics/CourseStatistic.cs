@@ -2,8 +2,8 @@
 
 namespace Tradgardsgolf.Contracts.Statistics
 {
-    public class CourseStatistic
+    public record CourseStatistic
     {
-        public IEnumerable<RoundModel> Rounds { get; set; }
+        public IEnumerable<RoundModel> Rounds { get; init; }
     }
 }

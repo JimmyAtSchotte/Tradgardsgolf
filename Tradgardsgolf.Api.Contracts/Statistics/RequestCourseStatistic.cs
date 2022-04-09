@@ -6,6 +6,6 @@ namespace Tradgardsgolf.Contracts.Statistics
 {
     public record RequestCourseStatistic : IRequest<CourseStatistic>
     {
-        public int CourseId { get; set; }
+        public int CourseId { get; init; }
     }
 }
