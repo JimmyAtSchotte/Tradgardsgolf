@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using Tradgardsgolf.Core.Entities;
-using Tradgardsgolf.Core.UnitOfWork;
 
 namespace Tradgardsgolf.Infrastructure.Tests
 {
@@ -34,11 +32,10 @@ namespace Tradgardsgolf.Infrastructure.Tests
         [Test]
         public void AddOneScore()
         {
-            var createRound = new Core.UnitOfWork.RoundUnitOfWork(course1.CreateRound());
-            createRound.AddScore(player1, 5);
+            var round = course1.CreateRound();
+            round.AddScore(player1, 5);
 
-            var score = createRound.Build()?
-                .RoundScores.FirstOrDefault();
+            var score = round.RoundScores.FirstOrDefault();
 
             Assert.Multiple(() => {
                 
@@ -52,13 +49,12 @@ namespace Tradgardsgolf.Infrastructure.Tests
         [Test]
         public void AddMultipleScoreScoresOnePlayer()
         {
-            var createRound = new Core.UnitOfWork.RoundUnitOfWork(course1.CreateRound());
-            createRound.AddScore(player1, 5);
-            createRound.AddScore(player1, 6);
-            createRound.AddScore(player1, 7);
+            var round = course1.CreateRound();
+            round.AddScore(player1, 5);
+            round.AddScore(player1, 6);
+            round.AddScore(player1, 7);
 
-            var scores = createRound.Build()?
-                .RoundScores.ToArray();
+            var scores = round.RoundScores.ToArray();
 
             Assert.Multiple(() => 
             {
@@ -77,12 +73,11 @@ namespace Tradgardsgolf.Infrastructure.Tests
         [Test]
         public void AddMultiplePlayers()
         {
-            var createRound = new Core.UnitOfWork.RoundUnitOfWork(course1.CreateRound());
-            createRound.AddScore(player1, 5);
-            createRound.AddScore(player2, 3);
+            var round = course1.CreateRound();
+            round.AddScore(player1, 5);
+            round.AddScore(player2, 3);
 
-            var scores = createRound.Build()?
-                .RoundScores;
+            var scores = round.RoundScores;
 
             Assert.Multiple(() => {
                 

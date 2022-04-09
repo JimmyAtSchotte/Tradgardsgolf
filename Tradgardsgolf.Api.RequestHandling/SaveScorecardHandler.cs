@@ -5,7 +5,6 @@ using Tradgardsgolf.Contracts.Scorecard;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using Tradgardsgolf.Core.UnitOfWork;
 
 namespace Tradgardsgolf.Tasks
 {
@@ -25,15 +24,13 @@ namespace Tradgardsgolf.Tasks
         {
             var course = await _courseRepository.GetByIdAsync(request.CourseId);
             var round = course.CreateRound();
-            
-            var createScoreCard = new RoundUnitOfWork(round);
-            
+
             foreach (var score in request.PlayerScores)
             {
                 var player = await GetOrCreatePlayer(request, score);
 
                 foreach (var holeScore in score.HoleScores)
-                    createScoreCard.AddScore(player, holeScore);
+                    round.AddScore(player, holeScore);
             }
 
             await _courseRepository.UpdateAsync(course);
