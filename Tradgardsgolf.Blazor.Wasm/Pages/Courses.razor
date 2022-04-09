@@ -37,8 +37,8 @@
     [CascadingParameter]
     public CascadingLocationProvider LocationProvider { get; set; }
 
-    private IEnumerable<Course> _models;
-    private IList<Course> _courses;
+    private IEnumerable<CourseResponse> _models;
+    private IList<CourseResponse> _courses;
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,14 +70,14 @@
         StateHasChanged();
     }
 
-    private bool AllowPlay(Course course)
+    private bool AllowPlay(CourseResponse courseResponse)
     {
-        return course.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude) < 400;
+        return courseResponse.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude) < 400;
     }
 
-    private async Task SetupRound(Course courseModel)
+    private async Task SetupRound(CourseResponse courseResponseModel)
     {
-        StateProvider.AppState.NewScorecard(this, courseModel);
+        StateProvider.AppState.NewScorecard(this, courseResponseModel);
         await Task.Delay(1);
         NavigationManager.NavigateTo(nameof(SetupRound));
     }

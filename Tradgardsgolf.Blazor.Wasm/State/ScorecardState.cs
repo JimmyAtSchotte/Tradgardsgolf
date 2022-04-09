@@ -12,30 +12,30 @@ namespace Tradgardsgolf.Blazor.Wasm.State
         private ScorecardState()
         {
         }
-        public static ScorecardState Create(Course courseModel, params PlayerScores[] playerScores)
+        public static ScorecardState Create(CourseResponse courseResponseModel, params PlayerScores[] playerScores)
         {
             return new ()
             {
-                Course = courseModel,
+                CourseResponse = courseResponseModel,
                 PlayerScores = playerScores.ToList(),
             };
         }
 
-        public ScorecardState(Course course, IEnumerable<PlayerScores> playerScores)
+        public ScorecardState(CourseResponse courseResponse, IEnumerable<PlayerScores> playerScores)
         {
-            Course = course;
+            CourseResponse = courseResponse;
             PlayerScores = playerScores.ToList();
         }
         
         [JsonProperty] 
-        public Course Course { get; private set; }
+        public CourseResponse CourseResponse { get; private set; }
         
         [JsonProperty] 
         public List<PlayerScores> PlayerScores { get; private set; }
 
         public async Task AddPlayer(ComponentBase source, string name)
         {
-            var player = State.PlayerScores.Create(name, Course.Holes);
+            var player = State.PlayerScores.Create(name, CourseResponse.Holes);
             PlayerScores.Add(player);
             await Task.Delay(1);
             base.NotifyStateChange(source, nameof(PlayerScores));
@@ -43,7 +43,7 @@ namespace Tradgardsgolf.Blazor.Wasm.State
         
         public async Task RemovePlayer(ComponentBase source, string name)
         {
-            PlayerScores.RemoveAll(x => x.Player.Name == name);
+            PlayerScores.RemoveAll(x => x.PlayerResponse.Name == name);
             await Task.Delay(1);
             base.NotifyStateChange(source, nameof(PlayerScores));
         }
@@ -58,7 +58,7 @@ namespace Tradgardsgolf.Blazor.Wasm.State
 
         public async Task SetScore(ComponentBase source, string name, int hole, int score)
         {
-            var player = PlayerScores.FirstOrDefault(x => x.Player.Name == name);
+            var player = PlayerScores.FirstOrDefault(x => x.PlayerResponse.Name == name);
             if (player == null)
                 return;
 

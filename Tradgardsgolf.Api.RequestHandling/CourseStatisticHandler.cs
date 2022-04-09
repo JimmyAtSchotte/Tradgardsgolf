@@ -8,7 +8,7 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Tasks
 {
-    public class CourseStatisticHandler : IRequestHandler<CourseStatisticCommand, CourseStatistic>
+    public class CourseStatisticHandler : IRequestHandler<CourseStatisticCommand, CourseStatisticResponse>
     {
         private readonly IRoundRepository _roundRepository;
 
@@ -18,16 +18,16 @@ namespace Tradgardsgolf.Tasks
         }
 
 
-        public async Task<CourseStatistic> Handle(CourseStatisticCommand request, CancellationToken cancellationToken)
+        public async Task<CourseStatisticResponse> Handle(CourseStatisticCommand request, CancellationToken cancellationToken)
         {
             var rounds =  await _roundRepository.ListAsync(new AllRoundsByCourse(request.CourseId));
            
-            return new CourseStatistic()
+            return new CourseStatisticResponse()
             {
-                Rounds = rounds.Select(round => new RoundModel()
+                Rounds = rounds.Select(round => new RoundResponse()
                 {
                     Date = round.Date,
-                    Scores = round.RoundScores.Select(score => new RoundScoreModel()
+                    Scores = round.RoundScores.Select(score => new RoundScoreResponse()
                     {
                         Player = score.Player.Name,
                         Hole = score.Hole,

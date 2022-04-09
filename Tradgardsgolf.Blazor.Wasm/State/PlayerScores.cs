@@ -5,7 +5,7 @@ namespace Tradgardsgolf.Blazor.Wasm.State
 {
     public class PlayerScores
     {
-        public Player Player { get; set; }
+        public PlayerResponse PlayerResponse { get; set; }
 
         public HoleScoreCollection Scores { get; set; }
 
@@ -14,9 +14,9 @@ namespace Tradgardsgolf.Blazor.Wasm.State
 
         }
 
-        private PlayerScores(Player player, HoleScoreCollection scores)
+        private PlayerScores(PlayerResponse playerResponse, HoleScoreCollection scores)
         {
-            Player = player;
+            PlayerResponse = playerResponse;
             Scores = scores;
         }
 
@@ -27,7 +27,7 @@ namespace Tradgardsgolf.Blazor.Wasm.State
             for (int hole = 1; hole <= holes; hole++)
                 scores.Add(HoleScoreModel.Create(hole));
 
-            return new PlayerScores(new Player()
+            return new PlayerScores(new PlayerResponse()
             {
                 Name = name
             }, scores);

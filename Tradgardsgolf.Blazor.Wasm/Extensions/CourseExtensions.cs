@@ -5,13 +5,13 @@ namespace Tradgardsgolf.Blazor.Wasm.Extensions
 {
     public static class CourseExtensions
     {
-        public static double GetDistance(this Course course, double longitude, double latitude)
+        public static double GetDistance(this CourseResponse courseResponse, double longitude, double latitude)
         {
-            if (course.Name == "Testbanan")
+            if (courseResponse.Name == "Testbanan")
                 return 0;
 
-            var d1 = course.Latitude * (Math.PI / 180.0);
-            var num1 = course.Longitude * (Math.PI / 180.0);
+            var d1 = courseResponse.Latitude * (Math.PI / 180.0);
+            var num1 = courseResponse.Longitude * (Math.PI / 180.0);
             var d2 = latitude * (Math.PI / 180.0);
             var num2 = longitude * (Math.PI / 180.0) - num1;
             var d3 = Math.Pow(Math.Sin((d2 - d1) / 2.0), 2.0) +

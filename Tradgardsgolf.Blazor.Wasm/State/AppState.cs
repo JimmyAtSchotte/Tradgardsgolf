@@ -30,9 +30,9 @@ namespace Tradgardsgolf.Blazor.Wasm.State
             LastAccessed = DateTime.Now;
         }
 
-        public void NewScorecard(ComponentBase source, Course courseModel)
+        public void NewScorecard(ComponentBase source, CourseResponse courseResponseModel)
         {
-            ScorecardState = ScorecardState.Create(courseModel);
+            ScorecardState = ScorecardState.Create(courseResponseModel);
             ScorecardState.StateChanged += ScorecardStateOnStateChanged;
             NotifyStateChange(source, nameof(ScorecardState));
         }

@@ -3,7 +3,7 @@ using Tradgardsgolf.Contracts.Players;
 
 namespace Tradgardsgolf.Contracts.Course
 {
-    public record Course
+    public record CourseResponse
     {             
         public int Id { get; init; }
         public string Name { get; init; }

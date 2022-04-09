@@ -1,20 +1,20 @@
 ﻿@using Tradgardsgolf.Contracts.Players
 
-<Tooltip Text="@Player.Name" Placement="Placement.Bottom">
+<Tooltip Text="@PlayerResponse.Name" Placement="Placement.Bottom">
     <Figure Size="FigureSize.Is24x24" Class="avatar border-black" Style="@AvatarStyle()">
-        <h5>@Player.Name.Substring(0, 1).ToUpper()</h5>
+        <h5>@PlayerResponse.Name.Substring(0, 1).ToUpper()</h5>
     </Figure>
 </Tooltip>
 
 @code{
     [Parameter]
-    public Player Player { get; set; }
+    public PlayerResponse PlayerResponse { get; set; }
 
     public string AvatarStyle()
     {
-        var red = Player.Name.Skip(1).Select(x => (int) x).Sum() % 255;
-        var blue = Player.Name.Take(4).Select(x => (int) x).Sum() % 255;
-        var green = Player.Name.Skip(4).Take(4).Select(x => (int) x).Sum() % 255;
+        var red = PlayerResponse.Name.Skip(1).Select(x => (int) x).Sum() % 255;
+        var blue = PlayerResponse.Name.Take(4).Select(x => (int) x).Sum() % 255;
+        var green = PlayerResponse.Name.Skip(4).Take(4).Select(x => (int) x).Sum() % 255;
         
         return $"background-color: rgba({red}, {blue}, {green}, 0.6)";
     }

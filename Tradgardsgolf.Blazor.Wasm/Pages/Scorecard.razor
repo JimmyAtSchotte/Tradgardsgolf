@@ -5,7 +5,7 @@
 @inject IApiDispatcher apiDispatcher
 @inject IModalService Modal
 
-<CascadingCourse Course="State.AppState.ScorecardState.Course">
+<CascadingCourse Course="State.AppState.ScorecardState.CourseResponse">
     <CascadingCourseStatistics>
         <CourseCard>
             <CourseHead>
@@ -18,12 +18,12 @@
                         @foreach (var playerScore in State.AppState.ScorecardState.PlayerScores)
                         {
                             <TableHeaderCell>
-                                <Avatar Player="playerScore.Player"></Avatar>
+                                <Avatar Player="playerScore.PlayerResponse"></Avatar>
                             </TableHeaderCell>
                         }
                     </TableHeader>
                     <TableBody>
-                        @for (int i = 1; i <= State.AppState.ScorecardState.Course.Holes; i++)
+                        @for (int i = 1; i <= State.AppState.ScorecardState.CourseResponse.Holes; i++)
                         {
                             var hole = i;
 
@@ -90,10 +90,10 @@
 
         await apiDispatcher.Dispatch(new SaveScorecardCommand()
         {
-            CourseId = State.AppState.ScorecardState.Course.Id,
+            CourseId = State.AppState.ScorecardState.CourseResponse.Id,
             PlayerScores = State.AppState.ScorecardState.PlayerScores.Select(x => new PlayerScore()
             {
-                Name = x.Player.Name,
+                Name = x.PlayerResponse.Name,
                 HoleScores = x.Scores.Select(score => score.Score.GetValueOrDefault())
             })
         });
@@ -126,13 +126,13 @@
 
     private async Task SetScore(PlayerScores playerScores, int hole)
     {
-        var modal = Modal.Show<HoleScoreModal>($"Hål {hole}: {playerScores.Player.Name}");
+        var modal = Modal.Show<HoleScoreModal>($"Hål {hole}: {playerScores.PlayerResponse.Name}");
         var result = await modal.Result;
         if (result.Cancelled)
             return;
 
         var score = Convert.ToInt32(result.Data);
-        await State.AppState.ScorecardState.SetScore(this, playerScores.Player.Name, hole, score);
+        await State.AppState.ScorecardState.SetScore(this, playerScores.PlayerResponse.Name, hole, score);
 
         StateHasChanged();
     }

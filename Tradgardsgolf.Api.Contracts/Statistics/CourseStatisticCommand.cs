@@ -4,7 +4,7 @@ using Tradgardsgolf.Contracts.Players;
 
 namespace Tradgardsgolf.Contracts.Statistics
 {
-    public record CourseStatisticCommand : IRequest<CourseStatistic>
+    public record CourseStatisticCommand : IRequest<CourseStatisticResponse>
     {
         public int CourseId { get; init; }
     }

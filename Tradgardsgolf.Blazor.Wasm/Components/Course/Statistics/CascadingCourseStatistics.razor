@@ -12,15 +12,15 @@
     [Parameter]
     public RenderFragment ChildContent { get; set; }
     
-    public CourseStatistic CourseStatistic { get; set; }
+    public CourseStatisticResponse CourseStatisticResponse { get; set; }
     public bool Loading { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Loading = true;
-        CourseStatistic = await apiDispatcher.Dispatch(new CourseStatisticCommand()
+        CourseStatisticResponse = await apiDispatcher.Dispatch(new CourseStatisticCommand()
         {
-            CourseId = CascadingCourse.Course.Id
+            CourseId = CascadingCourse.CourseResponse.Id
         });
         Loading = false;
     }

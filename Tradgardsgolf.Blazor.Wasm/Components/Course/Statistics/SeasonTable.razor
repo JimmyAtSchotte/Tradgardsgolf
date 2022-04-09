@@ -9,12 +9,12 @@
         }))
         {
             <TableRow>
-                <TableRowCell ColumnSpan="@(CascadingCourse.Course.SeasonTableRounds + 1)">
+                <TableRowCell ColumnSpan="@(CascadingCourse.CourseResponse.SeasonTableRounds + 1)">
                     <strong>@obj.Position. @obj.Model.Player</strong>
                 </TableRowCell>
             </TableRow>
             <TableRow>
-                @for (var i = 0; i < CascadingCourse.Course.SeasonTableRounds; i++)
+                @for (var i = 0; i < CascadingCourse.CourseResponse.SeasonTableRounds; i++)
                 {
                     var index = i;
                     <TableRowCell Style="border-top: none">@obj.Model.GetScore(index)</TableRowCell>
@@ -39,7 +39,7 @@
 
     protected override void OnParametersSet()
     {
-        if(CascadingCourseStatistics?.CourseStatistic == null)
+        if(CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
         
         if(!Year.HasValue)
@@ -50,7 +50,7 @@
 
     private void RenderSeasonTable()
     {
-        _seasonTableModels = CascadingCourseStatistics.CourseStatistic.Rounds
+        _seasonTableModels = CascadingCourseStatistics.CourseStatisticResponse.Rounds
                 .Where(x => x.Date.Year == Year.GetValueOrDefault(0))
                 .Select(x => new
                 {
@@ -67,7 +67,7 @@
                 {
                     Player = x.Key,
                     Scores = x.OrderBy(s => s.ToatalScore)
-                        .Take(CascadingCourse.Course.SeasonTableRounds)
+                        .Take(CascadingCourse.CourseResponse.SeasonTableRounds)
                         .Select(s => s.ToatalScore)
                         .ToArray()
                 })

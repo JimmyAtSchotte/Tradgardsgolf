@@ -4,7 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject IModalService Modal
 
-<CascadingCourse Course="State.AppState.ScorecardState.Course">
+<CascadingCourse Course="State.AppState.ScorecardState.CourseResponse">
     <CascadingCourseStatistics>
         <CourseCard>
             <CourseHead>
@@ -17,8 +17,8 @@
 
                     @foreach (var player in State.AppState.ScorecardState.PlayerScores)
                     {
-                        <PlayerListItem Player="player.Player">
-                            <Button Clicked="async () => await RemovePlayer(player.Player.Name)" Float="Float.Right" Color="Color.Danger">
+                        <PlayerListItem Player="player.PlayerResponse">
+                            <Button Clicked="async () => await RemovePlayer(player.PlayerResponse.Name)" Float="Float.Right" Color="Color.Danger">
                                 <Icon Name="Blazorise.Icons.Material.MaterialIcons.Delete"></Icon>
                             </Button>
                         </PlayerListItem>
@@ -51,7 +51,7 @@ else if (AvailablePlayers.Any())
 {
     <Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
         <CardBody>
-            <CardTitle>Har tidigare spelat på @State.AppState.ScorecardState.Course.Name</CardTitle>
+            <CardTitle>Har tidigare spelat på @State.AppState.ScorecardState.CourseResponse.Name</CardTitle>
             @foreach (var player in AvailablePlayers)
             {
                 <PlayerListItem Player="player">
@@ -70,17 +70,17 @@ else if (AvailablePlayers.Any())
     public CascadingStateProvider State { get; set; }
 
     private string PlayerName { get; set; }
-    private IEnumerable<Player> _availablePlayers;
+    private IEnumerable<PlayerResponse> _availablePlayers;
 
-    private IEnumerable<Player> AvailablePlayers => _availablePlayers?
-        .Where(x => State.AppState.ScorecardState.PlayerScores.All(player => player.Player.Name != x.Name)) ?? Enumerable.Empty<Player>();
+    private IEnumerable<PlayerResponse> AvailablePlayers => _availablePlayers?
+        .Where(x => State.AppState.ScorecardState.PlayerScores.All(player => player.PlayerResponse.Name != x.Name)) ?? Enumerable.Empty<PlayerResponse>();
 
     protected override async Task OnInitializedAsync()
     {
         _availablePlayers = (await ApiDispatcher.Dispatch(new HasPlayedOnCourseCommand()
         {
-            CourseId = State.AppState.ScorecardState.Course.Id
-        }) ?? Array.Empty<Player>()).ToList();
+            CourseId = State.AppState.ScorecardState.CourseResponse.Id
+        }) ?? Array.Empty<PlayerResponse>()).ToList();
         
         await base.OnInitializedAsync();
     }

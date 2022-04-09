@@ -2,7 +2,7 @@
 
 namespace Tradgardsgolf.Contracts.Scorecard
 {
-    public record Scorecard
+    public record ScorecardResponse
     {
         public int Id { get; init; }
         public IEnumerable<PlayerScore> PlayerScores { get; init; }

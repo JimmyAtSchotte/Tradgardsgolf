@@ -1,8 +1,8 @@
 ﻿@using Tradgardsgolf.Contracts.Players
 
 <Fields Class="player">
-     <Column ColumnSize="ColumnSize.Is2"><Avatar Player="Player"></Avatar></Column>
-     <Column ColumnSize="ColumnSize.Is8"><span>@Player.Name</span></Column>
+     <Column ColumnSize="ColumnSize.Is2"><Avatar Player="PlayerResponse"></Avatar></Column>
+     <Column ColumnSize="ColumnSize.Is8"><span>@PlayerResponse.Name</span></Column>
      <Column ColumnSize="ColumnSize.Is2">
         @ChildContent
      </Column>
@@ -11,7 +11,7 @@
 @code
 {
     [Parameter]
-    public Player Player { get; set; }
+    public PlayerResponse PlayerResponse { get; set; }
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }

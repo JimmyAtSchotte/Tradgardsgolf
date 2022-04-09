@@ -9,7 +9,7 @@ using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Tasks
 {
-    public class ListAllCoursesHandler : IRequestHandler<ListAllCoursesCommand, IEnumerable<Course>>
+    public class ListAllCoursesHandler : IRequestHandler<ListAllCoursesCommand, IEnumerable<CourseResponse>>
     {
         private readonly ICourseRepository _courseRepository;
 
@@ -18,11 +18,11 @@ namespace Tradgardsgolf.Tasks
             _courseRepository = courseRepository;
         }
 
-        public async Task<IEnumerable<Course>> Handle(ListAllCoursesCommand request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CourseResponse>> Handle(ListAllCoursesCommand request, CancellationToken cancellationToken)
         {
             var courses = await _courseRepository.ListAsync();
 
-            return courses.Select(x => new Course()
+            return courses.Select(x => new CourseResponse()
             {
                 Created = x.Created,
                 Holes = x.Holes,
