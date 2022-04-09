@@ -102,5 +102,10 @@
     top: 0.5rem;
 }
 
+.nav-pills .nav-link.active {
+    color: #FFFFFF;
+    opacity: 1;
+}
+
 
 
