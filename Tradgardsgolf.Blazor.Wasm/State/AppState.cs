@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using Tradgardsgolf.Api.Shared;
 using Tradgardsgolf.Contracts.Course;
 
 namespace Tradgardsgolf.Blazor.Wasm.State

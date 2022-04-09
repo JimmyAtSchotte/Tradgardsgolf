@@ -1,4 +1,4 @@
-﻿namespace Tradgardsgolf.Api.Shared
+﻿namespace Tradgardsgolf.Blazor.Wasm.State
 {
     public class HoleScoreModel
     {

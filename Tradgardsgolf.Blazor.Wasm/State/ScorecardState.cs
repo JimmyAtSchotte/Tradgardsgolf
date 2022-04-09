@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using Tradgardsgolf.Api.Shared;
 using Tradgardsgolf.Contracts.Course;
 
 namespace Tradgardsgolf.Blazor.Wasm.State
@@ -36,7 +35,7 @@ namespace Tradgardsgolf.Blazor.Wasm.State
 
         public async Task AddPlayer(ComponentBase source, string name)
         {
-            var player = Api.Shared.PlayerScores.Create(name, Course.Holes);
+            var player = State.PlayerScores.Create(name, Course.Holes);
             PlayerScores.Add(player);
             await Task.Delay(1);
             base.NotifyStateChange(source, nameof(PlayerScores));
