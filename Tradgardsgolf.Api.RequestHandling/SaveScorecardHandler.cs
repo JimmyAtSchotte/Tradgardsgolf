@@ -9,7 +9,7 @@ using Tradgardsgolf.Core.UnitOfWork;
 
 namespace Tradgardsgolf.Tasks
 {
-    public class SaveScorecardHandler : IRequestHandler<SaveScorecard, Contracts.Scorecard.Scorecard>
+    public class SaveScorecardHandler : IRequestHandler<SaveScorecardCommand, Scorecard>
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IPlayerRepository _playerRepository;
@@ -21,7 +21,7 @@ namespace Tradgardsgolf.Tasks
         }
 
 
-        public async Task<Contracts.Scorecard.Scorecard> Handle(SaveScorecard request, CancellationToken cancellationToken)
+        public async Task<Scorecard> Handle(SaveScorecardCommand request, CancellationToken cancellationToken)
         {
             var course = await _courseRepository.GetByIdAsync(request.CourseId);
             var round = course.CreateRound();
@@ -38,7 +38,7 @@ namespace Tradgardsgolf.Tasks
 
             await _courseRepository.UpdateAsync(course);
 
-            return new Contracts.Scorecard.Scorecard()
+            return new Scorecard()
             {
                 Id = round.Id,
                 CourseId = course.Id,
@@ -46,7 +46,7 @@ namespace Tradgardsgolf.Tasks
             };
         }
 
-        private async Task<Player> GetOrCreatePlayer(SaveScorecard request, PlayerScore score)
+        private async Task<Player> GetOrCreatePlayer(SaveScorecardCommand request, PlayerScore score)
         {
             var player = await _playerRepository.GetBySpecAsync(CoursePlayer.Specification(request.CourseId, score.Name)) ??
                          await _playerRepository.AddAsync(Player.Create(x => x.Name = score.Name));

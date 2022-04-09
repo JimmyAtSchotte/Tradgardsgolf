@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Tradgardsgolf.Contracts.Course
 {
-    public record RequestCourseList : IRequest<IEnumerable<Course>>
+    public record ListAllCoursesCommand : IRequest<IEnumerable<Course>>
     {
     }
 }

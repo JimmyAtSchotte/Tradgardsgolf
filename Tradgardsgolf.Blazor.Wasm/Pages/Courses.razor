@@ -42,7 +42,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _models = await apiDispatcher.Dispatch(new RequestCourseList());
+        _models = await apiDispatcher.Dispatch(new ListAllCoursesCommand());
         
         OrderCoursesByDistance();
 

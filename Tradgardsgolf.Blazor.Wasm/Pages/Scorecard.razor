@@ -88,7 +88,7 @@
         Saving = true;
         StateHasChanged();
 
-        await apiDispatcher.Dispatch(new SaveScorecard()
+        await apiDispatcher.Dispatch(new SaveScorecardCommand()
         {
             CourseId = State.AppState.ScorecardState.Course.Id,
             PlayerScores = State.AppState.ScorecardState.PlayerScores.Select(x => new PlayerScore()

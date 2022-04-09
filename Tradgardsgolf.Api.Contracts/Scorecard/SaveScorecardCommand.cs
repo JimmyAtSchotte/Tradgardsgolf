@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Tradgardsgolf.Contracts.Scorecard
 {
-    public record SaveScorecard : IRequest<Scorecard>
+    public record SaveScorecardCommand : IRequest<Scorecard>
     {
         public IEnumerable<PlayerScore> PlayerScores { get; init; }
         public int CourseId { get; init; }

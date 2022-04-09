@@ -18,7 +18,7 @@
     protected override async Task OnInitializedAsync()
     {
         Loading = true;
-        CourseStatistic = await apiDispatcher.Dispatch(new RequestCourseStatistic()
+        CourseStatistic = await apiDispatcher.Dispatch(new CourseStatisticCommand()
         {
             CourseId = CascadingCourse.Course.Id
         });

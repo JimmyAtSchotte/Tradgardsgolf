@@ -10,7 +10,7 @@ using HasPlayedOnCourse = Tradgardsgolf.Core.Specifications.HasPlayedOnCourse;
 
 namespace Tradgardsgolf.Tasks
 {
-    public class HasPlayedOnCourseHandler : IRequestHandler<Contracts.Players.HasPlayedOnCourse, IEnumerable<Player>>
+    public class HasPlayedOnCourseHandler : IRequestHandler<HasPlayedOnCourseCommand, IEnumerable<Player>>
     {
         private readonly IPlayerRepository _playerRepository;
 
@@ -19,7 +19,7 @@ namespace Tradgardsgolf.Tasks
             _playerRepository = playerRepository;
         }
         
-        public async Task<IEnumerable<Player>> Handle(Contracts.Players.HasPlayedOnCourse request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Player>> Handle(HasPlayedOnCourseCommand request, CancellationToken cancellationToken)
         {
             return (await _playerRepository.ListAsync(new HasPlayedOnCourse(request.CourseId)))
                     .Select(player => new Player()
