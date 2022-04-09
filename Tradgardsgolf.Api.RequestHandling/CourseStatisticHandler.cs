@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Statistics;
+using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
 
@@ -10,9 +11,9 @@ namespace Tradgardsgolf.Tasks
 {
     public class CourseStatisticHandler : IRequestHandler<CourseStatisticCommand, CourseStatisticResponse>
     {
-        private readonly IRoundRepository _roundRepository;
+        private readonly IRepository<Round> _roundRepository;
 
-        public CourseStatisticHandler(IRoundRepository roundRepository)
+        public CourseStatisticHandler(IRepository<Round> roundRepository)
         {
             _roundRepository = roundRepository;
         }

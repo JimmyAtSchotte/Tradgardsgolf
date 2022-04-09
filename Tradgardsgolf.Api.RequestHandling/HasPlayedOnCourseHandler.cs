@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Players;
+using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
 using HasPlayedOnCourse = Tradgardsgolf.Core.Specifications.HasPlayedOnCourse;
@@ -12,9 +13,9 @@ namespace Tradgardsgolf.Tasks
 {
     public class HasPlayedOnCourseHandler : IRequestHandler<HasPlayedOnCourseCommand, IEnumerable<PlayerResponse>>
     {
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IRepository<Player> _playerRepository;
 
-        public HasPlayedOnCourseHandler(IPlayerRepository playerRepository)
+        public HasPlayedOnCourseHandler(IRepository<Player> playerRepository)
         {
             _playerRepository = playerRepository;
         }

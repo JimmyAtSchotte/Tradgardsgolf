@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Tradgardsgolf.Infrastructure;
+using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Api
 {

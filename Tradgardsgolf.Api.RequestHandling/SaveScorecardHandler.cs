@@ -10,10 +10,10 @@ namespace Tradgardsgolf.Tasks
 {
     public class SaveScorecardHandler : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
     {
-        private readonly ICourseRepository _courseRepository;
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IRepository<Course> _courseRepository;
+        private readonly IRepository<Player> _playerRepository;
 
-        public SaveScorecardHandler(ICourseRepository courseRepository, IPlayerRepository playerRepository)
+        public SaveScorecardHandler(IRepository<Course> courseRepository, IRepository<Player> playerRepository)
         {
             _courseRepository = courseRepository;
             _playerRepository = playerRepository;

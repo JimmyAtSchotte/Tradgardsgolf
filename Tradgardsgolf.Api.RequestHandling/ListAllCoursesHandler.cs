@@ -5,22 +5,23 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Contracts.Players;
+using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Tasks
 {
     public class ListAllCoursesHandler : IRequestHandler<ListAllCoursesCommand, IEnumerable<CourseResponse>>
     {
-        private readonly ICourseRepository _courseRepository;
+        private readonly IRepository<Course> _repository;
 
-        public ListAllCoursesHandler(ICourseRepository courseRepository)
+        public ListAllCoursesHandler(IRepository<Course> repository)
         {
-            _courseRepository = courseRepository;
+            _repository = repository;
         }
 
         public async Task<IEnumerable<CourseResponse>> Handle(ListAllCoursesCommand request, CancellationToken cancellationToken)
         {
-            var courses = await _courseRepository.ListAsync();
+            var courses = await _repository.ListAsync();
 
             return courses.Select(x => new CourseResponse()
             {

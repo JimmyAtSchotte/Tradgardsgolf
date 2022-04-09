@@ -2,7 +2,9 @@
 
 namespace Tradgardsgolf.Core.Infrastructure
 {
-    public interface IRoundRepository : IRepositoryBase<Entities.Round>
+    public interface IRepository<T> : IRepositoryBase<T>
+        where T : class
     {
+       
     }
 }
