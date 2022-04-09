@@ -27,7 +27,7 @@ namespace Tradgardsgolf.Core.Entities
 
         }
 
-        internal RoundScore(Round round, Player player, int hole, int score)
+        private RoundScore(Round round, Player player, int hole, int score)
         {
             Player = player; ;
             PlayerId = player.Id;
@@ -35,6 +35,11 @@ namespace Tradgardsgolf.Core.Entities
             RoundId = round.Id;
             Hole = hole;
             Score = score;
+        }
+        
+        public static RoundScore Create(Round round, Player player, int hole, int score)
+        {
+            return new RoundScore(round, player, hole, score);
         }
     }
 }

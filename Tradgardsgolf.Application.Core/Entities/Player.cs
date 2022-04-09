@@ -25,7 +25,7 @@ namespace Tradgardsgolf.Core.Entities
         
         public virtual ICollection<RoundScore> RoundScores { get; set; }
 
-        public Player()
+        private Player()
         {
         }
 
@@ -38,16 +38,12 @@ namespace Tradgardsgolf.Core.Entities
         {
             var player = new Player(DateTime.Now);
             properties?.Invoke(player);
-
             return player;
         }
 
         public Course CreateCourse(Action<Course> properties = null)
         {
-            var course = new Course(this);
-            properties?.Invoke(course);
-
-            return course;
+           return Course.Create(this);
         }
     }
 }

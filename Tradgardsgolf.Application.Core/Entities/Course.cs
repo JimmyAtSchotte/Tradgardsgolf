@@ -30,31 +30,36 @@ namespace Tradgardsgolf.Core.Entities
         [Column("dtmScoreReset")]
         public DateTime? ScoreReset { get; set; }
 
-
         public virtual ICollection<Round> Rounds
         {
             get => _rounds ??= new List<Round>();
             set => _rounds = value;
         }
 
-        public Course()
+        private Course()
         {
 
         }               
 
-        internal Course(Player player)
+        private Course(Player player)
         {
             Created = DateTime.Now;
             CreatedById = player.Id;
             CreatedBy = player;
         }     
 
+        public static Course Create(Player player, Action<Course> properties = null)
+        {
+            var course = new Course(player);
+            properties?.Invoke(course);
+
+            return course;
+        }
+        
         public Round CreateRound()
         {
-            var round = new Round(this);
-
+            var round = Round.Create(this);
             Rounds.Add(round);
-            
             return round;
         }
               

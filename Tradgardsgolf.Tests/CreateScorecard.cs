@@ -11,22 +11,17 @@ namespace Tradgardsgolf.Infrastructure.Tests
         
         private Player player1;
         private Player player2;
+        private Player createdBy;
         
 
         [SetUp]
         public void Setup()
         {
-            course1 = new Course();
-            
-            player1= new Player()
-            {
-                Id = 1
-            };
-            
-            player2= new Player()
-            {
-                Id = 2
-            };
+            createdBy = Player.Create(p => p.Id = 10);
+            course1 = createdBy.CreateCourse();
+
+            player1 = Player.Create(p => p.Id = 1);
+            player2= Player.Create(p => p.Id = 2);
         }
 
         [Test]
