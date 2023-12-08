@@ -2,7 +2,7 @@
 
 ARG ENV=api
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 COPY . .
 RUN dotnet restore
@@ -13,7 +13,7 @@ RUN dotnet publish Tradgardsgolf.Api -c Release -o out
 FROM build AS publish-wasm
 RUN dotnet publish Tradgardsgolf.Blazor.Wasm -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS final-api
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final-api
 WORKDIR /app
 COPY --from=publish-api /app/out .
 #LOCAL
