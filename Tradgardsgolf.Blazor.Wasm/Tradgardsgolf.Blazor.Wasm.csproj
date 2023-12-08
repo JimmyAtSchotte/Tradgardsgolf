@@ -1,21 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AspNetMonsters.Blazor.Geolocation" Version="0.5.0-preview1" />
-        <PackageReference Include="Autofac" Version="6.1.0" />
-        <PackageReference Include="Blazored.LocalStorage" Version="3.0.0" />
-        <PackageReference Include="Blazored.Modal" Version="5.1.0" />
-        <PackageReference Include="Blazorise.Icons.Material" Version="0.9.2.4" />
-        <PackageReference Include="Blazorise.Material" Version="0.9.2.4" />
-        <PackageReference Include="MediatR" Version="9.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.0" PrivateAssets="all" />
-        <PackageReference Include="Newtonsoft.Json" Version="11.0.2" /> 
-        <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+        <PackageReference Include="Autofac" Version="7.1.0" />
+        <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+        <PackageReference Include="Blazored.Modal" Version="7.1.0" />
+        <PackageReference Include="Blazorise.Icons.Material" Version="1.4.0" />
+        <PackageReference Include="Blazorise.Material" Version="1.4.0" />
+        <PackageReference Include="MediatR" Version="12.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
+        <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -44,7 +43,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj" />
-      <ProjectReference Include="..\Tradgardsgolf.Api.Shared\Tradgardsgolf.Api.Shared.csproj" />
     </ItemGroup>
 
 </Project>

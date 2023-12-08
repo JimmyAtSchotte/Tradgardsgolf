@@ -34,10 +34,10 @@ namespace Tradgardsgolf.Infrastructure.Tests
 
             Assert.Multiple(() => {
                 
-                Assert.AreEqual(1, score.Hole);
-                Assert.AreEqual(player1.Id, score.PlayerId);
-                Assert.AreEqual(player1, score.Player);
-                Assert.AreEqual(5, score.Score);
+                Assert.That(1, Is.EqualTo(score.Hole));
+                Assert.That(player1.Id, Is.EqualTo(score.PlayerId));
+                Assert.That(player1, Is.EqualTo(score.Player));
+                Assert.That(5, Is.EqualTo(score.Score));
             });
         }
         
@@ -53,15 +53,15 @@ namespace Tradgardsgolf.Infrastructure.Tests
 
             Assert.Multiple(() => 
             {
-                Assert.IsTrue(scores.All(s => s.PlayerId == player1.Id && 
-                                              s.Player == player1));
+                Assert.That(scores.All(s => s.PlayerId == player1.Id && 
+                                            s.Player == player1), Is.True);
                 
-                Assert.AreEqual(1, scores[0].Hole);
-                Assert.AreEqual(5, scores[0].Score);
-                Assert.AreEqual(2, scores[1].Hole);
-                Assert.AreEqual(6, scores[1].Score);
-                Assert.AreEqual(3, scores[2].Hole);
-                Assert.AreEqual(7, scores[2].Score);
+                Assert.That(1, Is.EqualTo(scores[0].Hole));
+                Assert.That(5, Is.EqualTo(scores[0].Score));
+                Assert.That(2, Is.EqualTo(scores[1].Hole));
+                Assert.That(6, Is.EqualTo(scores[1].Score));
+                Assert.That(3, Is.EqualTo(scores[2].Hole));
+                Assert.That(7, Is.EqualTo(scores[2].Score));
             });
         }
         
@@ -76,15 +76,15 @@ namespace Tradgardsgolf.Infrastructure.Tests
 
             Assert.Multiple(() => {
                 
-                Assert.AreEqual(1, scores.Count(x => x.PlayerId == player1.Id &&
-                                                     x.Hole == 1 &&
-                                                     x.Score == 5));
+                Assert.That(1, Is.EqualTo(scores.Count(x => x.PlayerId == player1.Id &&
+                                                 x.Hole == 1 &&
+                                                 x.Score == 5)));
                 
-                Assert.AreEqual(1, scores.Count(x => x.PlayerId == player2.Id &&
-                                                     x.Hole == 1 &&
-                                                     x.Score == 3));
+                Assert.That(1, Is.EqualTo(scores.Count(x => x.PlayerId == player2.Id &&
+                                                            x.Hole == 1 &&
+                                                            x.Score == 3)));
                 
-                Assert.AreEqual(2, scores.Count(x => x.Hole == 1));
+                Assert.That(2, Is.EqualTo(scores.Count(x => x.Hole == 1)));
            });
         }
     }

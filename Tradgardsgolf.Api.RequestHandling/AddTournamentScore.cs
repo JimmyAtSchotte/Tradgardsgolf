@@ -16,15 +16,14 @@ namespace Tradgardsgolf.Tasks
             _repository = repository;
         }
 
-        public async Task<Unit> Handle(AddTournamentRoundScoreCommand request, CancellationToken cancellationToken)
+        public async Task Handle(AddTournamentRoundScoreCommand request, CancellationToken cancellationToken)
         {
             await _repository.AddAsync(new TournamentRound()
             {
                 TournamentId = request.TournamentId,
                 RoundId = request.RoundId
-            });
+            }, cancellationToken);
             
-            return await Unit.Task;
         }
     }
 }

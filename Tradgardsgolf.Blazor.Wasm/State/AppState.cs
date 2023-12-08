@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
 using Tradgardsgolf.Contracts.Course;
 
 namespace Tradgardsgolf.Blazor.Wasm.State
@@ -19,10 +19,10 @@ namespace Tradgardsgolf.Blazor.Wasm.State
     {
         private readonly TimeSpan _stateValidTime = TimeSpan.FromHours(1);
         
-        [JsonProperty] 
+        [JsonPropertyName("scorecardState")] 
         public ScorecardState ScorecardState { get; private set; }
 
-        [JsonProperty] 
+        [JsonPropertyName("lastAccessed")] 
         public DateTime LastAccessed { get; private set; }
         
         public AppState()

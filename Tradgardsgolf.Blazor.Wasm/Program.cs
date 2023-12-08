@@ -39,17 +39,12 @@ namespace Tradgardsgolf.Blazor.Wasm
             builder.Services
                 .AddBlazorise( options =>
                 {
-                    options.ChangeTextOnKeyPress = true;
+                    options.Immediate = true;
                 } )
                 .AddMaterialProviders()
                 .AddMaterialIcons();
             
-            
             var host = builder.Build();
-
-            host.Services
-                .UseMaterialProviders()
-                .UseMaterialIcons();
 
             await host.RunAsync();
         }

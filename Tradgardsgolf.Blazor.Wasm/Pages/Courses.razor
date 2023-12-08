@@ -1,9 +1,8 @@
 ﻿@page "/"
-@inject IApiDispatcher apiDispatcher;
+@inject IApiDispatcher ApiDispatcher;
 @inject NavigationManager NavigationManager
 @inject LocationService LocationService
 @using Tradgardsgolf.Contracts.Course
-@using Newtonsoft.Json
 @using Tradgardsgolf.Blazor.Wasm.Extensions
 @implements IDisposable
 
@@ -20,7 +19,7 @@
                             <CourseStatistics></CourseStatistics>
                         </CourseContent>
                         <CourseButtons Visible="AllowPlay(course)">
-                            <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.Right">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
+                            <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
                         </CourseButtons>
                     </CourseCard>
                 </CascadingCourseStatistics>
@@ -42,7 +41,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _models = await apiDispatcher.Dispatch(new ListAllCoursesCommand());
+        _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
         
         OrderCoursesByDistance();
 

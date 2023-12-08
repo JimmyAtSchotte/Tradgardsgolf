@@ -5,7 +5,7 @@
         {
             var score = i;
             <Column ColumnSize="ColumnSize.Is3" Margin="Margin.Is2" >
-                <Button Clicked="() => ReturnResult(score)">@score.ToString()</Button>
+                <Button Clicked="async () => await ReturnResult(score)">@score.ToString()</Button>
             </Column>
         }
     </Row>
@@ -26,9 +26,9 @@
         StateHasChanged();
     }
 
-    private void ReturnResult(int score)
+    private async Task ReturnResult(int score)
     {
-        ModalInstance.Close(ModalResult.Ok(score));
+        await ModalInstance.CloseAsync(ModalResult.Ok(score));
     }
 
 }

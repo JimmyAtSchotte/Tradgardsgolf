@@ -1,10 +1,9 @@
 ﻿@page "/Scorecard"
 @using Tradgardsgolf.Contracts.Scorecard
-@using Tradgardsgolf.Contracts.Statistics
 @using Tradgardsgolf.Contracts.Tournament
 @inject NavigationManager NavigationManager
 @inject IApiDispatcher apiDispatcher
-@inject IModalService Modal
+@inject Blazored.Modal.Services.IModalService  Modal
 
 <CascadingCourse Course="State.AppState.ScorecardState.CourseResponse">
     <CascadingCourseStatistics>
@@ -82,12 +81,12 @@
             <CourseButtons Visible="State.AppState.ScorecardState.PlayerScores.Any()">
                 <Button Clicked="async () => await ChangePlayers()" 
                         Disabled="@Saving" 
-                        Float="Float.Left"
+                        Float="Float.Start"
                         Color="Color.Warning">Byt spelare <Icon Name="Blazorise.Icons.Material.MaterialIcons.Sync"></Icon></Button>
                 <Button Clicked="async () => await CompleteRound()" 
                         Disabled="@DisableCompleteButton" 
                         Loading="Saving"
-                        Float="Float.Right"
+                        Float="Float.End"
                         Color="Color.Primary">Klart <Icon Name="Blazorise.Icons.Material.MaterialIcons.Check"></Icon></Button>
             </CourseButtons>
         </CourseCard>
@@ -154,7 +153,7 @@
         }
         
         var playAgain = Modal.Show<PlayAgainModal>("Rundan är klar och sparad");
-        
+
         var result = await playAgain.Result;
         if (result.Cancelled)
             return;

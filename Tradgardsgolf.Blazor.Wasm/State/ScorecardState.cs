@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
 using Tradgardsgolf.Contracts.Course;
 
 namespace Tradgardsgolf.Blazor.Wasm.State
@@ -27,10 +27,10 @@ namespace Tradgardsgolf.Blazor.Wasm.State
             PlayerScores = playerScores.ToList();
         }
         
-        [JsonProperty] 
+        [JsonPropertyName("courseResponse")] 
         public CourseResponse CourseResponse { get; private set; }
         
-        [JsonProperty] 
+        [JsonPropertyName("playerScores")]
         public List<PlayerScores> PlayerScores { get; private set; }
 
         public async Task AddPlayer(ComponentBase source, string name)

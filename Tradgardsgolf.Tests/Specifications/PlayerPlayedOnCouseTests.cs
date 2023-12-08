@@ -33,7 +33,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.Specifications
             var repository = arrange.Resolve<IRepository<Player>>();
             var result = await repository.ListAsync(new HasPlayedOnCourse(course.Id));
             
-            Assert.AreEqual(1, result.Count(x => x.Id == player1.Id));
+            Assert.That(1, Is.EqualTo(result.Count(x => x.Id == player1.Id)));
         }
         
         [Test]
@@ -55,7 +55,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.Specifications
             var repository = arrange.Resolve<SUT>();
             var result = await repository.ListAsync(new HasPlayedOnCourse(course.Id));
             
-            Assert.AreEqual(0, result.Count(x => x.Id == player1.Id));
+            Assert.That(0, Is.EqualTo(result.Count(x => x.Id == player1.Id)));
         }
     }
     

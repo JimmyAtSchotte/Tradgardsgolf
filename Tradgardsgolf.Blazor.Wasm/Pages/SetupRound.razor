@@ -2,7 +2,7 @@
 @using Tradgardsgolf.Contracts.Players
 @inject IApiDispatcher ApiDispatcher
 @inject NavigationManager NavigationManager
-@inject IModalService Modal
+@inject Blazored.Modal.Services.IModalService  Modal
 
 <CascadingCourse Course="State.AppState.ScorecardState.CourseResponse">
     <CascadingCourseStatistics>
@@ -18,7 +18,7 @@
                     @foreach (var player in State.AppState.ScorecardState.PlayerScores)
                     {
                         <PlayerListItem Player="player.PlayerResponse">
-                            <Button Clicked="async () => await RemovePlayer(player.PlayerResponse.Name)" Float="Float.Right" Color="Color.Danger">
+                            <Button Clicked="async () => await RemovePlayer(player.PlayerResponse.Name)" Float="Float.End" Color="Color.Danger">
                                 <Icon Name="Blazorise.Icons.Material.MaterialIcons.Delete"></Icon>
                             </Button>
                         </PlayerListItem>
@@ -32,9 +32,9 @@
             <CourseButtons>
                 <Button Clicked="async () => await NewPlayer()"
                     Color="Color.Primary"
-                        Float="Float.Left">Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon></Button> 
+                        Float="Float.Start">Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon></Button> 
                 <Button Clicked="async () => await Play()" 
-                        Float="Float.Right" 
+                        Float="Float.End" 
                         Disabled="!State.AppState.ScorecardState.PlayerScores.Any()"
                         Color="Color.Primary">Börja spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.PlayArrow"></Icon></Button>
             </CourseButtons>
@@ -55,7 +55,7 @@ else if (AvailablePlayers.Any())
             @foreach (var player in AvailablePlayers)
             {
                 <PlayerListItem Player="player">
-                    <Button Clicked="async () => await AddPlayer(player.Name)" Float="Float.Right" Color="Color.Primary">
+                    <Button Clicked="async () => await AddPlayer(player.Name)" Float="Float.End" Color="Color.Primary">
                         <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon>
                     </Button>
                 </PlayerListItem>

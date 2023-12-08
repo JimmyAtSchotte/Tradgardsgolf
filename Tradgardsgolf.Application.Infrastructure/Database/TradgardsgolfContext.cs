@@ -16,7 +16,7 @@ namespace Tradgardsgolf.Infrastructure.Database
 
         public TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options) : base(options)
         {
-
+            
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿@using Newtonsoft.Json
-@using Tradgardsgolf.Blazor.Wasm.State
+﻿@using Tradgardsgolf.Blazor.Wasm.State
+@using System.Text.Json
 @implements IDisposable
 @inject ILocalStorageService LocalStorageService
 
@@ -19,17 +19,7 @@
     
     protected override async Task OnParametersSetAsync()
     {
-        var json = await LocalStorageService.GetItemAsStringAsync(nameof(AppState));
-
-        if (!string.IsNullOrEmpty(json))
-        {
-            var storedState = JsonConvert.DeserializeObject<AppState>(json);
-
-            if (storedState.IsValid())
-                AppState = storedState;
-        }
-        
-        AppState ??= new AppState();
+        AppState = await ReadAppSate();
         AppState.StateChanged += async (source, property) => await SaveAppStateAsync();
 
         await SaveAppStateAsync();
@@ -37,11 +27,33 @@
         _hasLoaded = true;
     }
 
+    private async Task<AppState> ReadAppSate()
+    {
+        try
+        {
+            var json = await LocalStorageService.GetItemAsStringAsync(nameof(AppState));
+
+            if (!string.IsNullOrEmpty(json))
+            {
+                var storedState = JsonSerializer.Deserialize<AppState>(json);
+
+                if (storedState.IsValid())
+                    return storedState;
+            }
+        }
+        catch (Exception e)
+        {
+            // ignored
+        }
+
+        return new AppState();
+    }
+
     private async Task SaveAppStateAsync()
     {
         try
         {
-            var json = JsonConvert.SerializeObject(AppState);
+            var json = JsonSerializer.Serialize(AppState);
             await LocalStorageService.SetItemAsync(nameof(AppState), json);
         }
         catch (Exception e)
@@ -54,7 +66,7 @@
 
     void IDisposable.Dispose()
     {
-        AppState.StateChanged -= async (source, property) => await SaveAppStateAsync();
+        if (AppState != null) AppState.StateChanged -= async (source, property) => await SaveAppStateAsync();
     }
 
 }

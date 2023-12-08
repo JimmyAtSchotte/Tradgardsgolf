@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,11 +12,12 @@
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.3">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.3">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -34,7 +35,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Tradgardsgolf.Api.RequestHandling\Tradgardsgolf.Api.RequestHandling.csproj" />
-      <ProjectReference Include="..\Tradgardsgolf.Api.Shared\Tradgardsgolf.Api.Shared.csproj" />
       <ProjectReference Include="..\Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj" />
       <ProjectReference Include="..\Tradgardsgolf.Application.Core\Tradgardsgolf.Application.Core.csproj" />
       <ProjectReference Include="..\Tradgardsgolf.Application.Infrastructure\Tradgardsgolf.Application.Infrastructure.csproj" />

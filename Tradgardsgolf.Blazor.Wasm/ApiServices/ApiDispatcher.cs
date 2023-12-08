@@ -12,23 +12,16 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
     public interface IApiDispatcher
     {
         Task<TResponse?> Dispatch<TResponse>(IRequest<TResponse> request);
+        Task Dispatch(IRequest request);
     }
 
-    public class ApiDispatcher : IApiDispatcher
+    public class ApiDispatcher(HttpClient httpClient) : IApiDispatcher
     {
-        private readonly HttpClient _httpClient;
-
-        public ApiDispatcher(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
-      
         public async Task<TResponse?> Dispatch<TResponse>(IRequest<TResponse> request)
         {
             var dispatchUrl = DispatchUrlBuilder.Build(request);
             var requestBody = JsonSerializer.Serialize(request, request.GetType());
-            
-            var response = await _httpClient.PostAsync(dispatchUrl, new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            var response = await httpClient.PostAsync(dispatchUrl, new StringContent(requestBody, Encoding.UTF8, "application/json"));
         
             if(response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<TResponse>()
@@ -36,6 +29,18 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
             
             throw new DispatchException(response, dispatchUrl, requestBody);
      
+        }
+
+        public async Task Dispatch(IRequest request)
+        {
+            var dispatchUrl = DispatchUrlBuilder.Build(request);
+            var requestBody = JsonSerializer.Serialize(request, request.GetType());
+            var response = await httpClient.PostAsync(dispatchUrl, new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            
+            if(response.IsSuccessStatusCode)
+                return;
+            
+            throw new DispatchException(response, dispatchUrl, requestBody);
         }
     }
 
@@ -58,6 +63,14 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
         private static readonly string ContractNamespacePrefix = typeof(IContractsNamespaceMarker).Namespace;
         
         public static string Build<TResponse>(IRequest<TResponse> request)
+        {
+            var requestType = request.GetType();
+            var domain = requestType.Namespace.Substring(ContractNamespacePrefix.Length + 1);
+            
+            return $"/api/dispatch/{domain}/{requestType.Name}";
+        }
+        
+        public static string Build(IRequest request)
         {
             var requestType = request.GetType();
             var domain = requestType.Namespace.Substring(ContractNamespacePrefix.Length + 1);

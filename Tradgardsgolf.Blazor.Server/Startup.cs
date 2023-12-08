@@ -44,7 +44,7 @@ namespace Tradgardsgolf.Blazor.Server
             services
                 .AddBlazorise( options =>
                 {
-                    options.ChangeTextOnKeyPress = true; // optional
+                    options.Immediate = true; // optional
                 } )
                 .AddMaterialProviders()
                 .AddMaterialIcons();
@@ -69,10 +69,6 @@ namespace Tradgardsgolf.Blazor.Server
 
             app.UseRouting();
             
-            app.ApplicationServices
-                .UseMaterialProviders()
-                .UseMaterialIcons();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();

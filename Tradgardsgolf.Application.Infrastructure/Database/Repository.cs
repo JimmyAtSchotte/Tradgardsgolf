@@ -1,6 +1,4 @@
-﻿using Ardalis.Specification;
-using Ardalis.Specification.EntityFrameworkCore;
-using JetBrains.Annotations;
+﻿using Ardalis.Specification.EntityFrameworkCore;
 using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Infrastructure.Database
@@ -8,7 +6,7 @@ namespace Tradgardsgolf.Infrastructure.Database
     public class Repository<TEntity> : BaseRepository<TEntity>
         where TEntity : class
     {
-        public Repository([NotNull] TradgardsgolfContext dbContext) : base(dbContext)
+        public Repository(TradgardsgolfContext dbContext) : base(dbContext)
         {
         }
     }
@@ -16,7 +14,7 @@ namespace Tradgardsgolf.Infrastructure.Database
     public class BaseRepository<TEntity> : RepositoryBase<TEntity>, IRepository<TEntity>
         where TEntity : class
     {
-        protected BaseRepository([NotNull] TradgardsgolfContext dbContext) : base(dbContext)
+        protected BaseRepository(TradgardsgolfContext dbContext) : base(dbContext)
         {
         }
     }

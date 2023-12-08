@@ -2,7 +2,7 @@
     <FieldLabel>Namn</FieldLabel>
     <TextEdit Placeholder="Skriv namn" TextChanged="s => PlayerName = s"/>
 </Field>
-<Button Color="Color.Primary" Clicked="Add">Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add" /></Button>
+<Button Color="Color.Primary" Clicked="async () => await Add()">Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add" /></Button>
 
 @code {
     [CascadingParameter] 
@@ -11,8 +11,8 @@
     private string PlayerName { get; set; }
     
     
-    private void Add()
+    private async Task Add()
     {
-        ModalInstance.Close(ModalResult.Ok(PlayerName));
+        await ModalInstance.CloseAsync(ModalResult.Ok(PlayerName));
     }
 }
