@@ -24,8 +24,6 @@ namespace Tradgardsgolf.Api
 {
     public class Startup
     {
-        public const string CorsPolicy = "AllowAll";
-        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -46,14 +44,7 @@ namespace Tradgardsgolf.Api
             
             services.AddCors(options =>
             {
-                options.AddPolicy(CorsPolicy,
-                    builder =>
-                    {
-                        builder
-                            .WithOrigins("https://tradgardsgolf.herokuapp.com", "https://localhost:7001")
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-                    });
+                options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
             
             
@@ -123,7 +114,7 @@ namespace Tradgardsgolf.Api
 
             app.UseRouting();
 
-            app.UseCors(CorsPolicy);
+            app.UseCors();
             
             app.UseAuthorization();
 
