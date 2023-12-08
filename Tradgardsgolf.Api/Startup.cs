@@ -1,16 +1,23 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using Autofac;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Infrastructure;
 using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Api
@@ -54,24 +61,20 @@ namespace Tradgardsgolf.Api
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                var connectionUrl = Configuration.GetValue<string>("DATABASE_URL");
-
-                if (!string.IsNullOrEmpty(connectionUrl))
+                builder.UseNpgsql(GetPostgresConnectionString(), options =>
                 {
-                    builder.UseNpgsql(GetPostgresConnectionString(connectionUrl), options =>
-                    {
-                        options.MigrationsAssembly(typeof(Program).Assembly.GetName().ToString());
-                    });
-                }
-                else
-                {
-                    
-                    builder.UseInMemoryDatabase("Tradgardsgolf");
-                }
+                    options.MigrationsAssembly(typeof(Program).Assembly.GetName().ToString());
+                });
+                
             });
         }
         
-        private string GetPostgresConnectionString(string connectionUrl) {
+        private string GetPostgresConnectionString() {
+            // Get the connection string from the ENV variables
+            var connectionUrl = Configuration.GetValue<string>("DATABASE_URL") ??
+                                throw new NullReferenceException("Enviroment varaible for database cannot be null");
+
+            // parse the connection string
             var databaseUri = new Uri(connectionUrl);
 
             var db = databaseUri.LocalPath.TrimStart('/');
