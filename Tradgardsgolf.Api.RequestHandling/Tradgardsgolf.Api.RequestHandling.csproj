@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>Tradgardsgolf.Tasks</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

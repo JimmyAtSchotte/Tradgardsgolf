@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Tradgardsgolf.Infrastructure;
 using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Api
@@ -30,6 +27,7 @@ namespace Tradgardsgolf.Api
                 var host = CreateHostBuilder(args).Build();
                 
                 using (var scope = host.Services.CreateScope())
+                    
                 await using (var context = scope.ServiceProvider.GetService<TradgardsgolfContext>())
                     await context.Database.MigrateAsync();
 

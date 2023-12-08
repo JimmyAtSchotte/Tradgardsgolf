@@ -6,10 +6,9 @@ using MediatR;
 using Tradgardsgolf.Contracts.Players;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
-using Tradgardsgolf.Core.Specifications;
 using HasPlayedOnCourse = Tradgardsgolf.Core.Specifications.HasPlayedOnCourse;
 
-namespace Tradgardsgolf.Tasks
+namespace Tradgardsgolf.Api.RequestHandling
 {
     public class HasPlayedOnCourseHandler : IRequestHandler<HasPlayedOnCourseCommand, IEnumerable<PlayerResponse>>
     {

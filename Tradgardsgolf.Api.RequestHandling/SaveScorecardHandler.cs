@@ -6,7 +6,7 @@ using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
 
-namespace Tradgardsgolf.Tasks
+namespace Tradgardsgolf.Api.RequestHandling
 {
     public class SaveScorecardHandler : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
     {

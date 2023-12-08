@@ -4,11 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Course;
-using Tradgardsgolf.Contracts.Players;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 
-namespace Tradgardsgolf.Tasks
+namespace Tradgardsgolf.Api.RequestHandling
 {
     public class ListAllCoursesHandler : IRequestHandler<ListAllCoursesCommand, IEnumerable<CourseResponse>>
     {

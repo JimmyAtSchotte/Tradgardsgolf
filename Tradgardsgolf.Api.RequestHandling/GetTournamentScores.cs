@@ -7,7 +7,7 @@ using Tradgardsgolf.Contracts.Tournament;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
 
-namespace Tradgardsgolf.Tasks
+namespace Tradgardsgolf.Api.RequestHandling
 {
     public class GetTournamentScores : IRequestHandler<GetTournamentScoresCommand, IEnumerable<TournamentScore>>
     {

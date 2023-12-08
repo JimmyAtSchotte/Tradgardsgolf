@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Tradgardsgolf.Api.RequestHandling;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Infrastructure;
 using Tradgardsgolf.Infrastructure.Database;
@@ -40,13 +41,15 @@ namespace Tradgardsgolf.Api
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Tradgardsgolf.Api", Version = "v1"});
             });
 
-            services.AddMediatR(typeof(Startup));
+            services.AddMediatR(mediatr =>
+            {
+                mediatr.RegisterServicesFromAssembly(typeof(IRequestHandlingNamespaceMarker).Assembly);
+            });
             
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
-            
             
             services.AddLogging();
             
@@ -56,7 +59,6 @@ namespace Tradgardsgolf.Api
                 {
                     options.MigrationsAssembly(typeof(Program).Assembly.GetName().ToString());
                 });
-                
             });
         }
         
@@ -106,9 +108,15 @@ namespace Tradgardsgolf.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tradgardsgolf.Api v1"));
+                
             }
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tradgardsgolf.Api v1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 
