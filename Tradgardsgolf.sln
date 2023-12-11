@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{E041
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{33DBF908-DAC3-42CC-803A-A2ED024481D3}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\main.yml = .github\workflows\main.yml
+		.github\workflows\master_tradgardsgolf-api.yml = .github\workflows\master_tradgardsgolf-api.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Blazor.Server", "Tradgardsgolf.Blazor.Server\Tradgardsgolf.Blazor.Server.csproj", "{4581DF9B-BD1D-4696-829C-A38E9A8A8132}"

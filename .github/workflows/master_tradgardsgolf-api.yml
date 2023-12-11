@@ -32,6 +32,8 @@ jobs:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_3e63b2f074da476c9cf483b2af23e34e }}/tradgardsgolf:${{ github.sha }}
         file: ./Dockerfile
+      env:
+        ENV: api
 
   deploy:
     runs-on: ubuntu-latest
