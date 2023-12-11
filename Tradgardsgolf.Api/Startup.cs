@@ -55,7 +55,7 @@ namespace Tradgardsgolf.Api
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                builder.UseSqlServer(Configuration.GetConnectionString("Database"));
+                builder.UseSqlServer(Configuration.GetConnectionString("SQLAZURECONNSTR_Database"));
             });
         }
         
