@@ -55,39 +55,8 @@ namespace Tradgardsgolf.Api
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                builder.UseNpgsql(GetPostgresConnectionString(), options =>
-                {
-                    options.MigrationsAssembly(typeof(Program).Assembly.GetName().ToString());
-                });
+                builder.UseSqlServer(Configuration.GetConnectionString("Database"));
             });
-        }
-        
-        private string GetPostgresConnectionString() {
-            // Get the connection string from the ENV variables
-            var connectionUrl = Configuration.GetValue<string>("DATABASE_URL") ??
-                                throw new NullReferenceException("Enviroment varaible for database cannot be null");
-
-            // parse the connection string
-            var databaseUri = new Uri(connectionUrl);
-
-            var db = databaseUri.LocalPath.TrimStart('/');
-            var userInfo = databaseUri.UserInfo.Split(':', StringSplitOptions.RemoveEmptyEntries);
-
-            var connectionStringBuilder = new StringBuilder();
-            connectionStringBuilder.Append($"User ID={userInfo[0]};");
-            connectionStringBuilder.Append($"Password={userInfo[1]};");
-            connectionStringBuilder.Append($"Host={databaseUri.Host};");
-            connectionStringBuilder.Append($"Port={databaseUri.Port};");
-            connectionStringBuilder.Append($"Database={db};");
-
-            if (databaseUri.Host != "127.0.0.1")
-            {
-                connectionStringBuilder.Append("Pooling=true;");
-                connectionStringBuilder.Append("SSL Mode=Require;");
-                connectionStringBuilder.Append("Trust Server Certificate=True;");
-            }
-
-            return connectionStringBuilder.ToString();
         }
         
         public void ConfigureContainer(ContainerBuilder builder)
