@@ -26,10 +26,9 @@ namespace Tradgardsgolf.Api
                 Log.Information("Starting up");
                 var host = CreateHostBuilder(args).Build();
                 
-                using (var scope = host.Services.CreateScope())
-                    
-                await using (var context = scope.ServiceProvider.GetService<TradgardsgolfContext>())
-                    await context.Database.MigrateAsync();
+                // using (var scope = host.Services.CreateScope())  
+                // await using (var context = scope.ServiceProvider.GetService<TradgardsgolfContext>())
+                //     await context.Database.MigrateAsync();
 
                 await host.RunAsync();
             }
