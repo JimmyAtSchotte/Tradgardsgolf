@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_9a0948971bab4af8b5b7abcbd4236eb3 }}/jikko84/tradgardsgolf-wasm:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_9a0948971bab4af8b5b7abcbd4236eb3 }}/tradgardsgolf-wasm:${{ github.sha }}
         file: ./Dockerfile
       env:
         ENV: wasm
@@ -50,4 +50,4 @@ jobs:
         app-name: 'tradgardsgolf'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_381eae6ac3fc456fa6b6355cb01e6762 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_9a0948971bab4af8b5b7abcbd4236eb3 }}/jikko84/tradgardsgolf-wasm:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_9a0948971bab4af8b5b7abcbd4236eb3 }}/tradgardsgolf-wasm:${{ github.sha }}'
