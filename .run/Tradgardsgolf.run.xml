@@ -1,0 +1,7 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Tradgardsgolf" type="CompoundRunConfigurationType">
+    <toRun name="Tradgardsgolf.Api" type="LaunchSettings" />
+    <toRun name="Tradgardsgolf.Blazor.Wasm" type="LaunchSettings" />
+    <method v="2" />
+  </configuration>
+</component>

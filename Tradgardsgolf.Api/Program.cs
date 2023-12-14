@@ -25,6 +25,22 @@ namespace Tradgardsgolf.Api
             {
                 Log.Information("Starting up");
                 var host = CreateHostBuilder(args).Build();
+
+                using (var scope = host.Services.CreateScope())
+                {
+                    var configuration = scope.ServiceProvider.GetService<IConfiguration>();
+                    var connstring = configuration.GetConnectionString("SQLAZURECONNSTR_Database");
+
+                    if (string.IsNullOrEmpty(connstring))
+                    {
+                        Log.Error("Connectionstring is not found");
+                        
+                        if(configuration is IConfigurationRoot root)
+                            Log.Information(root.GetDebugView());
+                        else
+                            Log.Information("Cant view full configuration");
+                    }
+                }
                 
                 // using (var scope = host.Services.CreateScope())  
                 // await using (var context = scope.ServiceProvider.GetService<TradgardsgolfContext>())
