@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_3e63b2f074da476c9cf483b2af23e34e }}/tradgardsgolf:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_3e63b2f074da476c9cf483b2af23e34e }}/tradgardsgolf-api:${{ github.sha }}
         file: ./Dockerfile
       env:
         ENV: api
@@ -50,4 +50,4 @@ jobs:
         app-name: 'tradgardsgolf-api'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_ad3a47715e654d56a9af320920e60bb8 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_3e63b2f074da476c9cf483b2af23e34e }}/tradgardsgolf:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_3e63b2f074da476c9cf483b2af23e34e }}/tradgardsgolf-api:${{ github.sha }}'
