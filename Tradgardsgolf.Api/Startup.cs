@@ -55,10 +55,12 @@ namespace Tradgardsgolf.Api
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                builder.UseSqlServer(Configuration.GetConnectionString("SQLAZURECONNSTR_Database"));
+                builder.UseSqlServer(Configuration.GetConnectionString("Database"));
             });
         }
-        
+
+    
+
         public void ConfigureContainer(ContainerBuilder builder)
         {
             var assemblies = new[] {

@@ -29,7 +29,7 @@ namespace Tradgardsgolf.Api
                 using (var scope = host.Services.CreateScope())
                 {
                     var configuration = scope.ServiceProvider.GetService<IConfiguration>();
-                    var connstring = configuration.GetConnectionString("SQLAZURECONNSTR_Database");
+                    var connstring = configuration.GetConnectionString("Database");
 
                     if (string.IsNullOrEmpty(connstring))
                     {
