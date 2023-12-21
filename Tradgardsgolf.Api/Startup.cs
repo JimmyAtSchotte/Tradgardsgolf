@@ -55,7 +55,12 @@ namespace Tradgardsgolf.Api
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                builder.UseSqlServer(Configuration.GetConnectionString("Database"));
+                var connectionString = Configuration.GetConnectionString("Database");
+
+                if (string.IsNullOrEmpty(connectionString))
+                    builder.UseInMemoryDatabase("Tradgardsgolf");
+                else
+                    builder.UseSqlServer(Configuration.GetConnectionString("Database"));
             });
         }
 

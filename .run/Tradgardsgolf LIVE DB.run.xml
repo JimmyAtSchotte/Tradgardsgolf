@@ -1,6 +1,6 @@
 ﻿<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Tradgardsgolf" type="CompoundRunConfigurationType">
-    <toRun name="Tradgardsgolf.Api" type="LaunchSettings" />
+  <configuration default="false" name="Tradgardsgolf LIVE DB" type="CompoundRunConfigurationType">
+    <toRun name="Tradgardsgolf.Api LIVE DB" type="LaunchSettings" />
     <toRun name="Tradgardsgolf.Blazor.Wasm" type="LaunchSettings" />
     <method v="2" />
   </configuration>
