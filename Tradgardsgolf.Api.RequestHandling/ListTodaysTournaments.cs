@@ -12,9 +12,9 @@ using Tournament = Tradgardsgolf.Contracts.Tournament.Tournament;
 
 namespace Tradgardsgolf.Api.RequestHandling
 {
-    public class ListTournaments(IRepository<TournamentCourseDate> repository) : IRequestHandler<ListTournamentsCommand, IEnumerable<Tournament>>
+    public class ListTodaysTournaments(IRepository<TournamentCourseDate> repository) : IRequestHandler<ListTodaysTournamentsCommand, IEnumerable<Tournament>>
     {
-        public async Task<IEnumerable<Tournament>> Handle(ListTournamentsCommand request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Tournament>> Handle(ListTodaysTournamentsCommand request, CancellationToken cancellationToken)
         {
             var tournments = await repository.ListAsync(new TournamentsOnCourse(request.CourseId, DateTime.Today), cancellationToken);
             

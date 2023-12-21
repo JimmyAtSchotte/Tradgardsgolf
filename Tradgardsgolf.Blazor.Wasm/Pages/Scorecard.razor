@@ -109,7 +109,7 @@
     
     protected override async Task OnInitializedAsync()
     {
-        Tournaments = (await apiDispatcher.Dispatch(new ListTournamentsCommand()
+        Tournaments = (await apiDispatcher.Dispatch(new ListTodaysTournamentsCommand()
         {
             CourseId = State.AppState.ScorecardState.CourseResponse.Id
         }) ?? Array.Empty<Tournament>()).ToList();
