@@ -1,15 +1,32 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Api;
 
-public static partial class TradgardsgolfContextExtensions
+public static class SetupDatabaseExtensions
 {
-    
     private static readonly Random Random = new Random();
-    public static async Task SeedData(this TradgardsgolfContext context)
+        
+    public static async Task SetupDatabase(this IHost host)
+    {
+        using var scope = host.Services.CreateScope();
+        await using var context = scope.ServiceProvider.GetService<TradgardsgolfContext>();
+
+        if (context.Database.IsInMemory())
+        {
+            await context.SeedData();
+            return;
+        }
+
+        await context.Database.MigrateAsync();
+    }
+
+    private static async Task SeedData(this TradgardsgolfContext context)
     {
         var jimmy = Player.Create(p => p.Name = "Jimmy");
         var patrik = Player.Create(p => p.Name = "Patrik");

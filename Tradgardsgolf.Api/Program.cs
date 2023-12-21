@@ -2,14 +2,11 @@ using System;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Tradgardsgolf.Core.Entities;
-using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Api
 {
@@ -26,14 +23,7 @@ namespace Tradgardsgolf.Api
             {
                 Log.Information("Starting up");
                 var host = CreateHostBuilder(args).Build();
-
-                using var scope = host.Services.CreateScope();
-                await using var context = scope.ServiceProvider.GetService<TradgardsgolfContext>();
-
-                if (context.Database.IsInMemory())
-                    await context.SeedData();
-                
-                
+                await host.SetupDatabase();
                 await host.RunAsync();
             }
             catch (Exception ex)
@@ -46,7 +36,8 @@ namespace Tradgardsgolf.Api
             }      
         }
 
-        
+     
+
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
