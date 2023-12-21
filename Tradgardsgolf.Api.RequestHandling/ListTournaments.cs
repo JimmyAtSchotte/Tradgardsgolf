@@ -16,7 +16,7 @@ namespace Tradgardsgolf.Api.RequestHandling
     {
         public async Task<IEnumerable<Tournament>> Handle(ListTournamentsCommand request, CancellationToken cancellationToken)
         {
-            var tournments = await repository.ListAsync(new TournamentsOnCourse(request.CourseId, DateTime.Today));
+            var tournments = await repository.ListAsync(new TournamentsOnCourse(request.CourseId, DateTime.Today), cancellationToken);
             
             return tournments.Select(x => new Tournament()
             {

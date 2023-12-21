@@ -14,7 +14,7 @@ namespace Tradgardsgolf.Api.RequestHandling
     {
         public async Task<IEnumerable<TournamentScore>> Handle(GetTournamentScoresCommand request, CancellationToken cancellationToken)
         {
-            var tournament = await repository.GetBySpecAsync(new TournamentScores(request.TournamentId));
+            var tournament = await repository.FirstOrDefaultAsync(new TournamentScores(request.TournamentId), cancellationToken);
             
             return tournament?.TournamentRounds.SelectMany(x => x.Round.RoundScores)
                 .GroupBy(x => x.Player.Name)

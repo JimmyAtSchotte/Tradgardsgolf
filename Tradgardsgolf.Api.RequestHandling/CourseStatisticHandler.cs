@@ -13,7 +13,7 @@ namespace Tradgardsgolf.Api.RequestHandling
     {
         public async Task<CourseStatisticResponse> Handle(CourseStatisticCommand request, CancellationToken cancellationToken)
         {
-            var rounds =  await roundRepository.ListAsync(new AllRoundsByCourse(request.CourseId));
+            var rounds =  await roundRepository.ListAsync(new AllRoundsByCourse(request.CourseId), cancellationToken);
            
             return new CourseStatisticResponse()
             {

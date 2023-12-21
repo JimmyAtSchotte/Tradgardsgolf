@@ -13,7 +13,7 @@ namespace Tradgardsgolf.Api.RequestHandling
     {
         public async Task<IEnumerable<CourseResponse>> Handle(ListAllCoursesCommand request, CancellationToken cancellationToken)
         {
-            var courses = await repository.ListAsync();
+            var courses = await repository.ListAsync(cancellationToken);
 
             return courses.Select(x => new CourseResponse()
             {

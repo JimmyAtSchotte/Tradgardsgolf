@@ -13,7 +13,7 @@ namespace Tradgardsgolf.Api.RequestHandling
     {
         public async Task<ScorecardResponse> Handle(SaveScorecardCommand request, CancellationToken cancellationToken)
         {
-            var course = await courseRepository.GetByIdAsync(request.CourseId);
+            var course = await courseRepository.GetByIdAsync(request.CourseId, cancellationToken);
             var round = course.CreateRound();
 
             foreach (var score in request.PlayerScores)
@@ -24,7 +24,7 @@ namespace Tradgardsgolf.Api.RequestHandling
                     round.AddScore(player, holeScore);
             }
 
-            await courseRepository.UpdateAsync(course);
+            await courseRepository.UpdateAsync(course, cancellationToken);
 
             return new ScorecardResponse()
             {
@@ -36,7 +36,7 @@ namespace Tradgardsgolf.Api.RequestHandling
 
         private async Task<Player> GetOrCreatePlayer(SaveScorecardCommand request, PlayerScore score)
         {
-            var player = await playerRepository.GetBySpecAsync(CoursePlayer.Specification(request.CourseId, score.Name)) ??
+            var player = await playerRepository.FirstOrDefaultAsync(CoursePlayer.Specification(request.CourseId, score.Name)) ??
                          await playerRepository.AddAsync(Player.Create(x => x.Name = score.Name));
             
             return player;

@@ -14,7 +14,7 @@ namespace Tradgardsgolf.Api.RequestHandling
     {
         public async Task<IEnumerable<PlayerResponse>> Handle(HasPlayedOnCourseCommand request, CancellationToken cancellationToken)
         {
-            return (await playerRepository.ListAsync(new HasPlayedOnCourse(request.CourseId)))
+            return (await playerRepository.ListAsync(new HasPlayedOnCourse(request.CourseId), cancellationToken))
                     .Select(player => new PlayerResponse()
                     {
                         Name = player.Name
