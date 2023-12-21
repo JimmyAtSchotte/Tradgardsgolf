@@ -40,11 +40,11 @@ public static partial class TradgardsgolfContextExtensions
         await context.SaveChangesAsync();
     }
 
-    private static void AddRound(this TradgardsgolfContext context, Course kumhof, params Player[] players)
+    private static void AddRound(this TradgardsgolfContext context, Course course, params Player[] players)
     {
-        var round = Round.Create(kumhof);
+        var round = Round.Create(course);
 
-        for (int hole = 1; hole <= kumhof.Holes; hole++)
+        for (int hole = 1; hole <= course.Holes; hole++)
         {
             foreach (var player in players)
                 round.CreateRoundScore(player, hole, GenerateRandomScore());
