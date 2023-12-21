@@ -7,18 +7,12 @@ using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Api.RequestHandling
 {
-    public class AddTournamentRoundScore : IRequestHandler<AddTournamentRoundScoreCommand>
+    public class AddTournamentRoundScore(IRepository<Tradgardsgolf.Core.Entities.TournamentRound> repository)
+        : IRequestHandler<AddTournamentRoundScoreCommand>
     {
-        private readonly IRepository<Tradgardsgolf.Core.Entities.TournamentRound> _repository;
-
-        public AddTournamentRoundScore(IRepository<Tradgardsgolf.Core.Entities.TournamentRound> repository)
-        {
-            _repository = repository;
-        }
-
         public async Task Handle(AddTournamentRoundScoreCommand request, CancellationToken cancellationToken)
         {
-            await _repository.AddAsync(new TournamentRound()
+            await repository.AddAsync(new TournamentRound()
             {
                 TournamentId = request.TournamentId,
                 RoundId = request.RoundId

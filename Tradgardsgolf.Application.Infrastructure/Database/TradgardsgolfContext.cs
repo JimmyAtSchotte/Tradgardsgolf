@@ -3,7 +3,7 @@ using Tradgardsgolf.Core.Entities;
 
 namespace Tradgardsgolf.Infrastructure.Database
 {
-    public class TradgardsgolfContext : DbContext
+    public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options) : DbContext(options)
     {
         public DbSet<Course> Course { get; set; }
         public DbSet<Player> Player { get; set; }
@@ -12,11 +12,5 @@ namespace Tradgardsgolf.Infrastructure.Database
         public DbSet<Tournament> Tournament { get; set; }
         public DbSet<TournamentRound> TournamentRound { get; set; }
         public DbSet<TournamentCourseDate> TournamentCourseDate { get; set; }
-
-
-        public TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options) : base(options)
-        {
-            
-        }
     }
 }

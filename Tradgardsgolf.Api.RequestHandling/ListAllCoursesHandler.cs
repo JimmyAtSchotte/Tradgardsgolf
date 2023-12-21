@@ -9,18 +9,11 @@ using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Api.RequestHandling
 {
-    public class ListAllCoursesHandler : IRequestHandler<ListAllCoursesCommand, IEnumerable<CourseResponse>>
+    public class ListAllCoursesHandler(IRepository<Course> repository) : IRequestHandler<ListAllCoursesCommand, IEnumerable<CourseResponse>>
     {
-        private readonly IRepository<Course> _repository;
-
-        public ListAllCoursesHandler(IRepository<Course> repository)
-        {
-            _repository = repository;
-        }
-
         public async Task<IEnumerable<CourseResponse>> Handle(ListAllCoursesCommand request, CancellationToken cancellationToken)
         {
-            var courses = await _repository.ListAsync();
+            var courses = await repository.ListAsync();
 
             return courses.Select(x => new CourseResponse()
             {

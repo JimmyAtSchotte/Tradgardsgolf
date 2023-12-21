@@ -9,18 +9,12 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling
 {
-    public class GetTournamentScores : IRequestHandler<GetTournamentScoresCommand, IEnumerable<TournamentScore>>
+    public class GetTournamentScores(IRepository<Tradgardsgolf.Core.Entities.Tournament> repository)
+        : IRequestHandler<GetTournamentScoresCommand, IEnumerable<TournamentScore>>
     {
-        private readonly IRepository<Tradgardsgolf.Core.Entities.Tournament> _repository;
-
-        public GetTournamentScores(IRepository<Tradgardsgolf.Core.Entities.Tournament> repository)
-        {
-            _repository = repository;
-        }
-
         public async Task<IEnumerable<TournamentScore>> Handle(GetTournamentScoresCommand request, CancellationToken cancellationToken)
         {
-            var tournament = await _repository.GetBySpecAsync(new TournamentScores(request.TournamentId));
+            var tournament = await repository.GetBySpecAsync(new TournamentScores(request.TournamentId));
             
             return tournament?.TournamentRounds.SelectMany(x => x.Round.RoundScores)
                 .GroupBy(x => x.Player.Name)

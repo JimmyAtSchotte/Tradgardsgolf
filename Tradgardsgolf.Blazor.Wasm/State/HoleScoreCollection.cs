@@ -6,12 +6,7 @@ namespace Tradgardsgolf.Blazor.Wasm.State
 {
     public class HoleScoreCollection : IList<HoleScoreModel>
     {
-        private readonly IList<HoleScoreModel> _holeScores;
-
-        public HoleScoreCollection()
-        {
-            _holeScores = new List<HoleScoreModel>();
-        }
+        private readonly IList<HoleScoreModel> _holeScores = new List<HoleScoreModel>();
 
         public HoleScoreModel this[int index] { 
             get =>  _holeScores.FirstOrDefault(x => x.Hole == index);            

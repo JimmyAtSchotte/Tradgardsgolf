@@ -44,18 +44,11 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
         }
     }
 
-    public class DispatchException : Exception
+    public class DispatchException(HttpResponseMessage response, string url, string body) : Exception
     {
-        public HttpResponseMessage Response { get; }
-        public string Url { get; }        
-        public string Body { get; }
-
-        public DispatchException(HttpResponseMessage response, string url, string body) : base()
-        {
-            Response = response;
-            Url = url;
-            Body = body;
-        }
+        public HttpResponseMessage Response { get; } = response;
+        public string Url { get; } = url;
+        public string Body { get; } = body;
     }
 
     public class DispatchUrlBuilder

@@ -10,22 +10,15 @@ namespace Tradgardsgolf.Api
 {
     [ApiController]
     [Route("api")]
-    public class DispatchController : ControllerBase
+    public class DispatchController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public DispatchController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost]
         [Route("dispatch/{domain}/{typeName}")]
         public async Task<IActionResult> Dispatch(string domain, string typeName, [FromBody] JsonDocument payload,
             CancellationToken cancellationToken)
         {
             var request = DispatchRequestBuilder.Build(domain, typeName, payload);
-            var response = await _mediator.Send(request, cancellationToken);
+            var response = await mediator.Send(request, cancellationToken);
             return new JsonResult(response);
         }
     }

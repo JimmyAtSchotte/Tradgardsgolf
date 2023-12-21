@@ -3,13 +3,8 @@ using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Infrastructure.Database
 {
-    public class Repository<TEntity> : BaseRepository<TEntity>
-        where TEntity : class
-    {
-        public Repository(TradgardsgolfContext dbContext) : base(dbContext)
-        {
-        }
-    }
+    public class Repository<TEntity>(TradgardsgolfContext dbContext) : BaseRepository<TEntity>(dbContext)
+        where TEntity : class;
     
     public class BaseRepository<TEntity> : RepositoryBase<TEntity>, IRepository<TEntity>
         where TEntity : class

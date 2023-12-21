@@ -65,22 +65,11 @@
         return theme;
     }
 
-    private class ThemeColor
+    private class ThemeColor(int red, int green, int blue)
     {
-        private readonly int _red;
-        private readonly int _green;
-        private readonly int _blue;
-
-        public ThemeColor(int red, int green, int blue)
-        {
-            _red = red;
-            _green = green;
-            _blue = blue;
-        }
-
         public string ToRGBA(double alpha = 1)
         {
-            return $"rgba({_red}, {_green}, {_blue}, {alpha})";
+            return $"rgba({red}, {green}, {blue}, {alpha})";
         }
     }
     

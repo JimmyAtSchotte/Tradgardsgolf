@@ -8,21 +8,12 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling
 {
-    public class SaveScorecardHandler : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
+    public class SaveScorecardHandler(IRepository<Course> courseRepository, IRepository<Player> playerRepository)
+        : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
     {
-        private readonly IRepository<Course> _courseRepository;
-        private readonly IRepository<Player> _playerRepository;
-
-        public SaveScorecardHandler(IRepository<Course> courseRepository, IRepository<Player> playerRepository)
-        {
-            _courseRepository = courseRepository;
-            _playerRepository = playerRepository;
-        }
-
-
         public async Task<ScorecardResponse> Handle(SaveScorecardCommand request, CancellationToken cancellationToken)
         {
-            var course = await _courseRepository.GetByIdAsync(request.CourseId);
+            var course = await courseRepository.GetByIdAsync(request.CourseId);
             var round = course.CreateRound();
 
             foreach (var score in request.PlayerScores)
@@ -33,7 +24,7 @@ namespace Tradgardsgolf.Api.RequestHandling
                     round.AddScore(player, holeScore);
             }
 
-            await _courseRepository.UpdateAsync(course);
+            await courseRepository.UpdateAsync(course);
 
             return new ScorecardResponse()
             {
@@ -45,8 +36,8 @@ namespace Tradgardsgolf.Api.RequestHandling
 
         private async Task<Player> GetOrCreatePlayer(SaveScorecardCommand request, PlayerScore score)
         {
-            var player = await _playerRepository.GetBySpecAsync(CoursePlayer.Specification(request.CourseId, score.Name)) ??
-                         await _playerRepository.AddAsync(Player.Create(x => x.Name = score.Name));
+            var player = await playerRepository.GetBySpecAsync(CoursePlayer.Specification(request.CourseId, score.Name)) ??
+                         await playerRepository.AddAsync(Player.Create(x => x.Name = score.Name));
             
             return player;
         }

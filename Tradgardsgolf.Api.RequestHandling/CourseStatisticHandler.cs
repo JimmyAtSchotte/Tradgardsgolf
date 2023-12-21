@@ -9,19 +9,11 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling
 {
-    public class CourseStatisticHandler : IRequestHandler<CourseStatisticCommand, CourseStatisticResponse>
+    public class CourseStatisticHandler(IRepository<Round> roundRepository) : IRequestHandler<CourseStatisticCommand, CourseStatisticResponse>
     {
-        private readonly IRepository<Round> _roundRepository;
-
-        public CourseStatisticHandler(IRepository<Round> roundRepository)
-        {
-            _roundRepository = roundRepository;
-        }
-
-
         public async Task<CourseStatisticResponse> Handle(CourseStatisticCommand request, CancellationToken cancellationToken)
         {
-            var rounds =  await _roundRepository.ListAsync(new AllRoundsByCourse(request.CourseId));
+            var rounds =  await roundRepository.ListAsync(new AllRoundsByCourse(request.CourseId));
            
             return new CourseStatisticResponse()
             {

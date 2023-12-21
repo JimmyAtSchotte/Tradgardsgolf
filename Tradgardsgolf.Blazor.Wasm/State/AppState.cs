@@ -23,12 +23,7 @@ namespace Tradgardsgolf.Blazor.Wasm.State
         public ScorecardState ScorecardState { get; private set; }
 
         [JsonPropertyName("lastAccessed")] 
-        public DateTime LastAccessed { get; private set; }
-        
-        public AppState()
-        {
-            LastAccessed = DateTime.Now;
-        }
+        public DateTime LastAccessed { get; private set; } = DateTime.Now;
 
         public void NewScorecard(ComponentBase source, CourseResponse courseResponseModel)
         {
