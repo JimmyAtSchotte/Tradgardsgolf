@@ -15,6 +15,15 @@
                             <BarIcon IconName="MaterialIcons.GolfCourse" /> Spela
                         </BarLink>
                     </BarItem>
+                    
+                   @if (State.AppState.ScorecardState is not null)
+                   {
+                       <BarItem>
+                           <BarLink To="/Scorecard">
+                               <BarIcon IconName="MaterialIcons.PlayArrow" /> Protokoll
+                           </BarLink>
+                       </BarItem>
+                   }
                 </BarStart>
             </BarMenu>
         </Bar>
@@ -27,4 +36,6 @@
 @code {
     private bool topbarVisible = false;
     
+    [CascadingParameter]
+    public CascadingStateProvider State { get; set; }
 }

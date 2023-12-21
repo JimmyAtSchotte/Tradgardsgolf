@@ -8,23 +8,23 @@
 
 <Loading IsLoading="_courses == null" LoadingText="Laddar banor i närheten...">
     @foreach (var course in _courses)
-        {
-            <CascadingCourse Course="course">
-                <CascadingCourseStatistics>
-                    <CourseCard>
-                        <CourseHead>
-                            <CourseHeaderStatistics />
-                        </CourseHead>
-                        <CourseContent>
-                            <CourseStatistics></CourseStatistics>
-                        </CourseContent>
-                        <CourseButtons Visible="AllowPlay(course)">
-                            <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
-                        </CourseButtons>
-                    </CourseCard>
-                </CascadingCourseStatistics>
-            </CascadingCourse>
-        }
+    {
+        <CascadingCourse Course="course">
+            <CascadingCourseStatistics>
+                <CourseCard>
+                    <CourseHead>
+                        <CourseHeaderStatistics/>
+                    </CourseHead>
+                    <CourseContent>
+                        <CourseStatistics></CourseStatistics>
+                    </CourseContent>
+                    <CourseButtons Visible="AllowPlay(course)">
+                        <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
+                    </CourseButtons>
+                </CourseCard>
+            </CascadingCourseStatistics>
+        </CascadingCourse>
+    }
 </Loading>
 
 
@@ -71,6 +71,8 @@
 
     private bool AllowPlay(CourseResponse courseResponse)
     {
+        return true;
+        
         return courseResponse.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude) < 400;
     }
 

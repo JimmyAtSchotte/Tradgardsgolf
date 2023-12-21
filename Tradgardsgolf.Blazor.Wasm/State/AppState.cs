@@ -20,11 +20,16 @@ namespace Tradgardsgolf.Blazor.Wasm.State
         private readonly TimeSpan _stateValidTime = TimeSpan.FromHours(1);
         
         [JsonPropertyName("scorecardState")] 
-        public ScorecardState ScorecardState { get; private set; }
+        public ScorecardState ScorecardState { get; set; }
 
         [JsonPropertyName("lastAccessed")] 
-        public DateTime LastAccessed { get; private set; } = DateTime.Now;
+        public DateTime LastAccessed { get; set; }
 
+        public AppState()
+        {
+            LastAccessed = DateTime.Now;
+        }
+        
         public void NewScorecard(ComponentBase source, CourseResponse courseResponseModel)
         {
             ScorecardState = ScorecardState.Create(courseResponseModel);

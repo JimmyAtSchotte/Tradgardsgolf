@@ -1,5 +1,6 @@
 ﻿@using Tradgardsgolf.Blazor.Wasm.State
 @using System.Text.Json
+@using System.Text
 @implements IDisposable
 @inject ILocalStorageService LocalStorageService
 
@@ -21,9 +22,6 @@
     {
         AppState = await ReadAppSate();
         AppState.StateChanged += async (source, property) => await SaveAppStateAsync();
-
-        await SaveAppStateAsync();
-        
         _hasLoaded = true;
     }
 
@@ -31,37 +29,22 @@
     {
         try
         {
-            var json = await LocalStorageService.GetItemAsStringAsync(nameof(AppState));
+            var state = await LocalStorageService.GetItemAsync<AppState>(nameof(AppState));
 
-            if (!string.IsNullOrEmpty(json))
-            {
-                var storedState = JsonSerializer.Deserialize<AppState>(json);
-
-                if (storedState.IsValid())
-                    return storedState;
-            }
+            if (state.IsValid())
+                return state;
         }
         catch (Exception e)
         {
             // ignored
         }
-
+        
         return new AppState();
     }
 
     private async Task SaveAppStateAsync()
     {
-        try
-        {
-            var json = JsonSerializer.Serialize(AppState);
-            await LocalStorageService.SetItemAsync(nameof(AppState), json);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-        
+        await LocalStorageService.SetItemAsync(nameof(AppState), AppState);
     }
 
     void IDisposable.Dispose()

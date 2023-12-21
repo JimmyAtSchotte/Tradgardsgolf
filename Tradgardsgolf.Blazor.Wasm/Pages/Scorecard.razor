@@ -3,96 +3,104 @@
 @using Tradgardsgolf.Contracts.Tournament
 @inject NavigationManager NavigationManager
 @inject IApiDispatcher apiDispatcher
-@inject Blazored.Modal.Services.IModalService  Modal
+@inject Blazored.Modal.Services.IModalService Modal
 
-<CascadingCourse Course="State.AppState.ScorecardState.CourseResponse">
-    <CascadingCourseStatistics>
-        <CourseCard>
-            <CourseHead>
-                <CourseHeaderStatistics />
-            </CourseHead>
-            <CourseContent>
-                
-                @if (Tournaments.Any())
-                {
-                    @if (SelectedTournament is null)
-                    {
-                        <Select TValue="int" SelectedValueChanged="@OnSelectedTournamentChanged">
-                            <SelectItem Value="0">Välj tävling</SelectItem>
-                            
-                            @foreach (var tournament in Tournaments)
-                            {
-                                <SelectItem Value="@tournament.Id">@tournament.Name</SelectItem>
-                            }
-                        </Select>
-                    }
-                    else
-                    {
-                        <p>Tävling: @SelectedTournament.Name</p>
-                    }
-                }
+@if (State.AppState.ScorecardState is not null)
+{
+    <CascadingCourse Course="State.AppState.ScorecardState.CourseResponse">
+        <CascadingCourseStatistics>
+            <CourseCard>
+                <CourseHead>
+                    <CourseHeaderStatistics/>
+                </CourseHead>
+                <CourseContent>
 
-                <Table>
-                    <TableHeader>
-                        <TableHeaderCell>Hål</TableHeaderCell>
-                        @foreach (var playerScore in State.AppState.ScorecardState.PlayerScores)
+                    @if (Tournaments.Any())
+                    {
+                        @if (SelectedTournament is null)
                         {
-                            <TableHeaderCell>
-                                <Avatar Player="playerScore.PlayerResponse"></Avatar>
-                            </TableHeaderCell>
+                            <Select TValue="int" SelectedValueChanged="@OnSelectedTournamentChanged">
+                                <SelectItem Value="0">Välj tävling</SelectItem>
+
+                                @foreach (var tournament in Tournaments)
+                                {
+                                    <SelectItem Value="@tournament.Id">@tournament.Name</SelectItem>
+                                }
+                            </Select>
                         }
-                    </TableHeader>
-                    <TableBody>
-                        @for (int i = 1; i <= State.AppState.ScorecardState.CourseResponse.Holes; i++)
+                        else
                         {
-                            var hole = i;
+                            <p>Tävling: @SelectedTournament.Name</p>
+                        }
+                    }
 
+                    <Table>
+                        <TableHeader>
+                            <TableHeaderCell>Hål</TableHeaderCell>
+                            @foreach (var playerScore in State.AppState.ScorecardState.PlayerScores)
+                            {
+                                <TableHeaderCell>
+                                    <Avatar Player="playerScore.PlayerResponse"></Avatar>
+                                </TableHeaderCell>
+                            }
+                        </TableHeader>
+                        <TableBody>
+                            @for (int i = 1; i <= State.AppState.ScorecardState.CourseResponse.Holes; i++)
+                            {
+                                var hole = i;
+
+                                <TableRow>
+                                    <TableRowCell>@hole</TableRowCell>
+                                    @foreach (var player in State.AppState.ScorecardState.PlayerScores)
+                                    {
+                                        <TableRowCell>
+                                            <Button Clicked="() => SetScore(player, hole)" Disabled="@Saving">@player.Scores[hole].ToString()</Button>
+                                        </TableRowCell>
+                                    }
+                                </TableRow>
+                            }
                             <TableRow>
-                                <TableRowCell>@hole</TableRowCell>
+                                <TableRowCell>Totalt</TableRowCell>
                                 @foreach (var player in State.AppState.ScorecardState.PlayerScores)
                                 {
-                                    <TableRowCell>
-                                        <Button Clicked="() => SetScore(player, hole)" Disabled="@Saving">@player.Scores[hole].ToString()</Button>
-                                    </TableRowCell>
+                                    <TableRowCell>@player.Total()</TableRowCell>
                                 }
                             </TableRow>
-                        }
-                        <TableRow>
-                            <TableRowCell>Totalt</TableRowCell>
-                            @foreach (var player in State.AppState.ScorecardState.PlayerScores)
+
+                            @if (SelectedTournament != null)
                             {
-                                <TableRowCell>@player.Total()</TableRowCell>
+                                <TableRow>
+                                    <TableRowCell>Tävling</TableRowCell>
+                                    @foreach (var player in State.AppState.ScorecardState.PlayerScores)
+                                    {
+                                        <TableRowCell>@GetTournamentScore(player)</TableRowCell>
+                                    }
+                                </TableRow>
                             }
-                        </TableRow>
+                        </TableBody>
+                    </Table>
+                </CourseContent>
+                <CourseButtons Visible="State.AppState.ScorecardState.PlayerScores.Any()">
+                    <Button Clicked="async () => await ChangePlayers()"
+                            Disabled="@Saving"
+                            Float="Float.Start"
+                            Color="Color.Warning">
+                        Byt spelare <Icon Name="Blazorise.Icons.Material.MaterialIcons.Sync"></Icon>
+                    </Button>
+                    <Button Clicked="async () => await CompleteRound()"
+                            Disabled="@DisableCompleteButton"
+                            Loading="Saving"
+                            Float="Float.End"
+                            Color="Color.Primary">
+                        Klart <Icon Name="Blazorise.Icons.Material.MaterialIcons.Check"></Icon>
+                    </Button>
+                </CourseButtons>
+            </CourseCard>
 
-                        @if (SelectedTournament != null)
-                        {
-                            <TableRow>
-                                <TableRowCell>Tävling</TableRowCell>
-                                @foreach (var player in State.AppState.ScorecardState.PlayerScores)
-                                {
-                                    <TableRowCell>@GetTournamentScore(player)</TableRowCell>
-                                }
-                            </TableRow>
-                        }
-                    </TableBody>
-                </Table>
-            </CourseContent>
-            <CourseButtons Visible="State.AppState.ScorecardState.PlayerScores.Any()">
-                <Button Clicked="async () => await ChangePlayers()" 
-                        Disabled="@Saving" 
-                        Float="Float.Start"
-                        Color="Color.Warning">Byt spelare <Icon Name="Blazorise.Icons.Material.MaterialIcons.Sync"></Icon></Button>
-                <Button Clicked="async () => await CompleteRound()" 
-                        Disabled="@DisableCompleteButton" 
-                        Loading="Saving"
-                        Float="Float.End"
-                        Color="Color.Primary">Klart <Icon Name="Blazorise.Icons.Material.MaterialIcons.Check"></Icon></Button>
-            </CourseButtons>
-        </CourseCard>
+        </CascadingCourseStatistics>
+    </CascadingCourse>
+}
 
-    </CascadingCourseStatistics>
-</CascadingCourse>
 
 
 @code
@@ -103,16 +111,23 @@
     private bool DisableCompleteButton => State.AppState.ScorecardState.PlayerScores.Any(x => x.MissingScores()) || Saving;
     private bool Saving { get; set; }
 
-    private List<Tournament> Tournaments { get; set; } = new List<Tournament>();
+    private IEnumerable<Tournament> Tournaments { get; set; } = new List<Tournament>();
     private List<TournamentScore> TournamentScores { get; set; } = new List<TournamentScore>();
     private Tournament SelectedTournament { get; set; }
-    
+ 
+
     protected override async Task OnInitializedAsync()
     {
-        Tournaments = (await apiDispatcher.Dispatch(new ListTodaysTournamentsCommand()
+        if (State.AppState.ScorecardState is null)
+        {
+            NavigationManager.NavigateTo("");
+            return;
+        }
+        
+        Tournaments = await apiDispatcher.Dispatch(new ListTodaysTournamentsCommand()
         {
             CourseId = State.AppState.ScorecardState.CourseResponse.Id
-        }) ?? Array.Empty<Tournament>()).ToList();
+        });
         
         await base.OnInitializedAsync();
     }
@@ -151,13 +166,13 @@
                 RoundId = roundScore.Id
             });
         }
-        
+
         var playAgain = Modal.Show<PlayAgainModal>("Rundan är klar och sparad");
 
         var result = await playAgain.Result;
         if (result.Cancelled)
             return;
-        
+
         var command = (PlayAgainModal.Results)result.Data;
         switch (command)
         {

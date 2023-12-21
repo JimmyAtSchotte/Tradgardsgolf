@@ -9,9 +9,10 @@ namespace Tradgardsgolf.Blazor.Wasm.State
 {
     public class ScorecardState : BaseState
     {
-        private ScorecardState()
+        public ScorecardState()
         {
         }
+        
         public static ScorecardState Create(CourseResponse courseResponseModel, params PlayerScores[] playerScores)
         {
             return new ()
@@ -21,17 +22,17 @@ namespace Tradgardsgolf.Blazor.Wasm.State
             };
         }
 
-        public ScorecardState(CourseResponse courseResponse, IEnumerable<PlayerScores> playerScores)
+        private ScorecardState(CourseResponse courseResponse, IEnumerable<PlayerScores> playerScores)
         {
             CourseResponse = courseResponse;
             PlayerScores = playerScores.ToList();
         }
         
         [JsonPropertyName("courseResponse")] 
-        public CourseResponse CourseResponse { get; private set; }
+        public CourseResponse CourseResponse { get; set; }
         
         [JsonPropertyName("playerScores")]
-        public List<PlayerScores> PlayerScores { get; private set; }
+        public List<PlayerScores> PlayerScores { get; set; }
 
         public async Task AddPlayer(ComponentBase source, string name)
         {
