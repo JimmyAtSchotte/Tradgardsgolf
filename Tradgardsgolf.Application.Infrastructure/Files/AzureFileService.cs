@@ -7,7 +7,7 @@ namespace Tradgardsgolf.Infrastructure.Files;
 
 public class AzureFileService : IFileService
 {
-    private BlobServiceClient _storage;
+    private readonly BlobServiceClient _storage;
     private readonly string _containerName;
 
     public AzureFileService(string storageConnectionString, string containerName)
