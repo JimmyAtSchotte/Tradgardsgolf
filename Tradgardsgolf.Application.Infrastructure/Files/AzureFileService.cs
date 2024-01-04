@@ -5,12 +5,12 @@ using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Infrastructure.Files;
 
-public class FileService : IFileService
+public class AzureFileService : IFileService
 {
     private BlobServiceClient _storage;
     private readonly string _containerName;
 
-    public FileService(string storageConnectionString, string containerName)
+    public AzureFileService(string storageConnectionString, string containerName)
     {
         _containerName = containerName;
         _storage = new BlobServiceClient(storageConnectionString);

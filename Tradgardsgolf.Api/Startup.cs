@@ -62,7 +62,7 @@ namespace Tradgardsgolf.Api
 
             builder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
-            builder.Register(ctx => new FileService(Configuration.GetValue<string>("StorageConnectionString"), Configuration.GetValue<string>("StorageContainerName")))
+            builder.Register(ctx => new AzureFileService(Configuration.GetValue<string>("StorageConnectionString"), Configuration.GetValue<string>("StorageContainerName")))
                 .As<IFileService>();
         }
 

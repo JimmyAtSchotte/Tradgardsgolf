@@ -20,7 +20,7 @@ public class Files
         var bytes = Encoding.UTF8.GetBytes(testData);
         var fileName = "test.txt";
         
-        var fileService = new FileService(StorageConnectionString, ContainerName);
+        var fileService = new AzureFileService(StorageConnectionString, ContainerName);
         await fileService.Save(fileName, bytes);
         var fileBytes = await fileService.Get(fileName);
         var text = Encoding.UTF8.GetString(fileBytes);
@@ -33,7 +33,7 @@ public class Files
     [Test]
     public void FileNotFound()
     {
-        var fileService = new FileService(StorageConnectionString, ContainerName);
+        var fileService = new AzureFileService(StorageConnectionString, ContainerName);
         var fileName = $"{Guid.NewGuid()}.txt";
 
         Assert.ThrowsAsync<Azure.RequestFailedException>(async () =>
