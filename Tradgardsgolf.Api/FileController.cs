@@ -12,6 +12,14 @@ namespace Tradgardsgolf.Api;
 [Route("api/file")]
 public class FileController(IFileService fileService) : ControllerBase
 {
+    [HttpGet]
+    [Route("{filename}")]
+    public async Task<FileResult> Download([FromRoute] string filename)
+    {
+        var fileBytes = await fileService.Get(filename);
+        return new FileContentResult(fileBytes, "image/jpeg");
+    }
+    
     [HttpPost]
     public async Task Upload(List<IFormFile> files)
     {
@@ -24,11 +32,10 @@ public class FileController(IFileService fileService) : ControllerBase
         }
     }
     
-    [HttpGet]
+    [HttpDelete]
     [Route("{filename}")]
-    public async Task<FileResult> Download([FromRoute] string filename)
+    public async Task Delete([FromRoute] string filename)
     {
-        var fileBytes = await fileService.Get(filename);
-        return new FileContentResult(fileBytes, "image/jpeg");
+        await fileService.Delete(filename);
     }
 }
