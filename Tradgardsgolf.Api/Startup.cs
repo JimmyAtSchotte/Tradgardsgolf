@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Tradgardsgolf.Api.RequestHandling;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Infrastructure.Database;
+using Tradgardsgolf.Infrastructure.Files;
 
 namespace Tradgardsgolf.Api
 {
@@ -60,7 +61,9 @@ namespace Tradgardsgolf.Api
             };
 
             builder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();
-            builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)); 
+            builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
+            builder.Register(ctx => new FileService(Configuration.GetValue<string>("StorageConnectionString"), Configuration.GetValue<string>("StorageContainerName")))
+                .As<IFileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
