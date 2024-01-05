@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Tradgardsgolf.Infrastructure.Files;
 
-namespace Tradgardsgolf.Infrastructure.Tests.Infrastructure;
+namespace Tradgardsgolf.Infrastructure.Tests.Infrastructure.Files;
 
 [Ignore("Integration test")]
 [TestFixture]
-public class Files
+public class AzureFileServiceTests
 {
     private const string StorageConnectionString = "<SET CONNECTION STRING>";
     private const string ContainerName = "<SET CONTAINER NAME>";
