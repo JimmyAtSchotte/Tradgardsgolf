@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -13,6 +14,8 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
     {
         Task<TResponse?> Dispatch<TResponse>(IRequest<TResponse> request);
         Task Dispatch(IRequest request);
+        Task FileUpload(string filename, byte[] bytes);
+        Task FileDelete(string filename);
     }
 
     public class ApiDispatcher(HttpClient httpClient) : IApiDispatcher
@@ -21,26 +24,45 @@ namespace Tradgardsgolf.Blazor.Wasm.ApiServices
         {
             var dispatchUrl = DispatchUrlBuilder.Build(request);
             var requestBody = JsonSerializer.Serialize(request, request.GetType());
-            var response = await httpClient.PostAsync(dispatchUrl, new StringContent(requestBody, Encoding.UTF8, "application/json"));
-        
-            if(response.IsSuccessStatusCode)
+            var response = await httpClient.PostAsync(dispatchUrl,
+                new StringContent(requestBody, Encoding.UTF8, "application/json"));
+
+            if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<TResponse>()
                        ?? throw new InvalidOperationException("Could not read response message");
-            
+
             throw new DispatchException(response, dispatchUrl, requestBody);
-     
+
         }
 
         public async Task Dispatch(IRequest request)
         {
             var dispatchUrl = DispatchUrlBuilder.Build(request);
             var requestBody = JsonSerializer.Serialize(request, request.GetType());
-            var response = await httpClient.PostAsync(dispatchUrl, new StringContent(requestBody, Encoding.UTF8, "application/json"));
-            
-            if(response.IsSuccessStatusCode)
+            var response = await httpClient.PostAsync(dispatchUrl,
+                new StringContent(requestBody, Encoding.UTF8, "application/json"));
+
+            if (response.IsSuccessStatusCode)
                 return;
-            
+
             throw new DispatchException(response, dispatchUrl, requestBody);
+        }
+
+        public async Task FileUpload(string filename, byte[] bytes)
+        {
+            using var content = new MultipartFormDataContent();
+            using var fileStream = new MemoryStream(bytes);
+
+            content.Add(new StreamContent(fileStream), "files", filename);
+            var response = await httpClient.PostAsync("api/file", content);
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task FileDelete(string filename)
+        {
+            var response = await httpClient.DeleteAsync($"api/file/{filename}");
+            response.EnsureSuccessStatusCode();
         }
     }
 

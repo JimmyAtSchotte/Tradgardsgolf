@@ -29,6 +29,9 @@ namespace Tradgardsgolf.Core.Entities
         
         [Column("dtmScoreReset")]
         public DateTime? ScoreReset { get; set; }
+        
+        [Column("strImage")]
+        public string Image { get; set; }
 
         public virtual ICollection<Round> Rounds
         {

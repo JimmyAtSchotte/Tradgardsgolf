@@ -1,0 +1,93 @@
+﻿@page "/EditCourse/{CourseId:int}"
+@using Tradgardsgolf.Contracts.Course
+@using System.IO
+@inject IApiDispatcher ApiDispatcher;
+
+@if (_course is not null)
+{
+    <CascadingCourse Course="_course">
+        <CascadingCourseStatistics>
+            <CourseCard>
+                <CourseHead>
+                </CourseHead>
+                <CourseContent>
+                    <Field>
+                        <FieldLabel>Namn</FieldLabel>
+                        <TextEdit @bind-Text="@_name" />
+                    </Field>
+                    
+                    <Field>
+                        <FieldLabel>Ladda upp bild</FieldLabel>
+                        <FileEdit Changed="@OnFileUpload" Filter="image/*" />
+                    </Field>
+                </CourseContent>
+                <CourseButtons>
+                    <Button Clicked="async () => await Save()" 
+                            Float="Float.End"
+                            Color="Color.Primary">Spara<Icon Name="Blazorise.Icons.Material.MaterialIcons.Save"></Icon></Button>
+                </CourseButtons>
+            </CourseCard>
+        </CascadingCourseStatistics>
+    </CascadingCourse>
+}
+
+
+@code {
+    private CourseResponse _course;
+    private string _name;
+    private byte[] _fileBytes;
+    private string _fileExtension;
+    
+    [Parameter]
+    public int CourseId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _course = await ApiDispatcher.Dispatch(new GetCourseCommand()
+        {
+            Id = CourseId
+        });
+
+        _name = _course.Name;
+        
+        await base.OnInitializedAsync();
+    }
+
+    private async Task Save()
+    {
+        var updateCourse = new UpdateCourseCommand()
+        {
+            Id = _course.Id,
+            Name = _name,
+            Image = _course.Image
+        };
+        
+        if (_fileBytes is not null)
+        {
+            var filename = $"{_course.Id}_{DateTime.Now.Ticks}{_fileExtension}";
+            
+            await ApiDispatcher.FileUpload(filename, _fileBytes);
+            
+            if(!string.IsNullOrEmpty(_course.Image))
+                await ApiDispatcher.FileDelete(_course.Image);
+
+            updateCourse.Image = filename;
+        }
+
+        await ApiDispatcher.Dispatch(updateCourse);
+    }
+
+    private async Task OnFileUpload(FileChangedEventArgs e)
+    {
+        var file = e.Files.FirstOrDefault();
+        
+        if (file == null)
+            return;
+
+        using var result = new MemoryStream();
+        await file.OpenReadStream(long.MaxValue).CopyToAsync(result);
+        _fileBytes = result.ToArray();
+        _fileExtension = Path.GetExtension(file.Name);
+    }
+
+}

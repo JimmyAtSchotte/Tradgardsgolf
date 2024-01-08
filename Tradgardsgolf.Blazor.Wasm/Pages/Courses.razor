@@ -20,6 +20,7 @@
                     </CourseContent>
                     <CourseButtons Visible="AllowPlay(course)">
                         <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
+                        <Button Clicked="() => EditCourse(course)" Color="Color.Secondary" Float="Float.Start"><Icon Name="Blazorise.Icons.Material.MaterialIcons.Edit"></Icon></Button>
                     </CourseButtons>
                 </CourseCard>
             </CascadingCourseStatistics>
@@ -76,11 +77,16 @@
         return courseResponse.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude) < 400;
     }
 
-    private async Task SetupRound(CourseResponse courseResponseModel)
+    private async Task SetupRound(CourseResponse course)
     {
-        StateProvider.AppState.NewScorecard(this, courseResponseModel);
+        StateProvider.AppState.NewScorecard(this, course);
         await Task.Delay(1);
         NavigationManager.NavigateTo(nameof(SetupRound));
+    }
+    
+    private void EditCourse(CourseResponse course)
+    {
+        NavigationManager.NavigateTo($"{nameof(EditCourse)}/{course.Id}");
     }
 
     public void Dispose()

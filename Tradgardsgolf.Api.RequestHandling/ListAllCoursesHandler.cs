@@ -20,7 +20,7 @@ namespace Tradgardsgolf.Api.RequestHandling
                 Created = x.Created,
                 Holes = x.Holes,
                 Id = x.Id,
-                Image = "images/grass.jpg",
+                Image =x.Image,
                 Latitude = x.Latitude,
                 Longitude = x.Longitude,
                 Name = x.Name,

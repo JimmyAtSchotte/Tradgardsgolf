@@ -1,5 +1,8 @@
-﻿<CardHeader>
-    <CardImage Source="@CascadingCourse.Course.Image"></CardImage>
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration;
+
+<CardHeader>
+    <CardImage Source="@GetImage()"></CardImage>
     <h1>@CascadingCourse.Course.Name</h1>
     @ChildContent
 </CardHeader>
@@ -10,6 +13,13 @@
     
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+
+    private string GetImage()
+    {
+        return string.IsNullOrEmpty(CascadingCourse.Course.Image)
+            ? "images/grass.jpg" 
+            : $"{ Configuration.GetValue<string>("API_URL")}/api/file/{ CascadingCourse.Course.Image}";
+    }
 }
 
 
