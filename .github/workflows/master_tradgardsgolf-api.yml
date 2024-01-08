@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://index.docker.io/v1/
-        username: ${{ secrets.AzureAppService_ContainerUsername_c91e392d129f4b54865f241569d89173 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_a088ad3944794fa5bd32a328ad164bf9 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_ecf4dd14cec84d5e82b415470753c1f5 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_07902e7edafc4ed5a2fbd7cac8be7579 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c91e392d129f4b54865f241569d89173 }}/jikko84/tradgardsgolf-api:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ecf4dd14cec84d5e82b415470753c1f5 }}/tradgardsgolf-api:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'tradgardsgolf-api'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_f908c60697394e20a891374a23fcbad9 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c91e392d129f4b54865f241569d89173 }}/jikko84/tradgardsgolf-api:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_8e26046e592b4ed695b99dc48903eadd }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ecf4dd14cec84d5e82b415470753c1f5 }}/tradgardsgolf-api:${{ github.sha }}'
