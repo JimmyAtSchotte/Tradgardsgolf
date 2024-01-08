@@ -2,10 +2,15 @@
 @inject IApiDispatcher ApiDispatcher;
 @inject NavigationManager NavigationManager
 @inject LocationService LocationService
+@inject IConfiguration Configuration
 @using Tradgardsgolf.Contracts.Course
-@using Tradgardsgolf.Blazor.Wasm.Extensions
-@using ChangeCourseImage = Tradgardsgolf.Blazor.Wasm.Shared.ChangeCourseImage
+@using ChangeCourseImage = Tradgardsgolf.BlazorWasm.Shared.ChangeCourseImage
+@using Microsoft.Extensions.Configuration
+@using Tradgardsgolf.BlazorWasm.ApiServices
+@using Tradgardsgolf.BlazorWasm.Extensions
+@using Tradgardsgolf.BlazorWasm.State
 @implements IDisposable
+
 
 <Loading IsLoading="_courses == null" LoadingText="Laddar banor i närheten...">
     @foreach (var course in _courses)
@@ -50,10 +55,12 @@
 
     private IEnumerable<CourseResponse> _models;
     private IList<CourseResponse> _courses;
+    private int _allowPlayDistance;
 
     protected override async Task OnInitializedAsync()
     {
         _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
+        _allowPlayDistance = Configuration.GetValue<int>("allowPlayDistance");
         
         OrderCoursesByDistance();
 
@@ -83,7 +90,8 @@
 
     private bool AllowPlay(CourseResponse courseResponse)
     {
-        return courseResponse.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude) < 400;
+        return _allowPlayDistance < 0 ||
+               courseResponse.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude) < _allowPlayDistance;
     }
 
     private async Task SetupRound(CourseResponse course)
@@ -93,11 +101,6 @@
         NavigationManager.NavigateTo(nameof(SetupRound));
     }
     
-    private void EditCourse(CourseResponse course)
-    {
-        NavigationManager.NavigateTo($"{nameof(EditCourse)}/{course.Id}");
-    }
-
     public void Dispose()
     {
         LocationProvider.LocationChanged -= LocationProviderOnLocationChanged;

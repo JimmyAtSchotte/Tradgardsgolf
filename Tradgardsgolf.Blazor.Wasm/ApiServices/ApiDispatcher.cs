@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts;
 
-namespace Tradgardsgolf.Blazor.Wasm.ApiServices
+namespace Tradgardsgolf.BlazorWasm.ApiServices
 {
     public interface IApiDispatcher
     {

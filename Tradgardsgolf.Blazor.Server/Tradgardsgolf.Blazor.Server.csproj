@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <AssemblyName>Tradgardsgolf.BlazorServer</AssemblyName>
+        <RootNamespace>Tradgardsgolf.BlazorServer</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

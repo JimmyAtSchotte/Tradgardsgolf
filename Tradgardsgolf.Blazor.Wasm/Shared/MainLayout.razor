@@ -1,4 +1,5 @@
 ﻿@using Blazorise.Icons.Material
+@using Tradgardsgolf.BlazorWasm.State
 @inherits LayoutComponentBase
 
 <Layout>
@@ -16,7 +17,7 @@
                         </BarLink>
                     </BarItem>
                     
-                   @if (State.AppState.ScorecardState is not null)
+                   @if (State?.AppState?.ScorecardState is not null)
                    {
                        <BarItem>
                            <BarLink To="/Scorecard">

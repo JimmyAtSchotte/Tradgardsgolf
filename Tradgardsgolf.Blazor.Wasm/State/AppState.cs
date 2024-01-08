@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components;
 using Tradgardsgolf.Contracts.Course;
 
-namespace Tradgardsgolf.Blazor.Wasm.State
+namespace Tradgardsgolf.BlazorWasm.State
 {
     public abstract class BaseState
     {

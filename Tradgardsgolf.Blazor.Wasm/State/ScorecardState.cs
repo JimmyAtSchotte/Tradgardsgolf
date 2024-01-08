@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Tradgardsgolf.Contracts.Course;
 
-namespace Tradgardsgolf.Blazor.Wasm.State
+namespace Tradgardsgolf.BlazorWasm.State
 {
     public class ScorecardState : BaseState
     {

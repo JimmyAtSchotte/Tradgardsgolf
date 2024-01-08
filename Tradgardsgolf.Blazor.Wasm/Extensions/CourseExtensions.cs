@@ -1,7 +1,7 @@
 ﻿using System;
 using Tradgardsgolf.Contracts.Course;
 
-namespace Tradgardsgolf.Blazor.Wasm.Extensions
+namespace Tradgardsgolf.BlazorWasm.Extensions
 {
     public static class CourseExtensions
     {

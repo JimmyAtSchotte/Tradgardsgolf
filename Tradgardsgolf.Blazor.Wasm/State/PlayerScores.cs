@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Tradgardsgolf.Contracts.Players;
 
-namespace Tradgardsgolf.Blazor.Wasm.State
+namespace Tradgardsgolf.BlazorWasm.State
 {
     public class PlayerScores
     {

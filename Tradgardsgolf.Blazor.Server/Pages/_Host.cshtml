@@ -1,5 +1,5 @@
 ﻿@page "/"
-@namespace Tradgardsgolf.Blazor.Server.Pages
+@namespace Tradgardsgolf.BlazorServer.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = null;
@@ -19,7 +19,7 @@
     </head>
 <body>
 
-<component type="typeof(Wasm.App)" render-mode="Server"/>
+<component type="typeof(BlazorWasm.App)" render-mode="Server"/>
 
 <div id="blazor-error-ui">
     <environment include="Staging,Production">

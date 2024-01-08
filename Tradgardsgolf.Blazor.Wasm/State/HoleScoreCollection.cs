@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Tradgardsgolf.Blazor.Wasm.State
+namespace Tradgardsgolf.BlazorWasm.State
 {
     public class HoleScoreCollection : IList<HoleScoreModel>
     {

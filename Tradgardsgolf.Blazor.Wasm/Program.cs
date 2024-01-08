@@ -10,9 +10,9 @@ using Blazorise.Material;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tradgardsgolf.Blazor.Wasm.ApiServices;
+using Tradgardsgolf.BlazorWasm.ApiServices;
 
-namespace Tradgardsgolf.Blazor.Wasm
+namespace Tradgardsgolf.BlazorWasm
 {
     public class Program
     {

@@ -1,11 +1,33 @@
 ﻿@using System.IO
+@using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.Contracts.Course
 @inject IApiDispatcher ApiDispatcher;
 
-<Field>
-    <FieldLabel>Ladda upp bild</FieldLabel>
-    <FileEdit Changed="@OnFileUpload" Filter="image/*" />
-</Field>
+@if (File is null)
+{
+    <Field>
+        <FieldLabel>Ladda upp bild</FieldLabel>
+        <FileEdit Changed="@OnFileUpload" Filter="image/*" />
+    </Field>    
+}
+else
+{
+    <Cropper
+        ImageFile="File"
+        RequireAspectRatio="true"
+        AspectRatio="1"
+        Quality="80"
+        InitCropWidth="200"
+        InitCropHeight="105"
+        MaxCropedWidth="200"
+        MaxCropedHeight="105"
+        FinalCropWidth="600"
+        FinalCropHeight="315"
+        @ref="_cropper">
+    </Cropper>
+    
+    <Button Color="Color.Primary" Clicked="async () => await SaveImage()">Spara bild <Icon Name="Blazorise.Icons.Material.MaterialIcons.Save" /></Button>
+}
 
 @code {
     [Parameter]
@@ -14,21 +36,35 @@
     [CascadingParameter] 
     BlazoredModalInstance BlazoredModal { get; set; } = default!;
     
+    public IBrowserFile File { get; set; }
+
+    private Cropper _cropper;
+    private string _fileExtension;
+    
     private async Task OnFileUpload(FileChangedEventArgs e)
     {
         var file = e.Files.FirstOrDefault();
         
         if (file == null)
             return;
-
+        
         using var result = new MemoryStream();
         await file.OpenReadStream(long.MaxValue).CopyToAsync(result);
+        File = new StreamFile(new MemoryStream(result.ToArray()));
 
+        _fileExtension = Path.GetExtension(file.Name);
+    }
+
+    private async Task SaveImage()
+    {
+        var croped = await _cropper.GetCropedResult();
+        var image = await croped.GetBase64Async();
+        
         var course = await ApiDispatcher.Dispatch(new Tradgardsgolf.Contracts.Course.ChangeCourseImage()
         {
             Id = Course.Id,
-            Extension = Path.GetExtension(file.Name),
-            ImageBase64 = Convert.ToBase64String(result.ToArray())
+            Extension = _fileExtension,
+            ImageBase64 = image
         });
         
         await BlazoredModal.CloseAsync(ModalResult.Ok(course));

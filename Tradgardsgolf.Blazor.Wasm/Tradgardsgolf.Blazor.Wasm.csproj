@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <AssemblyName>Tradgardsgolf.BlazorWasm</AssemblyName>
+        <RootNamespace>Tradgardsgolf.BlazorWasm</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,6 +15,7 @@
         <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.4.0" />
         <PackageReference Include="Blazorise.Icons.Material" Version="1.4.0" />
         <PackageReference Include="Blazorise.Material" Version="1.4.0" />
+        <PackageReference Include="Chronos.Blazor.Cropper" Version="1.2.16" />
         <PackageReference Include="MediatR" Version="12.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
