@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_4730b5783f9940008eabcf609f526ab6 }}/tradgardsgolf-wasm:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./Dockerfile_wasm
 
   deploy:
     runs-on: ubuntu-latest
