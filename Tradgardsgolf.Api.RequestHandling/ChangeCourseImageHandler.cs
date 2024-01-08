@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -9,13 +8,21 @@ using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Api.RequestHandling
 {
-    public class UpdateCourseHandler(IRepository<Course> repository) : IRequestHandler<UpdateCourseCommand, CourseResponse>
+    public class ChangeCourseImageHandler(IRepository<Course> repository, IFileService fileService) : IRequestHandler<ChangeCourseImage, CourseResponse>
     {
-        public async Task<CourseResponse> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
+        public async Task<CourseResponse> Handle(ChangeCourseImage request, CancellationToken cancellationToken)
         {
             var course = await repository.GetByIdAsync(request.Id, cancellationToken);
-            course.Name = request.Name;
-            course.Image = request.Image;
+            var bytes = Convert.FromBase64String(request.ImageBase64);
+            var filename = $"{course.Id}_{DateTime.Now.Ticks}{request.Extension}";
+            
+            await fileService.Save(filename, bytes);
+
+            if (!string.IsNullOrEmpty(course.Image))
+                await fileService.Delete(course.Image);
+
+            course.Image = filename;
+            
             await repository.UpdateAsync(course, cancellationToken);
 
             return new CourseResponse()

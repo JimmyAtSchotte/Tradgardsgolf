@@ -4,6 +4,7 @@
 @inject LocationService LocationService
 @using Tradgardsgolf.Contracts.Course
 @using Tradgardsgolf.Blazor.Wasm.Extensions
+@using ChangeCourseImage = Tradgardsgolf.Blazor.Wasm.Shared.ChangeCourseImage
 @implements IDisposable
 
 <Loading IsLoading="_courses == null" LoadingText="Laddar banor i närheten...">
@@ -20,7 +21,14 @@
                     </CourseContent>
                     <CourseButtons Visible="AllowPlay(course)">
                         <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
-                        <Button Clicked="() => EditCourse(course)" Color="Color.Secondary" Float="Float.Start"><Icon Name="Blazorise.Icons.Material.MaterialIcons.Edit"></Icon></Button>
+                        <Dropdown Float="Float.Start">
+                            <DropdownToggle Color="Color.Secondary">
+                                <Icon Name="Blazorise.Icons.Material.MaterialIcons.Edit"></Icon>
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem Clicked="() => ChangeImage(course)">Byt bild</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
                     </CourseButtons>
                 </CourseCard>
             </CascadingCourseStatistics>
@@ -36,6 +44,9 @@
     
     [CascadingParameter]
     public CascadingLocationProvider LocationProvider { get; set; }
+    
+    [CascadingParameter] 
+    public Blazored.Modal.Services.IModalService Modal { get; set; }
 
     private IEnumerable<CourseResponse> _models;
     private IList<CourseResponse> _courses;
@@ -93,6 +104,22 @@
     {
         LocationProvider.LocationChanged -= LocationProviderOnLocationChanged;
         ((IDisposable) StateProvider)?.Dispose();
+    }
+
+    private async Task ChangeImage(CourseResponse course)
+    {
+        var parameters = new ModalParameters
+        {
+            { nameof(ChangeCourseImage.Course), course }
+        };
+        
+        var modal = Modal.Show<ChangeCourseImage>($"Byt bild för {course.Name}", parameters);
+        var result = await modal.Result;
+        if (result.Cancelled)
+            return;
+
+        if (result.Data is CourseResponse updatedCourse)
+            _courses[_courses.IndexOf(course)] = updatedCourse;
     }
 
 }

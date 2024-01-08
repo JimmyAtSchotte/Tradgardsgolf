@@ -1,0 +1,36 @@
+﻿@using System.IO
+@using Tradgardsgolf.Contracts.Course
+@inject IApiDispatcher ApiDispatcher;
+
+<Field>
+    <FieldLabel>Ladda upp bild</FieldLabel>
+    <FileEdit Changed="@OnFileUpload" Filter="image/*" />
+</Field>
+
+@code {
+    [Parameter]
+    public CourseResponse Course { get; set; }
+    
+    [CascadingParameter] 
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    
+    private async Task OnFileUpload(FileChangedEventArgs e)
+    {
+        var file = e.Files.FirstOrDefault();
+        
+        if (file == null)
+            return;
+
+        using var result = new MemoryStream();
+        await file.OpenReadStream(long.MaxValue).CopyToAsync(result);
+
+        var course = await ApiDispatcher.Dispatch(new Tradgardsgolf.Contracts.Course.ChangeCourseImage()
+        {
+            Id = Course.Id,
+            Extension = Path.GetExtension(file.Name),
+            ImageBase64 = Convert.ToBase64String(result.ToArray())
+        });
+        
+        await BlazoredModal.CloseAsync(ModalResult.Ok(course));
+    }
+}
