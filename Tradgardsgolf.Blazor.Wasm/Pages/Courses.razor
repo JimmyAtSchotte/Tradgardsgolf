@@ -9,6 +9,7 @@
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.BlazorWasm.Extensions
 @using Tradgardsgolf.BlazorWasm.State
+@using Tradgardsgolf.Contracts.Settings
 @implements IDisposable
 
 
@@ -59,8 +60,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _allowPlayDistance = (await ApiDispatcher.Dispatch(new AllowPlayDistanceCommand())).Value;
         _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
-        _allowPlayDistance = Configuration.GetValue<int>("ALLOW_PLAY_DISTANCE");
         
         OrderCoursesByDistance();
 

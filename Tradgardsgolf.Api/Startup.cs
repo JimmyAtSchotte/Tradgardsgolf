@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Tradgardsgolf.Api.RequestHandling;
+using Tradgardsgolf.Core.Config;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Infrastructure.Database;
 using Tradgardsgolf.Infrastructure.Files;
@@ -38,6 +39,8 @@ namespace Tradgardsgolf.Api
             });
             
             services.AddLogging();
+            
+            services.AddOptions<Settings>().Bind(configuration.GetSection("Settings"));
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
