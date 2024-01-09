@@ -14,8 +14,6 @@ namespace Tradgardsgolf.BlazorWasm.ApiServices
     {
         Task<TResponse?> Dispatch<TResponse>(IRequest<TResponse> request);
         Task Dispatch(IRequest request);
-        Task FileUpload(string filename, byte[] bytes);
-        Task FileDelete(string filename);
     }
 
     public class ApiDispatcher(HttpClient httpClient) : IApiDispatcher
@@ -32,7 +30,6 @@ namespace Tradgardsgolf.BlazorWasm.ApiServices
                        ?? throw new InvalidOperationException("Could not read response message");
 
             throw new DispatchException(response, dispatchUrl, requestBody);
-
         }
 
         public async Task Dispatch(IRequest request)
@@ -46,23 +43,6 @@ namespace Tradgardsgolf.BlazorWasm.ApiServices
                 return;
 
             throw new DispatchException(response, dispatchUrl, requestBody);
-        }
-
-        public async Task FileUpload(string filename, byte[] bytes)
-        {
-            using var content = new MultipartFormDataContent();
-            using var fileStream = new MemoryStream(bytes);
-
-            content.Add(new StreamContent(fileStream), "files", filename);
-            var response = await httpClient.PostAsync("api/file", content);
-
-            response.EnsureSuccessStatusCode();
-        }
-
-        public async Task FileDelete(string filename)
-        {
-            var response = await httpClient.DeleteAsync($"api/file/{filename}");
-            response.EnsureSuccessStatusCode();
         }
     }
 
