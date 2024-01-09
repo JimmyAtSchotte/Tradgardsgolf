@@ -16,10 +16,11 @@ namespace Tradgardsgolf.BlazorWasm.ApiServices
         Task Dispatch(IRequest request);
     }
 
-    public class ApiDispatcher(HttpClient httpClient) : IApiDispatcher
+    public class ApiDispatcher(IHttpClientFactory httpClientFactory) : IApiDispatcher
     {
         public async Task<TResponse?> Dispatch<TResponse>(IRequest<TResponse> request)
         {
+            var httpClient = httpClientFactory.CreateClient("ApiDispatcher");
             var dispatchUrl = DispatchUrlBuilder.Build(request);
             var requestBody = JsonSerializer.Serialize(request, request.GetType());
             var response = await httpClient.PostAsync(dispatchUrl,
@@ -34,6 +35,7 @@ namespace Tradgardsgolf.BlazorWasm.ApiServices
 
         public async Task Dispatch(IRequest request)
         {
+            var httpClient = httpClientFactory.CreateClient("ApiDispatcher");
             var dispatchUrl = DispatchUrlBuilder.Build(request);
             var requestBody = JsonSerializer.Serialize(request, request.GetType());
             var response = await httpClient.PostAsync(dispatchUrl,
