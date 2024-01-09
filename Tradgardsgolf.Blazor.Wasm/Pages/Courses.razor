@@ -60,7 +60,7 @@
     protected override async Task OnInitializedAsync()
     {
         _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
-        _allowPlayDistance = Configuration.GetValue<int>("allowPlayDistance");
+        _allowPlayDistance = Configuration.GetValue<int>("ALLOW_PLAY_DISTANCE");
         
         OrderCoursesByDistance();
 
