@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Microsoft.Extensions.Options;
 using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Infrastructure.Files;
@@ -10,13 +11,13 @@ public class AzureFileService : IFileService
     private readonly BlobServiceClient _storage;
     private readonly string _containerName;
 
-    public AzureFileService(string storageConnectionString, string containerName)
+
+    public AzureFileService(IOptionsMonitor<AzureStorageOptions> azureStorageOptions)
     {
-        _containerName = containerName;
-        _storage = new BlobServiceClient(storageConnectionString);
+        _containerName = azureStorageOptions.CurrentValue.Container;
+        _storage = new BlobServiceClient(azureStorageOptions.CurrentValue.ConnectionString);
     }
-
-
+    
     public async Task<byte[]> Get(string fileName)
     {
         var container =  _storage.GetBlobContainerClient(_containerName);

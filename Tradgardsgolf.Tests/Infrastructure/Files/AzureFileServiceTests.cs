@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using Moq;
 using NUnit.Framework;
 using Tradgardsgolf.Infrastructure.Files;
 
@@ -10,8 +12,20 @@ namespace Tradgardsgolf.Infrastructure.Tests.Infrastructure.Files;
 [TestFixture]
 public class AzureFileServiceTests
 {
-    private const string StorageConnectionString = "<SET CONNECTION STRING>";
-    private const string ContainerName = "<SET CONTAINER NAME>";
+    private readonly AzureStorageOptions _azureStorageOptions = new AzureStorageOptions()
+    {
+        ConnectionString = "<SET CONNECTION STRING>",
+        Container = "<SET CONTAINER NAME>"
+    };
+
+    private IOptionsMonitor<AzureStorageOptions> Options()
+    {
+        var mock = new Mock<IOptionsMonitor<AzureStorageOptions>>();
+        mock.SetupGet(x => x.CurrentValue).Returns(_azureStorageOptions);
+        return mock.Object;
+    }
+    
+    
 
     [Test]
     public async Task UploadDownloadDelete()
@@ -20,7 +34,7 @@ public class AzureFileServiceTests
         var bytes = Encoding.UTF8.GetBytes(testData);
         var fileName = "test.txt";
         
-        var fileService = new AzureFileService(StorageConnectionString, ContainerName);
+        var fileService = new AzureFileService(Options());
         await fileService.Save(fileName, bytes);
         var fileBytes = await fileService.Get(fileName);
         var text = Encoding.UTF8.GetString(fileBytes);
@@ -33,7 +47,7 @@ public class AzureFileServiceTests
     [Test]
     public void FileNotFound()
     {
-        var fileService = new AzureFileService(StorageConnectionString, ContainerName);
+        var fileService = new AzureFileService(Options());
         var fileName = $"{Guid.NewGuid()}.txt";
 
         Assert.ThrowsAsync<Azure.RequestFailedException>(async () =>

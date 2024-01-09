@@ -39,6 +39,7 @@ namespace Tradgardsgolf.Api
             services.AddLogging();
             
             services.AddOptions<AllowPlayDistance>().Bind(configuration.GetSection("AllowPlayDistance"));
+            services.AddOptions<AzureStorageOptions>().Bind(configuration.GetSection("AzureStorage"));
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
@@ -61,8 +62,6 @@ namespace Tradgardsgolf.Api
 
             builder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
-            builder.Register(ctx => new AzureFileService(configuration.GetValue<string>("StorageConnectionString"), configuration.GetValue<string>("StorageContainerName")))
-                .As<IFileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
