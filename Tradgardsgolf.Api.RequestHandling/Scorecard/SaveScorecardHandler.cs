@@ -8,7 +8,7 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Scorecard
 {
-    public class SaveScorecardHandler(IRepository<Core.Entities.Course> courseRepository, IRepository<Player> playerRepository)
+    public class SaveScorecardHandler(IRepository<Core.Entities.Course> courseRepository, IRepository<Core.Entities.Player> playerRepository)
         : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
     {
         public async Task<ScorecardResponse> Handle(SaveScorecardCommand request, CancellationToken cancellationToken)
@@ -34,10 +34,10 @@ namespace Tradgardsgolf.Api.RequestHandling.Scorecard
             };
         }
 
-        private async Task<Player> GetOrCreatePlayer(SaveScorecardCommand request, PlayerScore score)
+        private async Task<Core.Entities.Player> GetOrCreatePlayer(SaveScorecardCommand request, PlayerScore score)
         {
             var player = await playerRepository.FirstOrDefaultAsync(CoursePlayer.Specification(request.CourseId, score.Name)) ??
-                         await playerRepository.AddAsync(Player.Create(x => x.Name = score.Name));
+                         await playerRepository.AddAsync(Core.Entities.Player.Create(x => x.Name = score.Name));
             
             return player;
         }
