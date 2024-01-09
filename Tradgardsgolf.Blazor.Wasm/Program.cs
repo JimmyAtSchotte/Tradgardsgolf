@@ -21,25 +21,16 @@ namespace Tradgardsgolf.BlazorWasm
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.Configuration.Add(new EnvironmentVariablesConfigurationSource());
-            builder.RootComponents.Add<App>("#app");
             
-            builder.Services.AddSingleton(services =>
-            {
-                var configuration = services.GetService<IConfiguration>();
-                
-                var root = (IConfigurationRoot)configuration;
-                var debugView = root.GetDebugView();
-                Console.WriteLine(debugView);
-                
-                var apiUrl = configuration.GetValue<string>("API_URL");
+            var apiUrl = builder.Configuration.GetValue<string>("API_URL");
 
-                if (string.IsNullOrEmpty(apiUrl))
-                    throw new Exception("API url is not configured");
-                
-                return new HttpClient
-                {
-                    BaseAddress = new Uri(apiUrl)
-                };
+            if (string.IsNullOrEmpty(apiUrl))
+                throw new Exception("API url is not configured");
+            
+            builder.RootComponents.Add<App>("#app");
+            builder.Services.AddSingleton(services => new HttpClient
+            {
+                BaseAddress = new Uri(apiUrl)
             });
 
             builder.Services.AddBlazoredLocalStorage();
