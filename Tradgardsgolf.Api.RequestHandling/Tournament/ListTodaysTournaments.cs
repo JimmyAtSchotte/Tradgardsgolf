@@ -8,17 +8,16 @@ using Tradgardsgolf.Contracts.Tournament;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using Tournament = Tradgardsgolf.Contracts.Tournament.Tournament;
 
-namespace Tradgardsgolf.Api.RequestHandling
+namespace Tradgardsgolf.Api.RequestHandling.Tournament
 {
-    public class ListTodaysTournaments(IRepository<TournamentCourseDate> repository) : IRequestHandler<ListTodaysTournamentsCommand, IEnumerable<Tournament>>
+    public class ListTodaysTournaments(IRepository<TournamentCourseDate> repository) : IRequestHandler<ListTodaysTournamentsCommand, IEnumerable<Contracts.Tournament.Tournament>>
     {
-        public async Task<IEnumerable<Tournament>> Handle(ListTodaysTournamentsCommand request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Contracts.Tournament.Tournament>> Handle(ListTodaysTournamentsCommand request, CancellationToken cancellationToken)
         {
             var tournments = await repository.ListAsync(new TournamentsOnCourse(request.CourseId, DateTime.Today), cancellationToken);
             
-            return tournments.Select(x => new Tournament()
+            return tournments.Select(x => new Contracts.Tournament.Tournament()
             {
                 Id = x.Tournament.Id,
                 Name = x.Tournament.Name

@@ -4,12 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Course;
-using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 
-namespace Tradgardsgolf.Api.RequestHandling
+namespace Tradgardsgolf.Api.RequestHandling.Course
 {
-    public class ListAllCoursesHandler(IRepository<Course> repository) : IRequestHandler<ListAllCoursesCommand, IEnumerable<CourseResponse>>
+    public class ListAllCoursesHandler(IRepository<Core.Entities.Course> repository) : IRequestHandler<ListAllCoursesCommand, IEnumerable<CourseResponse>>
     {
         public async Task<IEnumerable<CourseResponse>> Handle(ListAllCoursesCommand request, CancellationToken cancellationToken)
         {

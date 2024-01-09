@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Course;
-using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 
-namespace Tradgardsgolf.Api.RequestHandling
+namespace Tradgardsgolf.Api.RequestHandling.Course
 {
-    public class GetCourseHandler(IRepository<Course> repository) : IRequestHandler<GetCourseCommand, CourseResponse>
+    public class GetCourseHandler(IRepository<Core.Entities.Course> repository) : IRequestHandler<GetCourseCommand, CourseResponse>
     {
         public async Task<CourseResponse> Handle(GetCourseCommand request, CancellationToken cancellationToken)
         {

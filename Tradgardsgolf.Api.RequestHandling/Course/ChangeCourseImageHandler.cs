@@ -3,12 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Course;
-using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 
-namespace Tradgardsgolf.Api.RequestHandling
+namespace Tradgardsgolf.Api.RequestHandling.Course
 {
-    public class ChangeCourseImageHandler(IRepository<Course> repository, IFileService fileService) : IRequestHandler<ChangeCourseImage, CourseResponse>
+    public class ChangeCourseImageHandler(IRepository<Core.Entities.Course> repository, IFileService fileService) : IRequestHandler<ChangeCourseImage, CourseResponse>
     {
         public async Task<CourseResponse> Handle(ChangeCourseImage request, CancellationToken cancellationToken)
         {

@@ -7,7 +7,7 @@ using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
 
-namespace Tradgardsgolf.Api.RequestHandling
+namespace Tradgardsgolf.Api.RequestHandling.Course
 {
     public class CourseStatisticHandler(IRepository<Round> roundRepository) : IRequestHandler<CourseStatisticCommand, CourseStatisticResponse>
     {

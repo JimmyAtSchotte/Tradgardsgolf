@@ -6,9 +6,9 @@ using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
 
-namespace Tradgardsgolf.Api.RequestHandling
+namespace Tradgardsgolf.Api.RequestHandling.Scorecard
 {
-    public class SaveScorecardHandler(IRepository<Course> courseRepository, IRepository<Player> playerRepository)
+    public class SaveScorecardHandler(IRepository<Core.Entities.Course> courseRepository, IRepository<Player> playerRepository)
         : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
     {
         public async Task<ScorecardResponse> Handle(SaveScorecardCommand request, CancellationToken cancellationToken)

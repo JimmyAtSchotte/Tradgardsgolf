@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using Tradgardsgolf.Contracts.Settings;
 using Tradgardsgolf.Core.Config;
 
-namespace Tradgardsgolf.Api.RequestHandling;
+namespace Tradgardsgolf.Api.RequestHandling.Configuration;
 
 public class AllowPlayDistanceHandler(IOptionsMonitor<AllowPlayDistance> settings)
     : IRequestHandler<AllowPlayDistanceCommand, SettingResponse<int>>

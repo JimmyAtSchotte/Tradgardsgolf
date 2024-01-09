@@ -5,7 +5,7 @@ using Tradgardsgolf.Contracts.Tournament;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 
-namespace Tradgardsgolf.Api.RequestHandling
+namespace Tradgardsgolf.Api.RequestHandling.Tournament
 {
     public class AddTournamentRoundScore(IRepository<TournamentRound> repository)
         : IRequestHandler<AddTournamentRoundScoreCommand>
