@@ -17,8 +17,6 @@ namespace Tradgardsgolf.Api
 {
     public class Startup(IConfiguration configuration)
     {
-        public IConfiguration Configuration { get; } = configuration;
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -40,20 +38,18 @@ namespace Tradgardsgolf.Api
             
             services.AddLogging();
             
-            services.AddOptions<Settings>().Bind(configuration.GetSection("Settings"));
+            services.AddOptions<AllowPlayDistance>().Bind(configuration.GetSection("AllowPlayDistance"));
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
-                var connectionString = Configuration.GetConnectionString("Database");
+                var connectionString = configuration.GetConnectionString("Database");
 
                 if (string.IsNullOrEmpty(connectionString))
                     builder.UseInMemoryDatabase("Tradgardsgolf");
                 else
-                    builder.UseSqlServer(Configuration.GetConnectionString("Database"));
+                    builder.UseSqlServer(configuration.GetConnectionString("Database"));
             });
         }
-
-    
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
@@ -65,7 +61,7 @@ namespace Tradgardsgolf.Api
 
             builder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
-            builder.Register(ctx => new AzureFileService(Configuration.GetValue<string>("StorageConnectionString"), Configuration.GetValue<string>("StorageContainerName")))
+            builder.Register(ctx => new AzureFileService(configuration.GetValue<string>("StorageConnectionString"), configuration.GetValue<string>("StorageContainerName")))
                 .As<IFileService>();
         }
 

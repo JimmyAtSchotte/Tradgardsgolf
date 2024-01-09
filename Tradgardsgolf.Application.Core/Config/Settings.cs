@@ -1,6 +1,7 @@
 ﻿namespace Tradgardsgolf.Core.Config;
 
-public class Settings
+
+public class AllowPlayDistance
 {
-    public int AllowPlayDistance { get; set; }
+    public int Value { get; set; }
 }

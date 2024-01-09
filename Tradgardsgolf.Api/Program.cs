@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
+using Azure.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -44,9 +46,29 @@ namespace Tradgardsgolf.Api
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureLogging(logger => logger.AddConsole())
                 .UseSerilog(Log.Logger)
-                .ConfigureAppConfiguration(config => {
+                .ConfigureAppConfiguration((context, config) => {
+                    
+                    
                     config.AddEnvironmentVariables();
                     config.AddCommandLine(args);
+
+
+                    var appConfigUrl = config.Build().GetValue<string>("APP_CONFIG_URL");
+
+                    if (!string.IsNullOrEmpty(appConfigUrl))
+                    {
+                        config.AddAzureAppConfiguration(options =>
+                        {
+                            options
+                                .Connect(appConfigUrl)
+                                .Select(KeyFilter.Any, LabelFilter.Null)
+                                .Select(KeyFilter.Any, context.HostingEnvironment.EnvironmentName)
+                                .UseFeatureFlags();
+
+                            //options.Connect(new Uri("https://tradgardsgolf-config.azconfig.io"), new DefaultAzureCredential());
+                        });
+                    }
+                    
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

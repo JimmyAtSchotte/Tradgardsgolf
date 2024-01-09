@@ -7,14 +7,16 @@ using Tradgardsgolf.Core.Config;
 
 namespace Tradgardsgolf.Api.RequestHandling;
 
-public class AllowPlayDistanceHandler(IOptions<Settings> settings)
+public class AllowPlayDistanceHandler(IOptionsMonitor<AllowPlayDistance> settings)
     : IRequestHandler<AllowPlayDistanceCommand, SettingResponse<int>>
 {
     public Task<SettingResponse<int>> Handle(AllowPlayDistanceCommand request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(new SettingResponse<int>()
+        var response = new SettingResponse<int>()
         {
-            Value = settings.Value.AllowPlayDistance
-        });
+            Value = settings.CurrentValue.Value
+        };
+        
+        return Task.FromResult(response);
     }
 }
