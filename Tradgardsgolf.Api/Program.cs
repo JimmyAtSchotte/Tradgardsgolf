@@ -60,12 +60,10 @@ namespace Tradgardsgolf.Api
                         config.AddAzureAppConfiguration(options =>
                         {
                             options
-                                .Connect(appConfigUrl)
+                                .Connect(new Uri(appConfigUrl), new DefaultAzureCredential())
                                 .Select(KeyFilter.Any, LabelFilter.Null)
                                 .Select(KeyFilter.Any, context.HostingEnvironment.EnvironmentName)
                                 .UseFeatureFlags();
-
-                            //options.Connect(new Uri("https://tradgardsgolf-config.azconfig.io"), new DefaultAzureCredential());
                         });
                     }
                     
