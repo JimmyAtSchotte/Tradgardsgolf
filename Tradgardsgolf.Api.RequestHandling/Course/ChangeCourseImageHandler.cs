@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Tradgardsgolf.Contracts;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Infrastructure;
 
@@ -29,7 +30,7 @@ namespace Tradgardsgolf.Api.RequestHandling.Course
                 Created = course.Created,
                 Holes = course.Holes,
                 Id = course.Id,
-                Image = course.Image,
+                ImageReference = ImageReference.Create(course.Image),
                 Latitude = course.Latitude,
                 Longitude = course.Longitude,
                 Name = course.Name,

@@ -1,5 +1,5 @@
 ﻿@using Microsoft.Extensions.Configuration
-@inject IConfiguration Configuration;
+@using Microsoft.Extensions.Options
 
 <CardHeader>
     <CardImage Source="@GetImage()"></CardImage>
@@ -16,9 +16,9 @@
 
     private string GetImage()
     {
-        return string.IsNullOrEmpty(CascadingCourse.Course.Image)
-            ? "images/grass.jpg" 
-            : $"{ Configuration.GetValue<string>("API_URL")}/api/file/{ CascadingCourse.Course.Image}";
+        return CascadingCourse.Course.ImageReference is null
+            ? "images/grass.jpg"
+            : CascadingCourse.Course.ImageReference.ToString();
     }
 }
 

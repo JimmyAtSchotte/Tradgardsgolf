@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Tradgardsgolf.Contracts;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Infrastructure;
 
@@ -14,16 +15,16 @@ namespace Tradgardsgolf.Api.RequestHandling.Course
         {
             var courses = await repository.ListAsync(cancellationToken);
 
-            return courses.Select(x => new CourseResponse()
+            return courses.Select(course => new CourseResponse()
             {
-                Created = x.Created,
-                Holes = x.Holes,
-                Id = x.Id,
-                Image =x.Image,
-                Latitude = x.Latitude,
-                Longitude = x.Longitude,
-                Name = x.Name,
-                ScoreReset = x.ScoreReset
+                Created = course.Created,
+                Holes = course.Holes,
+                Id = course.Id,
+                ImageReference = ImageReference.Create(course.Image),
+                Latitude = course.Latitude,
+                Longitude = course.Longitude,
+                Name = course.Name,
+                ScoreReset = course.ScoreReset
             });
         }
     }

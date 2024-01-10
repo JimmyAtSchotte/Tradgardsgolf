@@ -40,6 +40,7 @@ public static class SetupDatabaseExtensions
             p.Name = "Kumhof (IN MEMORY)";
             p.Latitude = 59.331181;
             p.Longitude = 18.040736;
+            p.Image = "1_638404748907561795.jpg";
         });
             
         var trornehof = Course.Create(patrik, p =>

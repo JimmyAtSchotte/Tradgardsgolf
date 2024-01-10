@@ -13,7 +13,7 @@ namespace Tradgardsgolf.Contracts.Course
         public DateTime Created { get; init; }
         
         public DateTime? ScoreReset { get; init; }
-        public string Image { get; init; }
+        public ImageReference ImageReference { get; init; }
         public int SeasonTableRounds => 6;
     }
 }

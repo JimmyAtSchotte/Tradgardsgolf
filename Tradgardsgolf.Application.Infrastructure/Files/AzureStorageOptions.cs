@@ -4,5 +4,5 @@ public class AzureStorageOptions
 {
     public string ConnectionString { get; set; }
     public string Container { get; set; }
-    public string EndpointUrl { get; set; }
+    public string BaseUrl { get; set; }
 }

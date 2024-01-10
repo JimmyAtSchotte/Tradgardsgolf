@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Tradgardsgolf.Api.JsonConverters;
 using Tradgardsgolf.Api.RequestHandling;
 using Tradgardsgolf.Core.Config;
 using Tradgardsgolf.Core.Infrastructure;
@@ -20,7 +21,14 @@ namespace Tradgardsgolf.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            var azureStorageOptions = configuration.GetSection("AzureStorage").Get<AzureStorageOptions>();
+            
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new ImageReferenceConverter(azureStorageOptions));
+                });
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Tradgardsgolf.Api", Version = "v1"});
@@ -40,6 +48,7 @@ namespace Tradgardsgolf.Api
             
             services.AddOptions<AllowPlayDistance>().Bind(configuration.GetSection("AllowPlayDistance"));
             services.AddOptions<AzureStorageOptions>().Bind(configuration.GetSection("AzureStorage"));
+            services.AddSingleton<ImageReferenceConverter>();
             
             services.AddDbContext<TradgardsgolfContext>(builder =>
             {
