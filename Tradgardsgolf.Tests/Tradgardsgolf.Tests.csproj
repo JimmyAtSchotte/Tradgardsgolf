@@ -6,6 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Api\Tradgardsgolf.Api.csproj" />
       <ProjectReference Include="..\Tradgardsgolf.Application.Infrastructure\Tradgardsgolf.Application.Infrastructure.csproj" />
     </ItemGroup>
 
@@ -22,6 +24,15 @@
 
     <ItemGroup>
       <Folder Include="RequestHandling\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Http">
+        <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.0\Microsoft.AspNetCore.Http.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+        <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

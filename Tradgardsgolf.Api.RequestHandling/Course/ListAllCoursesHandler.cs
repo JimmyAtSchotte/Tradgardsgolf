@@ -25,7 +25,7 @@ namespace Tradgardsgolf.Api.RequestHandling.Course
                 Longitude = course.Longitude,
                 Name = course.Name,
                 ScoreReset = course.ScoreReset
-            });
+            }).ToList();
         }
     }
 }

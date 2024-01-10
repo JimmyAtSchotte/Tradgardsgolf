@@ -21,7 +21,7 @@ namespace Tradgardsgolf.Api.RequestHandling.Tournament
             {
                 Id = x.Tournament.Id,
                 Name = x.Tournament.Name
-            });
+            }).ToList();
         }
     }
 }
