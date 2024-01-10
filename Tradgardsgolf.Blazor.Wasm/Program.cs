@@ -36,13 +36,13 @@ namespace Tradgardsgolf.BlazorWasm
                 throw new Exception("API url is not configured");
             
             builder.RootComponents.Add<App>("#app");
-            builder.Services.AddSingleton(services => new HttpClient
-            {
-                BaseAddress = new Uri(apiUrl)
-            });
-
+         
             builder.Services
-                .AddHttpClient("ApiDispatcher", client => client.BaseAddress = new Uri(apiUrl))
+                .AddHttpClient("ApiDispatcher", client =>
+                {
+                    client.BaseAddress = new Uri(apiUrl);
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "0815b820dad347a2ae2a912b38d45d26");
+                })
                 .AddPolicyHandler(GetRetryPolicy());
 
             builder.Services.AddBlazoredLocalStorage();
