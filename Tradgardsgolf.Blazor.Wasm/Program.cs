@@ -44,13 +44,11 @@ namespace Tradgardsgolf.BlazorWasm
                 {
                     client.BaseAddress = new Uri(backend.Url);
                 })
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddHttpMessageHandler<SubscriptionKeyHandler>();
+                .AddPolicyHandler(GetRetryPolicy());
 
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredModal();
             builder.Services.AddScoped<LocationService>();
-            builder.Services.AddScoped<SubscriptionKeyHandler>();
             builder.Services.AddScoped<IApiDispatcher, ApiDispatcher>();
             builder.Services.AddOptions<Backend>().Bind(builder.Configuration.GetSection("Backend"));
             
