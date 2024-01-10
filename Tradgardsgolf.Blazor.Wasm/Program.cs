@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
 using Tradgardsgolf.BlazorWasm.ApiServices;
+using Tradgardsgolf.BlazorWasm.Options;
 
 namespace Tradgardsgolf.BlazorWasm
 {
@@ -30,25 +31,28 @@ namespace Tradgardsgolf.BlazorWasm
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            var apiUrl = builder.Configuration.GetValue<string>("API_URL");
+            
+            var backend = builder.Configuration.GetSection("Backend").Get<Backend>();
 
-            if (string.IsNullOrEmpty(apiUrl))
-                throw new Exception("API url is not configured");
+            if (string.IsNullOrEmpty(backend.Url))
+                throw new Exception("Backend url is not configured");
             
             builder.RootComponents.Add<App>("#app");
          
             builder.Services
                 .AddHttpClient("ApiDispatcher", client =>
                 {
-                    client.BaseAddress = new Uri(apiUrl);
-                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "0815b820dad347a2ae2a912b38d45d26");
+                    client.BaseAddress = new Uri(backend.Url);
                 })
-                .AddPolicyHandler(GetRetryPolicy());
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddHttpMessageHandler<SubscriptionKeyHandler>();
 
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredModal();
             builder.Services.AddScoped<LocationService>();
+            builder.Services.AddScoped<SubscriptionKeyHandler>();
             builder.Services.AddScoped<IApiDispatcher, ApiDispatcher>();
+            builder.Services.AddOptions<Backend>().Bind(builder.Configuration.GetSection("Backend"));
             
             builder.Services
                 .AddBlazorise( options =>
