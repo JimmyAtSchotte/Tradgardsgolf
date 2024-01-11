@@ -53,9 +53,9 @@
       <ProjectReference Include="..\Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <TrimmerRootAssembly Include="Microsoft.Authentication.WebAssembly.Msal" />
-    </ItemGroup>
+    <PropertyGroup>
+        <PublishTrimmed>false</PublishTrimmed>
+    </PropertyGroup>
 
 
 </Project>
