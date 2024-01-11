@@ -1,14 +1,14 @@
 ﻿@page "/"
 @inject IApiDispatcher ApiDispatcher;
 @inject NavigationManager NavigationManager
-@inject LocationService LocationService
-@inject IConfiguration Configuration
+@inject IAccessTokenProvider AuthorizationService
 @using Tradgardsgolf.Contracts.Course
 @using ChangeCourseImage = Tradgardsgolf.BlazorWasm.Shared.ChangeCourseImage
-@using Microsoft.Extensions.Configuration
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.BlazorWasm.Extensions
 @using Tradgardsgolf.Contracts.Settings
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Text.Json
 @implements IDisposable
 
 
@@ -67,6 +67,7 @@
     private IList<CourseResponse> _courses;
     private int _allowPlayDistance;
     private AuthenticationState _authenticationState;
+    private string _authenticatedEmail;
 
 
     protected override async Task OnInitializedAsync()
@@ -74,10 +75,29 @@
         _authenticationState = await AuthenticationState;
         _allowPlayDistance = (await ApiDispatcher.Dispatch(new AllowPlayDistanceCommand())).Value;
         _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
-        
+        _authenticatedEmail = await GetAuthenticatedEmail();
         OrderCoursesByDistance();
 
         LocationProvider.LocationChanged += LocationProviderOnLocationChanged;
+    }
+
+    private async Task<string> GetAuthenticatedEmail()
+    {
+        var accessTokenResult = await AuthorizationService.RequestAccessToken();
+        
+        if (!accessTokenResult.TryGetToken(out var token))
+            return null;
+        
+        var payload = token.Value.Split(".")[1];
+        var base64Payload = payload.Replace('-', '+')
+            .Replace('_', '/')
+            .PadRight(payload.Length + (4 - payload.Length % 4) % 4, '=');
+        
+        var claims = JsonSerializer.Deserialize<IDictionary<string, object>>(Convert.FromBase64String(base64Payload));
+
+        return claims.TryGetValue("email", out var email) 
+            ? email.ToString() 
+            : null;
     }
 
     private void LocationProviderOnLocationChanged(ComponentBase source)
@@ -109,7 +129,8 @@
     
     private bool AllowEdit(CourseResponse course)
     {
-        return _authenticationState.User.Identity?.IsAuthenticated == true;
+        return _authenticationState.User.Identity?.IsAuthenticated == true &&
+               _authenticatedEmail == course.OwnerEmail;
     }
 
     private async Task SetupRound(CourseResponse course)

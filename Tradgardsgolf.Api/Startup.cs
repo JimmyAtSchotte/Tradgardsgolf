@@ -63,6 +63,7 @@ namespace Tradgardsgolf.Api
                 Assembly.Load("Tradgardsgolf.Application.Core"),
                 Assembly.Load("Tradgardsgolf.Application.Infrastructure"),
                 Assembly.Load("Tradgardsgolf.Api.RequestHandling"), 
+                Assembly.Load("Tradgardsgolf.Api.ResponseFactory"), 
             };
 
             builder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();

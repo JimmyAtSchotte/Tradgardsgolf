@@ -21,9 +21,7 @@ namespace Tradgardsgolf.Core.Entities
         public double Longitude { get; set; }
         [Column("dblLatitude")]
         public double Latitude { get; set; }
-        [Column("intCreatedBy")]
-        public int CreatedById { get; private set; }
-        public virtual Player CreatedBy { get; private set; }
+
         [Column("dtmCreated")]
         public DateTime Created { get; private set; }
         
@@ -32,6 +30,9 @@ namespace Tradgardsgolf.Core.Entities
         
         [Column("strImage")]
         public string Image { get; set; }
+        
+        [Column("strOwnerEmail")]
+        public string OwnerEmail { get; set; }
 
         public virtual ICollection<Round> Rounds
         {
@@ -44,16 +45,15 @@ namespace Tradgardsgolf.Core.Entities
 
         }               
 
-        private Course(Player player)
+        private Course(string ownerEmail)
         {
             Created = DateTime.Now;
-            CreatedById = player.Id;
-            CreatedBy = player;
+            OwnerEmail = ownerEmail;
         }     
 
-        public static Course Create(Player player, Action<Course> properties = null)
+        public static Course Create(string ownerEmail, Action<Course> properties = null)
         {
-            var course = new Course(player);
+            var course = new Course(ownerEmail);
             properties?.Invoke(course);
 
             return course;

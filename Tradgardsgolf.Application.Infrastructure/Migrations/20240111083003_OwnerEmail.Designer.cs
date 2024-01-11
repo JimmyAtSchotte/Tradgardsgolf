@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tradgardsgolf.Infrastructure.Database;
 
@@ -11,9 +12,11 @@ using Tradgardsgolf.Infrastructure.Database;
 namespace Tradgardsgolf.Infrastructure.Migrations
 {
     [DbContext(typeof(TradgardsgolfContext))]
-    partial class TradgardsgolfContextModelSnapshot : ModelSnapshot
+    [Migration("20240111083003_OwnerEmail")]
+    partial class OwnerEmail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

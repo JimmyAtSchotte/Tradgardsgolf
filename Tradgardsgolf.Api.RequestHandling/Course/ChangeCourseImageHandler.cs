@@ -2,13 +2,17 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Tradgardsgolf.Api.ResponseFactory;
 using Tradgardsgolf.Contracts;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course
 {
-    public class ChangeCourseImageHandler(IRepository<Core.Entities.Course> repository, IFileService fileService) : IRequestHandler<ChangeCourseImage, CourseResponse>
+    public class ChangeCourseImageHandler(IRepository<Core.Entities.Course> repository, 
+        IFileService fileService, 
+        IResponseFactory<CourseResponse, Core.Entities.Course> courseResponseFactory) 
+        : IRequestHandler<ChangeCourseImage, CourseResponse>
     {
         public async Task<CourseResponse> Handle(ChangeCourseImage request, CancellationToken cancellationToken)
         {
@@ -25,17 +29,7 @@ namespace Tradgardsgolf.Api.RequestHandling.Course
             
             await repository.UpdateAsync(course, cancellationToken);
 
-            return new CourseResponse()
-            {
-                Created = course.Created,
-                Holes = course.Holes,
-                Id = course.Id,
-                ImageReference = ImageReference.Create(course.Image),
-                Latitude = course.Latitude,
-                Longitude = course.Longitude,
-                Name = course.Name,
-                ScoreReset = course.ScoreReset
-            };
+            return courseResponseFactory.Create(course);
         }
     }
 }

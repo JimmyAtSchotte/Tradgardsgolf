@@ -25,7 +25,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.Specifications
                    
                     dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(), out var createdBy);
                     dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(), out player1);
-                    dependencies.UseEntity<Course, TradgardsgolfContext>(createdBy.CreateCourse(), out course);
+                    dependencies.UseEntity<Course, TradgardsgolfContext>(Course.Create(""), out course);
                     dependencies.UseEntity<Round, TradgardsgolfContext>(course.CreateRound(), out var round);
                     dependencies.UseEntity<RoundScore, TradgardsgolfContext>(round.CreateRoundScore(player1, 1, 3));
                 });
@@ -47,7 +47,7 @@ namespace Tradgardsgolf.Infrastructure.Tests.Specifications
                     dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(), out var createdBy);
                     dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(), out player1);
                     dependencies.UseEntity<Player, TradgardsgolfContext>(Player.Create(), out var player2);
-                    dependencies.UseEntity<Course, TradgardsgolfContext>(createdBy.CreateCourse(), out course);
+                    dependencies.UseEntity<Course, TradgardsgolfContext>(Course.Create(""), out course);
                     dependencies.UseEntity<Round, TradgardsgolfContext>(course.CreateRound(), out var round);
                     dependencies.UseEntity<RoundScore, TradgardsgolfContext>(round.CreateRoundScore(player2, 1, 3));
                 });

@@ -11,9 +11,11 @@ namespace Tradgardsgolf.Contracts.Course
         public double Longitude { get; init;  }
         public double Latitude { get; init; }
         public DateTime Created { get; init; }
-        
         public DateTime? ScoreReset { get; init; }
         public ImageReference ImageReference { get; init; }
         public int SeasonTableRounds => 6;
+
+        public string OwnerEmail { get; init; }
+        
     }
 }

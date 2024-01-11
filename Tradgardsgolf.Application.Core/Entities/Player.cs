@@ -40,10 +40,5 @@ namespace Tradgardsgolf.Core.Entities
             properties?.Invoke(player);
             return player;
         }
-
-        public Course CreateCourse(Action<Course> properties = null)
-        {
-           return Course.Create(this);
-        }
     }
 }

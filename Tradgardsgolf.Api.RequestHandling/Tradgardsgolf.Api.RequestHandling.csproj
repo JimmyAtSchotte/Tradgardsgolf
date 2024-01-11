@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Api.ResponseFactory\Tradgardsgolf.Api.ResponseFactory.csproj" />
       <ProjectReference Include="..\Tradgardsgolf.Application.Infrastructure\Tradgardsgolf.Application.Infrastructure.csproj" />
     </ItemGroup>
 
