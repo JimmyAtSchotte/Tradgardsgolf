@@ -1,30 +1,50 @@
 ﻿@using Blazorise.Icons.Material
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Tradgardsgolf.BlazorWasm.State
 @inherits LayoutComponentBase
+@inject NavigationManager Navigation
 
 <Layout>
     <LayoutHeader>
         <Bar @bind-Visible="@topbarVisible" Breakpoint="Breakpoint.Desktop"
-              Background="Background.Primary"
-              ThemeContrast="ThemeContrast.Dark">
+             Background="Background.Primary"
+             ThemeContrast="ThemeContrast.Dark">
             <BarBrand>Tradgårdsgolf</BarBrand>
-            <BarToggler />
+            <BarToggler/>
             <BarMenu>
                 <BarStart>
                     <BarItem>
                         <BarLink To="">
-                            <BarIcon IconName="MaterialIcons.GolfCourse" /> Spela
+                            <BarIcon IconName="MaterialIcons.GolfCourse"/> Spela
                         </BarLink>
                     </BarItem>
-                    
-                   @if (State?.AppState?.ScorecardState is not null)
-                   {
-                       <BarItem>
-                           <BarLink To="/Scorecard">
-                               <BarIcon IconName="MaterialIcons.PlayArrow" /> Protokoll
-                           </BarLink>
-                       </BarItem>
-                   }
+
+                    @if (State?.AppState?.ScorecardState is not null)
+                    {
+                        <BarItem>
+                            <BarLink To="/Scorecard">
+                                <BarIcon IconName="MaterialIcons.PlayArrow"/> Protokoll
+                            </BarLink>
+                        </BarItem>
+                    }
+
+                    <AuthorizeView>
+                        <Authorized>
+                            <BarItem>
+                                <BarLink @onclick="OnLogout">
+                                    <BarIcon IconName="MaterialIcons.ArrowForward"/> Logga ut (@context.User.Identity?.Name)
+                                </BarLink>
+                            </BarItem>
+                        </Authorized>
+
+                        <NotAuthorized>
+                            <BarItem>
+                                <BarLink To="/authentication/login">
+                                    <BarIcon IconName="MaterialIcons.Lock"/> Logga in
+                                </BarLink>
+                            </BarItem>
+                        </NotAuthorized>
+                    </AuthorizeView>
                 </BarStart>
             </BarMenu>
         </Bar>
@@ -36,7 +56,11 @@
 
 @code {
     private bool topbarVisible = false;
-    
-    [CascadingParameter]
+
+
+    [CascadingParameter] 
     public CascadingStateProvider State { get; set; }
+
+    private void OnLogout() => Navigation.NavigateToLogout("authentication/logout");
+
 }

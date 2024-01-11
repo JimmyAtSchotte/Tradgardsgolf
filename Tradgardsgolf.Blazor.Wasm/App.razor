@@ -1,32 +1,34 @@
 <Blazorise.ThemeProvider Theme="@theme">
-   
-    <CascadingStateProvider>
-         <CascadingLocationProvider>
-            <CascadingBlazoredModal Position="ModalPosition.Middle" DisableBackgroundCancel="true">
-                <Router AppAssembly="@typeof(Program).Assembly">
-                    <Found Context="routeData">
-                        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
-                    </Found>
-                    <NotFound>
-                        <LayoutView Layout="@typeof(MainLayout)">
-                            <p>Sorry, there's nothing at this address.</p>
-                        </LayoutView>
-                    </NotFound>
-                </Router>
-            </CascadingBlazoredModal>  
-         </CascadingLocationProvider>
-    </CascadingStateProvider>
-  
+    <CascadingAuthenticationState>
+        <CascadingAuthentication>
+            <CascadingStateProvider>
+                <CascadingLocationProvider>
+                    <CascadingBlazoredModal Position="ModalPosition.Middle" DisableBackgroundCancel="true">
+                        <Router AppAssembly="@typeof(Program).Assembly">
+                            <Found Context="routeData">
+                                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+                            </Found>
+                            <NotFound>
+                                <LayoutView Layout="@typeof(MainLayout)">
+                                    <p>Sorry, there's nothing at this address.</p>
+                                </LayoutView>
+                            </NotFound>
+                        </Router>
+                    </CascadingBlazoredModal>
+                </CascadingLocationProvider>
+            </CascadingStateProvider>
+        </CascadingAuthentication>
+    </CascadingAuthenticationState>
 </Blazorise.ThemeProvider>
 
 @code{
 
     private Theme theme = CreateTheme(new ThemeColor(67, 160, 71));
-   
+
     private static Theme CreateTheme(ThemeColor color)
     {
         var theme = new Theme();
-        
+
         theme.ColorOptions = new ThemeColorOptions();
         theme.BackgroundOptions = new ThemeBackgroundOptions();
         theme.TextColorOptions = new ThemeTextColorOptions();
@@ -46,7 +48,7 @@
         theme.BarOptions.DarkColors.ItemColorOptions.ActiveBackgroundColor = color.ToRGBA();
         theme.BarOptions.DarkColors.ItemColorOptions.HoverColor = "#FFFFFF";
         theme.BarOptions.DarkColors.ItemColorOptions.HoverBackgroundColor = color.ToRGBA();
-        
+
         theme.BarOptions.LightColors = new ThemeBarColorOptions();
         theme.BarOptions.LightColors.BackgroundColor = color.ToRGBA();
         theme.BarOptions.LightColors.Color = "#000000";
@@ -57,7 +59,7 @@
         theme.BarOptions.LightColors.ItemColorOptions.ActiveBackgroundColor = color.ToRGBA(0.6);
         theme.BarOptions.LightColors.ItemColorOptions.HoverColor = "#000000";
         theme.BarOptions.LightColors.ItemColorOptions.HoverBackgroundColor = color.ToRGBA(0.6);
-       
+
         theme.InputOptions = new ThemeInputOptions();
         theme.InputOptions.CheckColor = color.ToRGBA();
         theme.InputOptions.SliderColor = color.ToRGBA();
@@ -72,5 +74,5 @@
             return $"rgba({red}, {green}, {blue}, {alpha})";
         }
     }
-    
+
 }

@@ -8,7 +8,6 @@
 @using Microsoft.Extensions.Configuration
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.BlazorWasm.Extensions
-@using Tradgardsgolf.BlazorWasm.State
 @using Tradgardsgolf.Contracts.Settings
 @implements IDisposable
 
@@ -25,16 +24,23 @@
                     <CourseContent>
                         <CourseStatistics></CourseStatistics>
                     </CourseContent>
-                    <CourseButtons Visible="AllowPlay(course)">
-                        <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
-                        <Dropdown Float="Float.Start">
-                            <DropdownToggle Color="Color.Secondary">
-                                <Icon Name="Blazorise.Icons.Material.MaterialIcons.Edit"></Icon>
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                <DropdownItem Clicked="() => ChangeImage(course)">Byt bild</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
+                    <CourseButtons Visible="ShowButtons(course)">
+                        @if (AllowPlay(course))
+                        {
+                            <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
+                        }
+                        
+                        @if (AllowEdit(course))
+                        {
+                            <Dropdown Float="Float.Start">
+                                <DropdownToggle Color="Color.Secondary">
+                                    <Icon Name="Blazorise.Icons.Material.MaterialIcons.Settings"></Icon>
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    <DropdownItem Clicked="() => ChangeImage(course)">Byt bild</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        }
                     </CourseButtons>
                 </CourseCard>
             </CascadingCourseStatistics>
@@ -53,13 +59,19 @@
     
     [CascadingParameter] 
     public Blazored.Modal.Services.IModalService Modal { get; set; }
-
+    
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationState { get; set; }
+    
     private IEnumerable<CourseResponse> _models;
     private IList<CourseResponse> _courses;
     private int _allowPlayDistance;
+    private AuthenticationState _authenticationState;
+
 
     protected override async Task OnInitializedAsync()
     {
+        _authenticationState = await AuthenticationState;
         _allowPlayDistance = (await ApiDispatcher.Dispatch(new AllowPlayDistanceCommand())).Value;
         _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
         
@@ -94,6 +106,11 @@
         return _allowPlayDistance < 0 ||
                courseResponse.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude) < _allowPlayDistance;
     }
+    
+    private bool AllowEdit(CourseResponse course)
+    {
+        return _authenticationState.User.Identity?.IsAuthenticated == true;
+    }
 
     private async Task SetupRound(CourseResponse course)
     {
@@ -122,6 +139,12 @@
 
         if (result.Data is CourseResponse updatedCourse)
             _courses[_courses.IndexOf(course)] = updatedCourse;
+    }
+
+
+    private bool ShowButtons(CourseResponse course)
+    {
+        return AllowPlay(course) || AllowEdit(course);
     }
 
 }
