@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Serilog.Events;
 
 namespace Tradgardsgolf.Api.Startup;
 
@@ -15,7 +16,7 @@ public static class Serlog
             logger.WriteTo.Console();
             logger.WriteTo
                 .ApplicationInsights(services.GetRequiredService<TelemetryConfiguration>(),
-                    TelemetryConverter.Traces);
+                    TelemetryConverter.Traces, LogEventLevel.Error);
         });
     }
 }

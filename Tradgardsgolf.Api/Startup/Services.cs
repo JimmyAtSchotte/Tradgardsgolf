@@ -52,6 +52,7 @@ public static class Services
         builder.Services.AddApplicationInsightsTelemetry(options =>
         {
             options.ConnectionString = configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING");
+            
         });
     }
 }
