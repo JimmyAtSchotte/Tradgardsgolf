@@ -55,6 +55,11 @@ namespace Tradgardsgolf.Api
                 else
                     builder.UseSqlServer(configuration.GetConnectionString("Database"));
             });
+            
+            var connectionString = configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING");
+            
+            if(!string.IsNullOrEmpty(connectionString))
+                services.AddApplicationInsightsTelemetry(options => options.ConnectionString = connectionString);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

@@ -44,19 +44,7 @@ namespace Tradgardsgolf.Api
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureLogging((context, logger) =>
-                {
-                    logger.AddConsole();
-                    
-                    var connectionString = context.Configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING");
-                    
-                    if(!string.IsNullOrEmpty(connectionString))
-                        logger.AddApplicationInsights(
-                            telemetryConfiguration =>
-                            {
-                                telemetryConfiguration.ConnectionString = connectionString;
-                            }, loggerOptions => { });
-                })
+                .ConfigureLogging((context, logger) => logger.AddConsole())
                 .UseSerilog(Log.Logger)
                 .ConfigureAppConfiguration((context, config) => 
                 {
