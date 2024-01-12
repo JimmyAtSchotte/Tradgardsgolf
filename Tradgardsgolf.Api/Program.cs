@@ -1,14 +1,11 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using Autofac.Extensions.DependencyInjection;
-using Azure.Identity;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Serilog;
-using Tradgardsgolf.Core.Entities;
+using Tradgardsgolf.Api.Startup;
 
 namespace Tradgardsgolf.Api
 {
@@ -16,59 +13,39 @@ namespace Tradgardsgolf.Api
     {
         public static async Task Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.Console()       
-                .CreateLogger();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            
+            var configuration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .AddCommandLine(args)
+                .AddAzureAppConfiguration()
+                .Build();
 
+            var builder = WebApplication.CreateBuilder(args);
+            builder.Configuration.AddConfiguration(configuration);
+            
+            builder.ConfigureSerilog();
+            builder.ConfigureAutofac();
+            builder.ConfigureServices(configuration);
+
+            var app = builder.Build();
+            app.ConfigureApplicationPipeline();
+            
+            var logger = app.Services.GetRequiredService<ILogger<Program>>();
+            
             try
             {
-                Log.Information("Starting up");
-                var host = CreateHostBuilder(args).Build();
-                await host.SetupDatabase();
-                await host.RunAsync();
+                stopwatch.Stop();
+                logger.LogInformation("Starting up application. Host was built in {time}", stopwatch.Elapsed);
+                
+                await app.SetupDatabase();
+                await app.RunAsync();
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Application start-up failed");
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }      
+                logger.LogCritical(ex, "Application start-up failed");
+            } 
         }
-
-     
-
-
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureLogging((context, logger) => logger.AddConsole())
-                .UseSerilog(Log.Logger)
-                .ConfigureAppConfiguration((context, config) => 
-                {
-                    config.AddEnvironmentVariables();
-                    config.AddCommandLine(args);
-                    
-                    var appConfigUrl = config.Build().GetValue<string>("APP_CONFIG_URL");
-
-                    if (!string.IsNullOrEmpty(appConfigUrl))
-                    {
-                        config.AddAzureAppConfiguration(options =>
-                        {
-                            options
-                                .Connect(new Uri(appConfigUrl), new DefaultAzureCredential())
-                                .Select(KeyFilter.Any, LabelFilter.Null)
-                                .Select(KeyFilter.Any, context.HostingEnvironment.EnvironmentName)
-                                .UseFeatureFlags();
-                        });
-                    }
-                    
-                })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
     }
 }
