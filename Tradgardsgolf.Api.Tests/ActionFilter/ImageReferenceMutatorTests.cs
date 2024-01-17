@@ -3,7 +3,7 @@ using Tradgardsgolf.Api.ActionFilters;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Contracts.Types;
 
-namespace Tradgardsgolf.Infrastructure.Tests.ActionFilter;
+namespace Tradgardsgolf.Api.Tests.ActionFilter;
 
 [TestFixture]
 public class ImageReferenceMutatorTests

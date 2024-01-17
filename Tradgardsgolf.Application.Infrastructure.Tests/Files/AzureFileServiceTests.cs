@@ -1,12 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Microsoft.Extensions.Options;
 using Moq;
-using NUnit.Framework;
 using Tradgardsgolf.Infrastructure.Files;
 
-namespace Tradgardsgolf.Infrastructure.Tests.Infrastructure.Files;
+namespace Tradgardsgolf.Application.Infrastructure.Tests.Files;
 
 [Ignore("Integration test")]
 [TestFixture]

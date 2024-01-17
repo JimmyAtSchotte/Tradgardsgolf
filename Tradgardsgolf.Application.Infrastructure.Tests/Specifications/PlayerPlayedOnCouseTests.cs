@@ -6,7 +6,7 @@ using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Infrastructure.Database;
 using SUT = Tradgardsgolf.Infrastructure.Database.Repository<Tradgardsgolf.Core.Entities.Player>;
 
-namespace Tradgardsgolf.Infrastructure.Tests.Specifications
+namespace Tradgardsgolf.Application.Infrastructure.Tests.Specifications
 {
     [TestFixture]
     public class PlayerPlayedOnCouseTests
