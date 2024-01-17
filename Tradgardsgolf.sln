@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Application.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Api.Tests", "Tradgardsgolf.Api.Tests\Tradgardsgolf.Api.Tests.csproj", "{5AD84607-81F8-4965-880F-0A7CB81EC935}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Application.Core.Tests", "Tradgardsgolf.Application.Core.Tests\Tradgardsgolf.Application.Core.Tests.csproj", "{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -191,6 +193,18 @@ Global
 		{5AD84607-81F8-4965-880F-0A7CB81EC935}.Release|iPhone.Build.0 = Release|Any CPU
 		{5AD84607-81F8-4965-880F-0A7CB81EC935}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{5AD84607-81F8-4965-880F-0A7CB81EC935}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Release|iPhone.Build.0 = Release|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -207,6 +221,7 @@ Global
 		{9533439E-A536-4B93-AF06-F50473A3AA0E} = {3071A007-93D1-45C8-A783-557C4ED12A6E}
 		{F64A8A76-E825-44EE-A172-6CFC278D9C41} = {ED3C73CD-89D6-40EF-B732-74D2BDEC14A1}
 		{5AD84607-81F8-4965-880F-0A7CB81EC935} = {3071A007-93D1-45C8-A783-557C4ED12A6E}
+		{3DAA160E-136B-4E91-A364-FDDE0B1CD41D} = {ED3C73CD-89D6-40EF-B732-74D2BDEC14A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CAD078B7-E2D9-49E7-B28E-A49BC8241A1A}
