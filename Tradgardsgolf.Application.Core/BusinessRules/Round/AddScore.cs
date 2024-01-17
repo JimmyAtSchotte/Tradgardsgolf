@@ -1,11 +1,12 @@
 ﻿using System.Linq;
+using Tradgardsgolf.Core.Entities;
 
-namespace Tradgardsgolf.Core.Entities
+namespace Tradgardsgolf.Core.BusinessRules.Round
 {
-    public static class Round_AddScore
+    public  static partial class RoundExtensions
     {
         
-        public static void AddScore(this Round round, Player player, int score)
+        public static void AddScore(this Entities.Round round, Player player, int score)
         {
             var hole = round.RoundScores
                 .Where(x => x.Player == player)

@@ -17,4 +17,8 @@
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Tradgardsgolf.Application.Core\Tradgardsgolf.Application.Core.csproj" />
+    </ItemGroup>
+
 </Project>

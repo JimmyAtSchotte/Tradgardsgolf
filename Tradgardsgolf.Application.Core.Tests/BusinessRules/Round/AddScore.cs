@@ -1,42 +1,40 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using Tradgardsgolf.Core.BusinessRules.Round;
 using Tradgardsgolf.Core.Entities;
 
-namespace Tradgardsgolf.Infrastructure.Tests
+namespace Tradgardsgolf.Application.Core.Tests.BusinessRules.Round
 {
     [TestFixture]
-    public class CreateScorecard
+    public class AddScore
     {
-        private Course course1;
+        private Course _course1;
         
-        private Player player1;
-        private Player player2;
-        private Player createdBy;
-        
+        private Player _player1;
+        private Player _player2;
+
 
         [SetUp]
         public void Setup()
         {
-            createdBy = Player.Create(p => p.Id = 10);
-            course1 = Course.Create("");
+            Player.Create(p => p.Id = 10);
+            _course1 = Course.Create("");
 
-            player1 = Player.Create(p => p.Id = 1);
-            player2= Player.Create(p => p.Id = 2);
+            _player1 = Player.Create(p => p.Id = 1);
+            _player2= Player.Create(p => p.Id = 2);
         }
 
         [Test]
         public void AddOneScore()
         {
-            var round = course1.CreateRound();
-            round.AddScore(player1, 5);
+            var round = _course1.CreateRound();
+            round.AddScore(_player1, 5);
 
             var score = round.RoundScores.FirstOrDefault();
 
             Assert.Multiple(() => {
                 
                 Assert.That(1, Is.EqualTo(score.Hole));
-                Assert.That(player1.Id, Is.EqualTo(score.PlayerId));
-                Assert.That(player1, Is.EqualTo(score.Player));
+                Assert.That(_player1.Id, Is.EqualTo(score.PlayerId));
+                Assert.That(_player1, Is.EqualTo(score.Player));
                 Assert.That(5, Is.EqualTo(score.Score));
             });
         }
@@ -44,17 +42,17 @@ namespace Tradgardsgolf.Infrastructure.Tests
         [Test]
         public void AddMultipleScoreScoresOnePlayer()
         {
-            var round = course1.CreateRound();
-            round.AddScore(player1, 5);
-            round.AddScore(player1, 6);
-            round.AddScore(player1, 7);
+            var round = _course1.CreateRound();
+            round.AddScore(_player1, 5);
+            round.AddScore(_player1, 6);
+            round.AddScore(_player1, 7);
 
             var scores = round.RoundScores.ToArray();
 
             Assert.Multiple(() => 
             {
-                Assert.That(scores.All(s => s.PlayerId == player1.Id && 
-                                            s.Player == player1), Is.True);
+                Assert.That(scores.All(s => s.PlayerId == _player1.Id && 
+                                            s.Player == _player1), Is.True);
                 
                 Assert.That(1, Is.EqualTo(scores[0].Hole));
                 Assert.That(5, Is.EqualTo(scores[0].Score));
@@ -68,19 +66,19 @@ namespace Tradgardsgolf.Infrastructure.Tests
         [Test]
         public void AddMultiplePlayers()
         {
-            var round = course1.CreateRound();
-            round.AddScore(player1, 5);
-            round.AddScore(player2, 3);
+            var round = _course1.CreateRound();
+            round.AddScore(_player1, 5);
+            round.AddScore(_player2, 3);
 
             var scores = round.RoundScores;
 
             Assert.Multiple(() => {
                 
-                Assert.That(1, Is.EqualTo(scores.Count(x => x.PlayerId == player1.Id &&
+                Assert.That(1, Is.EqualTo(scores.Count(x => x.PlayerId == _player1.Id &&
                                                  x.Hole == 1 &&
                                                  x.Score == 5)));
                 
-                Assert.That(1, Is.EqualTo(scores.Count(x => x.PlayerId == player2.Id &&
+                Assert.That(1, Is.EqualTo(scores.Count(x => x.PlayerId == _player2.Id &&
                                                             x.Hole == 1 &&
                                                             x.Score == 3)));
                 
