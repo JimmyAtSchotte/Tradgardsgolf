@@ -1,10 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
-using NUnit.Framework;
+﻿using Microsoft.AspNetCore.Http;
 using Tradgardsgolf.Api.ActionFilters;
-using Tradgardsgolf.Contracts;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Contracts.Types;
 
