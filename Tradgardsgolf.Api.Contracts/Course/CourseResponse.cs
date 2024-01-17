@@ -16,7 +16,7 @@ namespace Tradgardsgolf.Contracts.Course
         public ImageReference ImageReference { get; init; }
         public int SeasonTableRounds => 6;
 
-        public string OwnerEmail { get; init; }
+        public Guid OwnerGuid { get; init; }
         
     }
 }

@@ -1,14 +1,12 @@
 ﻿@page "/"
 @inject IApiDispatcher ApiDispatcher;
 @inject NavigationManager NavigationManager
-@inject IAccessTokenProvider AuthorizationService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @using Tradgardsgolf.Contracts.Course
 @using ChangeCourseImage = Tradgardsgolf.BlazorWasm.Shared.ChangeCourseImage
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.BlazorWasm.Extensions
 @using Tradgardsgolf.Contracts.Settings
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using System.Text.Json
 @implements IDisposable
 
 
@@ -41,6 +39,7 @@
                                 </DropdownMenu>
                             </Dropdown>
                         }
+                      
                     </CourseButtons>
                 </CourseCard>
             </CascadingCourseStatistics>
@@ -55,60 +54,33 @@
     public CascadingStateProvider StateProvider { get; set; }
     
     [CascadingParameter]
-    public CascadingLocationProvider LocationProvider { get; set; }
+    public Location Location { get; set; }
     
     [CascadingParameter] 
     public Blazored.Modal.Services.IModalService Modal { get; set; }
-    
-    [CascadingParameter]
-    private Task<AuthenticationState> AuthenticationState { get; set; }
     
     private IEnumerable<CourseResponse> _models;
     private IList<CourseResponse> _courses;
     private int _allowPlayDistance;
     private AuthenticationState _authenticationState;
-    private string _authenticatedEmail;
+    private Guid _authenticatedGuid;
 
 
     protected override async Task OnInitializedAsync()
     {
-        _authenticationState = await AuthenticationState;
         _allowPlayDistance = (await ApiDispatcher.Dispatch(new AllowPlayDistanceCommand())).Value;
         _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
-        _authenticatedEmail = await GetAuthenticatedEmail();
+        _authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        Guid.TryParse(_authenticationState.User.Claims.FirstOrDefault(x => x.Type == "oid")?.Value ?? "", out _authenticatedGuid);
+        
         OrderCoursesByDistance();
-
-        LocationProvider.LocationChanged += LocationProviderOnLocationChanged;
-    }
-
-    private async Task<string> GetAuthenticatedEmail()
-    {
-        var accessTokenResult = await AuthorizationService.RequestAccessToken();
-        
-        if (!accessTokenResult.TryGetToken(out var token))
-            return null;
-        
-        var payload = token.Value.Split(".")[1];
-        var base64Payload = payload.Replace('-', '+')
-            .Replace('_', '/')
-            .PadRight(payload.Length + (4 - payload.Length % 4) % 4, '=');
-        
-        var claims = JsonSerializer.Deserialize<IDictionary<string, object>>(Convert.FromBase64String(base64Payload));
-
-        return claims.TryGetValue("email", out var email) 
-            ? email.ToString() 
-            : null;
-    }
-
-    private void LocationProviderOnLocationChanged(ComponentBase source)
-    {
-        OrderCoursesByDistance();
-    }
+   }
 
     private void OrderCoursesByDistance()
     {
         var distanceOrdered = _models
-            .OrderBy(x => x.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude))
+            .OrderBy(x => x.GetDistance((double)Location.Longitude, (double)Location.Latitude))
             .ToList();
         
         if (_courses != null && _courses.SequenceEqual(distanceOrdered))
@@ -124,13 +96,13 @@
     private bool AllowPlay(CourseResponse courseResponse)
     {
         return _allowPlayDistance < 0 ||
-               courseResponse.GetDistance((double)LocationProvider.Location.Longitude, (double)LocationProvider.Location.Latitude) < _allowPlayDistance;
+               courseResponse.GetDistance((double)Location.Longitude, (double)Location.Latitude) < _allowPlayDistance;
     }
     
     private bool AllowEdit(CourseResponse course)
     {
         return _authenticationState.User.Identity?.IsAuthenticated == true &&
-               _authenticatedEmail == course.OwnerEmail;
+               _authenticatedGuid == course.OwnerGuid;
     }
 
     private async Task SetupRound(CourseResponse course)
@@ -142,8 +114,7 @@
     
     public void Dispose()
     {
-        LocationProvider.LocationChanged -= LocationProviderOnLocationChanged;
-        ((IDisposable) StateProvider)?.Dispose();
+       ((IDisposable) StateProvider)?.Dispose();
     }
 
     private async Task ChangeImage(CourseResponse course)

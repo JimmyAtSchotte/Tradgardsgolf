@@ -31,8 +31,8 @@ namespace Tradgardsgolf.Core.Entities
         [Column("strImage")]
         public string Image { get; set; }
         
-        [Column("strOwnerEmail")]
-        public string OwnerEmail { get; set; }
+        [Column("strOwnerGuid")]
+        public Guid OwnerGuid { get; set; }
 
         public virtual ICollection<Round> Rounds
         {
@@ -45,13 +45,13 @@ namespace Tradgardsgolf.Core.Entities
 
         }               
 
-        private Course(string ownerEmail)
+        private Course(Guid ownerGuid)
         {
             Created = DateTime.Now;
-            OwnerEmail = ownerEmail;
+            OwnerGuid = ownerGuid;
         }     
 
-        public static Course Create(string ownerEmail, Action<Course> properties = null)
+        public static Course Create(Guid ownerEmail, Action<Course> properties = null)
         {
             var course = new Course(ownerEmail);
             properties?.Invoke(course);

@@ -1,7 +1,21 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
-<RemoteAuthenticatorView Action="@Action" />
+@if (Action == "details")
+{
+    <AuthorizeView>
+        <ul>
+            @foreach (var claim in @context.User.Claims)
+            {
+                <li>@claim.Type: @claim.Value</li>
+            }
+        </ul>
+    </AuthorizeView>
+}
+else
+{
+    <RemoteAuthenticatorView Action="@Action" />
+}
 
 @code {
     [Parameter]

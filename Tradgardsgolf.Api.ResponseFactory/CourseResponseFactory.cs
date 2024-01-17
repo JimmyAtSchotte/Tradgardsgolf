@@ -21,7 +21,7 @@ public class CourseResponseFactory(IResponseFactory<ImageReference, Course> imag
             Longitude = course.Longitude,
             Name = course.Name,
             ScoreReset = course.ScoreReset,
-            OwnerEmail = course.OwnerEmail
+            OwnerGuid = course.OwnerGuid
         };
     }
 }

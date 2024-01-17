@@ -16,7 +16,7 @@ namespace Tradgardsgolf.Application.Core.Tests.BusinessRules.Round
         public void Setup()
         {
             Player.Create(p => p.Id = 10);
-            _course1 = Course.Create("");
+            _course1 = Course.Create(Guid.NewGuid());
 
             _player1 = Player.Create(p => p.Id = 1);
             _player2= Player.Create(p => p.Id = 2);

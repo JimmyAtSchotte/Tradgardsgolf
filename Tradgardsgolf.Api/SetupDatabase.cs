@@ -34,7 +34,7 @@ public static class SetupDatabaseExtensions
         context.Add(jimmy);
         context.Add(patrik);
             
-        var kumhof = Course.Create("vaugh@hotmail.se", p =>
+        var kumhof = Course.Create( Guid.Parse("61a351bb-4860-445c-a541-6106a5de40d3"), p =>
         {
             p.Holes = 6;
             p.Name = "Kumhof (IN MEMORY)";
@@ -43,7 +43,7 @@ public static class SetupDatabaseExtensions
             p.Image = "1_638404748907561795.jpg";
         });
             
-        var trornehof = Course.Create("patrik@hotmail.se", p =>
+        var trornehof = Course.Create(new Guid(), p =>
         {
             p.Holes = 6;
             p.Name = "Törnehof (IN MEMORY)";
