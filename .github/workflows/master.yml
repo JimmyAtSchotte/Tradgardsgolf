@@ -10,6 +10,22 @@ on:
   workflow_dispatch:
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4  
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build
+    - name: Run tests
+      run: dotnet test
+  
   build:
     runs-on: 'ubuntu-latest'
 
@@ -26,12 +42,19 @@ jobs:
         username: ${{ secrets.AzureAppService_ContainerUsername_ecf4dd14cec84d5e82b415470753c1f5 }}
         password: ${{ secrets.AzureAppService_ContainerPassword_07902e7edafc4ed5a2fbd7cac8be7579 }}
 
-    - name: Build and push container image to registry
+    - name: Build and push api image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ecf4dd14cec84d5e82b415470753c1f5 }}/tradgardsgolf-api:${{ github.sha }}
         file: ./Dockerfile_api
+        
+    - name: Build and push wasm image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ecf4dd14cec84d5e82b415470753c1f5 }}/tradgardsgolf-wasm:${{ github.sha }}
+        file: ./Dockerfile_wasm
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,11 +64,19 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
+    - name: Deploy to API to Azure
+      id: deploy-to-api
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'tradgardsgolf-api'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_8e26046e592b4ed695b99dc48903eadd }}
         images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ecf4dd14cec84d5e82b415470753c1f5 }}/tradgardsgolf-api:${{ github.sha }}'
+    - name: Deploy to Wasm to Azure
+      id: deploy-to-wasm
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'tradgardsgolf'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_a9b486c9634648a8a223d6fffbb914c9 }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ecf4dd14cec84d5e82b415470753c1f5 }}/tradgardsgolf-wasm:${{ github.sha }}'
