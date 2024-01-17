@@ -1,8 +1,5 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using ArrangeDependencies.Autofac;
+﻿using ArrangeDependencies.Autofac;
 using ArrangeDependencies.Autofac.EntityFrameworkCore;
-using NUnit.Framework;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
