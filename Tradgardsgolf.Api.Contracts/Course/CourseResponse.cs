@@ -1,5 +1,6 @@
 ﻿using System;
 using Tradgardsgolf.Contracts.Players;
+using Tradgardsgolf.Contracts.Types;
 
 namespace Tradgardsgolf.Contracts.Course
 {

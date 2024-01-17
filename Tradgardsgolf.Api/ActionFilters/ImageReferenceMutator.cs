@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Tradgardsgolf.Contracts;
+using Tradgardsgolf.Contracts.Types;
 
 namespace Tradgardsgolf.Api.ActionFilters;
 

@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Tradgardsgolf.Api.ActionFilters;
 using Tradgardsgolf.Contracts;
 using Tradgardsgolf.Contracts.Course;
+using Tradgardsgolf.Contracts.Types;
 
 namespace Tradgardsgolf.Infrastructure.Tests.ActionFilter;
 

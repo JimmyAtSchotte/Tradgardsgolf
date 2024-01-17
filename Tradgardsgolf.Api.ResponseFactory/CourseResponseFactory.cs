@@ -1,5 +1,6 @@
 ﻿using Tradgardsgolf.Contracts;
 using Tradgardsgolf.Contracts.Course;
+using Tradgardsgolf.Contracts.Types;
 using Tradgardsgolf.Core.Entities;
 
 namespace Tradgardsgolf.Api.ResponseFactory;

@@ -1,4 +1,4 @@
-﻿namespace Tradgardsgolf.Contracts;
+﻿namespace Tradgardsgolf.Contracts.Types;
 
 public class ImageReference
 {
