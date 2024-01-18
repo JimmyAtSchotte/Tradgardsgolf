@@ -36,7 +36,7 @@
                             </Dropdown>
                         </ConditionalComponent>
                         <ConditionalComponent Condition="() => AllowClaimOwnerShip(course)" Name="ClaimOwnerShip">
-                            <Button Color="Color.Secondary">Ta ägarskap</Button>
+                            <Button Clicked="async () => await ClaimOwnership(course)" Color="Color.Secondary">Ta ägarskap</Button>
                         </ConditionalComponent>
                     </CourseButtons>
                 </CourseCard>
@@ -61,18 +61,15 @@
     private IList<CourseResponse> _courses;
     private int _allowPlayDistance;
     private AuthenticationState _authenticationState;
-    private Guid? _authenticatedGuid;
-
+    private Guid _authenticatedGuid;
 
     protected override async Task OnInitializedAsync()
     {
         _allowPlayDistance = (await ApiDispatcher.Dispatch(new AllowPlayDistanceCommand())).Value;
         _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
         _authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-
-        if(Guid.TryParse(_authenticationState.User.Claims.FirstOrDefault(x => x.Type == "oid")?.Value ?? "", out var oid));
-            _authenticatedGuid = oid;
-        
+        Guid.TryParse(_authenticationState.User.Claims.FirstOrDefault(x => x.Type == "oid")?.Value ?? "", out _authenticatedGuid);
+           
         OrderCoursesByDistance();
    }
 
@@ -110,6 +107,17 @@
         await Task.Delay(1);
         NavigationManager.NavigateTo(nameof(SetupRound));
     }
+
+    private async Task ClaimOwnership(CourseResponse course)
+    {
+        var updatedCourse = await ApiDispatcher.Dispatch(new ClaimOwnership()
+        {
+            Id = course.Id,
+            Owner = _authenticatedGuid
+        });
+        
+        _courses[_courses.IndexOf(course)] = updatedCourse;
+    }
     
     public void Dispose()
     {
@@ -134,9 +142,10 @@
 
     private bool AllowClaimOwnerShip(CourseResponse course)
     {
-        return _authenticationState.User.Identity?.IsAuthenticated == true &&
-                _authenticatedGuid is not null &&
-               course.OwnerGuid is null;
+        return AllowPlay(course) &&
+               _authenticationState.User.Identity?.IsAuthenticated == true &&
+                _authenticatedGuid != Guid.Empty &&
+               course.OwnerGuid == Guid.Empty;
     }
 
 }

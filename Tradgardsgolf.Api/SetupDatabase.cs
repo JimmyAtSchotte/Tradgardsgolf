@@ -48,9 +48,18 @@ public static class SetupDatabaseExtensions
             p.Holes = 6;
             p.Name = "Törnehof (IN MEMORY)";
         });
+        
+        var berlin = Course.Create(new Guid(), p =>
+        {
+            p.Holes = 6;
+            p.Name = "Berlin (IN MEMORY)";
+            p.Latitude = 52.520007;
+            p.Longitude = 13.404954;
+        });
             
         context.Add(kumhof);
         context.Add(trornehof);
+        context.Add(berlin);
 
         for (int r = 0; r < 25; r++)
             AddRound(context, kumhof, jimmy, patrik);
