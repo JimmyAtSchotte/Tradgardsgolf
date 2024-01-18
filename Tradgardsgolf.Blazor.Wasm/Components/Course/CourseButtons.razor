@@ -1,4 +1,4 @@
-﻿@if (Visible)
+﻿@if (ChildContent is not null)
 {
     <CardFooter Class="bg-light">
         @ChildContent
@@ -9,9 +9,6 @@
 {
     [Parameter]
     public RenderFragment ChildContent { get; set; }
-
-    [Parameter]
-    public bool Visible { get; set; } = true;
 }
 
 

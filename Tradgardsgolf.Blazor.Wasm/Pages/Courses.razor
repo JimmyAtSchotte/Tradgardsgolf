@@ -22,14 +22,11 @@
                     <CourseContent>
                         <CourseStatistics></CourseStatistics>
                     </CourseContent>
-                    <CourseButtons Visible="ShowButtons(course)">
-                        @if (AllowPlay(course))
-                        {
+                    <CourseButtons>
+                        <ConditionalComponent Condition="() => AllowPlay(course)" Name="Play">
                             <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
-                        }
-                        
-                        @if (AllowEdit(course))
-                        {
+                        </ConditionalComponent>
+                        <ConditionalComponent Condition="() => AllowEdit(course)" Name="Edit">
                             <Dropdown Float="Float.Start">
                                 <DropdownToggle Color="Color.Secondary">
                                     <Icon Name="Blazorise.Icons.Material.MaterialIcons.Settings"></Icon>
@@ -38,8 +35,7 @@
                                     <DropdownItem Clicked="() => ChangeImage(course)">Byt bild</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                        }
-                      
+                        </ConditionalComponent>
                     </CourseButtons>
                 </CourseCard>
             </CascadingCourseStatistics>

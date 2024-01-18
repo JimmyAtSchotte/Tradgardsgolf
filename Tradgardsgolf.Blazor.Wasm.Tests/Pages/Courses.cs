@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using AspNetMonsters.Blazor.Geolocation;
-using Blazorise;
 using Bunit;
 using Moq;
 using Tradgardsgolf.BlazorWasm.ApiServices;
+using Tradgardsgolf.BlazorWasm.Components;
 using Tradgardsgolf.BlazorWasm.Components.Course;
 using Tradgardsgolf.BlazorWasm.Pages;
 using Tradgardsgolf.Contracts.Course;
@@ -14,27 +14,33 @@ namespace Tradgardsgolf.Blazor.Wasm.Tests.Pages;
 [TestFixture]
 public class CoursesTests
 {
-    [Test]
-    public void ListCourses()
+    private static Action<Mock<IApiDispatcher>> ApiDispatcherMockSetup(int allowPlayDistance, params CourseResponse[] courseResponses)
     {
-        using var contextBuilder = new TestContextBuilder();
-        
-        contextBuilder.UseMock<IApiDispatcher>(apiMock =>
+        return apiMock =>
         {
             apiMock
                 .Setup(x => x.Dispatch(It.IsAny<AllowPlayDistanceCommand>()))
                 .ReturnsAsync(new SettingResponse<int>()
                 {
-                    Value = 1
+                    Value = allowPlayDistance
                 });
-        
+
+            var courseResponse = new CourseResponse();
+            
             apiMock
                 .Setup(x => x.Dispatch(It.IsAny<ListAllCoursesCommand>()))
-                .ReturnsAsync(new []
-                {
-                    new CourseResponse()
-                });
-        });
+                .ReturnsAsync(courseResponses);
+        };
+    }
+
+    
+    
+    [Test]
+    public void ListCourses()
+    {
+        using var contextBuilder = new TestContextBuilder();
+        
+        contextBuilder.UseMock(ApiDispatcherMockSetup(1, new CourseResponse()));
         
         var courses = contextBuilder
             .Build()
@@ -47,33 +53,18 @@ public class CoursesTests
             
         Assert.That(courseCards.Count, Is.EqualTo(1));
     }
-    
+
+  
     [Test]
     public void CourseOwner()
     {
         var ownerGuid = Guid.NewGuid();
         
         using var contextBuilder = new TestContextBuilder();
-        
-        contextBuilder.UseMock<IApiDispatcher>(apiMock =>
+        contextBuilder.UseMock(ApiDispatcherMockSetup(1,  new CourseResponse()
         {
-            apiMock
-                .Setup(x => x.Dispatch(It.IsAny<AllowPlayDistanceCommand>()))
-                .ReturnsAsync(new SettingResponse<int>()
-                {
-                    Value = 1
-                });
-        
-            apiMock
-                .Setup(x => x.Dispatch(It.IsAny<ListAllCoursesCommand>()))
-                .ReturnsAsync(new []
-                {
-                    new CourseResponse()
-                    {
-                        OwnerGuid = ownerGuid
-                    }
-                });
-        });
+            OwnerGuid = ownerGuid
+        }));
         
         var courses = contextBuilder
             .UseAuthorization(auth =>
@@ -88,9 +79,9 @@ public class CoursesTests
             });
 
         var courseCard = courses.FindComponents<CascadingCourse>().FirstOrDefault();
-        var buttons = courseCard.FindComponent<CourseButtons>();
+        var edit = courseCard.FindComponents<ConditionalComponent>().FirstOrDefault(x => x.Instance.Name == "Edit");
         
-        Assert.That(buttons.HasComponent<Dropdown>(), Is.True);
+        Assert.That(edit.Markup, Is.Not.Empty);
     }
     
     [Test]
@@ -98,25 +89,10 @@ public class CoursesTests
     {
         using var contextBuilder = new TestContextBuilder();
         
-        contextBuilder.UseMock<IApiDispatcher>(apiMock =>
+        contextBuilder.UseMock(ApiDispatcherMockSetup(1,  new CourseResponse()
         {
-            apiMock
-                .Setup(x => x.Dispatch(It.IsAny<AllowPlayDistanceCommand>()))
-                .ReturnsAsync(new SettingResponse<int>()
-                {
-                    Value = 1
-                });
-        
-            apiMock
-                .Setup(x => x.Dispatch(It.IsAny<ListAllCoursesCommand>()))
-                .ReturnsAsync(new []
-                {
-                    new CourseResponse()
-                    {
-                        OwnerGuid = Guid.NewGuid()
-                    }
-                });
-        });
+            OwnerGuid = Guid.NewGuid()
+        }));
         
         var courses = contextBuilder
             .UseAuthorization(auth =>
@@ -129,46 +105,40 @@ public class CoursesTests
             {
                 parameters.Add(p => p.Location, new Location());
             });
-
-        var courseCard = courses.FindComponents<CascadingCourse>().FirstOrDefault();
-        var buttons = courseCard.FindComponent<CourseButtons>();
         
-        Assert.That(buttons.HasComponent<Dropdown>(), Is.False);
+        var courseCard = courses.FindComponents<CascadingCourse>().FirstOrDefault();
+        var edit = courseCard.FindComponents<ConditionalComponent>().FirstOrDefault(x => x.Instance.Name == "Edit");
+        
+        Assert.That(edit.Markup, Is.Empty);
     }
     
     [Test]
     public void InRangeToPlay()
     {
         using var contextBuilder = new TestContextBuilder();
-        
-        contextBuilder.UseMock<IApiDispatcher>(apiMock =>
+        var course = new CourseResponse()
         {
-            apiMock
-                .Setup(x => x.Dispatch(It.IsAny<AllowPlayDistanceCommand>()))
-                .ReturnsAsync(new SettingResponse<int>()
-                {
-                    Value = 1
-                });
+            Longitude = 1,
+            Latitude = 1
+        };
         
-            apiMock
-                .Setup(x => x.Dispatch(It.IsAny<ListAllCoursesCommand>()))
-                .ReturnsAsync(new []
-                {
-                    new CourseResponse()
-                });
-        });
+        contextBuilder.UseMock(ApiDispatcherMockSetup(1, course));
         
         var courses = contextBuilder
             .Build()
             .RenderComponent<Courses>(parameters =>
             {
-                parameters.Add(p => p.Location, new Location());
+                parameters.Add(p => p.Location, new Location()
+                {
+                    Longitude = (decimal)course.Longitude,
+                    Latitude = (decimal)course.Latitude,
+                });
             });
 
         var courseCard = courses.FindComponents<CascadingCourse>().FirstOrDefault();
-        var buttons = courseCard.FindComponent<CourseButtons>();
+        var play = courseCard.FindComponents<ConditionalComponent>().FirstOrDefault(x => x.Instance.Name == "Play");
         
-        Assert.That(buttons.HasComponent<Button>(), Is.True);
+        Assert.That(play.Markup, Is.Not.Empty);
     }
     
     [Test]
@@ -176,26 +146,11 @@ public class CoursesTests
     {
         using var contextBuilder = new TestContextBuilder();
         
-        contextBuilder.UseMock<IApiDispatcher>(apiMock =>
+        contextBuilder.UseMock(ApiDispatcherMockSetup(1,  new CourseResponse()
         {
-            apiMock
-                .Setup(x => x.Dispatch(It.IsAny<AllowPlayDistanceCommand>()))
-                .ReturnsAsync(new SettingResponse<int>()
-                {
-                    Value = 1
-                });
-        
-            apiMock
-                .Setup(x => x.Dispatch(It.IsAny<ListAllCoursesCommand>()))
-                .ReturnsAsync(new []
-                {
-                    new CourseResponse()
-                    {
-                        Longitude = 1,
-                        Latitude = 1
-                    }
-                });
-        });
+            Longitude = 1,
+            Latitude = 1
+        }));
         
         var courses = contextBuilder
             .Build()
@@ -207,10 +162,12 @@ public class CoursesTests
                     Longitude = 10
                 });
             });
-
-        var courseCard = courses.FindComponents<CascadingCourse>().FirstOrDefault();
-        var buttons = courseCard.FindComponent<CourseButtons>();
         
-        Assert.That(buttons.HasComponent<Button>(), Is.False);
+       var play = courses
+            .FindComponent<CascadingCourse>()
+            .FindComponents<ConditionalComponent>()
+            .FirstOrDefault(x => x.Instance.Name == "Play");
+        
+        Assert.That(play.Markup, Is.Empty);
     }
 }

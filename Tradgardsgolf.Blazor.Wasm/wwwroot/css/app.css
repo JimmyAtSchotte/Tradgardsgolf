@@ -32,6 +32,10 @@
     vertical-align: middle;
 }
 
+.course .card-footer:not(:has(*)) {
+    display: none;
+}
+
 .avatar {
     border-radius: 50%;
     width: 3em;
