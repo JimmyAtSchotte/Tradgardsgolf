@@ -3,7 +3,6 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using Tradgardsgolf.Contracts.Course
-@using ChangeCourseImage = Tradgardsgolf.BlazorWasm.Shared.ChangeCourseImage
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.BlazorWasm.Extensions
 @using Tradgardsgolf.Contracts.Settings
@@ -117,10 +116,10 @@
     {
         var parameters = new ModalParameters
         {
-            { nameof(ChangeCourseImage.Course), course }
+            { nameof(Modals.ChangeCourseImage.Course), course }
         };
         
-        var modal = Modal.Show<ChangeCourseImage>($"Byt bild för {course.Name}", parameters);
+        var modal = Modal.Show<Modals.ChangeCourseImage>($"Byt bild för {course.Name}", parameters);
         var result = await modal.Result;
         if (result.Cancelled)
             return;
