@@ -24,8 +24,6 @@ public class CoursesTests
                 {
                     Value = allowPlayDistance
                 });
-
-            var courseResponse = new CourseResponse();
             
             apiMock
                 .Setup(x => x.Dispatch(It.IsAny<ListAllCoursesCommand>()))
@@ -49,7 +47,8 @@ public class CoursesTests
             parameters.Add(p => p.Location, new Location());
         });
 
-        var courseCards = courses.FindComponents<CascadingCourse>();
+        var courseCards = courses
+            .FindComponents<CascadingCourse>();
             
         Assert.That(courseCards.Count, Is.EqualTo(1));
     }
@@ -77,9 +76,10 @@ public class CoursesTests
             {
                 parameters.Add(p => p.Location, new Location());
             });
-
-        var courseCard = courses.FindComponents<CascadingCourse>().FirstOrDefault();
-        var edit = courseCard.FindComponents<ConditionalComponent>().FirstOrDefault(x => x.Instance.Name == "Edit");
+       
+        var edit = courses
+            .FindComponent<CascadingCourse>()
+            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "Edit");
         
         Assert.That(edit.Markup, Is.Not.Empty);
     }
@@ -106,8 +106,9 @@ public class CoursesTests
                 parameters.Add(p => p.Location, new Location());
             });
         
-        var courseCard = courses.FindComponents<CascadingCourse>().FirstOrDefault();
-        var edit = courseCard.FindComponents<ConditionalComponent>().FirstOrDefault(x => x.Instance.Name == "Edit");
+        var edit = courses
+            .FindComponent<CascadingCourse>()
+            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "Edit");
         
         Assert.That(edit.Markup, Is.Empty);
     }
@@ -135,8 +136,9 @@ public class CoursesTests
                 });
             });
 
-        var courseCard = courses.FindComponents<CascadingCourse>().FirstOrDefault();
-        var play = courseCard.FindComponents<ConditionalComponent>().FirstOrDefault(x => x.Instance.Name == "Play");
+        var play = courses
+            .FindComponent<CascadingCourse>()
+            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "Play");
         
         Assert.That(play.Markup, Is.Not.Empty);
     }
@@ -162,12 +164,47 @@ public class CoursesTests
                     Longitude = 10
                 });
             });
-        
-       var play = courses
+
+        var play = courses
             .FindComponent<CascadingCourse>()
-            .FindComponents<ConditionalComponent>()
-            .FirstOrDefault(x => x.Instance.Name == "Play");
+            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "Play");
+           
         
         Assert.That(play.Markup, Is.Empty);
+    }
+    
+    [Test]
+    public void ClaimOwnerShip()
+    {
+        using var contextBuilder = new TestContextBuilder();
+        var course = new CourseResponse()
+        {
+            Longitude = 1,
+            Latitude = 1
+        };
+        
+        contextBuilder.UseMock(ApiDispatcherMockSetup(1, course));
+        contextBuilder.UseAuthorization(auth =>
+        {
+            auth.SetAuthorized("test");
+            auth.SetClaims(new Claim("oid", Guid.NewGuid().ToString()));
+        });
+        
+        var courses = contextBuilder
+            .Build()
+            .RenderComponent<Courses>(parameters =>
+            {
+                parameters.Add(p => p.Location, new Location()
+                {
+                    Longitude = (decimal)course.Longitude,
+                    Latitude = (decimal)course.Latitude,
+                });
+            });
+
+        var claimOwnerShip = courses
+            .FindComponent<CascadingCourse>()
+            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "ClaimOwnerShip");
+        
+        Assert.That(claimOwnerShip.Markup, Is.Not.Empty);
     }
 }

@@ -35,6 +35,9 @@
                                 </DropdownMenu>
                             </Dropdown>
                         </ConditionalComponent>
+                        <ConditionalComponent Condition="() => AllowClaimOwnerShip(course)" Name="ClaimOwnerShip">
+                            <Button Color="Color.Secondary">Ta ägarskap</Button>
+                        </ConditionalComponent>
                     </CourseButtons>
                 </CourseCard>
             </CascadingCourseStatistics>
@@ -58,7 +61,7 @@
     private IList<CourseResponse> _courses;
     private int _allowPlayDistance;
     private AuthenticationState _authenticationState;
-    private Guid _authenticatedGuid;
+    private Guid? _authenticatedGuid;
 
 
     protected override async Task OnInitializedAsync()
@@ -67,7 +70,8 @@
         _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
         _authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
-        Guid.TryParse(_authenticationState.User.Claims.FirstOrDefault(x => x.Type == "oid")?.Value ?? "", out _authenticatedGuid);
+        if(Guid.TryParse(_authenticationState.User.Claims.FirstOrDefault(x => x.Type == "oid")?.Value ?? "", out var oid));
+            _authenticatedGuid = oid;
         
         OrderCoursesByDistance();
    }
@@ -127,4 +131,12 @@
         if (result.Data is CourseResponse updatedCourse)
             _courses[_courses.IndexOf(course)] = updatedCourse;
     }
+
+    private bool AllowClaimOwnerShip(CourseResponse course)
+    {
+        return _authenticationState.User.Identity?.IsAuthenticated == true &&
+                _authenticatedGuid is not null &&
+               course.OwnerGuid is null;
+    }
+
 }
