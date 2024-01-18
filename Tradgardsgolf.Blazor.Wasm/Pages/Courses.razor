@@ -128,11 +128,4 @@
         if (result.Data is CourseResponse updatedCourse)
             _courses[_courses.IndexOf(course)] = updatedCourse;
     }
-
-
-    private bool ShowButtons(CourseResponse course)
-    {
-        return AllowPlay(course) || AllowEdit(course);
-    }
-
 }
