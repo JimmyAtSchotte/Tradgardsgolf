@@ -207,4 +207,46 @@ public class CoursesTests
         
         Assert.That(claimOwnerShip.Markup, Is.Not.Empty);
     }
+    
+    [Test]
+    public void InvalidUserId()
+    {
+        using var contextBuilder = new TestContextBuilder();
+        var course = new CourseResponse()
+        {
+            Longitude = 1,
+            Latitude = 1
+        };
+        
+        contextBuilder.UseMock(ApiDispatcherMockSetup(1, course));
+        contextBuilder.UseAuthorization(auth =>
+        {
+            auth.SetAuthorized("test");
+        });
+        
+        var courses = contextBuilder
+            .Build()
+            .RenderComponent<Courses>(parameters =>
+            {
+                parameters.Add(p => p.Location, new Location()
+                {
+                    Longitude = (decimal)course.Longitude,
+                    Latitude = (decimal)course.Latitude,
+                });
+            });
+
+        var claimOwnerShip = courses
+            .FindComponent<CascadingCourse>()
+            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "ClaimOwnerShip");
+        
+        var edit = courses
+            .FindComponent<CascadingCourse>()
+            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "Edit");
+        
+        Assert.Multiple(() =>
+        {
+            Assert.That(claimOwnerShip.Markup, Is.Empty);
+            Assert.That(edit.Markup, Is.Empty);
+        });
+    }
 }

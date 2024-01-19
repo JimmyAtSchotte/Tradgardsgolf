@@ -48,21 +48,10 @@ namespace Tradgardsgolf.BlazorWasm
             
             builder.Services.AddMsalAuthentication(options =>
             {
-                
                 builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
                 options.ProviderOptions.LoginMode = "redirect";
-                
-                /*
-                 * The Blazor WebAssembly template doesn't automatically configure
-                 * the app to request an access token for a secure API. To
-                 * provision an access token as part of the sign-in flow,
-                 * add the scope to the default access token scopes of the
-                 * MsalProviderOptions:
-                 */
-                //options.ProviderOptions.DefaultAccessTokenScopes.Add("{SCOPE URI}");
-                
-                //Specify additional scopes with AdditionalScopesToConsent:
-                //options.ProviderOptions.AdditionalScopesToConsent.Add("{ADDITIONAL SCOPE URI}");
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("openid");
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("offline_access");
             });
 
             builder.Services.AddBlazoredLocalStorage();
