@@ -5,7 +5,7 @@ using Tradgardsgolf.Api.RequestHandling.Course;
 using Tradgardsgolf.Api.ResponseFactory;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Contracts.Types;
-using Tradgardsgolf.Core.Authentication;
+using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Infrastructure;
 using SUT = Tradgardsgolf.Api.RequestHandling.Course.ClaimOwnershipHandler;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tradgardsgolf.Core.Authentication;
+namespace Tradgardsgolf.Core.Auth;
 
 public interface IAuthenticatedUser
 {

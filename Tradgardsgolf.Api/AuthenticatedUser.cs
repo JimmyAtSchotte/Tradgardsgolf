@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Tradgardsgolf.Core.Authentication;
+using Tradgardsgolf.Core.Auth;
 
 namespace Tradgardsgolf.Api;
 

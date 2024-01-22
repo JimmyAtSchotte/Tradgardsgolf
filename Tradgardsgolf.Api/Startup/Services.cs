@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tradgardsgolf.Api.RequestHandling;
-using Tradgardsgolf.Core.Authentication;
+using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Config;
 using Tradgardsgolf.Infrastructure.Database;
 using Tradgardsgolf.Infrastructure.Files;

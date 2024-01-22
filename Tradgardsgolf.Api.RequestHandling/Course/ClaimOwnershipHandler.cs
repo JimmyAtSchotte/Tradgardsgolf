@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Api.ResponseFactory;
 using Tradgardsgolf.Contracts.Course;
-using Tradgardsgolf.Core.Authentication;
+using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course
