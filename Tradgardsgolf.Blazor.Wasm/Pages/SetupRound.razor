@@ -2,9 +2,10 @@
 @using Tradgardsgolf.Contracts.Players
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.BlazorWasm.State
+@using Polly
 @inject IApiDispatcher ApiDispatcher
 @inject NavigationManager NavigationManager
-@inject Blazored.Modal.Services.IModalService  Modal
+@inject Blazored.Modal.Services.IModalService Modal
 
 <CascadingCourse Course="State.AppState.ScorecardState.CourseResponse">
     <CascadingCourseStatistics>
@@ -33,17 +34,36 @@
             </CourseContent>
             <CourseButtons>
                 <Button Clicked="async () => await NewPlayer()"
-                    Color="Color.Primary"
-                        Float="Float.Start">Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon></Button> 
-                <Button Clicked="async () => await Play()" 
-                        Float="Float.End" 
+                        Color="Color.Primary"
+                        Float="Float.Start">
+                    Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon>
+                </Button>
+                <Button Clicked="async () => await Play()"
+                        Float="Float.End"
                         Disabled="!State.AppState.ScorecardState.PlayerScores.Any()"
-                        Color="Color.Primary">Börja spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.PlayArrow"></Icon></Button>
+                        Color="Color.Primary">
+                    Börja spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.PlayArrow"></Icon>
+                </Button>
             </CourseButtons>
         </CourseCard>
 
     </CascadingCourseStatistics>
 </CascadingCourse>
+
+<AuthorizeView>
+    @if (State.AppState.ScorecardState.PlayerScores.All(x => x.PlayerResponse.Name != context.User.Identity.Name))
+    {
+        <Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+            <CardBody>
+                <PlayerListItem Player="new PlayerResponse() { Name = context.User.Identity.Name }">
+                    <Button Clicked="async () => await AddPlayer(context.User.Identity.Name)" Float="Float.End" Color="Color.Primary">
+                        <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add"></Icon>
+                    </Button>
+                </PlayerListItem>
+            </CardBody>
+        </Card>
+    }
+</AuthorizeView>
 
 @if (_availablePlayers == null)
 {
@@ -66,10 +86,10 @@ else if (AvailablePlayers.Any())
     </Card>
 }
 
+
 @code
 {
-    [CascadingParameter]
-    public CascadingStateProvider State { get; set; }
+    [CascadingParameter] public CascadingStateProvider State { get; set; }
 
     private string PlayerName { get; set; }
     private IEnumerable<PlayerResponse> _availablePlayers;
@@ -83,7 +103,7 @@ else if (AvailablePlayers.Any())
         {
             CourseId = State.AppState.ScorecardState.CourseResponse.Id
         }) ?? Array.Empty<PlayerResponse>()).ToList();
-        
+
         await base.OnInitializedAsync();
     }
 
@@ -114,12 +134,11 @@ else if (AvailablePlayers.Any())
     private async Task NewPlayer()
     {
         var playAgain = Modal.Show<NewPlayerModal>("Lägg till ny spelare");
-        
+
         var result = await playAgain.Result;
         if (result.Cancelled)
             return;
 
         await AddPlayer(result.Data.ToString());
-
     }
 }
