@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.Extensions.Options;
 using Tradgardsgolf.Contracts.Settings;
 using Tradgardsgolf.Core.Config;
+using Tradgardsgolf.Core.Exceptions;
 
 namespace Tradgardsgolf.Api.RequestHandling.Configuration;
 

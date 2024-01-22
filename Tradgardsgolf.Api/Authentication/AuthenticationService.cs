@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Tradgardsgolf.Api.RequestHandling;
 using Tradgardsgolf.Core.Auth;
+using Tradgardsgolf.Core.Exceptions;
 
 namespace Tradgardsgolf.Api.Authentication;
 

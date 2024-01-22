@@ -36,6 +36,7 @@ namespace Tradgardsgolf.Api
             builder.ConfigureSerilog();
             builder.ConfigureAutofac();
             builder.ConfigureSwaggerGen(configuration);
+            builder.ConfigureExceptions();
             
             builder.ConfigureServices(configuration);
 

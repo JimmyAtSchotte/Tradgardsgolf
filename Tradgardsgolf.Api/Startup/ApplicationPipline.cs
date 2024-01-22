@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AspNetCore.FriendlyExceptions.Extensions;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -9,6 +10,8 @@ public static class ApplicationPipline
 {
     public static void ConfigureApplicationPipeline(this WebApplication app, IConfigurationRoot configuration)
     {
+      
+        
         if (app.Environment.IsDevelopment())
             app.UseDeveloperExceptionPage();
             
@@ -17,6 +20,8 @@ public static class ApplicationPipline
         app.UseHttpsRedirection();
         app.UseRouting();
         app.UseCors();
+        
+        app.UseFriendlyExceptions();
         
         app.UseAuthentication();
         app.UseAuthorization();

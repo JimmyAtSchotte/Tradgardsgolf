@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AspNetCore.FriendlyExceptions" Version="0.0.1.70" />
         <PackageReference Include="Autofac" Version="7.1.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />   
         <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />   
