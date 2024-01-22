@@ -1,7 +1,8 @@
 ﻿using System;
 
-namespace Tradgardsgolf.Api.RequestHandling;
+namespace Tradgardsgolf.Api.Authentication;
 
 public class UnauthorizedException : Exception
 {
+    
 }
