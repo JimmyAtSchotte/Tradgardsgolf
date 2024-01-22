@@ -1,7 +1,6 @@
 ﻿using ArrangeDependencies.Autofac;
 using ArrangeDependencies.Autofac.Extensions;
 using Moq;
-using Tradgardsgolf.Api.RequestHandling.Course;
 using Tradgardsgolf.Api.ResponseFactory;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Contracts.Types;
@@ -29,7 +28,10 @@ public class ClaimOwnership
             
             dependencies.UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
             dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
-            dependencies.UseMock<IAuthenticatedUser>(mock => mock.Setup(x => x.TryGetAuthenticatedUserId(out authenticatedUser)).Returns(true));
+            dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(new AuthenticatedUser()
+            {
+                UserId = authenticatedUser
+            }));
         });
         
         var handler = arrange.Resolve<SUT>();
@@ -59,7 +61,10 @@ public class ClaimOwnership
             dependencies.UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
             dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
             
-            dependencies.UseMock<IAuthenticatedUser>(mock => mock.Setup(x => x.TryGetAuthenticatedUserId(out authenticatedUser)).Returns(true));
+            dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(new AuthenticatedUser()
+            {
+                UserId = authenticatedUser
+            }));
         });
         
         var handler = arrange.Resolve<SUT>();
@@ -75,34 +80,5 @@ public class ClaimOwnership
             Assert.That(result.OwnerGuid, Is.Not.EqualTo(authenticatedUser));
             Assert.That(course.OwnerGuid, Is.Not.EqualTo(authenticatedUser));
         });
-   
-    }
-    
-    
-    [Test]
-    public void Unauthorized()
-    {
-        var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = 23);
-        
-        var arrange = Arrange.Dependencies<SUT, SUT>(dependencies =>
-        {
-            dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
-            {
-                mock.Setup(x => x.GetByIdAsync(course.Id, It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(course);
-            });
-            dependencies.UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
-            dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
-            
-            dependencies.UseMock<IAuthenticatedUser>(mock => mock.Setup(x => x.TryGetAuthenticatedUserId(out It.Ref<Guid>.IsAny)).Returns(false));
-        });
-        
-        var handler = arrange.Resolve<SUT>();
-        var command = new Contracts.Course.ClaimOwnership()
-        {
-            Id = course.Id
-        };
-        
-        Assert.ThrowsAsync<UnauthorizedException>(async () => await handler.Handle(command, CancellationToken.None));
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Tradgardsgolf.Api.Authentication;
 using Tradgardsgolf.Api.RequestHandling;
 using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Config;
@@ -51,6 +52,6 @@ public static class Services
             
         });
 
-        builder.Services.AddTransient<IAuthenticatedUser, AuthenticatedUser>();
+        builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
     }
 }
