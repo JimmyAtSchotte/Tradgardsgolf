@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -21,10 +22,13 @@ namespace Tradgardsgolf.BlazorWasm.ApiServices
         public async Task<TResponse?> Dispatch<TResponse>(IRequest<TResponse> request)
         {
             var httpClient = httpClientFactory.CreateClient("ApiDispatcher");
+            
             var dispatchUrl = DispatchUrlBuilder.Build(request);
             var requestBody = JsonSerializer.Serialize(request, request.GetType());
-            var response = await httpClient.PostAsync(dispatchUrl,
-                new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, dispatchUrl);
+            requestMessage.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+            
+            var response = await httpClient.SendAsync(requestMessage);
 
             if (response.IsSuccessStatusCode)
                 return await response.Content.ReadFromJsonAsync<TResponse>()

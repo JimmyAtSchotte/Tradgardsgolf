@@ -22,8 +22,8 @@ public static class Autofac
                     Assembly.Load("Tradgardsgolf.Api.ResponseFactory"), 
                 };
 
-                RegistrationExtensions.RegisterAssemblyTypes((ContainerBuilder)containerBuilder, assemblies).AsImplementedInterfaces();
-                RegistrationExtensions.RegisterGeneric((ContainerBuilder)containerBuilder, typeof(Repository<>)).As(typeof(IRepository<>));
+                containerBuilder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();
+                containerBuilder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
             });
     }
 }

@@ -2,7 +2,12 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 
-<RemoteAuthenticatorView Action="@Action" />
+<RemoteAuthenticatorView Action="@Action">
+    <LoggingIn>Loggar in dig, vänta...</LoggingIn>
+    <LogInFailed>Inloggningen misslyckades</LogInFailed>
+    <LogOutSucceeded>Du är nu utloggad</LogOutSucceeded>
+    <LogOut>Du loggas nu ut</LogOut>
+</RemoteAuthenticatorView>
 
 
 @code {

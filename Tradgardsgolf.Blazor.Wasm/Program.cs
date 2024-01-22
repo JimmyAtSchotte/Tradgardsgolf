@@ -44,6 +44,7 @@ namespace Tradgardsgolf.BlazorWasm
                 {
                     client.BaseAddress = new Uri(backend.Url);
                 })
+                .AddHttpMessageHandler<AppendBearerAuthorizationMessageHandler>()
                 .AddPolicyHandler(GetRetryPolicy());
             
             builder.Services.AddMsalAuthentication(options =>
@@ -52,19 +53,18 @@ namespace Tradgardsgolf.BlazorWasm
                 options.ProviderOptions.LoginMode = "redirect";
                 options.ProviderOptions.DefaultAccessTokenScopes.Add("openid");
                 options.ProviderOptions.DefaultAccessTokenScopes.Add("offline_access");
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("https://tradgardsgolf.onmicrosoft.com/api/access");
             });
 
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredModal();
             builder.Services.AddScoped<LocationService>();
+            builder.Services.AddScoped<AppendBearerAuthorizationMessageHandler>();
             builder.Services.AddScoped<IApiDispatcher, ApiDispatcher>();
             builder.Services.AddOptions<Backend>().Bind(builder.Configuration.GetSection("Backend"));
             
             builder.Services
-                .AddBlazorise( options =>
-                {
-                    options.Immediate = true;
-                } )
+                .AddBlazorise( options => options.Immediate = true)
                 .AddMaterialProviders()
                 .AddMaterialIcons();
             

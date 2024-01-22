@@ -82,7 +82,7 @@
                         </TableBody>
                     </Table>
                 </CourseContent>
-                <CourseButtons Visible="State.AppState.ScorecardState.PlayerScores.Any()">
+                <CourseButtons>
                     <Button Clicked="async () => await ChangePlayers()"
                             Disabled="@Saving"
                             Float="Float.Start"

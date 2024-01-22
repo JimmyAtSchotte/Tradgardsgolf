@@ -61,16 +61,12 @@
     private IList<CourseResponse> _courses;
     private int _allowPlayDistance;
     private AuthenticationState _authenticationState;
-    private Guid? _authenticatedGuid;
 
     protected override async Task OnInitializedAsync()
     {
         _allowPlayDistance = (await ApiDispatcher.Dispatch(new AllowPlayDistanceCommand())).Value;
         _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
         _authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        
-        if(_authenticationState.User.TryGetUserId(out var userId));
-            _authenticatedGuid = userId;
         
         OrderCoursesByDistance();
    }
@@ -99,6 +95,8 @@
     
     private bool AllowEdit(CourseResponse course)
     {
+    
+        
         return _authenticationState.User.Identity?.IsAuthenticated == true &&
                _authenticationState.User.TryGetUserId(out var userId) &&
                 userId == course.OwnerGuid;
@@ -115,8 +113,7 @@
     {
         var updatedCourse = await ApiDispatcher.Dispatch(new ClaimOwnership()
         {
-            Id = course.Id,
-            Owner = _authenticatedGuid.GetValueOrDefault()
+            Id = course.Id
         });
         
         _courses[_courses.IndexOf(course)] = updatedCourse;

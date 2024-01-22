@@ -1,10 +1,12 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web;
 using Tradgardsgolf.Api.Startup;
 
 namespace Tradgardsgolf.Api
@@ -25,12 +27,20 @@ namespace Tradgardsgolf.Api
             var builder = WebApplication.CreateBuilder(args);
             builder.Configuration.AddConfiguration(configuration);
             
+            builder.Services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(
+                    jwtBearerOptions => builder.Configuration.Bind("AzureAdB2C", jwtBearerOptions),
+                    identityOptions => builder.Configuration.Bind("AzureAdB2C", identityOptions));
+            
             builder.ConfigureSerilog();
             builder.ConfigureAutofac();
+            builder.ConfigureSwaggerGen(configuration);
+            
             builder.ConfigureServices(configuration);
 
             var app = builder.Build();
-            app.ConfigureApplicationPipeline();
+            app.ConfigureApplicationPipeline(configuration);
             
             var logger = app.Services.GetRequiredService<ILogger<Program>>();
             
