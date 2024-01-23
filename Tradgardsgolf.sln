@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Blazor.Wasm.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Api.RequestHandling.Tests", "Tradgardsgolf.Api.RequestHandling.Tests\Tradgardsgolf.Api.RequestHandling.Tests.csproj", "{DF88ED46-2E1E-4530-8055-636C7F1E71D0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IaC", "IaC", "{B13318B7-CF0E-4E31-971C-E1E1EB5A1283}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
