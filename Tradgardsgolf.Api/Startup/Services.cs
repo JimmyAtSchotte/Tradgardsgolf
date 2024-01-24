@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,27 +32,27 @@ public static class Services
         });
             
         builder.Services.AddLogging();
+        builder.Services.AddApplicationInsightsTelemetry();
             
         builder.Services.AddOptions<AllowPlayDistance>().Bind(configuration.GetSection("AllowPlayDistance"));
         builder.Services.AddOptions<AzureStorageOptions>().Bind(configuration.GetSection("AzureStorage"));
          
-        builder.Services.AddDbContext<TradgardsgolfContext>(builder =>
+        builder.Services.AddDbContext<TradgardsgolfContext>(dbContextOptionsBuilder =>
         {
             var connectionString = configuration.GetConnectionString("Database");
 
             if (string.IsNullOrEmpty(connectionString))
-                builder.UseInMemoryDatabase("Tradgardsgolf");
+                dbContextOptionsBuilder.UseInMemoryDatabase("Tradgardsgolf");
             else
-                builder.UseSqlServer(configuration.GetConnectionString("Database"));
+            {
+                dbContextOptionsBuilder.UseSqlServer(connectionString,
+                    options =>
+                    {
+                        options.EnableRetryOnFailure(10);
+                    });
+            }
         });
         
-            
-        builder.Services.AddApplicationInsightsTelemetry(options =>
-        {
-            options.ConnectionString = configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING");
-            
-        });
-
         builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
     }
 }

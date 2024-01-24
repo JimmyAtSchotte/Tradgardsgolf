@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Infrastructure.Database;
 
@@ -22,7 +23,7 @@ public static class SetupDatabaseExtensions
             await context.SeedData();
             return;
         }
-
+    
         await context.Database.MigrateAsync();
     }
 

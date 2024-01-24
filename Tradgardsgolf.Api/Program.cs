@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
+using Serilog;
 using Tradgardsgolf.Api.Startup;
 
 namespace Tradgardsgolf.Api
@@ -23,6 +24,10 @@ namespace Tradgardsgolf.Api
                 .AddCommandLine(args)
                 .AddAzureAppConfiguration()
                 .Build();
+            
+            Log.Logger = new LoggerConfiguration()
+                .ConfigureSerilog(configuration)
+                .CreateLogger();
 
             var builder = WebApplication.CreateBuilder(args);
             builder.Configuration.AddConfiguration(configuration);
@@ -32,8 +37,8 @@ namespace Tradgardsgolf.Api
                 .AddMicrosoftIdentityWebApi(
                     jwtBearerOptions => builder.Configuration.Bind("AzureAdB2C", jwtBearerOptions),
                     identityOptions => builder.Configuration.Bind("AzureAdB2C", identityOptions));
-            
-            builder.ConfigureSerilog();
+
+            builder.Host.UseSerilog(Log.Logger);
             builder.ConfigureAutofac();
             builder.ConfigureSwaggerGen(configuration);
             builder.ConfigureExceptions();
@@ -43,20 +48,23 @@ namespace Tradgardsgolf.Api
             var app = builder.Build();
             app.ConfigureApplicationPipeline(configuration);
             
-            var logger = app.Services.GetRequiredService<ILogger<Program>>();
-            
             try
             {
                 stopwatch.Stop();
-                logger.LogInformation("Starting up application. Host was built in {time}", stopwatch.Elapsed);
+                Log.Information("Starting up application. Host was built in {time}", stopwatch.Elapsed);
                 
                 await app.SetupDatabase();
                 await app.RunAsync();
             }
             catch (Exception ex)
             {
-                logger.LogCritical(ex, "Application start-up failed");
-            } 
+                Log.Fatal(ex, "Application start-up failed");
+            }
+            finally
+            {
+                Log.Information("Shutting down application. Bye!");
+                await Log.CloseAndFlushAsync();
+            }
         }
     }
 }

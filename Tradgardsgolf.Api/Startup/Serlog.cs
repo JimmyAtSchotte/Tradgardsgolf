@@ -1,6 +1,5 @@
 ﻿using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 
@@ -8,15 +7,22 @@ namespace Tradgardsgolf.Api.Startup;
 
 public static class Serlog
 {
-    public static void ConfigureSerilog(this WebApplicationBuilder builder)
+    public static LoggerConfiguration ConfigureSerilog(this LoggerConfiguration logger, IConfigurationRoot configuration)
     {
-        builder.Host.UseSerilog((context, services, logger) =>
-        {
-            logger.Enrich.FromLogContext();
-            logger.WriteTo.Console();
-            logger.WriteTo
-                .ApplicationInsights(services.GetRequiredService<TelemetryConfiguration>(),
-                    TelemetryConverter.Traces, LogEventLevel.Error);
-        });
+        logger.MinimumLevel.Information();
+        logger.MinimumLevel.Override("Microsoft", LogEventLevel.Warning);
+        logger.Enrich.FromLogContext();
+            
+        logger.WriteTo.Console();
+        
+        var instrumentationKey = configuration.GetValue<string>("ApplicationInsights:InstrumentationKey");
+        
+        if(!string.IsNullOrEmpty(instrumentationKey))
+            logger.WriteTo.ApplicationInsights(new TelemetryConfiguration()
+            {
+                InstrumentationKey = instrumentationKey
+            }, TelemetryConverter.Traces);
+
+        return logger;
     }
 }
