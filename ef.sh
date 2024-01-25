@@ -5,14 +5,21 @@ resource_group="Application"
 server_name="tradgardsgolf-db-srv"
 firewall_rule_name="db-migration"
 
+if command -v jq &> /dev/null; then
+    echo "jq is already installed."
+else
+    echo "Installing jq..."
+    curl -L -o jq.exe https://github.com/stedolan/jq/releases/latest/download/jq-win64.exe
+    chmod +x jq.exe
+fi
+
 echo Login into Azure
 az login
 
+conn=$(az webapp config connection-string list --name tradgardsgolf-api -g $resource_group | ./jq.exe -r '.[] | select(.name == "Database") | .value')
+
 echo Migration name
 read migration
-
-echo Connection string
-read conn
 
 export SQLAZURECONNSTR_Database=$conn
 

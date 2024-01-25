@@ -258,3 +258,4 @@ paket-files/
 *.sln.iml
 *.sqlite
 /Tradgardsgolf.Api/Properties/launchSettings.json
+/jq.exe
