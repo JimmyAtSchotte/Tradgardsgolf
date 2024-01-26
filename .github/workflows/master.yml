@@ -58,7 +58,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
     steps:
 
     - name: Checkout code
@@ -75,5 +74,5 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./IaC/deployToResourceGroup.bicep
-        parameters: 'imagetag=${{ github.sha }} dockerNamespace=${{ secrets.DOCKER_NAMESPACE }}'
+        parameters: 'tag=${{ github.sha }} namespace=${{ secrets.DOCKERIO_USERNAME }}'
         failOnStdErr: false
