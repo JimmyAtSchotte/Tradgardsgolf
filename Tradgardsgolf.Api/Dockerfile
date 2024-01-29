@@ -1,7 +1,7 @@
 # Dockerfile
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
-COPY . .
+COPY .. .
 RUN dotnet restore
 
 FROM build AS publish-api
