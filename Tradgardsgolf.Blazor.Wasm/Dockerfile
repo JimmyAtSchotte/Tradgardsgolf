@@ -5,6 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 COPY .. .
 RUN dotnet restore
+RUN echo "BACKEND_URL: $BACKEND_URL"
 
 # Publish Blazor WebAssembly app
 FROM build AS publish-wasm
@@ -19,6 +20,7 @@ COPY --from=publish-wasm /app/out/wwwroot .
 
 # Replace backend URL in appsettings.json
 RUN sed -i 's|"Backend": ".*"|"Backend": "'"${BACKEND_URL}"'"|' appsettings.json
+RUN cat appsettings.json
 
 # Copy NGINX configuration
 COPY nginx.conf /etc/nginx/nginx.conf
