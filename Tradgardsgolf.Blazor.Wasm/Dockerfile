@@ -23,15 +23,19 @@ CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && \
     sed -i 's|"Backend": ".*"|"Backend": "'"$BACKEND_URL"'"|' appsettings.json && \
     nginx -g 'daemon off;'
 
+COPY Tradgardsgolf.Blazor.Wasm/sshd_config /etc/ssh/
+COPY Tradgardsgolf.Blazor.Wasm/entrypoint.sh ./
+
 # Start and enable SSH
-RUN apk add --no-cache openssh \
+RUN apk add openssh \
     && echo "root:Docker!" | chpasswd \
+    && chmod +x ./entrypoint.sh \
+    && cd /etc/ssh/ \
     && ssh-keygen -A
+
 
 EXPOSE 8000 2222
 
-COPY Tradgardsgolf.Blazor.Wasm/sshd_config /etc/ssh/
-COPY Tradgardsgolf.Blazor.Wasm/entrypoint.sh ./
 
 ENTRYPOINT [ "./entrypoint.sh" ] 
 
