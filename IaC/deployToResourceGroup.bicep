@@ -56,18 +56,9 @@ resource sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
   }  
 }
 
-resource aadAuth 'Microsoft.Sql/servers/azureADOnlyAuthentications@2023-05-01-preview' = {
-  name: 'Default'
-  parent: sqlServer
-  properties: {
-    azureADOnlyAuthentication: true
-  }
-}
-
 resource sqlAdministrator 'Microsoft.Sql/servers/administrators@2023-05-01-preview' = {
   name: 'ActiveDirectory'
   parent: sqlServer
-  dependsOn: [ aadAuth ]
   properties: {
     administratorType: 'ActiveDirectory'
     login: dbConfig.SqlAdminGroupName
@@ -76,7 +67,14 @@ resource sqlAdministrator 'Microsoft.Sql/servers/administrators@2023-05-01-previ
   }
 }
 
-
+resource aadAuth 'Microsoft.Sql/servers/azureADOnlyAuthentications@2023-05-01-preview' = {
+  name: 'Default'
+  parent: sqlServer
+  dependsOn: [ sqlAdministrator ]
+  properties: {
+    azureADOnlyAuthentication: true
+  }
+}
 
 resource database 'Microsoft.Sql/servers/databases@2023-05-01-preview' = {
   name: '${prefix}-db'
@@ -111,14 +109,15 @@ resource webApi 'Microsoft.Web/sites@2023-01-01' = {
     serverFarmId: appServicePlan.id
     siteConfig: {
       linuxFxVersion: 'DOCKER|${container.namespace}/tradgardsgolf-api:${container.tag}'
-    }
-  }
+    }   
+  }    
 }
+
 
 resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
   name: 'web'
   parent: webApi
-  properties: {
+  properties: {  
     connectionStrings: [
       {
         name: 'Database'
@@ -126,7 +125,17 @@ resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
         type: 'SQLAzure'
       }
     ]
+    
   } 
+}
+
+resource webApiHostName 'Microsoft.Web/sites/hostNameBindings@2023-01-01' = {
+  parent: webApi
+  name: '${webApi.name}.azurewebsites.net'
+  properties: {
+    siteName: webApi.name
+    hostNameType: 'Verified'
+  }
 }
 
 resource webApiInsights 'Microsoft.Insights/components@2020-02-02' = {
@@ -150,6 +159,15 @@ resource webApp 'Microsoft.Web/sites@2023-01-01' = {
     }
   }
 }
+
+resource webAppConfig 'Microsoft.Web/sites/config@2023-01-01' = {
+  name: 'appsettings'
+  parent: webApp
+  properties: {
+    BACKEND_URL: webApiHostName.name
+  } 
+}
+
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = { 
   location: location
