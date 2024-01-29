@@ -21,12 +21,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SoultionItems", "SoultionItems", "{DFAFD9C5-6AFE-4C1F-AC0C-9603CA53FBE7}"
 ProjectSection(SolutionItems) = preProject
 	.dockerignore = .dockerignore
-	Dockerfile_wasm = Dockerfile_wasm
 	nginx.conf = nginx.conf
 	.gitignore = .gitignore
 	README.md = README.md
 	ef.sh = ef.sh
-	Dockerfile_api = Dockerfile_api
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Api.Contracts", "Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj", "{3E6860C1-7515-4E91-8957-74BFA092ABEA}"
