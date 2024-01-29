@@ -37,28 +37,50 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
   }
 }
 
-var databaseServerExists = false
+resource sqlServerExisting 'Microsoft.Sql/servers@2023-05-01-preview' existing = {
+  name: '${prefix}-db-srv'
+}
 
-resource databaseServer 'Microsoft.Sql/servers@2023-05-01-preview' =  {
+var sqlServerExists = empty(sqlServerExisting.id)
+
+
+resource sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
   name: '${prefix}-db-srv'
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
-    administratorLogin: databaseServerExists ? null : dbConfig.DefaultSqlUsername
-    administratorLoginPassword: databaseServerExists ? null : dbConfig.DefaultSqlPassword
-    administrators: {
-      administratorType: 'ActiveDirectory'
-      principalType: 'Group'
-      login: dbConfig.SqlAdminGroupName
-      sid: dbConfig.SqlAdminGroupId
-      tenantId: tenant().tenantId
-      azureADOnlyAuthentication: true
-    }
+    administratorLogin: sqlServerExists ? null : dbConfig.DefaultSqlUsername
+    administratorLoginPassword: sqlServerExists ? null : dbConfig.DefaultSqlPassword
   }  
 }
 
+resource aadAuth 'Microsoft.Sql/servers/azureADOnlyAuthentications@2023-05-01-preview' = {
+  name: 'Default'
+  parent: sqlServer
+  properties: {
+    azureADOnlyAuthentication: true
+  }
+}
+
+resource sqlAdministrator 'Microsoft.Sql/servers/administrators@2023-05-01-preview' = {
+  name: 'ActiveDirectory'
+  parent: sqlServer
+  dependsOn: [ aadAuth ]
+  properties: {
+    administratorType: 'ActiveDirectory'
+    login: dbConfig.SqlAdminGroupName
+    sid: dbConfig.SqlAdminGroupId
+    tenantId: tenant().tenantId
+  }
+}
+
+
+
 resource database 'Microsoft.Sql/servers/databases@2023-05-01-preview' = {
   name: '${prefix}-db'
-  parent: databaseServer
+  parent: sqlServer
   location: location
   sku: {
     name: 'GP_S_Gen5'
@@ -100,7 +122,7 @@ resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
     connectionStrings: [
       {
         name: 'Database'
-        connectionString: 'Server=tcp:${databaseServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${database.name};Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";'
+        connectionString: 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${database.name};Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";'
         type: 'SQLAzure'
       }
     ]
