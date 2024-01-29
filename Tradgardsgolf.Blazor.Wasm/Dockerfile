@@ -30,8 +30,8 @@ RUN apk add --no-cache openssh \
 
 EXPOSE 8000 2222
 
-COPY sshd_config /etc/ssh/
-COPY entrypoint.sh ./
+COPY Tradgardsgolf.Blazor.Wasm/sshd_config /etc/ssh/
+COPY Tradgardsgolf.Blazor.Wasm/entrypoint.sh ./
 
 ENTRYPOINT [ "./entrypoint.sh" ] 
 
