@@ -164,7 +164,7 @@ resource webAppConfig 'Microsoft.Web/sites/config@2023-01-01' = {
   name: 'appsettings'
   parent: webApp
   properties: {
-    BACKEND_URL: webApiHostName.name
+    BACKEND_URL: 'https://${webApiHostName.name}/'
   } 
 }
 
