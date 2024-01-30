@@ -1,32 +1,24 @@
-# Dockerfile
-
-# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
-COPY .. .
+COPY . .
 RUN dotnet restore
-RUN echo "BACKEND_URL: $BACKEND_URL"
 
-# Publish Blazor WebAssembly app
 FROM build AS publish-wasm
 RUN dotnet publish Tradgardsgolf.Blazor.Wasm -c Release -o out
 
-# NGINX stage
 FROM nginx:alpine AS final-wasm
 WORKDIR /usr/share/nginx/html
+RUN apk add jq
 
-# Copy static files from the published Blazor WebAssembly app
+COPY ./Tradgardsgolf.Blazor.Wasm/update_blazor_settings.sh /docker-entrypoint.d/update_blazor_settings.sh
+RUN chmod +x /docker-entrypoint.d/update_blazor_settings.sh
+
 COPY --from=publish-wasm /app/out/wwwroot .
 
-# Replace backend URL in appsettings.json
-RUN sed -i 's|"Backend": ".*"|"Backend": "'"${BACKEND_URL}"'"|' appsettings.json
-RUN cat appsettings.json
-
-# Copy NGINX configuration
 COPY nginx.conf /etc/nginx/nginx.conf
+ENTRYPOINT ["/docker-entrypoint.d/update_blazor_settings.sh"]
 
-# Replace $PORT in NGINX configuration with the environment variable
 CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
 
-# Final stage
+# Move the final stage definition to the end
 FROM final-wasm AS final
