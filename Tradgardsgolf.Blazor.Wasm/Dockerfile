@@ -14,9 +14,7 @@ COPY ./Tradgardsgolf.Blazor.Wasm/update_blazor_settings.sh /docker-entrypoint.d/
 RUN chmod +x /docker-entrypoint.d/update_blazor_settings.sh
 
 COPY --from=publish-wasm /app/out/wwwroot .
-
 COPY nginx.conf /etc/nginx/nginx.conf
-ENTRYPOINT ["/docker-entrypoint.d/update_blazor_settings.sh"]
 
 CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
 
