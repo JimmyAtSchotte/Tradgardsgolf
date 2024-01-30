@@ -4,6 +4,7 @@ param resourceGroupName string = 'tradgardsgolf-dev'
 param location string = deployment().location
 param namespace string
 param tag string
+param sqlServerExists bool
 
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
@@ -25,13 +26,14 @@ module deployToResourceGroup 'deployToResourceGroup.bicep' = {
   scope: resourceGroup
   params: {
     namespace: namespace
+    prefix: resourceGroup.name 
     tag: tag
     location: location
-    prefix: resourceGroup.name    
+    sqlServerExists: sqlServerExists
     SqlAdminGroupId: deploymentkeyvalues.getSecret('SqlAdminGroupId')
     SqlAdminGroupName: deploymentkeyvalues.getSecret('SqlAdminGroupName')
     DefaultSqlPassword: deploymentkeyvalues.getSecret('DefaultSqlPassword')
-    DefaultSqlUsername: deploymentkeyvalues.getSecret('DefaultSqlUsername')    
+    DefaultSqlUsername: deploymentkeyvalues.getSecret('DefaultSqlUsername')
   }
 }
 
