@@ -1,11 +1,21 @@
 param location string
 param prefix string
 param sqlServerExists bool
-param dbConfig {
-  DefaultSqlPassword: string
-  DefaultSqlUsername: string
-  SqlAdminGroupId: string
-  SqlAdminGroupName: string
+
+@secure()
+param sqlAdminGroupId string
+@secure()
+param sqlAdminGroupName string
+@secure()
+param defaultSqlPassword string
+@secure()
+param defaultSqlUsername string
+
+var dbConfig = {
+  defaultSqlPassword: defaultSqlPassword
+  defaultSqlUsername: defaultSqlUsername
+  sqlAdminGroupId: sqlAdminGroupId
+  sqlAdminGroupName: sqlAdminGroupName
 }
 
 resource sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
@@ -15,8 +25,8 @@ resource sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
     type: 'SystemAssigned'
   } : null
   properties: !sqlServerExists ? {
-    administratorLogin: dbConfig.DefaultSqlUsername
-    administratorLoginPassword: dbConfig.DefaultSqlPassword
+    administratorLogin: dbConfig.defaultSqlUsername
+    administratorLoginPassword: dbConfig.defaultSqlPassword
   } : null
 }
 
@@ -25,8 +35,8 @@ resource sqlAdministrator 'Microsoft.Sql/servers/administrators@2023-05-01-previ
   parent: sqlServer
   properties: {
     administratorType: 'ActiveDirectory'
-    login: dbConfig.SqlAdminGroupName
-    sid: dbConfig.SqlAdminGroupId
+    login: dbConfig.sqlAdminGroupName
+    sid: dbConfig.sqlAdminGroupId
     tenantId: tenant().tenantId
   }
 }
