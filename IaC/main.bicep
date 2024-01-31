@@ -11,11 +11,6 @@ var container = {
   tag: tag
 }
 
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
-  name: resourceGroupName
-  location: location 
-}
-
 resource deploymentResourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' existing = {
   name: 'deployment'
 }
@@ -23,6 +18,11 @@ resource deploymentResourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01'
 resource deploymentkeyvalues 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: 'deploymentkeyvalues'
   scope: deploymentResourceGroup
+}
+
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
+  name: resourceGroupName
+  location: location 
 }
 
 module appServicePlan 'appServicePlan.bicep' = {
@@ -56,9 +56,10 @@ module webApi 'webApi.bicep' = {
     prefix: resourceGroupName
     appServicePlanId: appServicePlan.outputs.id
     container: container
-    configuration: {
-      connectionstring: sqlServer.outputs.connectionstring
-    }
+    sqlServer: sqlServer.outputs.server
+    database: sqlServer.outputs.database
+    sqlUsername: deploymentkeyvalues.getSecret('DefaultSqlUsername')
+    sqlPassword: deploymentkeyvalues.getSecret('DefaultSqlPassword')    
   }
   dependsOn: [ sqlServer, appServicePlan ]
 }

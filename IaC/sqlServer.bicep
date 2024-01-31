@@ -41,12 +41,13 @@ resource sqlAdministrator 'Microsoft.Sql/servers/administrators@2023-05-01-previ
   }
 }
 
-resource aadAuth 'Microsoft.Sql/servers/azureADOnlyAuthentications@2023-05-01-preview' = {
-  name: 'Default'
+
+resource SQLAllowAllWindowsAzureIps 'Microsoft.Sql/servers/firewallRules@2023-05-01-preview' = {
+  name: 'AllowAllWindowsAzureIps'
   parent: sqlServer
-  dependsOn: [ sqlAdministrator ]
   properties: {
-    azureADOnlyAuthentication: true
+    startIpAddress: '0.0.0.0'
+    endIpAddress: '0.0.0.0'
   }
 }
 
@@ -75,4 +76,7 @@ resource database 'Microsoft.Sql/servers/databases@2023-05-01-preview' = {
   } 
 }
 
-output connectionstring string = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${database.name};Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";'
+output server string = sqlServer.properties.fullyQualifiedDomainName
+output database string = database.name
+
+
