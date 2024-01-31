@@ -6,22 +6,42 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tradgardsgolf.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "course",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Holes = table.Column<int>(type: "int", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ScoreReset = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OwnerGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_course", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "player",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    strEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    strPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    strKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    strName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    dtmCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Key = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,36 +54,11 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    strName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tournament", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "course",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    strName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    intHoles = table.Column<int>(type: "int", nullable: false),
-                    dblLongitude = table.Column<double>(type: "float", nullable: false),
-                    dblLatitude = table.Column<double>(type: "float", nullable: false),
-                    intCreatedBy = table.Column<int>(type: "int", nullable: false),
-                    dtmCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    dtmScoreReset = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_course", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_course_player_intCreatedBy",
-                        column: x => x.intCreatedBy,
-                        principalTable: "player",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,15 +67,15 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    intCourseId = table.Column<int>(type: "int", nullable: false),
-                    dtmDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_round", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_round_course_intCourseId",
-                        column: x => x.intCourseId,
+                        name: "FK_round_course_CourseId",
+                        column: x => x.CourseId,
                         principalTable: "course",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -92,22 +87,22 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    intTournamentId = table.Column<int>(type: "int", nullable: false),
-                    intCourseId = table.Column<int>(type: "int", nullable: false),
-                    dtmDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    TournamentId = table.Column<int>(type: "int", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tournamentcoursedate", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_tournamentcoursedate_course_intCourseId",
-                        column: x => x.intCourseId,
+                        name: "FK_tournamentcoursedate_course_CourseId",
+                        column: x => x.CourseId,
                         principalTable: "course",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_tournamentcoursedate_tournament_intTournamentId",
-                        column: x => x.intTournamentId,
+                        name: "FK_tournamentcoursedate_tournament_TournamentId",
+                        column: x => x.TournamentId,
                         principalTable: "tournament",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -119,23 +114,23 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    intRoundId = table.Column<int>(type: "int", nullable: false),
-                    intHole = table.Column<int>(type: "int", nullable: false),
-                    intPlayerId = table.Column<int>(type: "int", nullable: false),
-                    intScore = table.Column<int>(type: "int", nullable: false)
+                    RoundId = table.Column<int>(type: "int", nullable: false),
+                    Hole = table.Column<int>(type: "int", nullable: false),
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
+                    Score = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_roundscore", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_roundscore_player_intPlayerId",
-                        column: x => x.intPlayerId,
+                        name: "FK_roundscore_player_PlayerId",
+                        column: x => x.PlayerId,
                         principalTable: "player",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_roundscore_round_intRoundId",
-                        column: x => x.intRoundId,
+                        name: "FK_roundscore_round_RoundId",
+                        column: x => x.RoundId,
                         principalTable: "round",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -147,65 +142,61 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    intTournamentId = table.Column<int>(type: "int", nullable: false),
-                    intCourseId = table.Column<int>(type: "int", nullable: false)
+                    TournamentId = table.Column<int>(type: "int", nullable: false),
+                    RoundId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tournamentround", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_tournamentround_round_intCourseId",
-                        column: x => x.intCourseId,
+                        name: "FK_tournamentround_round_RoundId",
+                        column: x => x.RoundId,
                         principalTable: "round",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_tournamentround_tournament_intTournamentId",
-                        column: x => x.intTournamentId,
+                        name: "FK_tournamentround_tournament_TournamentId",
+                        column: x => x.TournamentId,
                         principalTable: "tournament",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_course_intCreatedBy",
-                table: "course",
-                column: "intCreatedBy");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_round_intCourseId",
+                name: "IX_round_CourseId",
                 table: "round",
-                column: "intCourseId");
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_roundscore_intPlayerId",
+                name: "IX_roundscore_PlayerId",
                 table: "roundscore",
-                column: "intPlayerId");
+                column: "PlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_roundscore_intRoundId",
+                name: "IX_roundscore_RoundId",
                 table: "roundscore",
-                column: "intRoundId");
+                column: "RoundId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tournamentcoursedate_intCourseId",
+                name: "IX_tournamentcoursedate_CourseId",
                 table: "tournamentcoursedate",
-                column: "intCourseId");
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tournamentcoursedate_intTournamentId",
+                name: "IX_tournamentcoursedate_TournamentId",
                 table: "tournamentcoursedate",
-                column: "intTournamentId");
+                column: "TournamentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tournamentround_intCourseId",
+                name: "IX_tournamentround_RoundId",
                 table: "tournamentround",
-                column: "intCourseId");
+                column: "RoundId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_tournamentround_intTournamentId",
+                name: "IX_tournamentround_TournamentId",
                 table: "tournamentround",
-                column: "intTournamentId");
+                column: "TournamentId");
         }
 
         /// <inheritdoc />
@@ -221,6 +212,9 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                 name: "tournamentround");
 
             migrationBuilder.DropTable(
+                name: "player");
+
+            migrationBuilder.DropTable(
                 name: "round");
 
             migrationBuilder.DropTable(
@@ -228,9 +222,6 @@ namespace Tradgardsgolf.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "course");
-
-            migrationBuilder.DropTable(
-                name: "player");
         }
     }
 }

@@ -12,8 +12,8 @@ using Tradgardsgolf.Infrastructure.Database;
 namespace Tradgardsgolf.Infrastructure.Migrations
 {
     [DbContext(typeof(TradgardsgolfContext))]
-    [Migration("20240117134948_OwnerGuid")]
-    partial class OwnerGuid
+    [Migration("20240131124307_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,36 +34,28 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("dtmCreated");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Holes")
-                        .HasColumnType("int")
-                        .HasColumnName("intHoles");
+                        .HasColumnType("int");
 
                     b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("strImage");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Latitude")
-                        .HasColumnType("float")
-                        .HasColumnName("dblLatitude");
+                        .HasColumnType("float");
 
                     b.Property<double>("Longitude")
-                        .HasColumnType("float")
-                        .HasColumnName("dblLongitude");
+                        .HasColumnType("float");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("strName");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("OwnerGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("strOwnerGuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("ScoreReset")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("dtmScoreReset");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -79,24 +71,19 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("dtmCreated");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("strEmail");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Key")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("strKey");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("strName");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("strPassword");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -112,12 +99,10 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
-                        .HasColumnType("int")
-                        .HasColumnName("intCourseId");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("dtmDate");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -135,20 +120,16 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Hole")
-                        .HasColumnType("int")
-                        .HasColumnName("intHole");
+                        .HasColumnType("int");
 
                     b.Property<int>("PlayerId")
-                        .HasColumnType("int")
-                        .HasColumnName("intPlayerId");
+                        .HasColumnType("int");
 
                     b.Property<int>("RoundId")
-                        .HasColumnType("int")
-                        .HasColumnName("intRoundId");
+                        .HasColumnType("int");
 
                     b.Property<int>("Score")
-                        .HasColumnType("int")
-                        .HasColumnName("intScore");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -168,8 +149,7 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("strName");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -185,16 +165,13 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
-                        .HasColumnType("int")
-                        .HasColumnName("intCourseId");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("dtmDate");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TournamentId")
-                        .HasColumnType("int")
-                        .HasColumnName("intTournamentId");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -214,16 +191,15 @@ namespace Tradgardsgolf.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("RoundId")
-                        .HasColumnType("int")
-                        .HasColumnName("intCourseId");
+                        .HasColumnType("int");
 
                     b.Property<int>("TournamentId")
-                        .HasColumnType("int")
-                        .HasColumnName("intTournamentId");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoundId");
+                    b.HasIndex("RoundId")
+                        .IsUnique();
 
                     b.HasIndex("TournamentId");
 
@@ -282,8 +258,8 @@ namespace Tradgardsgolf.Infrastructure.Migrations
             modelBuilder.Entity("Tradgardsgolf.Core.Entities.TournamentRound", b =>
                 {
                     b.HasOne("Tradgardsgolf.Core.Entities.Round", "Round")
-                        .WithMany()
-                        .HasForeignKey("RoundId")
+                        .WithOne()
+                        .HasForeignKey("Tradgardsgolf.Core.Entities.TournamentRound", "RoundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -12,5 +12,16 @@ namespace Tradgardsgolf.Infrastructure.Database
         public DbSet<Tournament> Tournament { get; set; }
         public DbSet<TournamentRound> TournamentRound { get; set; }
         public DbSet<TournamentCourseDate> TournamentCourseDate { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TournamentRound>()
+                .HasOne(tournamentRound => tournamentRound.Round)
+                .WithOne()
+                .HasForeignKey<TournamentRound>(tournamentRound => tournamentRound.RoundId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

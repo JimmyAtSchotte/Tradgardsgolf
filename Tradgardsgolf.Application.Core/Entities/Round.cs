@@ -16,9 +16,7 @@ namespace Tradgardsgolf.Core.Entities
         public int Id { get; set; }
         public int CourseId { get; private set; }
         public DateTime Date { get; private set; }
-
         public Course Course { get; private set; }
-
         public ICollection<RoundScore> RoundScores
         {
             get => _roundScores ??= new List<RoundScore>();

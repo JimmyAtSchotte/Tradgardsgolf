@@ -11,8 +11,6 @@ namespace Tradgardsgolf.Core.Entities
         public int Hole { get; private set; }
         public int PlayerId { get; private set; }
         public int Score { get; private set; }
-        
-        
         public Round Round { get; private set; }
         public Player Player { get; private set; }
         private RoundScore()
