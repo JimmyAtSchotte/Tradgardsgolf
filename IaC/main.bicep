@@ -80,6 +80,14 @@ module webApp 'webApp.bicep' = {
   dependsOn: [ webApi, appServicePlan ]
 }
 
+module storage 'storage.bicep' = {
+  name: 'storage'
+  scope: resourceGroup
+  params: {
+    location: location
+  }
+}
+
 module configuration 'configuration.bicep' = {
   name: 'configuration'
   scope: resourceGroup
@@ -90,9 +98,13 @@ module configuration 'configuration.bicep' = {
       webApi: {
         InstrumentationKey: webApi.outputs.instrumentationKey
       }
+      storage: {
+        connectionString: storage.outputs.connectionString
+        container: storage.outputs.container
+      }
     }
   }
-  dependsOn: [ webApi ]
+  dependsOn: [ webApi, storage ]
 }
 
 
