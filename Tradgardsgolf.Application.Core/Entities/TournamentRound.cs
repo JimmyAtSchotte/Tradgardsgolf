@@ -8,11 +8,7 @@ public class TournamentRound : BaseEntity<TournamentRound>
 {
     [Key]
     public int Id { get; set; }
-        
-    [Column("intTournamentId")]
     public int TournamentId { get; set; }
-        
-    [Column("intCourseId")]
     public int RoundId { get; set; }
 
     public Tournament Tournament { get; set; }

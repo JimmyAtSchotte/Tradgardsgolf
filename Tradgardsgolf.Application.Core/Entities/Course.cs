@@ -13,28 +13,16 @@ namespace Tradgardsgolf.Core.Entities
 
         [Key]
         public int Id { get; set; }
-        [Column("strName")]
         public string Name { get; set; }
-        [Column("intHoles")]
         public int Holes { get; set; }
-        [Column("dblLongitude")]
         public double Longitude { get; set; }
-        [Column("dblLatitude")]
         public double Latitude { get; set; }
-
-        [Column("dtmCreated")]
         public DateTime Created { get; private set; }
-        
-        [Column("dtmScoreReset")]
         public DateTime? ScoreReset { get; set; }
-        
-        [Column("strImage")]
         public string Image { get; set; }
-        
-        [Column("strOwnerGuid")]
         public Guid OwnerGuid { get; set; }
 
-        public virtual ICollection<Round> Rounds
+        public ICollection<Round> Rounds
         {
             get => _rounds ??= new List<Round>();
             set => _rounds = value;

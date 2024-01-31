@@ -12,21 +12,17 @@ namespace Tradgardsgolf.Core.Entities
     {
         [Key]
         public int Id { get; set; }
-        [Column("strEmail")]
         public string Email { get; set; }
-        [Column("strPassword")]
         public string Password { get; set; }
-        [Column("strKey")]
         public string Key { get; set; }
-        [Column("strName")]
         public string Name { get; set; }
-        [Column("dtmCreated")]
         public DateTime Created { get; private set; }
         
-        public virtual ICollection<RoundScore> RoundScores { get; set; }
+        public ICollection<RoundScore> RoundScores { get; set; }
 
         private Player()
         {
+            
         }
 
         private Player(DateTime created)

@@ -14,16 +14,12 @@ namespace Tradgardsgolf.Core.Entities
 
         [Key]
         public int Id { get; set; }
-
-        [Column("intCourseId")]
         public int CourseId { get; private set; }
-        public Course Course { get; private set; }
-
-        [Column("dtmDate")]
         public DateTime Date { get; private set; }
 
+        public Course Course { get; private set; }
 
-        public virtual ICollection<RoundScore> RoundScores
+        public ICollection<RoundScore> RoundScores
         {
             get => _roundScores ??= new List<RoundScore>();
             set => _roundScores = value;

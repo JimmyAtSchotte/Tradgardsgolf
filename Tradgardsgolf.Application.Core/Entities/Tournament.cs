@@ -12,8 +12,6 @@ namespace Tradgardsgolf.Core.Entities
 
         [Key]
         public int Id { get; set; }
-        
-        [Column("strName")]
         public string Name { get; set; }
         
         public ICollection<TournamentCourseDate> TournamentCourseDates
