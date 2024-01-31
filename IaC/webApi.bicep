@@ -16,6 +16,11 @@ param container {
   tag: string
 }
 
+param storage {
+  connectionString: string
+  container: string
+}
+
 
 resource webApi 'Microsoft.Web/sites@2023-01-01' = {
   name: '${prefix}-api'
@@ -32,19 +37,7 @@ resource webApi 'Microsoft.Web/sites@2023-01-01' = {
   }
 }
 
-resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
-  name: 'web'
-  parent: webApi
-  properties: {  
-    connectionStrings: [
-      {
-        name: 'Database'
-        connectionString: 'Server=tcp:${sqlServer},1433;Initial Catalog=${database};Persist Security Info=False;User ID=${sqlUsername};Password=${sqlPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
-        type: 'SQLAzure'
-      }
-    ]    
-  } 
-}
+
 
 resource webApiHostName 'Microsoft.Web/sites/hostNameBindings@2023-01-01' = {
   parent: webApi
@@ -64,6 +57,39 @@ resource webApiInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
+
+resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
+  name: 'web'
+  parent: webApi
+  properties: {
+    appSettings: [
+      {
+        name: 'AllowPlayDistance__Value'
+        value: '400'
+      }
+      {
+        name: 'AzureStorage__ConnectionString'
+        value: storage.connectionString
+      }
+      {
+        name: 'AzureStorage__Container'
+        value: storage.container
+      }
+      {
+        name: 'ApplicationInsights__InstrumentationKey'
+        value: webApiInsights.properties.InstrumentationKey
+      }      
+    ]
+    
+    connectionStrings: [
+      {
+        name: 'Database'
+        connectionString: 'Server=tcp:${sqlServer},1433;Initial Catalog=${database};Persist Security Info=False;User ID=${sqlUsername};Password=${sqlPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+        type: 'SQLAzure'
+      }
+    ]    
+  } 
+}
+
 output apiUrl string = 'https://${webApiHostName.name}/'
-output instrumentationKey string = webApiInsights.properties.InstrumentationKey
 

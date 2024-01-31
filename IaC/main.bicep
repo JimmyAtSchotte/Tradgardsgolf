@@ -59,9 +59,13 @@ module webApi 'webApi.bicep' = {
     sqlServer: sqlServer.outputs.server
     database: sqlServer.outputs.database
     sqlUsername: deploymentkeyvalues.getSecret('DefaultSqlUsername')
-    sqlPassword: deploymentkeyvalues.getSecret('DefaultSqlPassword')    
+    sqlPassword: deploymentkeyvalues.getSecret('DefaultSqlPassword')
+    storage: {
+      connectionString: storage.outputs.connectionString
+      container: storage.outputs.container
+    }
   }
-  dependsOn: [ sqlServer, appServicePlan ]
+  dependsOn: [ sqlServer, appServicePlan, storage ]
 }
 
 
@@ -88,23 +92,5 @@ module storage 'storage.bicep' = {
   }
 }
 
-module configuration 'configuration.bicep' = {
-  name: 'configuration'
-  scope: resourceGroup
-  params: {
-    location: location
-    prefix: resourceGroupName
-    configuration: {
-      webApi: {
-        InstrumentationKey: webApi.outputs.instrumentationKey
-      }
-      storage: {
-        connectionString: storage.outputs.connectionString
-        container: storage.outputs.container
-      }
-    }
-  }
-  dependsOn: [ webApi, storage ]
-}
 
 

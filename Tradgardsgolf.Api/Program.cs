@@ -22,7 +22,6 @@ namespace Tradgardsgolf.Api
             var configuration = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
                 .AddCommandLine(args)
-                .AddAzureAppConfiguration()
                 .Build();
             
             Log.Logger = new LoggerConfiguration()
