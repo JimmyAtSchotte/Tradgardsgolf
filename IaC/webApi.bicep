@@ -3,9 +3,6 @@ param prefix string
 param appServicePlanId string
 
 @secure()
-param sqlUsername string
-
-@secure()
 param sqlPassword string
 
 param sqlServer string
@@ -84,7 +81,7 @@ resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
     connectionStrings: [
       {
         name: 'Database'
-        connectionString: 'Server=tcp:${sqlServer},1433;Initial Catalog=${database};Persist Security Info=False;User ID=${sqlUsername};Password=${sqlPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+        connectionString: 'Server=tcp:${sqlServer},1433;Initial Catalog=${database};Persist Security Info=False;User ID=${database};Password=${sqlPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
         type: 'SQLAzure'
       }
     ]    

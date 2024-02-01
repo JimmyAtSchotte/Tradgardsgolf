@@ -55,7 +55,6 @@ module webApi 'webApi.bicep' = {
     container: container
     sqlServer: sqlServer.outputs.server
     database: sqlServer.outputs.database
-    sqlUsername: deploymentkeyvalues.getSecret('DefaultSqlUsername')
     sqlPassword: deploymentkeyvalues.getSecret('DefaultSqlPassword')
     storage: {
       connectionString: storage.outputs.connectionString
