@@ -4,7 +4,6 @@ param resourceGroupName string = 'tradgardsgolf-dev'
 param location string = deployment().location
 param namespace string
 param tag string
-param sqlServerExists bool
 
 var container = {
   namespace: namespace
@@ -22,7 +21,7 @@ resource deploymentkeyvalues 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   name: resourceGroupName
-  location: location 
+  location: location
 }
 
 module appServicePlan 'appServicePlan.bicep' = {
@@ -40,9 +39,7 @@ module sqlServer 'sqlServer.bicep' = {
   params: {
     location: location
     prefix: resourceGroupName
-    sqlServerExists: sqlServerExists   
     defaultSqlPassword: deploymentkeyvalues.getSecret('DefaultSqlPassword')
-    defaultSqlUsername: deploymentkeyvalues.getSecret('DefaultSqlUsername')
     sqlAdminGroupId: deploymentkeyvalues.getSecret('SqlAdminGroupId')
     sqlAdminGroupName: deploymentkeyvalues.getSecret('SqlAdminGroupName')
   }  

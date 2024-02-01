@@ -1,6 +1,5 @@
 param location string
 param prefix string
-param sqlServerExists bool
 
 @secure()
 param sqlAdminGroupId string
@@ -8,12 +7,10 @@ param sqlAdminGroupId string
 param sqlAdminGroupName string
 @secure()
 param defaultSqlPassword string
-@secure()
-param defaultSqlUsername string
 
 var dbConfig = {
   defaultSqlPassword: defaultSqlPassword
-  defaultSqlUsername: defaultSqlUsername
+  username: '${prefix}-db'
   sqlAdminGroupId: sqlAdminGroupId
   sqlAdminGroupName: sqlAdminGroupName
 }
@@ -21,13 +18,13 @@ var dbConfig = {
 resource sqlServer 'Microsoft.Sql/servers@2023-05-01-preview' = {
   name: '${prefix}-db-srv'
   location: location
-  identity: !sqlServerExists ? {
+  identity: {
     type: 'SystemAssigned'
-  } : null
-  properties: !sqlServerExists ? {
-    administratorLogin: dbConfig.defaultSqlUsername
+  } 
+  properties: {
+    administratorLogin: dbConfig.username
     administratorLoginPassword: dbConfig.defaultSqlPassword
-  } : null
+  }
 }
 
 resource sqlAdministrator 'Microsoft.Sql/servers/administrators@2023-05-01-preview' = {
