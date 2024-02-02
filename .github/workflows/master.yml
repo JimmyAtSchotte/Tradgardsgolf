@@ -56,23 +56,22 @@ jobs:
         tags: ${{ secrets.DOCKER_NAMESPACE }}/tradgardsgolf-wasm:${{ github.sha }}
         file: ./Tradgardsgolf.Blazor.Wasm/Dockerfile
 
-#  deploy:
-#    runs-on: ubuntu-latest
-#    steps:
-#
-#    - name: Checkout code
-#      uses: actions/checkout@main
-#
-#    - name: Log into Azure
-#      uses: azure/login@v1
-#      with:
-#        creds: ${{ secrets.AZURE_CREDENTIALS }}
-#
-#    - name: Deploy Bicep file
-#      uses: azure/arm-deploy@v1
-#      with:
-#        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-#        resourceGroupName: ${{ secrets.AZURE_RG }}
-#        template: ./IaC/deployToResourceGroup.bicep
-#        parameters: 'tag=${{ github.sha }} namespace=${{ secrets.DOCKERIO_USERNAME }}'
-#        failOnStdErr: false
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: Log into Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy Bicep file
+        run: |
+          az deployment sub create \
+            --template-file ./IaC/main.bicep \
+            --location swedencentral \
+            --name "GitHubDeployment" \
+            --parameters 'namespace=${{ secrets.DOCKERIO_USERNAME }} tag=${{ github.sha }} resourceGroupName=${{ secrets.AZURE_RG }}' \
