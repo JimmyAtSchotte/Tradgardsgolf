@@ -67,8 +67,8 @@ resource database 'Microsoft.Sql/servers/databases@2023-05-01-preview' = {
     autoPauseDelay: 60
     requestedBackupStorageRedundancy: 'Local'
     isLedgerOn: false
-    //useFreeLimit: true
-    //freeLimitExhaustionBehavior: 'AutoPause'
+    useFreeLimit: true
+    freeLimitExhaustionBehavior: 'AutoPause'
     availabilityZone: 'NoPreference'
   } 
 }

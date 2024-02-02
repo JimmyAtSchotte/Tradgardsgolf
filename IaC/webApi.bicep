@@ -45,12 +45,23 @@ resource webApiHostName 'Microsoft.Web/sites/hostNameBindings@2023-01-01' = {
   }
 }
 
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+  name: '${webApi.name}-analytics-workspace'
+  location: location
+  properties: {
+    sku: {
+      name: 'PerGB2018'
+    }
+  }
+}
+
 resource webApiInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: '${webApi.name}-insights'
   location: location
   kind: 'web'
   properties: {
     Application_Type: 'web'
+    WorkspaceResourceId: logAnalyticsWorkspace.id    
   }
 }
 
