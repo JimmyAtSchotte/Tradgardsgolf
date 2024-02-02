@@ -75,4 +75,4 @@ jobs:
             --template-file ./IaC/main.bicep \
             --location swedencentral \
             --name "GitHubDeployment" \
-            --parameters 'namespace=${{ secrets.DOCKERIO_USERNAME }} tag=${{ github.sha }} resourceGroupName=${{ secrets.AZURE_RG }}' \
+            --parameters namespace=${{ secrets.DOCKERIO_USERNAME }} tag=${{ github.sha }} resourceGroupName=${{ secrets.AZURE_RG }} \
