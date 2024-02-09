@@ -49,7 +49,7 @@ public static class CheckBudgetTrigger
     
     private static async Task PublishBudgetSpentEventAsync()
     {
-        var endpoint = "YOUR_EVENT_GRID_TOPIC_ENDPOINT";
+        var endpoint = Environment.GetEnvironmentVariable("EventGridTopicEndpoint");
         var credential = new DefaultAzureCredential();
         var client = new EventGridPublisherClient(new Uri(endpoint), credential);
 
