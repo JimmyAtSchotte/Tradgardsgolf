@@ -33,6 +33,14 @@ module appServicePlan 'appServicePlan.bicep' = {
   }
 }
 
+module storage 'storage.bicep' = {
+  name: 'storage'
+  scope: resourceGroup
+  params: {
+    location: location
+  }
+}
+
 module sqlServer 'sqlServer.bicep' = {  
   name: 'sqlServer'
   scope: resourceGroup
@@ -64,7 +72,6 @@ module webApi 'webApi.bicep' = {
   dependsOn: [ sqlServer, appServicePlan, storage ]
 }
 
-
 module webApp 'webApp.bicep' = {
   name: 'webApp'  
   scope: resourceGroup
@@ -80,13 +87,15 @@ module webApp 'webApp.bicep' = {
   dependsOn: [ webApi, appServicePlan ]
 }
 
-module storage 'storage.bicep' = {
-  name: 'storage'
+module functions 'functions.bicep' = {
+  name: 'functions'
   scope: resourceGroup
   params: {
     location: location
+    prefix: resourceGroupName
+    storageAccountConnectionString: storage.outputs.connectionString
   }
+  dependsOn: [ storage ]
 }
-
 
 
