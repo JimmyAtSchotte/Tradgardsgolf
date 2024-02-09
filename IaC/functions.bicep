@@ -57,3 +57,11 @@ resource functions 'Microsoft.Web/sites@2023-01-01' = {
     }
   }
 }
+
+resource functionsConfig 'Microsoft.Web/sites/config@2023-01-01' = {
+  name: 'web'
+  parent: functions
+  properties: {
+    netFrameworkVersion: 'v8.0' 
+  } 
+}
