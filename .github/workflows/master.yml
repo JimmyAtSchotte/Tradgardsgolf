@@ -84,10 +84,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@main
       
-      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      - name: Setup DotNet Environment
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: 8.0.100
           
       - name: Resolve Project Dependencies Using Dotnet
         shell: bash
