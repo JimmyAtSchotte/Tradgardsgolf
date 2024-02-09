@@ -91,10 +91,7 @@ jobs:
           
       - name: Resolve Project Dependencies Using Dotnet
         shell: bash
-        run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          dotnet build --configuration Release --output ./output
-          popd
+        run: dotnet build Tradgardsgolf.AzureFunctions --configuration Release --output ./output
           
       - name: Log into Azure
         uses: azure/login@v1
@@ -106,7 +103,7 @@ jobs:
         id: fa
         with:
           app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME }}
-          package: '${{ secrets.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+          package: '/output'
       
       
       
