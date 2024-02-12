@@ -25,6 +25,9 @@ resource functions 'Microsoft.Web/sites@2023-01-01' = {
   name: '${prefix}-functions'
   location: location
   kind: 'functionapp,linux'
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
