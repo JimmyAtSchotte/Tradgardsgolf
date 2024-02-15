@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Azure.Identity;
 using Azure.Messaging.EventGrid;
 using Azure.ResourceManager;
+using Azure.ResourceManager.AppService;
 using Azure.ResourceManager.Consumption;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -40,11 +41,26 @@ public static class CheckBudgetTrigger
         if (budget.Data.CurrentSpend.Amount > budget.Data.Amount)
         {
             log.LogInformation($"Budget is spent! You ruin me!");
-
-            await PublishBudgetSpentEventAsync();
+            await StopWebApi(log);
         }
         else
             log.LogInformation($"Budget is fine");
+    }
+
+    private static async Task StopWebApi(ILogger log)
+    {
+        var client = new ArmClient(new DefaultAzureCredential());
+        var subscription = await client.GetDefaultSubscriptionAsync();
+        
+        var resourceGroup = subscription
+            .GetResourceGroups()
+            .FirstOrDefault(x => x.Data.Name == "tradgardsgolf-api");
+        
+        var api = client.GetWebSiteResource(resourceGroup.Id);
+        await api.StopAsync();
+      
+        log.LogInformation($"Api has stopped");
+        
     }
     
     private static async Task PublishBudgetSpentEventAsync()
@@ -59,7 +75,7 @@ public static class CheckBudgetTrigger
             dataVersion: "1.0",
             data: new BudgetSpentEventData()
         );
-
+        
         await client.SendEventAsync(eventGridEvent);
     }
 
