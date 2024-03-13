@@ -100,4 +100,5 @@ resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
 }
 
 output apiUrl string = 'https://${webApiHostName.name}/'
+output principalId string = webApi.identity.principalId
 

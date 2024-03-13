@@ -50,3 +50,4 @@ var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName
 
 output connectionString string = storageAccountConnectionString
 output container string = imageContainer.name
+output storageAccountName string = storageAccount.name

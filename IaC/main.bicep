@@ -99,3 +99,13 @@ module functions 'functions.bicep' = {
 }
 
 
+module storageAccountRBAC 'storageAccountRBAC.bicep' = {
+  name: 'storageAccountRBAC'
+  scope: resourceGroup
+  params: {
+    storageAccountName: storage.outputs.storageAccountName
+    principalId: webApi.outputs.principalId
+    roleDefinitionId: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+    principalType: 'ServicePrincipal'
+  }
+}

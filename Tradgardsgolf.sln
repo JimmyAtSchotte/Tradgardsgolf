@@ -49,6 +49,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Api.RequestHandling.Tests", "Tradgardsgolf.Api.RequestHandling.Tests\Tradgardsgolf.Api.RequestHandling.Tests.csproj", "{DF88ED46-2E1E-4530-8055-636C7F1E71D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IaC", "IaC", "{B13318B7-CF0E-4E31-971C-E1E1EB5A1283}"
+	ProjectSection(SolutionItems) = preProject
+		IaC\functions.bicep = IaC\functions.bicep
+		IaC\appServicePlan.bicep = IaC\appServicePlan.bicep
+		IaC\main.bicep = IaC\main.bicep
+		IaC\sqlServer.bicep = IaC\sqlServer.bicep
+		IaC\storage.bicep = IaC\storage.bicep
+		IaC\webApi.bicep = IaC\webApi.bicep
+		IaC\webApp.bicep = IaC\webApp.bicep
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Azure Functions", "04 Azure Functions", "{69C1E831-BA49-496E-9089-57C8333B6619}"
 EndProject
