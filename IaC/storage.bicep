@@ -46,7 +46,7 @@ resource imageContainer 'Microsoft.Storage/storageAccounts/blobServices/containe
   name: 'images'
 }
 
-var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};'
+var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
 
 output connectionString string = storageAccountConnectionString
 output container string = imageContainer.name
