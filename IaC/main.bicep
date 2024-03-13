@@ -105,7 +105,7 @@ module storageAccountRBAC 'storageAccountRBAC.bicep' = {
   params: {
     storageAccountName: storage.outputs.storageAccountName
     principalId: webApi.outputs.principalId
-    roleDefinitionId: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+    roleDefinition: 'Storage Blob Data Contributor'
     principalType: 'ServicePrincipal'
   }
 }
