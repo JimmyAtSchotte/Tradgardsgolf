@@ -77,7 +77,7 @@ resource database 'Microsoft.Sql/servers/databases@2023-05-01-preview' = {
 resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: keyvaultName
   resource dbConnectionString 'secrets' = {
-    name: 'storage-connection-string'
+    name: 'db-connection-string'
     properties: {
       value: 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${database.name};Persist Security Info=False;User ID=${dbConfig.username};Password=${dbConfig.defaultSqlPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
     }
