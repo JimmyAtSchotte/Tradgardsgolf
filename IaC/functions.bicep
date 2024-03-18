@@ -75,3 +75,6 @@ resource functionsConfig 'Microsoft.Web/sites/config@2023-01-01' = {
     netFrameworkVersion: 'v8.0' 
   } 
 }
+
+
+output principalId string = functions.identity.principalId

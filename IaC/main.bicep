@@ -121,8 +121,8 @@ module storageAccountRBAC 'storageAccountRBAC.bicep' = {
 }
 
 
-module keyvaultReader 'keyvaultRBAC.bicep' = {
-  name: 'keyvaultReader'
+module apiKeyvaultReader 'keyvaultRBAC.bicep' = {
+  name: 'apiKeyvaultReader'
   scope: resourceGroup
   params: {
     keyvaultName: keyvault.outputs.keyvaultName
@@ -132,12 +132,35 @@ module keyvaultReader 'keyvaultRBAC.bicep' = {
   }
 }
 
-module keyvaultSecretUser 'keyvaultRBAC.bicep' = {
-  name: 'keyvaultSecretUser'
+module apiKeyvaultSecretUser 'keyvaultRBAC.bicep' = {
+  name: 'apiKeyvaultSecretUser'
   scope: resourceGroup
   params: {
     keyvaultName: keyvault.outputs.keyvaultName
     principalId: webApi.outputs.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinition: 'Key Vault Secrets User'
+  }
+}
+
+
+module functionKeyvaultReader 'keyvaultRBAC.bicep' = {
+  name: 'functionKeyvaultReader'
+  scope: resourceGroup
+  params: {
+    keyvaultName: keyvault.outputs.keyvaultName
+    principalId: functions.outputs.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinition: 'Key Vault Reader'
+  }
+}
+
+module functionsKeyvaultSecretUser 'keyvaultRBAC.bicep' = {
+  name: 'functionsKeyvaultSecretUser'
+  scope: resourceGroup
+  params: {
+    keyvaultName: keyvault.outputs.keyvaultName
+    principalId: functions.outputs.principalId
     principalType: 'ServicePrincipal'
     roleDefinition: 'Key Vault Secrets User'
   }
