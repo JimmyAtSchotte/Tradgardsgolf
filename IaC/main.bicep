@@ -57,6 +57,7 @@ module sqlServer 'sqlServer.bicep' = {
   params: {
     location: location
     prefix: resourceGroupName
+    keyvaultName: keyvault.outputs.keyvaultName
     defaultSqlPassword: deploymentkeyvalues.getSecret('DefaultSqlPassword')
     sqlAdminGroupId: deploymentkeyvalues.getSecret('SqlAdminGroupId')
     sqlAdminGroupName: deploymentkeyvalues.getSecret('SqlAdminGroupName')
@@ -72,9 +73,6 @@ module webApi 'webApi.bicep' = {
     appServicePlanId: appServicePlan.outputs.id
     keyvaultName: keyvault.outputs.keyvaultName
     container: container
-    sqlServer: sqlServer.outputs.server
-    database: sqlServer.outputs.database
-    sqlPassword: deploymentkeyvalues.getSecret('DefaultSqlPassword')
     storage: {
       container: storage.outputs.container
     }

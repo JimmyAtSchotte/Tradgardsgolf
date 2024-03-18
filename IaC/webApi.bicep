@@ -1,14 +1,7 @@
 param location string
 param prefix string
 param appServicePlanId string
-
 param keyvaultName string
-
-@secure()
-param sqlPassword string
-
-param sqlServer string
-param database string
 
 param container {
   namespace: string
@@ -21,8 +14,11 @@ param storage {
 
 resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: keyvaultName
-  resource storage 'secrets' existing = {
+  resource storageConnectionString 'secrets' existing = {
     name: 'storage-connection-string'
+  }
+  resource dbConnectionString 'secrets' existing = {
+    name: 'db-connection-string'
   }
 }
 
@@ -85,7 +81,7 @@ resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
       }
       {
         name: 'AzureStorage__ConnectionString'
-        value: '@Microsoft.KeyVault(SecretUri=${keyvault::storage.properties.secretUri})'
+        value: '@Microsoft.KeyVault(SecretUri=${keyvault::storageConnectionString.properties.secretUri})'
       }
       {
         name: 'AzureStorage__Container'
@@ -100,7 +96,7 @@ resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
     connectionStrings: [
       {
         name: 'Database'
-        connectionString: 'Server=tcp:${sqlServer},1433;Initial Catalog=${database};Persist Security Info=False;User ID=${database};Password=${sqlPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+        connectionString: '@Microsoft.KeyVault(SecretUri=${keyvault::dbConnectionString.properties.secretUri})'
         type: 'SQLAzure'
       }
     ]    

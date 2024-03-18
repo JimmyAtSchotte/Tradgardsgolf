@@ -1,5 +1,6 @@
 param location string
 param prefix string
+param keyvaultName string
 
 @secure()
 param sqlAdminGroupId string
@@ -73,7 +74,14 @@ resource database 'Microsoft.Sql/servers/databases@2023-05-01-preview' = {
   } 
 }
 
-output server string = sqlServer.properties.fullyQualifiedDomainName
-output database string = database.name
+resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: keyvaultName
+  resource dbConnectionString 'secrets' = {
+    name: 'storage-connection-string'
+    properties: {
+      value: 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${database.name};Persist Security Info=False;User ID=${dbConfig.username};Password=${dbConfig.defaultSqlPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+    }
+  }
+}
 
 
