@@ -63,6 +63,10 @@ resource functions 'Microsoft.Web/sites@2023-01-01' = {
           name: 'EventGridTopicEndpoint'
           value: eventGridTopic.properties.endpoint
         }
+        {
+          name: 'WEBSITE_SKIP_CONTENTSHARE_VALIDATION'
+          value: '1'
+        }
       ]
     }
   }
