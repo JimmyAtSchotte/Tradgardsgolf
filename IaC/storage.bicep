@@ -1,4 +1,5 @@
 param location string
+param keyvaultName string
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: 'storage${uniqueString(resourceGroup().id)}'
@@ -46,8 +47,15 @@ resource imageContainer 'Microsoft.Storage/storageAccounts/blobServices/containe
   name: 'images'
 }
 
-var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: keyvaultName
+  resource storage 'secrets' = {
+    name: 'storage-connection-string'
+    properties: {
+      value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+    }
+  }
+}
 
-output connectionString string = storageAccountConnectionString
 output container string = imageContainer.name
 output storageAccountName string = storageAccount.name

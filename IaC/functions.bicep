@@ -1,6 +1,6 @@
 param location string
 param prefix string
-param storageAccountConnectionString string
+param keyvaultName string
 
 
 resource eventGridTopic 'Microsoft.EventGrid/topics@2020-10-15-preview' = {
@@ -17,6 +17,13 @@ resource appServicePlan 'Microsoft.Web/serverFarms@2018-02-01' = {
   sku: {
     name: 'Y1'
     tier: 'Dynamic'
+  }
+}
+
+resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: keyvaultName
+  resource storage 'secrets' existing = {
+    name: 'storage-connection-string'
   }
 }
 
@@ -46,11 +53,11 @@ resource functions 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'AzureWebJobsStorage'
-          value: storageAccountConnectionString
+          value: '@Microsoft.KeyVault(SecretUri=${keyvault::storage.properties.secretUri})'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: storageAccountConnectionString
+          value: '@Microsoft.KeyVault(SecretUri=${keyvault::storage.properties.secretUri})'
         }
         {
           name: 'EventGridTopicEndpoint'

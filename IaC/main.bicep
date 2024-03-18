@@ -1,6 +1,6 @@
 ﻿targetScope = 'subscription'
 
-param resourceGroupName string = 'tradgardsgolf-dev'
+param resourceGroupName string = 'tradgardsgolf'
 param location string = deployment().location
 param namespace string
 param tag string
@@ -24,6 +24,15 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   location: location
 }
 
+module keyvault 'keyvault.bicep' = {
+  name: 'keyvault'
+  scope: resourceGroup
+  params: {
+    location: location
+    prefix: resourceGroupName
+  }
+}
+
 module appServicePlan 'appServicePlan.bicep' = {
   name: 'appServicePlan'
   scope: resourceGroup
@@ -38,6 +47,7 @@ module storage 'storage.bicep' = {
   scope: resourceGroup
   params: {
     location: location
+    keyvaultName: keyvault.outputs.keyvaultName
   }
 }
 
@@ -60,12 +70,12 @@ module webApi 'webApi.bicep' = {
     location: location
     prefix: resourceGroupName
     appServicePlanId: appServicePlan.outputs.id
+    keyvaultName: keyvault.outputs.keyvaultName
     container: container
     sqlServer: sqlServer.outputs.server
     database: sqlServer.outputs.database
     sqlPassword: deploymentkeyvalues.getSecret('DefaultSqlPassword')
     storage: {
-      connectionString: storage.outputs.connectionString
       container: storage.outputs.container
     }
   }
@@ -93,7 +103,7 @@ module functions 'functions.bicep' = {
   params: {
     location: location
     prefix: resourceGroupName
-    storageAccountConnectionString: storage.outputs.connectionString
+    keyvaultName: keyvault.outputs.keyvaultName
   }
   dependsOn: [ storage ]
 }
@@ -107,5 +117,28 @@ module storageAccountRBAC 'storageAccountRBAC.bicep' = {
     principalId: webApi.outputs.principalId
     roleDefinition: 'Storage Blob Data Contributor'
     principalType: 'ServicePrincipal'
+  }
+}
+
+
+module keyvaultReader 'keyvaultRBAC.bicep' = {
+  name: 'keyvaultReader'
+  scope: resourceGroup
+  params: {
+    keyvaultName: keyvault.outputs.keyvaultName
+    principalId: webApi.outputs.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinition: 'Key Vault Reader'
+  }
+}
+
+module keyvaultSecretUser 'keyvaultRBAC.bicep' = {
+  name: 'keyvaultSecretUser'
+  scope: resourceGroup
+  params: {
+    keyvaultName: keyvault.outputs.keyvaultName
+    principalId: webApi.outputs.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinition: 'Key Vault Secrets User'
   }
 }
