@@ -6,7 +6,7 @@ namespace Tradgardsgolf.Contracts.Course
 {
     public record CourseResponse
     {             
-        public int Id { get; init; }
+        public Guid Id { get; init; }
         public string Name { get; init; }
         public int Holes { get; init; }
         public double Longitude { get; init;  }

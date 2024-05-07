@@ -9,10 +9,9 @@ namespace Tradgardsgolf.Core.Entities
     [Table("course")]
     public class Course : BaseEntity<Course>
     {
-        private ICollection<Round> _rounds;
+        private ICollection<Scorecard> _rounds;
 
-        [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public int Holes { get; set; }
         public double Longitude { get; set; }
@@ -22,9 +21,9 @@ namespace Tradgardsgolf.Core.Entities
         public string Image { get; set; }
         public Guid OwnerGuid { get; set; }
 
-        public ICollection<Round> Rounds
+        public ICollection<Scorecard> Scorecards
         {
-            get => _rounds ??= new List<Round>();
+            get => _rounds ??= new List<Scorecard>();
             set => _rounds = value;
         }
 
@@ -47,10 +46,10 @@ namespace Tradgardsgolf.Core.Entities
             return course;
         }
         
-        public Round CreateRound()
+        public Scorecard CreateScorecard()
         {
-            var round = Round.Create(this);
-            Rounds.Add(round);
+            var round = Scorecard.Create(this);
+            Scorecards.Add(round);
             return round;
         }
               

@@ -9,19 +9,19 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament
 {
-    public class GetTournamentScores(IRepository<Tradgardsgolf.Core.Entities.Tournament> repository)
+    public class GetTournamentScores(IRepository<Tradgardsgolf.Core.Entities.Scorecard> scorecards)
         : IRequestHandler<GetTournamentScoresCommand, IEnumerable<TournamentScore>>
     {
         public async Task<IEnumerable<TournamentScore>> Handle(GetTournamentScoresCommand request, CancellationToken cancellationToken)
         {
-            var tournament = await repository.FirstOrDefaultAsync(new TournamentScores(request.TournamentId), cancellationToken);
+            var tournament = await scorecards.ListAsync(new ByTournament(request.TournamentId), cancellationToken);
             
-            return tournament?.TournamentRounds.SelectMany(x => x.Round.RoundScores)
-                .GroupBy(x => x.Player.Name)
+            return tournament.SelectMany(x => x.Scores)
+                .GroupBy(x => x.Key)
                 .Select(x => new TournamentScore()
                 {
                     Name = x.Key,
-                    Score = x.Sum(scores => scores.Score)
+                    Score = x.Sum(scores => scores.Value.Sum(score => score))
                 }) ?? new List<TournamentScore>();
         }
     }

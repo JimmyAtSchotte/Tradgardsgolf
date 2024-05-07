@@ -11,7 +11,7 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament
 {
-    public class ListTodaysTournaments(IRepository<TournamentCourseDate> repository) : IRequestHandler<ListTodaysTournamentsCommand, IEnumerable<Contracts.Tournament.Tournament>>
+    public class ListTodaysTournaments(IRepository<Core.Entities.Tournament> repository) : IRequestHandler<ListTodaysTournamentsCommand, IEnumerable<Contracts.Tournament.Tournament>>
     {
         public async Task<IEnumerable<Contracts.Tournament.Tournament>> Handle(ListTodaysTournamentsCommand request, CancellationToken cancellationToken)
         {
@@ -19,8 +19,8 @@ namespace Tradgardsgolf.Api.RequestHandling.Tournament
             
             return tournments.Select(x => new Contracts.Tournament.Tournament()
             {
-                Id = x.Tournament.Id,
-                Name = x.Tournament.Name
+                Id = x.Id,
+                Name = x.Name
             }).ToList();
         }
     }

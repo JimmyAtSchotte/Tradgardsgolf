@@ -1,11 +1,10 @@
-using System.Collections.Generic;
+using System;
 using MediatR;
-using Tradgardsgolf.Contracts.Players;
 
 namespace Tradgardsgolf.Contracts.Statistics
 {
     public record CourseStatisticCommand : IRequest<CourseStatisticResponse>
     {
-        public int CourseId { get; init; }
+        public Guid CourseId { get; init; }
     }
 }

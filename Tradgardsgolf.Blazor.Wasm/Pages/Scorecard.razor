@@ -21,7 +21,7 @@
                     {
                         @if (SelectedTournament is null)
                         {
-                            <Select TValue="int" SelectedValueChanged="@OnSelectedTournamentChanged">
+                            <Select TValue="Guid" SelectedValueChanged="@OnSelectedTournamentChanged">
                                 <SelectItem Value="0">Välj tävling</SelectItem>
 
                                 @foreach (var tournament in Tournaments)
@@ -165,7 +165,7 @@
             await apiDispatcher.Dispatch(new AddTournamentRoundScoreCommand()
             {
                 TournamentId = SelectedTournament.Id,
-                RoundId = roundScore.Id
+                ScorecardId = roundScore.Id
             });
         }
 
@@ -213,7 +213,7 @@
         return player.Total() + (TournamentScores.FirstOrDefault(x => x.Name == player.PlayerResponse.Name)?.Score ?? 0);
     }
 
-    private async Task OnSelectedTournamentChanged(int tournamentId)
+    private async Task OnSelectedTournamentChanged(Guid tournamentId)
     {
         SelectedTournament = Tournaments.FirstOrDefault(x => x.Id == tournamentId);
         TournamentScores = (await apiDispatcher.Dispatch(new GetTournamentScoresCommand()

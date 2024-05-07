@@ -16,7 +16,7 @@ public class ClaimOwnership
     [Test]
     public async Task ChangeOwner()
     {
-        var course = Core.Entities.Course.Create(Guid.Empty, p => p.Id = 23);
+        var course = Core.Entities.Course.Create(Guid.Empty, p => p.Id = Guid.NewGuid());
         var authenticatedUser = Guid.NewGuid(); 
         
         var arrange = Arrange.Dependencies<SUT, SUT>(dependencies =>
@@ -48,7 +48,7 @@ public class ClaimOwnership
     [Test]
     public async Task HasOwnerSinceBefore()
     {
-        var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = 23);
+        var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         var authenticatedUser = Guid.NewGuid(); 
         
         var arrange = Arrange.Dependencies<SUT, SUT>(dependencies =>

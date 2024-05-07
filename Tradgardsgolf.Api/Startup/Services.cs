@@ -40,17 +40,9 @@ public static class Services
         builder.Services.AddDbContext<TradgardsgolfContext>(dbContextOptionsBuilder =>
         {
             var connectionString = configuration.GetConnectionString("Database");
-
-            if (string.IsNullOrEmpty(connectionString))
-                dbContextOptionsBuilder.UseInMemoryDatabase("Tradgardsgolf");
-            else
-            {
-                dbContextOptionsBuilder.UseSqlServer(connectionString,
-                    options =>
-                    {
-                        options.EnableRetryOnFailure(10);
-                    });
-            }
+            
+            dbContextOptionsBuilder.UseCosmos(connectionString, "Tradgardsgolf");
+            dbContextOptionsBuilder.EnableSensitiveDataLogging();
         });
         
         builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();

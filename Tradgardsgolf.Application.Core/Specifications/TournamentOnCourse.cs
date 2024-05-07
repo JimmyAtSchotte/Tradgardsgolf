@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Linq;
 using Ardalis.Specification;
 using Tradgardsgolf.Core.Entities;
 
 namespace Tradgardsgolf.Core.Specifications
 {
-    public class TournamentsOnCourse : Specification<TournamentCourseDate>
+    public class TournamentsOnCourse : Specification<Tournament>
     {
-        public TournamentsOnCourse(int courseId, DateTime date)
+        public TournamentsOnCourse(Guid courseId, DateTime date)
         {
-            Query.Where(x => x.CourseId == courseId && x.Date == date);
-            Query.Include(x => x.Tournament);
+            Query.Where(x => x.TournamentCourseDates.Any(c => c.CourseId == courseId && c.Date == date));
         }
     }
 }

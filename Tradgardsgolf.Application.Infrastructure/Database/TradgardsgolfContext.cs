@@ -5,21 +5,36 @@ namespace Tradgardsgolf.Infrastructure.Database
 {
     public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options) : DbContext(options)
     {
-        public DbSet<Course> Course { get; set; }
-        public DbSet<Player> Player { get; set; }
-        public DbSet<Round> Round { get; set; }
-        public DbSet<RoundScore> RoundScore { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Scorecard> Scorecards { get; set; }
         public DbSet<Tournament> Tournament { get; set; }
-        public DbSet<TournamentRound> TournamentRound { get; set; }
-        public DbSet<TournamentCourseDate> TournamentCourseDate { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TournamentRound>()
-                .HasOne(tournamentRound => tournamentRound.Round)
-                .WithOne()
-                .HasForeignKey<TournamentRound>(tournamentRound => tournamentRound.RoundId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Course>(builder =>
+            {
+                builder.ToContainer("Course");
+                builder.HasPartitionKey(x => x.Id);
+                builder.HasNoDiscriminator();
+            });
+
+            modelBuilder.Entity<Scorecard>(builder =>
+            {
+                builder.ToContainer("Scorecard");
+                builder.HasPartitionKey(x => x.Id);
+                builder.HasKey(x => x.Id);
+                builder.HasNoDiscriminator();
+            });
+            
+            modelBuilder.Entity<Tournament>(builder =>
+            {
+                builder.ToContainer("Tournament");
+                builder.HasPartitionKey(x => x.Id);
+                builder.HasKey(x => x.Id);
+                builder.HasNoDiscriminator();
+                builder.OwnsMany(x => x.TournamentCourseDates);
+            });
+            
             
             base.OnModelCreating(modelBuilder);
         }

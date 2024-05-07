@@ -21,4 +21,8 @@
       <ProjectReference Include="..\Tradgardsgolf.Application.Core\Tradgardsgolf.Application.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="BusinessRules\" />
+    </ItemGroup>
+
 </Project>
