@@ -48,15 +48,12 @@
 
 @code {
 
-    [CascadingParameter]
-    public CascadingStateProvider StateProvider { get; set; }
-    
-    [CascadingParameter]
-    public Location Location { get; set; }
-    
-    [CascadingParameter] 
-    public Blazored.Modal.Services.IModalService Modal { get; set; }
-    
+    [CascadingParameter] public CascadingStateProvider StateProvider { get; set; }
+
+    [CascadingParameter] public Location Location { get; set; }
+
+    [CascadingParameter] public Blazored.Modal.Services.IModalService Modal { get; set; }
+
     private IEnumerable<CourseResponse> _models;
     private IList<CourseResponse> _courses;
     private int _allowPlayDistance;
@@ -67,39 +64,39 @@
         _allowPlayDistance = (await ApiDispatcher.Dispatch(new AllowPlayDistanceCommand())).Value;
         _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
         _authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        
+
         OrderCoursesByDistance();
-   }
+    }
 
     private void OrderCoursesByDistance()
     {
         var distanceOrdered = _models
             .OrderBy(x => x.GetDistance((double)Location.Longitude, (double)Location.Latitude))
             .ToList();
-        
+
         if (_courses != null && _courses.SequenceEqual(distanceOrdered))
             return;
-        
+
         _courses?.Clear();
         StateHasChanged();
-        
+
         _courses = distanceOrdered;
         StateHasChanged();
     }
 
     private bool AllowPlay(CourseResponse courseResponse)
     {
-        return _allowPlayDistance < 0 ||
+        return _allowPlayDistance <= 0 ||
                courseResponse.GetDistance((double)Location.Longitude, (double)Location.Latitude) < _allowPlayDistance;
     }
-    
+
     private bool AllowEdit(CourseResponse course)
     {
-    
-        
+
+
         return _authenticationState.User.Identity?.IsAuthenticated == true &&
                _authenticationState.User.TryGetUserId(out var userId) &&
-                userId == course.OwnerGuid;
+               userId == course.OwnerGuid;
     }
 
     private async Task SetupRound(CourseResponse course)
@@ -115,13 +112,13 @@
         {
             Id = course.Id
         });
-        
+
         _courses[_courses.IndexOf(course)] = updatedCourse;
     }
-    
+
     public void Dispose()
     {
-       ((IDisposable) StateProvider)?.Dispose();
+        ((IDisposable)StateProvider)?.Dispose();
     }
 
     private async Task ChangeImage(CourseResponse course)
@@ -130,7 +127,7 @@
         {
             { nameof(Modals.ChangeCourseImage.Course), course }
         };
-        
+
         var modal = Modal.Show<Modals.ChangeCourseImage>($"Byt bild för {course.Name}", parameters);
         var result = await modal.Result;
         if (result.Cancelled)
@@ -147,5 +144,4 @@
                course.OwnerGuid == Guid.Empty &&
                _authenticationState.User.TryGetUserId(out _);
     }
-
 }

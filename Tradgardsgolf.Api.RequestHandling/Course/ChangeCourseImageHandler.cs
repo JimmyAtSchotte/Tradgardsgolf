@@ -8,6 +8,7 @@ using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Exceptions;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course
 {
@@ -20,7 +21,7 @@ namespace Tradgardsgolf.Api.RequestHandling.Course
         public async Task<CourseResponse> Handle(ChangeCourseImage request, CancellationToken cancellationToken)
         {
             var user = authenticationService.RequireAuthenticatedUser();
-            var course = await repository.GetByIdAsync(request.Id, cancellationToken);
+            var course = await repository.FirstOrDefaultAsync(new ById(request.Id), cancellationToken);
 
             if (user.UserId != course.OwnerGuid)
                 throw new ForbiddenException();

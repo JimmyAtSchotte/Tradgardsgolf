@@ -7,15 +7,31 @@ namespace Tradgardsgolf.Core.Entities
 {
     public class Tournament : BaseEntity<Tournament>
     {
-        private ICollection<TournamentCourseDate> _tournamentCourseDates;
-        
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public List<TournamentCourseDate> TournamentCourseDates { get; set; }
         
-        public ICollection<TournamentCourseDate> TournamentCourseDates
+        public void AddCourseDate(Course course, DateTime date)
         {
-            get => _tournamentCourseDates ??= new List<TournamentCourseDate>();
-            set => _tournamentCourseDates = value;
+            if (TournamentCourseDates is null)
+                TournamentCourseDates = new List<TournamentCourseDate>();
+            
+            TournamentCourseDates.Add(TournamentCourseDate.Create(course, date));
+        }
+
+        private Tournament()
+        {
+            
+        }
+
+        private Tournament(string name)
+        {
+            Name = name;
+        }
+
+        public static Tournament Create(string name)
+        {
+            return new Tournament(name);
         }
     }
 }

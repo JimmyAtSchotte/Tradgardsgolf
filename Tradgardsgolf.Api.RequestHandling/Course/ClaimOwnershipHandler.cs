@@ -6,6 +6,7 @@ using Tradgardsgolf.Api.ResponseFactory;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course
 {
@@ -17,7 +18,7 @@ namespace Tradgardsgolf.Api.RequestHandling.Course
         public async Task<CourseResponse> Handle(ClaimOwnership request, CancellationToken cancellationToken)
         {
             var user = authenticationService.RequireAuthenticatedUser();
-            var course = await repository.GetByIdAsync(request.Id, cancellationToken);
+            var course = await repository.FirstOrDefaultAsync(new ById(request.Id), cancellationToken);
             
             if(course.OwnerGuid != Guid.Empty)
                 return courseResponseFactory.Create(course);

@@ -1,10 +1,9 @@
 ﻿using System;
 using Ardalis.Specification;
-using Tradgardsgolf.Core.Entities;
 
-namespace Tradgardsgolf.Core.Specifications
+namespace Tradgardsgolf.Core.Specifications.Scorecard
 {
-    public class ByCourse : Specification<Scorecard>
+    public class ByCourse : Specification<Entities.Scorecard>
     {
         public ByCourse(Guid courseId)
         {

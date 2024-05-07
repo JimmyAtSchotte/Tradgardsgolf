@@ -76,19 +76,9 @@ public static class SetupDatabaseExtensions
             AddScorecard(context, berlin);
 
         
-        var tournament = new Tournament();
-        
-        tournament.TournamentCourseDates.Add(new TournamentCourseDate()
-        {
-            Course = kumhof,
-            Date = DateTime.Today
-        });
-        
-        tournament.TournamentCourseDates.Add(new TournamentCourseDate()
-        {
-            Course = tornehof,
-            Date = DateTime.Today
-        });
+        var tournament = Tournament.Create("Touren");
+        tournament.AddCourseDate(kumhof, DateTime.Today);
+        tournament.AddCourseDate(tornehof, DateTime.Today);
 
         context.Add(tournament);
             

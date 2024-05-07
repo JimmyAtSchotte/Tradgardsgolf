@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Players;
 using Tradgardsgolf.Core.Infrastructure;
-using Tradgardsgolf.Core.Specifications;
+using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Player
 {

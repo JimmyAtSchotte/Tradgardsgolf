@@ -32,7 +32,6 @@ namespace Tradgardsgolf.Infrastructure.Database
                 builder.HasPartitionKey(x => x.Id);
                 builder.HasKey(x => x.Id);
                 builder.HasNoDiscriminator();
-                builder.OwnsMany(x => x.TournamentCourseDates);
             });
             
             
