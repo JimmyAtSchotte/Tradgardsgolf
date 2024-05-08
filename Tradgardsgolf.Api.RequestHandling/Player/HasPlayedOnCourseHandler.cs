@@ -18,6 +18,9 @@ public class HasPlayedOnCourseHandler(IRepository<Core.Entities.Scorecard> score
         return (await scorecards.ListAsync(new ByCourse(request.CourseId), cancellationToken))
             .SelectMany(x => x.Scores.Keys)
             .GroupBy(x => x)
+            .OrderByDescending(x => x.Count() > 50)
+            .ThenByDescending(x => x.Count() > 10)
+            .ThenBy(x => x.Key)
             .Select(x => new PlayerResponse
             {
                 Name = x.Key
