@@ -27,12 +27,13 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2024-02-15-previ
   name: cosmosAccountName
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  scope: databaseAccount
+
+
+resource roleAssignment 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2024-02-15-preview' = {
   name: guid('cosmos-rbac', resourceGroup().id, principalId, roleDefinitionId)
   properties: {
     principalId: principalId
     roleDefinitionId: roleDefinitionId
-    principalType: principalType
+    scope: databaseAccount.id
   }
 }
