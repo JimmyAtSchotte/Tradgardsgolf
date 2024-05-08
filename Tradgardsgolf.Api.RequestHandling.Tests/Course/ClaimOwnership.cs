@@ -1,4 +1,5 @@
-﻿using ArrangeDependencies.Autofac;
+﻿using Ardalis.Specification;
+using ArrangeDependencies.Autofac;
 using ArrangeDependencies.Autofac.Extensions;
 using Moq;
 using Tradgardsgolf.Api.ResponseFactory;
@@ -23,7 +24,7 @@ public class ClaimOwnership
         {
             dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
             {
-                mock.Setup(x => x.GetByIdAsync(course.Id, It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.FirstOrDefaultAsync(It.IsAny<ISpecification<Core.Entities.Course>>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
             });
 
@@ -60,7 +61,7 @@ public class ClaimOwnership
         {
             dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
             {
-                mock.Setup(x => x.GetByIdAsync(course.Id, It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.FirstOrDefaultAsync(It.IsAny<ISpecification<Core.Entities.Course>>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
             });
             dependencies
