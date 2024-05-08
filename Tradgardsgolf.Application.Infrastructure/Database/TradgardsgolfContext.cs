@@ -21,7 +21,7 @@ public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options
         modelBuilder.Entity<Scorecard>(builder =>
         {
             builder.ToContainer("Scorecard");
-            builder.HasPartitionKey(x => x.Id);
+            builder.HasPartitionKey(x => x.CourseId);
             builder.HasKey(x => x.Id);
             builder.HasNoDiscriminator();
         });
