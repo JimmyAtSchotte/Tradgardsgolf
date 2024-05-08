@@ -146,7 +146,5 @@ module cosmosRbac 'cosmosRBAC.bicep' = {
   params: {
     cosmosAccountName: cosmos.outputs.cosmosAccountName
     principalId: webApi.outputs.principalId
-    principalType: 'ServicePrincipal'
-    roleDefinition: 'Data Contributor'
   }
 }

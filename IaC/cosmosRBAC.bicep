@@ -1,27 +1,10 @@
 param cosmosAccountName string
 param principalId string
 
-@allowed([
-  'ForeignGroup'
-  'Group'
-  'ServicePrincipal'
-  'User'
-])
-param principalType string
+var roleDefinitionName = 'Data Contributor'
+var roleDefinitionId = guid('sql-role-definition-', principalId, databaseAccount.id)
+var roleAssignmentId = guid(roleDefinitionId, principalId, databaseAccount.id)
 
-@allowed([
-  'Data Reader'
-  'Data Contributor'
-])
-param roleDefinition string
-
-var roles = {
-  // See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for these mappings and more.
-  'Data Reader': '/providers/Microsoft.Authorization/roleDefinitions/00000000-0000-0000-0000-000000000001'
-  'Data Contributor': '/providers/Microsoft.Authorization/roleDefinitions/00000000-0000-0000-0000-000000000002'
-}
-
-var roleDefinitionId = roles[roleDefinition]
 
 resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2024-02-15-preview' existing = {
   name: cosmosAccountName
@@ -29,11 +12,32 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2024-02-15-previ
 
 
 
-resource roleAssignment 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2024-02-15-preview' = {
-  name: guid('cosmos-rbac', resourceGroup().id, principalId, roleDefinitionId)
+
+resource sqlRoleDefinition 'Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions@2024-02-15-preview' = {
+  name: '${databaseAccount.name}/${roleDefinitionId}'
   properties: {
+    roleName: roleDefinitionName
+    type: 'CustomRole'
+    assignableScopes: [
+      databaseAccount.id
+    ]
+    permissions: [
+      {
+        dataActions: [
+          'Microsoft.DocumentDB/databaseAccounts/readMetadata'
+          'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*'
+        ]
+      }
+    ]
+  }
+}
+
+resource sqlRoleAssignment 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2024-02-15-preview' = {
+  name: '${databaseAccount.name}/${roleAssignmentId}'
+  properties: {
+    roleDefinitionId: sqlRoleDefinition.id
     principalId: principalId
-    roleDefinitionId: roleDefinitionId
     scope: databaseAccount.id
   }
+}
 }
