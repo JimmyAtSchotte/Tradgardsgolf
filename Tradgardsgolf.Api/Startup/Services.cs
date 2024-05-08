@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Tradgardsgolf.Api.Authentication;
 using Tradgardsgolf.Api.RequestHandling;
 using Tradgardsgolf.Core.Auth;
@@ -31,7 +32,10 @@ public static class Services
             options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
         });
             
-        builder.Services.AddLogging();
+        builder.Services.AddLogging(options =>
+        {
+            options.AddConsole();
+        });
         builder.Services.AddApplicationInsightsTelemetry();
             
         builder.Services.AddOptions<AllowPlayDistance>().Bind(configuration.GetSection("AllowPlayDistance"));
@@ -43,6 +47,7 @@ public static class Services
             
             dbContextOptionsBuilder.UseCosmos(connectionString, "Tradgardsgolf");
             dbContextOptionsBuilder.EnableSensitiveDataLogging();
+            
         });
         
         builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();

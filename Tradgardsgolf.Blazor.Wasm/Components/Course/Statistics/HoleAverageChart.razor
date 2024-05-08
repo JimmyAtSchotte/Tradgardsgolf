@@ -30,7 +30,7 @@
         
         var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
         
-        _holeAverageModels = CascadingCourseStatistics.CourseStatisticResponse.Rounds
+        _holeAverageModels = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
             .Where(x => x.Date > scoreReset)
             .Select(x => new
         {

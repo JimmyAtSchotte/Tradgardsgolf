@@ -1,6 +1,6 @@
 ﻿namespace Tradgardsgolf.Contracts.Statistics
 {
-    public record RoundScoreResponse
+    public record HoleScoreResponse
     {
         public string Player { get; init; }
         public int Hole { get; init; }

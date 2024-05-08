@@ -50,7 +50,7 @@
 
     private void RenderSeasonTable()
     {
-        _seasonTableModels = CascadingCourseStatistics.CourseStatisticResponse.Rounds
+        _seasonTableModels = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
                 .Where(x => x.Date.Year == Year.GetValueOrDefault(0))
                 .Select(x => new
                 {

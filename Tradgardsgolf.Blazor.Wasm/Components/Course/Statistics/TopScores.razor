@@ -43,7 +43,7 @@
         
         var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
 
-        _topScore = CascadingCourseStatistics.CourseStatisticResponse.Rounds
+        _topScore = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
             .Where(x => x.Date > scoreReset)
             .Select(x => new
         {

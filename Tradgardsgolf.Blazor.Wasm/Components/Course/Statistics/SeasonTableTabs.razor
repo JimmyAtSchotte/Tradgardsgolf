@@ -37,7 +37,7 @@
         if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
-        _years = CascadingCourseStatistics.CourseStatisticResponse.Rounds
+        _years = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
             .Select(x => x.Date.Year)
             .Distinct()
             .OrderByDescending(x => x)

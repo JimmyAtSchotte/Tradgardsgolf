@@ -4,6 +4,6 @@ namespace Tradgardsgolf.Contracts.Statistics
 {
     public record CourseStatisticResponse
     {
-        public IEnumerable<RoundResponse> Rounds { get; init; }
+        public IEnumerable<ScorecardResponse> Scorecards { get; init; }
     }
 }

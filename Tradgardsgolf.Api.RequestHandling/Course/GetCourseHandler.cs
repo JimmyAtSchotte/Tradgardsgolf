@@ -10,13 +10,13 @@ using Tradgardsgolf.Core.Specifications.Course;
 namespace Tradgardsgolf.Api.RequestHandling.Course
 {
     public class GetCourseHandler(
-        IRepository<Core.Entities.Course> repository,
+        IRepository<Core.Entities.Course> courses,
         IResponseFactory<CourseResponse, Core.Entities.Course> courseResponseFactory) 
         : IRequestHandler<GetCourseCommand, CourseResponse>
     {
         public async Task<CourseResponse> Handle(GetCourseCommand request, CancellationToken cancellationToken)
         {
-            var course = await repository.FirstOrDefaultAsync(new ById(request.Id), cancellationToken);
+            var course = await courses.FirstOrDefaultAsync(new ById(request.Id), cancellationToken);
 
             return courseResponseFactory.Create(course);
         }
