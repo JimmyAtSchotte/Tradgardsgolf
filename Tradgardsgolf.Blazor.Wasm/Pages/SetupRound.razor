@@ -23,7 +23,7 @@
                     {
                         <PlayerListItem Player="player.PlayerResponse">
                             <Button Clicked="async () => await RemovePlayer(player.PlayerResponse.Name)" Float="Float.End" Color="Color.Danger">
-                                <Icon Name="MaterialIcons.Delete"></Icon>
+                                <Blazorise.Icon Name="MaterialIcons.Delete"></Blazorise.Icon>
                             </Button>
                         </PlayerListItem>
                     }
@@ -37,13 +37,13 @@
                 <Button Clicked="async () => await NewPlayer()"
                         Color="Color.Primary"
                         Float="Float.Start">
-                    Lägg till <Icon Name="MaterialIcons.Add"></Icon>
+                    Lägg till <Blazorise.Icon Name="MaterialIcons.Add"></Blazorise.Icon>
                 </Button>
                 <Button Clicked="async () => await Play()"
                         Float="Float.End"
                         Disabled="!State.AppState.ScorecardState.PlayerScores.Any()"
                         Color="Color.Primary">
-                    Börja spela <Icon Name="MaterialIcons.PlayArrow"></Icon>
+                    Börja spela <Blazorise.Icon Name="MaterialIcons.PlayArrow"></Blazorise.Icon>
                 </Button>
             </CourseButtons>
         </CourseCard>
@@ -58,7 +58,7 @@
             <CardBody>
                 <PlayerListItem Player="new PlayerResponse { Name = context.User.Identity.Name }">
                     <Button Clicked="async () => await AddPlayer(context.User.Identity.Name)" Float="Float.End" Color="Color.Primary">
-                        <Icon Name="MaterialIcons.Add"></Icon>
+                        <Blazorise.Icon Name="MaterialIcons.Add"></Blazorise.Icon>
                     </Button>
                 </PlayerListItem>
             </CardBody>
@@ -79,7 +79,7 @@ else if (AvailablePlayers.Any())
             {
                 <PlayerListItem Player="player">
                     <Button Clicked="async () => await AddPlayer(player.Name)" Float="Float.End" Color="Color.Primary">
-                        <Icon Name="MaterialIcons.Add"></Icon>
+                        <Blazorise.Icon Name="MaterialIcons.Add"></Blazorise.Icon>
                     </Button>
                 </PlayerListItem>
             }

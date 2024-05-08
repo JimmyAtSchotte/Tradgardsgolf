@@ -27,12 +27,12 @@
                     </CourseContent>
                     <CourseButtons>
                         <ConditionalComponent Condition="() => AllowPlay(course)" Name="Play">
-                            <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="MaterialIcons.GolfCourse"></Icon></Button>
+                            <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Blazorise.Icon Name="MaterialIcons.GolfCourse"></Blazorise.Icon></Button>
                         </ConditionalComponent>
                         <ConditionalComponent Condition="() => AllowEdit(course)" Name="Edit">
                             <Dropdown Float="Float.Start">
                                 <DropdownToggle Color="Color.Secondary">
-                                    <Icon Name="MaterialIcons.Settings"></Icon>
+                                    <Blazorise.Icon Name="MaterialIcons.Settings"></Blazorise.Icon>
                                 </DropdownToggle>
                                 <DropdownMenu>
                                     <DropdownItem Clicked="() => ChangeImage(course)">Byt bild</DropdownItem>
