@@ -51,18 +51,16 @@ module storage 'storage.bicep' = {
   }
 }
 
-module sqlServer 'sqlServer.bicep' = {  
-  name: 'sqlServer'
+module cosmos 'cosmos.bicep' = {
+  name: 'cosmos'
   scope: resourceGroup
   params: {
     location: location
-    prefix: resourceGroupName
     keyvaultName: keyvault.outputs.keyvaultName
-    defaultSqlPassword: deploymentkeyvalues.getSecret('DefaultSqlPassword')
-    sqlAdminGroupId: deploymentkeyvalues.getSecret('SqlAdminGroupId')
-    sqlAdminGroupName: deploymentkeyvalues.getSecret('SqlAdminGroupName')
-  }  
+    prefix: resourceGroupName
+  }
 }
+
 
 module webApi 'webApi.bicep' = {
   name: 'webApi'  
@@ -77,7 +75,7 @@ module webApi 'webApi.bicep' = {
       container: storage.outputs.container
     }
   }
-  dependsOn: [ sqlServer, appServicePlan, storage ]
+  dependsOn: [ cosmos, appServicePlan, storage ]
 }
 
 module webApp 'webApp.bicep' = {
@@ -139,5 +137,16 @@ module functionsKeyvaultSecretUser 'keyvaultRBAC.bicep' = {
     principalId: functions.outputs.principalId
     principalType: 'ServicePrincipal'
     roleDefinition: 'Key Vault Secrets User'
+  }
+}
+
+module cosmosRbac 'cosmosRBAC.bicep' = {
+  name: 'cosmosRbac'
+  scope: resourceGroup
+  params: {
+    cosmosAccountName: cosmos.outputs.cosmosAccountName
+    principalId: webApi.outputs.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinition: 'Data Contributor'
   }
 }

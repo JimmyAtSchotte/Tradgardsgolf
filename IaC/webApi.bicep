@@ -17,8 +17,8 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   resource storageConnectionString 'secrets' existing = {
     name: 'storage-connection-string'
   }
-  resource dbConnectionString 'secrets' existing = {
-    name: 'db-connection-string'
+  resource cosmosConnectionString 'secrets' existing = {
+    name: 'cosmos-connection-string'
   }
 }
 
@@ -37,8 +37,6 @@ resource webApi 'Microsoft.Web/sites@2023-01-01' = {
     }   
   }
 }
-
-
 
 resource webApiHostName 'Microsoft.Web/sites/hostNameBindings@2023-01-01' = {
   parent: webApi
@@ -94,11 +92,12 @@ resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
     ]
     
     connectionStrings: [
-      {
+       {
         name: 'Database'
-        connectionString: '@Microsoft.KeyVault(SecretUri=${keyvault::dbConnectionString.properties.secretUri})'
-        type: 'SQLAzure'
+        connectionString: '@Microsoft.KeyVault(SecretUri=${keyvault::cosmosConnectionString.properties.secretUri})'
+        type: 'Custom'
       }
+
     ]    
   } 
 }
