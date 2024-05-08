@@ -38,7 +38,7 @@ public static class Services
         {
             var connectionString = configuration.GetConnectionString("Database");
 
-            dbContextOptionsBuilder.UseCosmos(connectionString, "Tradgardsgolf");
+            dbContextOptionsBuilder.UseCosmos(connectionString, "tradgardsgolf-db");
             dbContextOptionsBuilder.EnableSensitiveDataLogging();
         });
 
