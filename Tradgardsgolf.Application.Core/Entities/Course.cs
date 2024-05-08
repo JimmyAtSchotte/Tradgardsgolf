@@ -22,7 +22,7 @@ public class Course : BaseEntity<Course>
     public int Holes { get; set; }
     public double Longitude { get; set; }
     public double Latitude { get; set; }
-    public DateTime Created { get; private set; }
+    public DateTime Created { get; set; }
     public DateTime? ScoreReset { get; set; }
     public string Image { get; set; }
     public Guid OwnerGuid { get; set; }
@@ -41,10 +41,10 @@ public class Course : BaseEntity<Course>
         return course;
     }
 
-    public Scorecard CreateScorecard()
+    public Scorecard CreateScorecard(Action<Scorecard> properties = null)
     {
-        var round = Scorecard.Create(this);
-        Scorecards.Add(round);
-        return round;
+        var scorecard = Scorecard.Create(this, properties);
+        Scorecards.Add(scorecard);
+        return scorecard;
     }
 }

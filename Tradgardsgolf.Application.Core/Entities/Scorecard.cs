@@ -18,7 +18,7 @@ public class Scorecard : BaseEntity<Scorecard>
 
     public Guid Id { get; set; }
     public Guid CourseId { get; private set; }
-    public DateTime Date { get; private set; }
+    public DateTime Date { get; set; }
     public Course Course { get; private set; }
 
     public IDictionary<string, int[]> Scores
@@ -34,8 +34,10 @@ public class Scorecard : BaseEntity<Scorecard>
         Scores.Add(player, scores);
     }
 
-    public static Scorecard Create(Course course)
+    public static Scorecard Create(Course course, Action<Scorecard> properties = null)
     {
-        return new Scorecard(course);
+        var scorecard = new Scorecard(course);
+        properties?.Invoke(scorecard);
+        return scorecard;
     }
 }
