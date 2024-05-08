@@ -5,13 +5,9 @@ var roleDefinitionName = 'Data Contributor'
 var roleDefinitionId = guid('sql-role-definition-', principalId, databaseAccount.id)
 var roleAssignmentId = guid(roleDefinitionId, principalId, databaseAccount.id)
 
-
 resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2024-02-15-preview' existing = {
   name: cosmosAccountName
 }
-
-
-
 
 resource sqlRoleDefinition 'Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions@2024-02-15-preview' = {
   name: '${databaseAccount.name}/${roleDefinitionId}'
@@ -39,5 +35,4 @@ resource sqlRoleAssignment 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignm
     principalId: principalId
     scope: databaseAccount.id
   }
-}
 }
