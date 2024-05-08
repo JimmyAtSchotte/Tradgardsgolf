@@ -8,13 +8,11 @@
 
 @code {
     private bool _hasLoaded;
-    
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-    
-    [Parameter]
-    public AppState AppState { get; set; }
-    
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    [Parameter] public AppState AppState { get; set; }
+
     protected override async Task OnParametersSetAsync()
     {
         AppState = await ReadAppSate();
@@ -35,7 +33,7 @@
         {
             // ignored
         }
-        
+
         return new AppState();
     }
 

@@ -2,6 +2,4 @@
 
 namespace Tradgardsgolf.Core.Exceptions;
 
-public class ForbiddenException : Exception
-{
-}
+public class ForbiddenException : Exception { }

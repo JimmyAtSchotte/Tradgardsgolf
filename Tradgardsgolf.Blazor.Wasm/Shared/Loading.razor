@@ -10,7 +10,6 @@
             <div class="spinner-border"></div>
             <p>@LoadingText</p>
         </div>
-       
     }
 }
 else
@@ -19,17 +18,14 @@ else
 }
 
 @code{
-    [Parameter]
-    public bool IsLoading { get; set; }
 
-    [Parameter]
-    public string LoadingText { get; set; } = "Laddar";
+    [Parameter] public bool IsLoading { get; set; }
 
-    [Parameter]
-    public RenderFragment LoadingTemplate { get; set; }
+    [Parameter] public string LoadingText { get; set; } = "Laddar";
 
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }   
+    [Parameter] public RenderFragment LoadingTemplate { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
 
 
 }

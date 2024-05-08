@@ -11,20 +11,25 @@ namespace Tradgardsgolf.Blazor.Wasm.Tests;
 
 public class TestContextBuilder : IDisposable
 {
-    private readonly Bunit.TestContext _context;
     private readonly TestAuthorizationContext _authorizationContext;
+    private readonly TestContext _context;
 
     public TestContextBuilder()
     {
         _context = new TestContext();
-        
+
         _context.JSInterop.Mode = JSRuntimeMode.Loose;
         _context.Services
             .AddBlazoriseTests()
             .AddMaterialProviders()
             .AddMaterialIcons();
-        
+
         _authorizationContext = _context.AddTestAuthorization();
+    }
+
+    public void Dispose()
+    {
+        _context.Dispose();
     }
 
     public TestContextBuilder UseAuthorization(Action<TestAuthorizationContext> auth)
@@ -32,22 +37,20 @@ public class TestContextBuilder : IDisposable
         auth.Invoke(_authorizationContext);
         return this;
     }
-    
-    public TestContextBuilder UseMock<T>(Action<Mock<T>> mockSetup) 
+
+    public TestContextBuilder UseMock<T>(Action<Mock<T>> mockSetup)
         where T : class
     {
         var mock = new Mock<T>();
         mockSetup.Invoke(mock);
-        
+
         _context.Services.AddSingleton(mock.Object);
 
         return this;
     }
-    
-    public void Dispose()
-    {
-        _context.Dispose();
-    }
 
-    public TestContext Build() => _context;
+    public TestContext Build()
+    {
+        return _context;
+    }
 }

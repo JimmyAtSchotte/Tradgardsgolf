@@ -1,5 +1,4 @@
-﻿using Tradgardsgolf.Contracts;
-using Tradgardsgolf.Contracts.Course;
+﻿using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Contracts.Types;
 using Tradgardsgolf.Core.Entities;
 
@@ -8,10 +7,9 @@ namespace Tradgardsgolf.Api.ResponseFactory;
 public class CourseResponseFactory(IResponseFactory<ImageReference, Course> imageReferenceResponseFactory)
     : IResponseFactory<CourseResponse, Course>
 {
- 
     public CourseResponse Create(Course course)
     {
-        return new CourseResponse()
+        return new CourseResponse
         {
             Created = course.Created,
             Holes = course.Holes,

@@ -2,7 +2,6 @@
 using AspNetCore.FriendlyExceptions.Extensions;
 using AspNetCore.FriendlyExceptions.Transforms;
 using Microsoft.AspNetCore.Builder;
-using Tradgardsgolf.Api.Authentication;
 using Tradgardsgolf.Core.Exceptions;
 
 namespace Tradgardsgolf.Api.Startup;

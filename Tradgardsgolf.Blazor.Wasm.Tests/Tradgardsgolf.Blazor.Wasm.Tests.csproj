@@ -10,10 +10,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Blazorise.Tests.bUnit" Version="1.4.1" />
-        <PackageReference Include="bunit" Version="1.26.64" />
+        <PackageReference Include="Blazorise.Tests.bUnit" Version="1.4.1"/>
+        <PackageReference Include="bunit" Version="1.26.64"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
-        <PackageReference Include="Moq" Version="4.20.70" />
+        <PackageReference Include="Moq" Version="4.20.70"/>
         <PackageReference Include="NUnit" Version="3.13.3"/>
         <PackageReference Include="NUnit3TestAdapter" Version="4.2.1"/>
         <PackageReference Include="NUnit.Analyzers" Version="3.6.1"/>
@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tradgardsgolf.Blazor.Wasm\Tradgardsgolf.Blazor.Wasm.csproj" />
+        <ProjectReference Include="..\Tradgardsgolf.Blazor.Wasm\Tradgardsgolf.Blazor.Wasm.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -15,7 +15,7 @@ public class ImageReference
         if (string.IsNullOrEmpty(path))
             return null;
 
-        return new ImageReference()
+        return new ImageReference
         {
             Path = path
         };

@@ -1,13 +1,12 @@
 ﻿using System;
 using Ardalis.Specification;
 
-namespace Tradgardsgolf.Core.Specifications.Scorecard
+namespace Tradgardsgolf.Core.Specifications.Scorecard;
+
+public class ByTournament : Specification<Entities.Scorecard>
 {
-    public class ByTournament : Specification<Entities.Scorecard>
+    public ByTournament(Guid tournamentId)
     {
-        public ByTournament(Guid tournamentId)
-        {
-            Query.Where(x => x.TournamentId == tournamentId);
-        }
+        Query.Where(x => x.TournamentId == tournamentId);
     }
 }

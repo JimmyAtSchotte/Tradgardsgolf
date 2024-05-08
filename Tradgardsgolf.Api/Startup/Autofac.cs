@@ -15,11 +15,12 @@ public static class Autofac
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureContainer<ContainerBuilder>(containerBuilder =>
             {
-                var assemblies = new[] {
+                var assemblies = new[]
+                {
                     Assembly.Load("Tradgardsgolf.Application.Core"),
                     Assembly.Load("Tradgardsgolf.Application.Infrastructure"),
-                    Assembly.Load("Tradgardsgolf.Api.RequestHandling"), 
-                    Assembly.Load("Tradgardsgolf.Api.ResponseFactory"), 
+                    Assembly.Load("Tradgardsgolf.Api.RequestHandling"),
+                    Assembly.Load("Tradgardsgolf.Api.ResponseFactory")
                 };
 
                 containerBuilder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();

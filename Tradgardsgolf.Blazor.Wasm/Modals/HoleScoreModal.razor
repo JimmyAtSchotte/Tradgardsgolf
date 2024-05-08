@@ -1,22 +1,22 @@
-﻿
+﻿@using Blazorise.Icons.Material
+@using Icon = Blazorise.Icon
 <Container>
     <Row >
         @for (var i = 1; i <= ModalMaxScore; i++)
         {
             var score = i;
-            <Column ColumnSize="ColumnSize.Is3" Margin="Margin.Is2" >
+            <Column ColumnSize="ColumnSize.Is3" Margin="Margin.Is2">
                 <Button Clicked="async () => await ReturnResult(score)">@score.ToString()</Button>
             </Column>
         }
     </Row>
 </Container>
 
-<Button Clicked="AddModalMaxScore">Det gick inge vidare... <Icon Name="Blazorise.Icons.Material.MaterialIcons.SentimentDissatisfied" /></Button>
+<Button Clicked="AddModalMaxScore">Det gick inge vidare... <Icon Name="MaterialIcons.SentimentDissatisfied"/></Button>
 
 @code {
 
-    [CascadingParameter]
-    BlazoredModalInstance ModalInstance { get; set; }
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
 
     private int ModalMaxScore { get; set; } = 12;
 

@@ -6,15 +6,16 @@ namespace Tradgardsgolf.Api.Authentication;
 
 public static class ClaimsPrincipleExtensions
 {
-    private static readonly string[] UserIdClaimAliases = new[]
+    private static readonly string[] UserIdClaimAliases =
     {
         "oid", "objectidentifier"
     };
-    
+
     public static bool TryGetUserId(this ClaimsPrincipal user, out Guid userId)
     {
         userId = Guid.Empty;
-        
-        return Guid.TryParse(user.FindFirst(u => UserIdClaimAliases.Any(alias => u.Type.Contains((string)alias)))?.Value, out userId);
+
+        return Guid.TryParse(user.FindFirst(u => UserIdClaimAliases.Any(alias => u.Type.Contains(alias)))?.Value,
+        out userId);
     }
 }

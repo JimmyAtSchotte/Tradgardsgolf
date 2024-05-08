@@ -10,4 +10,3 @@ public class ById : Specification<Entities.Scorecard>
         Query.Where(x => x.Id == scorecardId);
     }
 }
-

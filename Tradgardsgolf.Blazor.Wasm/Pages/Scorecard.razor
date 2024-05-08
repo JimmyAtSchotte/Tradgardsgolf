@@ -1,11 +1,13 @@
 ﻿@page "/Scorecard"
+@using Blazorise.Icons.Material
+@using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.Contracts.Scorecard
 @using Tradgardsgolf.Contracts.Tournament
-@using Tradgardsgolf.BlazorWasm.State
-@using Tradgardsgolf.BlazorWasm.ApiServices
+@using Icon = Blazorise.Icon
+@using IModalService = Blazored.Modal.Services.IModalService
 @inject NavigationManager NavigationManager
 @inject IApiDispatcher apiDispatcher
-@inject Blazored.Modal.Services.IModalService Modal
+@inject IModalService Modal
 
 @if (State.AppState.ScorecardState is not null)
 {
@@ -47,7 +49,7 @@
                             }
                         </TableHeader>
                         <TableBody>
-                            @for (int i = 1; i <= State.AppState.ScorecardState.CourseResponse.Holes; i++)
+                            @for (var i = 1; i <= State.AppState.ScorecardState.CourseResponse.Holes; i++)
                             {
                                 var hole = i;
 
@@ -87,14 +89,14 @@
                             Disabled="@Saving"
                             Float="Float.Start"
                             Color="Color.Warning">
-                        Byt spelare <Icon Name="Blazorise.Icons.Material.MaterialIcons.Sync"></Icon>
+                        Byt spelare <Icon Name="MaterialIcons.Sync"></Icon>
                     </Button>
                     <Button Clicked="async () => await CompleteRound()"
                             Disabled="@DisableCompleteButton"
                             Loading="Saving"
                             Float="Float.End"
                             Color="Color.Primary">
-                        Klart <Icon Name="Blazorise.Icons.Material.MaterialIcons.Check"></Icon>
+                        Klart <Icon Name="MaterialIcons.Check"></Icon>
                     </Button>
                 </CourseButtons>
             </CourseCard>
@@ -104,19 +106,17 @@
 }
 
 
-
 @code
 {
-    [CascadingParameter]
-    public CascadingStateProvider State { get; set; }
+    [CascadingParameter] public CascadingStateProvider State { get; set; }
 
     private bool DisableCompleteButton => State.AppState.ScorecardState.PlayerScores.Any(x => x.MissingScores()) || Saving;
     private bool Saving { get; set; }
 
     private IEnumerable<Tournament> Tournaments { get; set; } = new List<Tournament>();
-    private List<TournamentScore> TournamentScores { get; set; } = new List<TournamentScore>();
+    private List<TournamentScore> TournamentScores { get; set; } = new();
     private Tournament SelectedTournament { get; set; }
- 
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -125,12 +125,12 @@
             NavigationManager.NavigateTo("");
             return;
         }
-        
-        Tournaments = await apiDispatcher.Dispatch(new ListTodaysTournamentsCommand()
+
+        Tournaments = await apiDispatcher.Dispatch(new ListTodaysTournamentsCommand
         {
             CourseId = State.AppState.ScorecardState.CourseResponse.Id
         });
-        
+
         await base.OnInitializedAsync();
     }
 
@@ -150,10 +150,10 @@
         Saving = true;
         StateHasChanged();
 
-        var roundScore = await apiDispatcher.Dispatch(new SaveScorecardCommand()
+        var roundScore = await apiDispatcher.Dispatch(new SaveScorecardCommand
         {
             CourseId = State.AppState.ScorecardState.CourseResponse.Id,
-            PlayerScores = State.AppState.ScorecardState.PlayerScores.Select(x => new PlayerScore()
+            PlayerScores = State.AppState.ScorecardState.PlayerScores.Select(x => new PlayerScore
             {
                 Name = x.PlayerResponse.Name,
                 HoleScores = x.Scores.Select(score => score.Score.GetValueOrDefault())
@@ -162,7 +162,7 @@
 
         if (SelectedTournament is not null)
         {
-            await apiDispatcher.Dispatch(new AddTournamentRoundScoreCommand()
+            await apiDispatcher.Dispatch(new AddTournamentRoundScoreCommand
             {
                 TournamentId = SelectedTournament.Id,
                 ScorecardId = roundScore.Id
@@ -216,7 +216,7 @@
     private async Task OnSelectedTournamentChanged(Guid tournamentId)
     {
         SelectedTournament = Tournaments.FirstOrDefault(x => x.Id == tournamentId);
-        TournamentScores = (await apiDispatcher.Dispatch(new GetTournamentScoresCommand()
+        TournamentScores = (await apiDispatcher.Dispatch(new GetTournamentScoresCommand
         {
             TournamentId = tournamentId
         }) ?? Array.Empty<TournamentScore>()).ToList();

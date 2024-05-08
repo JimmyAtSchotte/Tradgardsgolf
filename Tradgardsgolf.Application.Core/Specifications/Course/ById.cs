@@ -10,4 +10,3 @@ public class ById : Specification<Entities.Course>
         Query.Where(x => x.Id == courseId);
     }
 }
-

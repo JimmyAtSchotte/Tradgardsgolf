@@ -1,18 +1,14 @@
-﻿@using Microsoft.Extensions.Configuration
-@using Microsoft.Extensions.Options
-
-<CardHeader>
+﻿<CardHeader>
     <CardImage Source="@GetImage()"></CardImage>
     <h1>@CascadingCourse.Course.Name</h1>
     @ChildContent
 </CardHeader>
 
 @code {
-    [CascadingParameter]
-    public CascadingCourse CascadingCourse { get; set; }
-    
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
+
+    [CascadingParameter] public CascadingCourse CascadingCourse { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
 
     private string GetImage()
     {
@@ -20,8 +16,5 @@
             ? "images/grass.jpg"
             : CascadingCourse.Course.ImageReference.ToString();
     }
+
 }
-
-
-
-

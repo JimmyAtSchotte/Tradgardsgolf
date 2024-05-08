@@ -12,7 +12,7 @@ public class ImageReferenceMutatorTests
     public void MutateImageReferenceObject()
     {
         var response = new ImageReference();
-        ImageReferenceMutator.Mutate(new DefaultHttpContext()
+        ImageReferenceMutator.Mutate(new DefaultHttpContext
         {
             Request =
             {
@@ -23,16 +23,16 @@ public class ImageReferenceMutatorTests
 
         Assert.That(response.Url, Is.EqualTo("https://localhost/images/"));
     }
-    
+
     [Test]
     public void MutateImageReferenceProperty()
     {
-        var response = new CourseResponse()
+        var response = new CourseResponse
         {
             ImageReference = new ImageReference()
         };
-        
-        ImageReferenceMutator.Mutate(new DefaultHttpContext()
+
+        ImageReferenceMutator.Mutate(new DefaultHttpContext
         {
             Request =
             {
@@ -40,22 +40,22 @@ public class ImageReferenceMutatorTests
                 Scheme = "https"
             }
         }, response);
-        
+
         Assert.That(response.ImageReference.Url, Is.EqualTo("https://localhost/images/"));
     }
-    
+
     [Test]
     public void MutateArrayObjectWithImageReferenceProperty()
     {
         var response = new[]
         {
-            new CourseResponse()
+            new CourseResponse
             {
                 ImageReference = new ImageReference()
             }
         };
-        
-        ImageReferenceMutator.Mutate(new DefaultHttpContext()
+
+        ImageReferenceMutator.Mutate(new DefaultHttpContext
         {
             Request =
             {
@@ -66,13 +66,13 @@ public class ImageReferenceMutatorTests
 
         Assert.That(response[0].ImageReference.Url, Is.EqualTo("https://localhost/images/"));
     }
-    
+
     [Test]
     public void MutateEnumerableObjectWithImageReferenceProperty()
     {
         var response = CreateEnumerable().ToList();
-        
-        ImageReferenceMutator.Mutate(new DefaultHttpContext()
+
+        ImageReferenceMutator.Mutate(new DefaultHttpContext
         {
             Request =
             {
@@ -88,7 +88,7 @@ public class ImageReferenceMutatorTests
 
     private IEnumerable<CourseResponse> CreateEnumerable()
     {
-        yield return new CourseResponse()
+        yield return new CourseResponse
         {
             ImageReference = new ImageReference()
         };

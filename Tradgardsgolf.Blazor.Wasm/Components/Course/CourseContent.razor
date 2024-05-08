@@ -1,4 +1,4 @@
-﻿@if(Visible)
+﻿@if (Visible)
 {
     <CardBody Style="overflow: auto">
         @ChildContent
@@ -7,10 +7,7 @@
 
 @code
 {
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
 
-    [Parameter]
-    public bool Visible { get; set; } = true;
+    [Parameter] public bool Visible { get; set; } = true;
 }
-    

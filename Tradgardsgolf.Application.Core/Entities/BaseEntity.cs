@@ -1,7 +1,3 @@
-﻿namespace Tradgardsgolf.Core.Entities
-{
-    public class BaseEntity<T> 
-    {
-                
-    }
-}
+﻿namespace Tradgardsgolf.Core.Entities;
+
+public class BaseEntity<T> { }

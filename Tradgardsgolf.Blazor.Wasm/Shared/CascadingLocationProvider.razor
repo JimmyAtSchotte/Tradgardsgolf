@@ -2,45 +2,44 @@
 
 <Loading IsLoading="Location == null">
     <LoadingTemplate>
-            <div class="loading-splash">
-                <div class="loading-splash-content">
-                    <Loading IsLoading="true" LoadingText="Hittar din position..."></Loading>
-                </div>
-                <div class="loading-splash-message">
-                    För att använda appen så behöver du tillåta att dela din position.
-                </div>
+        <div class="loading-splash">
+            <div class="loading-splash-content">
+                <Loading IsLoading="true" LoadingText="Hittar din position..."></Loading>
             </div>
+            <div class="loading-splash-message">
+                För att använda appen så behöver du tillåta att dela din position.
+            </div>
+        </div>
     </LoadingTemplate>
-    
+
     <ChildContent>
         <CascadingValue Value="Location">@ChildContent</CascadingValue>
     </ChildContent>
 </Loading>
 
 @code {
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-    
-    [Parameter]
-    public Location Location { get; set; }
-    
-    
-    
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    [Parameter] public Location Location { get; set; }
+
+
     public event Action<ComponentBase> LocationChanged;
-    
+
     protected override async Task OnInitializedAsync()
     {
         await LocationService.WatchLocation(LocationCallback);
     }
- 
+
     private void LocationCallback(Location location)
     {
-        if(Location?.Latitude == location.Latitude && 
-           Location?.Longitude == location.Longitude)
+        if (Location?.Latitude == location.Latitude &&
+            Location?.Longitude == location.Longitude)
             return;
 
         Location = location;
         LocationChanged?.Invoke(this);
         StateHasChanged();
     }
+
 }

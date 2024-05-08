@@ -1,37 +1,38 @@
 ﻿@if (Display())
 {
-    <i class="material-icons">insights</i><span>@_bestAverageModels.Player (@Math.Round(_bestAverageModels.Average, 1))</span>
+    <i class="material-icons">insights</i>
+    <span>@_bestAverageModels.Player (@Math.Round(_bestAverageModels.Average, 1))</span>
 }
 
 @code {
-    [CascadingParameter]
-    public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+
+    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
 
     private BestAverageModel _bestAverageModels;
 
     protected override void OnParametersSet()
     {
-        if(CascadingCourseStatistics?.CourseStatisticResponse == null)
+        if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
         var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
-        
+
         _bestAverageModels = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
             .Where(x => x.Date > scoreReset)
             .Select(x => new
-        {
-            Rounds = x.Scores.GroupBy(score => score.Player)
-                .Select(p => new
-                {
-                    Player = p.Key,
-                    ToatalScore = p.Sum(s => s.Score)
-                })
-        }).SelectMany(x => x.Rounds)
+            {
+                Rounds = x.Scores.GroupBy(score => score.Player)
+                    .Select(p => new
+                    {
+                        Player = p.Key,
+                        ToatalScore = p.Sum(s => s.Score)
+                    })
+            }).SelectMany(x => x.Rounds)
             .GroupBy(x => x.Player)
             .Select(x => new BestAverageModel
             {
                 Player = x.Key,
-                Average = (double) x.Sum(score => score.ToatalScore) / (double) x.Count()
+                Average = x.Sum(score => score.ToatalScore) / (double)x.Count()
             })
             .OrderBy(x => x.Average)
             .FirstOrDefault();

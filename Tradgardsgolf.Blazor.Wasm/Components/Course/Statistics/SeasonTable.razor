@@ -1,10 +1,9 @@
-﻿
-@if (Display())
+﻿@if (Display())
 {
     <Table>
         @foreach (var obj in _seasonTableModels.Select((model, i) => new
         {
-            Position = i +1,
+            Position = i + 1,
             Model = model
         }))
         {
@@ -19,60 +18,60 @@
                     var index = i;
                     <TableRowCell Style="border-top: none">@obj.Model.GetScore(index)</TableRowCell>
                 }
-                <TableRowCell Style="border-top: none"><strong>@obj.Model.Scores.Sum()</strong></TableRowCell>
+                <TableRowCell Style="border-top: none">
+                    <strong>@obj.Model.Scores.Sum()</strong>
+                </TableRowCell>
             </TableRow>
         }
     </Table>
 }
 
 @code {
-    [CascadingParameter]
-    public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
-    
-    [CascadingParameter]
-    public CascadingCourse CascadingCourse { get; set; }
 
-    [Parameter]
-    public int? Year { get; set; }  
-    
+    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+
+    [CascadingParameter] public CascadingCourse CascadingCourse { get; set; }
+
+    [Parameter] public int? Year { get; set; }
+
     private IEnumerable<SeasonTableModel> _seasonTableModels;
 
     protected override void OnParametersSet()
     {
-        if(CascadingCourseStatistics?.CourseStatisticResponse == null)
+        if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
-        
-        if(!Year.HasValue)
+
+        if (!Year.HasValue)
             return;
-        
+
         RenderSeasonTable();
     }
 
     private void RenderSeasonTable()
     {
         _seasonTableModels = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
-                .Where(x => x.Date.Year == Year.GetValueOrDefault(0))
-                .Select(x => new
-                {
-                    Rounds = x.Scores.GroupBy(score => score.Player)
-                        .Select(p => new
-                        {
-                            Player = p.Key,
-                            ToatalScore = p.Sum(s => s.Score)
-                        })
-                })
-                .SelectMany(x => x.Rounds)
-                .GroupBy(x => x.Player)
-                .Select(x => new SeasonTableModel
-                {
-                    Player = x.Key,
-                    Scores = x.OrderBy(s => s.ToatalScore)
-                        .Take(CascadingCourse.Course.SeasonTableRounds)
-                        .Select(s => s.ToatalScore)
-                        .ToArray()
-                })
-                .OrderByDescending(x => x.Scores.Count())
-                .ThenBy(x => x.Scores.Sum());
+            .Where(x => x.Date.Year == Year.GetValueOrDefault(0))
+            .Select(x => new
+            {
+                Rounds = x.Scores.GroupBy(score => score.Player)
+                    .Select(p => new
+                    {
+                        Player = p.Key,
+                        ToatalScore = p.Sum(s => s.Score)
+                    })
+            })
+            .SelectMany(x => x.Rounds)
+            .GroupBy(x => x.Player)
+            .Select(x => new SeasonTableModel
+            {
+                Player = x.Key,
+                Scores = x.OrderBy(s => s.ToatalScore)
+                    .Take(CascadingCourse.Course.SeasonTableRounds)
+                    .Select(s => s.ToatalScore)
+                    .ToArray()
+            })
+            .OrderByDescending(x => x.Scores.Count())
+            .ThenBy(x => x.Scores.Sum());
     }
 
     private bool Display()
@@ -93,4 +92,5 @@
             return Scores[i].ToString();
         }
     }
+
 }

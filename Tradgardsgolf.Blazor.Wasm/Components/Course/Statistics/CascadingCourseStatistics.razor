@@ -1,5 +1,5 @@
-﻿@using Tradgardsgolf.Contracts.Statistics
-@using Tradgardsgolf.BlazorWasm.ApiServices
+﻿@using Tradgardsgolf.BlazorWasm.ApiServices
+@using Tradgardsgolf.Contracts.Statistics
 @inject IApiDispatcher apiDispatcher
 
 <CascadingValue Value="this">
@@ -7,22 +7,22 @@
 </CascadingValue>
 
 @code {
-    [CascadingParameter]
-    public CascadingCourse CascadingCourse { get; set; }
-    
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-    
+
+    [CascadingParameter] public CascadingCourse CascadingCourse { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
     public CourseStatisticResponse CourseStatisticResponse { get; set; }
     public bool Loading { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Loading = true;
-        CourseStatisticResponse = await apiDispatcher.Dispatch(new CourseStatisticCommand()
+        CourseStatisticResponse = await apiDispatcher.Dispatch(new CourseStatisticCommand
         {
             CourseId = CascadingCourse.Course.Id
         });
         Loading = false;
     }
+
 }

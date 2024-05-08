@@ -2,7 +2,4 @@
 
 namespace Tradgardsgolf.Core.Exceptions;
 
-public class UnauthorizedException : Exception
-{
-    
-}
+public class UnauthorizedException : Exception { }

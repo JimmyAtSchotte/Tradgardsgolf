@@ -30,31 +30,31 @@
 }
 
 @code {
-    [CascadingParameter]
-    public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+
+    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
 
     private TopScoreModel[] _topScore;
     private int _listCount = 10;
-    
+
     protected override void OnParametersSet()
     {
-        if(CascadingCourseStatistics?.CourseStatisticResponse == null)
+        if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
-        
+
         var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
 
         _topScore = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
             .Where(x => x.Date > scoreReset)
             .Select(x => new
-        {
-            Rounds = x.Scores.GroupBy(score => score.Player)
-                .Select(p => new TopScoreModel()
-                {
-                    Date = x.Date,
-                    Player = p.Key,
-                    ToatalScore = p.Sum(s => s.Score)
-                })
-        }).SelectMany(x => x.Rounds)
+            {
+                Rounds = x.Scores.GroupBy(score => score.Player)
+                    .Select(p => new TopScoreModel
+                    {
+                        Date = x.Date,
+                        Player = p.Key,
+                        ToatalScore = p.Sum(s => s.Score)
+                    })
+            }).SelectMany(x => x.Rounds)
             .OrderBy(x => x.ToatalScore)
             .ThenBy(x => x.Date)
             .Take(_listCount)
@@ -68,7 +68,6 @@
         public int ToatalScore { get; set; }
     }
 
-  
 
     private bool Display()
     {

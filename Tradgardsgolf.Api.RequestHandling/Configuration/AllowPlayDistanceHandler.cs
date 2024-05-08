@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.Extensions.Options;
 using Tradgardsgolf.Contracts.Settings;
 using Tradgardsgolf.Core.Config;
-using Tradgardsgolf.Core.Exceptions;
 
 namespace Tradgardsgolf.Api.RequestHandling.Configuration;
 
@@ -13,11 +12,11 @@ public class AllowPlayDistanceHandler(IOptionsMonitor<AllowPlayDistance> setting
 {
     public Task<SettingResponse<int>> Handle(AllowPlayDistanceCommand request, CancellationToken cancellationToken)
     {
-        var response = new SettingResponse<int>()
+        var response = new SettingResponse<int>
         {
             Value = settings.CurrentValue.Value
         };
-        
+
         return Task.FromResult(response);
     }
 }

@@ -1,19 +1,20 @@
 ﻿@using Tradgardsgolf.Contracts.Players
-
 <Fields Class="player">
-     <Column ColumnSize="ColumnSize.Is2"><Avatar Player="Player"></Avatar></Column>
-     <Column ColumnSize="ColumnSize.Is8"><span>@Player.Name</span></Column>
-     <Column ColumnSize="ColumnSize.Is2">
+    <Column ColumnSize="ColumnSize.Is2">
+        <Avatar Player="Player"></Avatar>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is8">
+        <span>@Player.Name</span>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is2">
         @ChildContent
-     </Column>
- </Fields>
+    </Column>
+</Fields>
 
 @code
 {
-    [Parameter]
-    public PlayerResponse Player { get; set; }
+    [Parameter] public PlayerResponse Player { get; set; }
 
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-    
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
 }

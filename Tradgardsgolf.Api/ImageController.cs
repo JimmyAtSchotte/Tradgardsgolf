@@ -4,7 +4,6 @@ using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Api;
 
-
 [ApiController]
 [Route("images")]
 public class ImageController(IFileService fileService) : ControllerBase

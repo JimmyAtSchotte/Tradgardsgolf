@@ -32,8 +32,7 @@
 
 @code {
 
-    [CascadingParameter]
-    public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
 
     private TopAverageModel[] _topAverages;
     private int _listCount = 10;
@@ -43,25 +42,25 @@
     {
         if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
-        
+
         var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
-        
+
         _topAverages = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
             .Where(x => x.Date > scoreReset)
             .Select(x => new
-        {
-            Rounds = x.Scores.GroupBy(score => score.Player)
-                .Select(p => new
-                {
-                    Player = p.Key,
-                    ToatalScore = p.Sum(s => s.Score)
-                })
-        }).SelectMany(x => x.Rounds)
+            {
+                Rounds = x.Scores.GroupBy(score => score.Player)
+                    .Select(p => new
+                    {
+                        Player = p.Key,
+                        ToatalScore = p.Sum(s => s.Score)
+                    })
+            }).SelectMany(x => x.Rounds)
             .GroupBy(x => x.Player)
             .Select(x => new TopAverageModel
             {
                 Player = x.Key,
-                Average = (double) x.Sum(score => score.ToatalScore) / (double) x.Count()
+                Average = x.Sum(score => score.ToatalScore) / (double)x.Count()
             })
             .OrderBy(x => x.Average)
             .Take(_listCount)

@@ -6,48 +6,48 @@
             <TableHeaderCell>Snitt</TableHeaderCell>
             <TableHeaderCell>Hole in one</TableHeaderCell>
         </TableHeader>
-           @foreach (var holeAverage in _holeAverageModels)
-            {
-                <TableRow>
-                    <TableRowCell>@holeAverage.Hole</TableRowCell>
-                    <TableRowCell>@Math.Round(holeAverage.Average, 1)</TableRowCell>
-                    <TableRowCell>@holeAverage.HoleInOnes</TableRowCell>
-                </TableRow>
-            }
+        @foreach (var holeAverage in _holeAverageModels)
+        {
+            <TableRow>
+                <TableRowCell>@holeAverage.Hole</TableRowCell>
+                <TableRowCell>@Math.Round(holeAverage.Average, 1)</TableRowCell>
+                <TableRowCell>@holeAverage.HoleInOnes</TableRowCell>
+            </TableRow>
+        }
     </Table>
 }
 
 @code {
-    [CascadingParameter]
-    public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+
+    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
 
     private HoleStatisticModel[] _holeAverageModels;
 
     protected override void OnParametersSet()
     {
-        if(CascadingCourseStatistics?.CourseStatisticResponse == null)
+        if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
-        
+
         var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
-        
+
         _holeAverageModels = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
             .Where(x => x.Date > scoreReset)
             .Select(x => new
-        {
-            Rounds = x.Scores.GroupBy(score => score.Hole)
-                .Select(p => new
-                {
-                    Hole = p.Key,
-                    Scores = p.Select(s => s.Score),
-                    PlayerCount = p.Count(),
-                    HoleInOnes = p.Count(s => s.Score == 1)
-                })
-        }).SelectMany(x => x.Rounds)
+            {
+                Rounds = x.Scores.GroupBy(score => score.Hole)
+                    .Select(p => new
+                    {
+                        Hole = p.Key,
+                        Scores = p.Select(s => s.Score),
+                        PlayerCount = p.Count(),
+                        HoleInOnes = p.Count(s => s.Score == 1)
+                    })
+            }).SelectMany(x => x.Rounds)
             .GroupBy(x => x.Hole)
             .Select(x => new HoleStatisticModel
             {
                 Hole = x.Key,
-                Average = (double) x.Sum(score => score.Scores.Sum()) / (double) x.Sum(p => p.PlayerCount),
+                Average = x.Sum(score => score.Scores.Sum()) / (double)x.Sum(p => p.PlayerCount),
                 HoleInOnes = x.Sum(s => s.HoleInOnes)
             })
             .OrderBy(x => x.Hole)

@@ -1,18 +1,21 @@
-﻿<Field>
+﻿@using Blazorise.Icons.Material
+@using Icon = Blazorise.Icon
+<Field>
     <FieldLabel>Namn</FieldLabel>
     <TextEdit Placeholder="Skriv namn" TextChanged="s => PlayerName = s"/>
 </Field>
-<Button Color="Color.Primary" Clicked="async () => await Add()">Lägg till <Icon Name="Blazorise.Icons.Material.MaterialIcons.Add" /></Button>
+<Button Color="Color.Primary" Clicked="async () => await Add()">Lägg till <Icon Name="MaterialIcons.Add"/></Button>
 
 @code {
-    [CascadingParameter] 
-    BlazoredModalInstance ModalInstance { get; set; }
-    
+
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
+
     private string PlayerName { get; set; }
-    
-    
+
+
     private async Task Add()
     {
         await ModalInstance.CloseAsync(ModalResult.Ok(PlayerName));
     }
+
 }

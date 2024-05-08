@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using MediatR;
 
-namespace Tradgardsgolf.Contracts.Scorecard
+namespace Tradgardsgolf.Contracts.Scorecard;
+
+public record SaveScorecardCommand : IRequest<ScorecardResponse>
 {
-    public record SaveScorecardCommand : IRequest<ScorecardResponse>
-    {
-        public IEnumerable<PlayerScore> PlayerScores { get; init; }
-        public Guid CourseId { get; init; }
-    }
+    public IEnumerable<PlayerScore> PlayerScores { get; init; }
+    public Guid CourseId { get; init; }
 }

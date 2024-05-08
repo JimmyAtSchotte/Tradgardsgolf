@@ -7,19 +7,20 @@ using Tradgardsgolf.Contracts.Players;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications.Scorecard;
 
-namespace Tradgardsgolf.Api.RequestHandling.Player
+namespace Tradgardsgolf.Api.RequestHandling.Player;
+
+public class HasPlayedOnCourseHandler(IRepository<Core.Entities.Scorecard> scorecards)
+    : IRequestHandler<HasPlayedOnCourseCommand, IEnumerable<PlayerResponse>>
 {
-    public class HasPlayedOnCourseHandler(IRepository<Core.Entities.Scorecard> scorecards) : IRequestHandler<HasPlayedOnCourseCommand, IEnumerable<PlayerResponse>>
+    public async Task<IEnumerable<PlayerResponse>> Handle(HasPlayedOnCourseCommand request,
+        CancellationToken cancellationToken)
     {
-        public async Task<IEnumerable<PlayerResponse>> Handle(HasPlayedOnCourseCommand request, CancellationToken cancellationToken)
-        {
-            return (await scorecards.ListAsync(new ByCourse(request.CourseId), cancellationToken))
-                .SelectMany(x => x.Scores.Keys)
-                .GroupBy(x => x)
-                .Select(x => new PlayerResponse()
-                {
-                    Name = x.Key
-                }).ToList();
-        }
+        return (await scorecards.ListAsync(new ByCourse(request.CourseId), cancellationToken))
+            .SelectMany(x => x.Scores.Keys)
+            .GroupBy(x => x)
+            .Select(x => new PlayerResponse
+            {
+                Name = x.Key
+            }).ToList();
     }
 }

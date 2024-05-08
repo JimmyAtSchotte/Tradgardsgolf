@@ -4,31 +4,28 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Scorecard;
 using Tradgardsgolf.Core.Infrastructure;
-using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Course;
 
-namespace Tradgardsgolf.Api.RequestHandling.Scorecard
+namespace Tradgardsgolf.Api.RequestHandling.Scorecard;
+
+public class SaveScorecardHandler(IRepository<Core.Entities.Course> courses)
+    : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
 {
-    public class SaveScorecardHandler(IRepository<Core.Entities.Course> courses)
-        : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
+    public async Task<ScorecardResponse> Handle(SaveScorecardCommand request, CancellationToken cancellationToken)
     {
-        public async Task<ScorecardResponse> Handle(SaveScorecardCommand request, CancellationToken cancellationToken)
+        var course = await courses.FirstOrDefaultAsync(new ById(request.CourseId), cancellationToken);
+        var scorecard = course.CreateScorecard();
+
+        foreach (var playerScore in request.PlayerScores)
+            scorecard.AddPlayerScores(playerScore.Name, playerScore.HoleScores.ToArray());
+
+        await courses.UpdateAsync(course, cancellationToken);
+
+        return new ScorecardResponse
         {
-            var course = await courses.FirstOrDefaultAsync(new ById(request.CourseId), cancellationToken);
-            var scorecard = course.CreateScorecard();
-
-            foreach (var playerScore in request.PlayerScores)
-                scorecard.AddPlayerScores(playerScore.Name, playerScore.HoleScores.ToArray());
-
-            await courses.UpdateAsync(course, cancellationToken);
-
-            return new ScorecardResponse()
-            {
-                Id = scorecard.Id,
-                CourseId = course.Id,
-                PlayerScores = request.PlayerScores
-            };
-        }
+            Id = scorecard.Id,
+            CourseId = course.Id,
+            PlayerScores = request.PlayerScores
+        };
     }
 }
-

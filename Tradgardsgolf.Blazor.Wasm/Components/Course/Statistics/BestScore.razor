@@ -1,33 +1,34 @@
 ﻿@if (Display())
 {
-    <i class="material-icons">emoji_events</i><span>@_bestScore.Player (@_bestScore.ToatalScore)</span>
+    <i class="material-icons">emoji_events</i>
+    <span>@_bestScore.Player (@_bestScore.ToatalScore)</span>
 }
 
 @code {
-    [CascadingParameter]
-    public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+
+    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
 
     private BestScoreModel _bestScore;
-    
+
     protected override void OnParametersSet()
     {
-        if(CascadingCourseStatistics?.CourseStatisticResponse == null)
+        if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
         var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
-    
+
         _bestScore = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
             .Where(x => x.Date > scoreReset)
             .Select(x => new
-        {
-            Rounds = x.Scores.GroupBy(score => score.Player)
-                .Select(p => new BestScoreModel()
-                {
-                    Date = x.Date,
-                    Player = p.Key,
-                    ToatalScore = p.Sum(s => s.Score)
-                })
-        }).SelectMany(x => x.Rounds)
+            {
+                Rounds = x.Scores.GroupBy(score => score.Player)
+                    .Select(p => new BestScoreModel
+                    {
+                        Date = x.Date,
+                        Player = p.Key,
+                        ToatalScore = p.Sum(s => s.Score)
+                    })
+            }).SelectMany(x => x.Rounds)
             .OrderBy(x => x.ToatalScore)
             .ThenBy(x => x.Date)
             .FirstOrDefault();

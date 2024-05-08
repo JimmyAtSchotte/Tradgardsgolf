@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using MediatR;
 
-namespace Tradgardsgolf.Contracts.Tournament
+namespace Tradgardsgolf.Contracts.Tournament;
+
+public class ListTodaysTournamentsCommand : IRequest<IEnumerable<Tournament>>
 {
-    public class ListTodaysTournamentsCommand : IRequest<IEnumerable<Tournament>>
-    {
-        public Guid CourseId { get; set; }
-        
-    }
+    public Guid CourseId { get; set; }
 }

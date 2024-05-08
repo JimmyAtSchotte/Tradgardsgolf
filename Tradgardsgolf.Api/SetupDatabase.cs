@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Infrastructure.Database;
 
@@ -13,26 +11,26 @@ namespace Tradgardsgolf.Api;
 
 public static class SetupDatabaseExtensions
 {
-    private static readonly Random Random = new Random();
-        
+    private static readonly Random Random = new();
+
     public static async Task SetupDatabase(this IHost host)
     {
         using var scope = host.Services.CreateScope();
-        
+
         await using var context = scope.ServiceProvider.GetService<TradgardsgolfContext>();
-        
-        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>(); 
+
+        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var seedDatabase = config.GetValue<bool>("SeedDatabase");
 
         if (seedDatabase)
         {
             await context.Database.EnsureDeletedAsync();
             await context.Database.EnsureCreatedAsync();
-        
+
             await context.SeedData();
             return;
         }
-        
+
         await context.Database.EnsureCreatedAsync();
     }
 
@@ -45,7 +43,7 @@ public static class SetupDatabaseExtensions
             p.Latitude = 59.331181;
             p.Longitude = 18.040736;
         });
-            
+
         var tornehof = Course.Create(Guid.Empty, p =>
         {
             p.Holes = 6;
@@ -53,7 +51,7 @@ public static class SetupDatabaseExtensions
             p.Latitude = 59.5751198688695;
             p.Longitude = 17.120523690349092;
         });
-        
+
         var berlin = Course.Create(Guid.Empty, p =>
         {
             p.Holes = 6;
@@ -61,27 +59,27 @@ public static class SetupDatabaseExtensions
             p.Latitude = 52.520007;
             p.Longitude = 13.404954;
         });
-            
+
         context.Add(kumhof);
         context.Add(tornehof);
         context.Add(berlin);
 
-        for (int r = 0; r < 300; r++)
+        for (var r = 0; r < 300; r++)
             AddScorecard(context, kumhof);
-        
-        for (int r = 0; r < 60; r++)
+
+        for (var r = 0; r < 60; r++)
             AddScorecard(context, tornehof);
-        
-        for (int r = 0; r < 25; r++)
+
+        for (var r = 0; r < 25; r++)
             AddScorecard(context, berlin);
 
-        
+
         var tournament = Tournament.Create("Touren");
         tournament.AddCourseDate(kumhof, DateTime.Today);
         tournament.AddCourseDate(tornehof, DateTime.Today);
 
         context.Add(tournament);
-            
+
         await context.SaveChangesAsync();
     }
 
@@ -89,10 +87,11 @@ public static class SetupDatabaseExtensions
     {
         var scorecard = Scorecard.Create(course);
         var players = new[] { "Jimmy", "Patrik", "Amanda", "Hanna" };
-        
+
         foreach (var player in players)
-            scorecard.AddPlayerScores(player,Enumerable.Repeat(0, course.Holes).Select(_ => GenerateRandomScore()).ToArray());
-        
+            scorecard.AddPlayerScores(player,
+            Enumerable.Repeat(0, course.Holes).Select(_ => GenerateRandomScore()).ToArray());
+
         context.Add(scorecard);
     }
 
@@ -109,6 +108,5 @@ public static class SetupDatabaseExtensions
             >= 15 => 5,
             _ => 6
         };
-
     }
 }

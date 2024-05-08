@@ -1,5 +1,4 @@
-﻿using Tradgardsgolf.Contracts;
-using Tradgardsgolf.Contracts.Types;
+﻿using Tradgardsgolf.Contracts.Types;
 using Tradgardsgolf.Core.Entities;
 
 namespace Tradgardsgolf.Api.ResponseFactory;
@@ -11,7 +10,7 @@ public class ImageReferenceResponseFactory : IResponseFactory<ImageReference, Co
         if (string.IsNullOrEmpty(course.Image))
             return null;
 
-        return new ImageReference()
+        return new ImageReference
         {
             Path = course.Image
         };

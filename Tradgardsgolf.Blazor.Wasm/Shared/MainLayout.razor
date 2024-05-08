@@ -1,6 +1,5 @@
 ﻿@using Blazorise.Icons.Material
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using Tradgardsgolf.BlazorWasm.State
 @inherits LayoutComponentBase
 @inject NavigationManager Navigation
 
@@ -55,12 +54,14 @@
 </Layout>
 
 @code {
-    private bool topbarVisible = false;
+    private bool topbarVisible;
 
 
-    [CascadingParameter] 
-    public CascadingStateProvider State { get; set; }
+    [CascadingParameter] public CascadingStateProvider State { get; set; }
 
-    private void OnLogout() => Navigation.NavigateToLogout("authentication/logout");
+    private void OnLogout()
+    {
+        Navigation.NavigateToLogout("authentication/logout");
+    }
 
 }

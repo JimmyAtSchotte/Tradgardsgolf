@@ -11,7 +11,7 @@ namespace Tradgardsgolf.Api.Startup;
 
 public static class Swagger
 {
-    private static readonly IDictionary<string, string> Scopes = new Dictionary<string, string>()
+    private static readonly IDictionary<string, string> Scopes = new Dictionary<string, string>
     {
         { "openid", "" },
         { "offline_access", "" },
@@ -24,7 +24,7 @@ public static class Swagger
         var securityRequirement = CreateSecurityRequirement(securityScheme);
 
         builder.Services.AddSingleton(new SecurityRequirementsOperationFilter(securitySchemaName: securityScheme.Name));
-        
+
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tradgardsgolf.Api", Version = "v1" });
@@ -37,7 +37,7 @@ public static class Swagger
     public static void ConfigureSwaggerUI(this WebApplication app, IConfigurationRoot configuration)
     {
         var clientId = configuration.GetValue<string>("AzureAdB2C:ClientId");
-        
+
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
@@ -53,16 +53,16 @@ public static class Swagger
         var instance = configuration.GetValue<string>("AzureAdB2C:Instance");
         var domain = configuration.GetValue<string>("AzureAdB2C:Domain");
         var policy = configuration.GetValue<string>("AzureAdB2C:SignUpSignInPolicyId");
-        
+
         return new OpenApiSecurityScheme
         {
             Name = "oauth2",
             Type = SecuritySchemeType.OAuth2,
             In = ParameterLocation.Header,
             Scheme = "Bearer",
-            Flows = new OpenApiOAuthFlows()
+            Flows = new OpenApiOAuthFlows
             {
-                Implicit = new OpenApiOAuthFlow()
+                Implicit = new OpenApiOAuthFlow
                 {
                     AuthorizationUrl = new Uri($"{instance}/{domain}/oauth2/v2.0/authorize?p={policy}"),
                     TokenUrl = new Uri($"{instance}/{domain}/oauth2/v2.0/token?p={policy}"),

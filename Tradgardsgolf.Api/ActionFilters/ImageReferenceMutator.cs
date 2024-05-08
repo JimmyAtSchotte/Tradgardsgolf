@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using Tradgardsgolf.Contracts;
 using Tradgardsgolf.Contracts.Types;
 
 namespace Tradgardsgolf.Api.ActionFilters;
@@ -20,12 +19,12 @@ public class ImageReferenceMutator
 
     private void Mutate()
     {
-        if(_response is null)
+        if (_response is null)
             return;
-        
+
         MutateObject(_response);
     }
-    
+
     private void MutateObject(object currentObject)
     {
         switch (currentObject)
@@ -33,17 +32,15 @@ public class ImageReferenceMutator
             case Array array:
             {
                 for (var i = 0; i < array.Length; i++)
-                {
                     if (array.GetValue(i) is not null)
                         MutateObject(array.GetValue(i));
-                }
                 return;
             }
             case IEnumerable enumerable:
             {
                 foreach (var obj in enumerable)
                     MutateObject(obj);
-                
+
                 return;
             }
             case ImageReference imageReference:
@@ -58,12 +55,13 @@ public class ImageReferenceMutator
 
                 foreach (var imageReferenceProperty in imageReferences)
                 {
-                    if (imageReferenceProperty.GetValue(currentObject) is not ImageReference original) 
+                    if (imageReferenceProperty.GetValue(currentObject) is not ImageReference original)
                         continue;
-                    
+
                     MutateImageReference(original);
                     imageReferenceProperty.SetValue(currentObject, original);
                 }
+
                 return;
             }
         }

@@ -1,6 +1,3 @@
-﻿namespace Tradgardsgolf.Api.RequestHandling
-{
-    public interface IRequestHandlingNamespaceMarker
-    {
-    }
-}
+﻿namespace Tradgardsgolf.Api.RequestHandling;
+
+public interface IRequestHandlingNamespaceMarker { }

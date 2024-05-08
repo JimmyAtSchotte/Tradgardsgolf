@@ -1,5 +1,4 @@
-﻿
-<Tabs SelectedTab="@_selectedTab" 
+﻿<Tabs SelectedTab="@_selectedTab"
       SelectedTabChanged="@OnSelectedTabChanged"
       FullWidth="true"
       Pills="true">
@@ -28,8 +27,9 @@
 @code{
     private string _selectedTab = string.Empty;
 
-    private void OnSelectedTabChanged( string name )
+    private void OnSelectedTabChanged(string name)
     {
         _selectedTab = name;
     }
+
 }

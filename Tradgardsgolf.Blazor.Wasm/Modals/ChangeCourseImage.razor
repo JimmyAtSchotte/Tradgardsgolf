@@ -1,15 +1,16 @@
 ﻿@using System.IO
-@using System.Text
+@using Blazorise.Icons.Material
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.Contracts.Course
+@using Icon = Blazorise.Icon
 @inject IApiDispatcher ApiDispatcher;
 
 @if (File is null)
 {
     <Field>
         <FieldLabel>Ladda upp bild</FieldLabel>
-        <FileEdit Changed="@OnFileUpload" Filter="image/*" />
-    </Field>    
+        <FileEdit Changed="@OnFileUpload" Filter="image/*"/>
+    </Field>
 }
 else
 {
@@ -25,17 +26,16 @@ else
             @ref="_cropper">
         </Cropper>
     </Field>
-   
-    <Button Color="Color.Primary" Clicked="async () => await SaveImage()">Spara bild <Icon Name="Blazorise.Icons.Material.MaterialIcons.Save" /></Button>
+
+    <Button Color="Color.Primary" Clicked="async () => await SaveImage()">Spara bild <Icon Name="MaterialIcons.Save"/></Button>
 }
 
 @code {
-    [Parameter]
-    public CourseResponse Course { get; set; }
-    
-    [CascadingParameter] 
-    BlazoredModalInstance BlazoredModal { get; set; } = default!;
-    
+
+    [Parameter] public CourseResponse Course { get; set; }
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
     public IBrowserFile File { get; set; }
 
     private Cropper _cropper;
@@ -44,10 +44,10 @@ else
     private async Task OnFileUpload(FileChangedEventArgs e)
     {
         var file = e.Files.FirstOrDefault();
-        
+
         if (file == null)
             return;
-        
+
         using var result = new MemoryStream();
         await file.OpenReadStream(long.MaxValue).CopyToAsync(result);
         File = new StreamFile(new MemoryStream(result.ToArray()));
@@ -60,14 +60,15 @@ else
         var croped = await _cropper.GetCropedResult();
         var imageBytes = await croped.GetDataAsync();
         var imageBase64 = Convert.ToBase64String(imageBytes);
-        
-        var course = await ApiDispatcher.Dispatch(new Tradgardsgolf.Contracts.Course.ChangeCourseImage()
+
+        var course = await ApiDispatcher.Dispatch(new Contracts.Course.ChangeCourseImage
         {
             Id = Course.Id,
             Extension = _fileExtension,
             ImageBase64 = imageBase64
         });
-        
+
         await BlazoredModal.CloseAsync(ModalResult.Ok(course));
     }
+
 }

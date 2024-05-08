@@ -2,10 +2,14 @@
 @inject IApiDispatcher ApiDispatcher;
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@using Tradgardsgolf.Contracts.Course
+@using Blazorise.Icons.Material
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.BlazorWasm.Extensions
+@using Tradgardsgolf.Contracts.Course
 @using Tradgardsgolf.Contracts.Settings
+@using ChangeCourseImage = Tradgardsgolf.BlazorWasm.Modals.ChangeCourseImage
+@using Icon = Blazorise.Icon
+@using IModalService = Blazored.Modal.Services.IModalService
 @implements IDisposable
 
 
@@ -23,12 +27,12 @@
                     </CourseContent>
                     <CourseButtons>
                         <ConditionalComponent Condition="() => AllowPlay(course)" Name="Play">
-                            <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="Blazorise.Icons.Material.MaterialIcons.GolfCourse"></Icon></Button>
+                            <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Icon Name="MaterialIcons.GolfCourse"></Icon></Button>
                         </ConditionalComponent>
                         <ConditionalComponent Condition="() => AllowEdit(course)" Name="Edit">
                             <Dropdown Float="Float.Start">
                                 <DropdownToggle Color="Color.Secondary">
-                                    <Icon Name="Blazorise.Icons.Material.MaterialIcons.Settings"></Icon>
+                                    <Icon Name="MaterialIcons.Settings"></Icon>
                                 </DropdownToggle>
                                 <DropdownMenu>
                                     <DropdownItem Clicked="() => ChangeImage(course)">Byt bild</DropdownItem>
@@ -52,7 +56,7 @@
 
     [CascadingParameter] public Location Location { get; set; }
 
-    [CascadingParameter] public Blazored.Modal.Services.IModalService Modal { get; set; }
+    [CascadingParameter] public IModalService Modal { get; set; }
 
     private IEnumerable<CourseResponse> _models;
     private IList<CourseResponse> _courses;
@@ -92,8 +96,6 @@
 
     private bool AllowEdit(CourseResponse course)
     {
-
-
         return _authenticationState.User.Identity?.IsAuthenticated == true &&
                _authenticationState.User.TryGetUserId(out var userId) &&
                userId == course.OwnerGuid;
@@ -108,7 +110,7 @@
 
     private async Task ClaimOwnership(CourseResponse course)
     {
-        var updatedCourse = await ApiDispatcher.Dispatch(new ClaimOwnership()
+        var updatedCourse = await ApiDispatcher.Dispatch(new ClaimOwnership
         {
             Id = course.Id
         });
@@ -125,10 +127,10 @@
     {
         var parameters = new ModalParameters
         {
-            { nameof(Modals.ChangeCourseImage.Course), course }
+            { nameof(ChangeCourseImage.Course), course }
         };
 
-        var modal = Modal.Show<Modals.ChangeCourseImage>($"Byt bild för {course.Name}", parameters);
+        var modal = Modal.Show<ChangeCourseImage>($"Byt bild för {course.Name}", parameters);
         var result = await modal.Result;
         if (result.Cancelled)
             return;
@@ -144,4 +146,5 @@
                course.OwnerGuid == Guid.Empty &&
                _authenticationState.User.TryGetUserId(out _);
     }
+
 }

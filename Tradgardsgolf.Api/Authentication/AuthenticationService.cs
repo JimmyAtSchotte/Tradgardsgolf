@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Tradgardsgolf.Api.RequestHandling;
 using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Exceptions;
 
@@ -13,11 +12,11 @@ public class AuthenticationService(IHttpContextAccessor httpContextAccessor) : I
 
         if (context is null)
             throw new UnauthorizedException();
-        
+
         if (!context.User.TryGetUserId(out var userId))
             throw new UnauthorizedException();
 
-        return new AuthenticatedUser()
+        return new AuthenticatedUser
         {
             UserId = userId
         };
