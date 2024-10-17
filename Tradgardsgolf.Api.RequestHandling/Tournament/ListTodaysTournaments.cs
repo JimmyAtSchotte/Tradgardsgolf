@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Tournament;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications.Tournament;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament;
 
@@ -15,8 +16,7 @@ public class ListTodaysTournaments(IRepository<Core.Entities.Tournament> tournam
     public async Task<IEnumerable<Contracts.Tournament.Tournament>> Handle(ListTodaysTournamentsCommand request,
         CancellationToken cancellationToken)
     {
-        var list = (await tournaments.ListAsync(cancellationToken)).Where(x =>
-            x.TournamentCourseDates.Any(c => c.CourseId == request.CourseId && c.Date == DateTime.Today));
+        var list = await tournaments.ListAsync(new TournamentsOnCourse(request.CourseId, DateTime.Today), cancellationToken);
 
         return list.Select(x => new Contracts.Tournament.Tournament
         {

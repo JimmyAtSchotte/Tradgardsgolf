@@ -12,6 +12,9 @@
     <ItemGroup>
         <PackageReference Include="ArrangeDependencies.Autofac" Version="1.4.0"/>
         <PackageReference Include="ArrangeDependencies.Autofac.EntityFrameworkCore" Version="2.0.0"/>
+        <PackageReference Include="FluentAssertions" Version="6.12.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="8.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.10" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
         <PackageReference Include="Moq" Version="4.13.0"/>
         <PackageReference Include="NUnit" Version="3.13.3"/>
