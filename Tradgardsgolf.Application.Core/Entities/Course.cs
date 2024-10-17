@@ -41,9 +41,9 @@ public class Course : BaseEntity<Course>
         return course;
     }
 
-    public Scorecard CreateScorecard(Action<Scorecard> properties = null)
+    public Scorecard CreateScorecard()
     {
-        var scorecard = Scorecard.Create(this, properties);
+        var scorecard = Scorecard.Create(this);
         Scorecards.Add(scorecard);
         return scorecard;
     }

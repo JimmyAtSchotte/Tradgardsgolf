@@ -34,10 +34,9 @@ public class Scorecard : BaseEntity<Scorecard>
         Scores.Add(player, scores);
     }
 
-    public static Scorecard Create(Course course, Action<Scorecard> properties = null)
+    public static Scorecard Create(Course course)
     {
         var scorecard = new Scorecard(course);
-        properties?.Invoke(scorecard);
         return scorecard;
     }
 }
