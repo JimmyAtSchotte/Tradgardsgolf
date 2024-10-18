@@ -12,6 +12,10 @@ public class TradgardsgolfContextFactory
             .Options;
 
         var context = new TradgardsgolfContext(options);
+
+        context.Database.EnsureDeleted();
+        context.Database.EnsureCreated();
+        
         return context;
     }
 }
