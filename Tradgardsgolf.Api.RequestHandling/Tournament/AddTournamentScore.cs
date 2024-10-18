@@ -7,7 +7,7 @@ using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament;
 
-public class AddTournamentRoundScore(IRepository<Core.Entities.Scorecard> scorecards)
+public class AddTournamentRoundScoreHandler(IRepository<Core.Entities.Scorecard> scorecards)
     : IRequestHandler<AddTournamentRoundScoreCommand>
 {
     public async Task Handle(AddTournamentRoundScoreCommand request, CancellationToken cancellationToken)
