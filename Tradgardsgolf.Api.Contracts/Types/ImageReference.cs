@@ -10,7 +10,7 @@ public class ImageReference
     public override string ToString()
     {
         var normalizedUrl = Url.TrimEnd('/');
-        var normalizedPath = Path.StartsWith("/") ? Path.TrimStart('/') : Path;
+        var normalizedPath = Path.TrimStart('/');
 
         return $"{normalizedUrl}/{normalizedPath}";
     }
