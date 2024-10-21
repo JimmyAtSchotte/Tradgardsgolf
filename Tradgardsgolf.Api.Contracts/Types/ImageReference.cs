@@ -1,4 +1,6 @@
-﻿namespace Tradgardsgolf.Contracts.Types;
+﻿using System;
+
+namespace Tradgardsgolf.Contracts.Types;
 
 public class ImageReference
 {
@@ -7,6 +9,9 @@ public class ImageReference
 
     public override string ToString()
     {
-        return $"{Url}{Path}";
+        var normalizedUrl = Url.TrimEnd('/');
+        var normalizedPath = Path.StartsWith("/") ? Path.TrimStart('/') : Path;
+
+        return $"{normalizedUrl}/{normalizedPath}";
     }
 }

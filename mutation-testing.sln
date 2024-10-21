@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 		stryker-config.json = stryker-config.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Api.Contracts.Tests", "Tradgardsgolf.Api.Contracts.Tests\Tradgardsgolf.Api.Contracts.Tests.csproj", "{DE2E84E7-3211-42CD-BF5C-CBC8BA762825}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,5 +79,9 @@ Global
 		{876CE17C-2CCA-42B7-BF23-2A53A87F2F74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{876CE17C-2CCA-42B7-BF23-2A53A87F2F74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{876CE17C-2CCA-42B7-BF23-2A53A87F2F74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE2E84E7-3211-42CD-BF5C-CBC8BA762825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE2E84E7-3211-42CD-BF5C-CBC8BA762825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE2E84E7-3211-42CD-BF5C-CBC8BA762825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE2E84E7-3211-42CD-BF5C-CBC8BA762825}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
