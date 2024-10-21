@@ -1,6 +1,7 @@
 ﻿using Ardalis.Specification;
 using ArrangeDependencies.Autofac;
 using ArrangeDependencies.Autofac.Extensions;
+using FluentAssertions;
 using Moq;
 using Tradgardsgolf.Api.ResponseFactory;
 using Tradgardsgolf.Contracts.Course;
@@ -19,6 +20,7 @@ public class ClaimOwnership
     {
         var course = Core.Entities.Course.Create(Guid.Empty, p => p.Id = Guid.NewGuid());
         var authenticatedUser = Guid.NewGuid();
+        var updatedCourses = new List<Core.Entities.Course>();
 
         var arrange = Arrange.Dependencies<SUT, SUT>(dependencies =>
         {
@@ -26,6 +28,9 @@ public class ClaimOwnership
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(It.IsAny<ISpecification<Core.Entities.Course>>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
+
+                mock.Setup(x => x.UpdateAsync(It.IsAny<Core.Entities.Course>(), It.IsAny<CancellationToken>()))
+                    .Callback((Core.Entities.Course c, CancellationToken token) => updatedCourses.Add(c));
             });
 
             dependencies
@@ -48,7 +53,9 @@ public class ClaimOwnership
 
         var result = await handler.Handle(command, CancellationToken.None);
 
-        Assert.That(result.OwnerGuid, Is.EqualTo(authenticatedUser));
+        result.OwnerGuid.Should().Be(authenticatedUser);
+        updatedCourses.Should().HaveCount(1);
+        updatedCourses.First().OwnerGuid.Should().Be(authenticatedUser);
     }
 
     [Test]

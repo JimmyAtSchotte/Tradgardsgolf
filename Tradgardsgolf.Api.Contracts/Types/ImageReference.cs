@@ -9,15 +9,4 @@ public class ImageReference
     {
         return $"{Url}{Path}";
     }
-
-    public static ImageReference Create(string path)
-    {
-        if (string.IsNullOrEmpty(path))
-            return null;
-
-        return new ImageReference
-        {
-            Path = path
-        };
-    }
 }

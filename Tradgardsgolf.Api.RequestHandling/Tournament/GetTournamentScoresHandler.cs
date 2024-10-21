@@ -9,7 +9,7 @@ using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament;
 
-public class GetTournamentScores(IRepository<Core.Entities.Scorecard> scorecards)
+public class GetTournamentScoresHandler(IRepository<Core.Entities.Scorecard> scorecards)
     : IRequestHandler<GetTournamentScoresCommand, IEnumerable<TournamentScore>>
 {
     public async Task<IEnumerable<TournamentScore>> Handle(GetTournamentScoresCommand request,

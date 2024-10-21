@@ -71,17 +71,24 @@ public class HasPlayedOnCourse
     public async Task ShouldOrderPlayersOnHowMuchTheyHavePlayedOnCourse()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-
-        course.CreateScorecard().AddPlayerScores("A", 2);
+        
+        for (int i = 0; i < 100; i++)
+            course.CreateScorecard().AddPlayerScores("MoreThan50-B", 2);
         
         for (int i = 0; i < 11; i++)
-            course.CreateScorecard().AddPlayerScores("D", 2);
+            course.CreateScorecard().AddPlayerScores("MoreThan10-A", 2);
         
-        for (int i = 0; i < 5; i++)
-            course.CreateScorecard().AddPlayerScores("B", 2);
+        for (int i = 0; i < 50; i++)
+            course.CreateScorecard().AddPlayerScores("MoreThan10-B", 2);
+        
+        for (int i = 0; i < 3; i++)
+            course.CreateScorecard().AddPlayerScores("LessThan10-A", 2);
+        
+        for (int i = 0; i < 10; i++)
+            course.CreateScorecard().AddPlayerScores("LessThan10-B", 2);
         
         for (int i = 0; i < 51; i++)
-            course.CreateScorecard().AddPlayerScores("E", 2);
+            course.CreateScorecard().AddPlayerScores("MoreThan50-A", 2);
 
         var arrange = Arrange.Dependencies<HasPlayedOnCourseHandler, HasPlayedOnCourseHandler>(dependencies =>
         {
@@ -100,9 +107,11 @@ public class HasPlayedOnCourse
         
         var result = await handler.Handle(command, CancellationToken.None);
 
-        result.ElementAt(0).Name.Should().Be("E");
-        result.ElementAt(1).Name.Should().Be("D");
-        result.ElementAt(2).Name.Should().Be("A");
-        result.ElementAt(3).Name.Should().Be("B");
+        result.ElementAt(0).Name.Should().Be("MoreThan50-A");
+        result.ElementAt(1).Name.Should().Be("MoreThan50-B");
+        result.ElementAt(2).Name.Should().Be("MoreThan10-A");
+        result.ElementAt(3).Name.Should().Be("MoreThan10-B");
+        result.ElementAt(4).Name.Should().Be("LessThan10-A");
+        result.ElementAt(5).Name.Should().Be("LessThan10-B");
     }
 }

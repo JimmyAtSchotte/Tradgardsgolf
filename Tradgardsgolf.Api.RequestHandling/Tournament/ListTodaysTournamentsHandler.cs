@@ -10,7 +10,7 @@ using Tradgardsgolf.Core.Specifications.Tournament;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament;
 
-public class ListTodaysTournaments(IRepository<Core.Entities.Tournament> tournaments)
+public class ListTodaysTournamentsHandler(IRepository<Core.Entities.Tournament> tournaments)
     : IRequestHandler<ListTodaysTournamentsCommand, IEnumerable<Contracts.Tournament.Tournament>>
 {
     public async Task<IEnumerable<Contracts.Tournament.Tournament>> Handle(ListTodaysTournamentsCommand request,

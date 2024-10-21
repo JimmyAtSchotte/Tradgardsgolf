@@ -25,6 +25,7 @@ ProjectSection(SolutionItems) = preProject
 	README.md = README.md
 	ef.sh = ef.sh
 	mutation.sh = mutation.sh
+	stryker-config.json = stryker-config.json
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tradgardsgolf.Api.Contracts", "Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj", "{3E6860C1-7515-4E91-8957-74BFA092ABEA}"
