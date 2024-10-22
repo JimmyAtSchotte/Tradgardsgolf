@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 COPY .. .
-RUN dotnet restore
+RUN dotnet restore Tradgardsgolf.sln
 
 FROM build AS publish-api
 RUN dotnet publish Tradgardsgolf.Api -c Release -o out
