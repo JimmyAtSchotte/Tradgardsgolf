@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 COPY . .
-RUN dotnet restore
+RUN dotnet restore Tradgardsgolf.sln
 
 FROM build AS publish-wasm
 RUN dotnet publish Tradgardsgolf.Blazor.Wasm -c Release -o out

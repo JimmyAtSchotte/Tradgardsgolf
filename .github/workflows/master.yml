@@ -50,13 +50,13 @@ jobs:
               }
           } while ($true)  
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore Tradgardsgolf.sln
 
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build Tradgardsgolf.sln --no-restore
 
       - name: Run tests
-        run: dotnet test --no-build
+        run: dotnet test Tradgardsgolf.sln --no-build
   
   build:
     runs-on: 'ubuntu-latest'    
