@@ -48,13 +48,7 @@ jobs:
                   Start-Sleep -Seconds 5
                   $attempts++
               }
-          } while ($true)
-          
-          Write-Host "Installing Cosmos DB Emulator certificate..."
-          Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
-          Get-ChildItem cert:\LocalMachine\Root | Where-Object { $_.Subject -eq "CN=localhost" } | Remove-Item
-          Import-CosmosDBEmulatorCertificate
-
+          } while ($true)  
       - name: Install dependencies
         run: dotnet restore
 
