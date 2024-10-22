@@ -11,20 +11,58 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4  
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build
-    - name: Run tests
-      run: dotnet test
+      - uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install and Start Azure Cosmos DB Emulator
+        shell: pwsh
+        run: |
+          Write-Host "Downloading and installing Cosmos DB Emulator"
+          Invoke-WebRequest -Uri https://aka.ms/cosmosdb-emulator -OutFile cosmos-emulator.msi
+          Start-Process msiexec -ArgumentList "/i cosmos-emulator.msi /quiet /qn" -Wait
+          
+          Write-Host "Starting Cosmos DB Emulator"
+          Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
+          Start-CosmosDbEmulator -NoUI -NoFirewall
+          
+          Write-Host "Waiting for Cosmos DB Emulator to be ready..."
+          $attempts = 0
+          do {
+              try {
+                  $response = Invoke-WebRequest -Uri https://localhost:8081/_explorer/index.html -UseBasicParsing
+                  if ($response.StatusCode -eq 200) { 
+                      Write-Host "Cosmos DB Emulator is ready!"
+                      break 
+                  }
+              } catch {
+                  if ($attempts -gt 10) {
+                      Write-Host "Failed to start Cosmos DB Emulator after multiple attempts"
+                      throw
+                  }
+                  Write-Host "Waiting for emulator to be ready... (Attempt $attempts)"
+                  Start-Sleep -Seconds 5
+                  $attempts++
+              }
+          } while ($true)
+          
+          Write-Host "Installing Cosmos DB Emulator certificate..."
+          Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
+          Get-ChildItem cert:\LocalMachine\Root | Where-Object { $_.Subject -eq "CN=localhost" } | Remove-Item
+          Import-CosmosDBEmulatorCertificate
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Run tests
+        run: dotnet test --no-build
   
   build:
     runs-on: 'ubuntu-latest'    
