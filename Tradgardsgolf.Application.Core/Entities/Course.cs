@@ -33,9 +33,9 @@ public class Course : BaseEntity<Course>
         set => _rounds = value;
     }
 
-    public static Course Create(Guid ownerEmail, Action<Course> properties = null)
+    public static Course Create(Guid ownerId, Action<Course> properties = null)
     {
-        var course = new Course(ownerEmail);
+        var course = new Course(ownerId);
         properties?.Invoke(course);
 
         return course;
