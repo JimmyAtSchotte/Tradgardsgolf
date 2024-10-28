@@ -22,10 +22,7 @@
     [Parameter] public RenderFragment ChildContent { get; set; }
 
     [Parameter] public Location Location { get; set; }
-
-
-    public event Action<ComponentBase> LocationChanged;
-
+    
     protected override async Task OnInitializedAsync()
     {
         await LocationService.WatchLocation(LocationCallback);
@@ -38,8 +35,6 @@
             return;
 
         Location = location;
-        LocationChanged?.Invoke(this);
         StateHasChanged();
     }
-
 }

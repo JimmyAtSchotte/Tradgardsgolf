@@ -7,12 +7,12 @@
 
 <Field>
     <FieldLabel>Longitude</FieldLabel>
-    <NumericEdit @bind-Value="@Longitude"/>
+    <NumericEdit @bind-Value="@Location.Longitude"/>
 </Field>
 
 <Field>
     <FieldLabel>Latitude</FieldLabel>
-    <NumericEdit @bind-Value="@Latitude" />
+    <NumericEdit @bind-Value="@Location.Latitude" />
 </Field>
 
 <Button Color="Color.Primary" Clicked="async () => await SaveLocation()">Spara plats <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
@@ -21,30 +21,16 @@
 @code {
 
     [Parameter] public CourseResponse Course { get; set; }
-
     [CascadingParameter] public Location Location { get; set; }
-    
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
-
-    private double Longitude { get; set; }
-    private double Latitude { get; set; }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if(!firstRender)
-            return;
-
-        Longitude = decimal.ToDouble(Location.Longitude);
-        Latitude = decimal.ToDouble(Location.Latitude);
-    }
 
     private async Task SaveLocation()
     {
         var course = await ApiDispatcher.Dispatch(new UpdateCourseLocationCommand()
         {
             Id = Course.Id,
-            Longitude = Longitude,
-            Latitude = Latitude
+            Longitude = decimal.ToDouble(Location.Longitude),
+            Latitude = decimal.ToDouble(Location.Latitude)
         });
 
         await BlazoredModal.CloseAsync(ModalResult.Ok(course));
