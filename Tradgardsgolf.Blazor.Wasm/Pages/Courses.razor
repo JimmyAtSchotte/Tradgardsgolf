@@ -36,6 +36,7 @@
                                 </DropdownToggle>
                                 <DropdownMenu>
                                     <DropdownItem Clicked="() => ChangeImage(course)">Byt bild</DropdownItem>
+                                    <DropdownItem Clicked="() => UpdateLocation(course)">Uppdatera plats</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         </ConditionalComponent>
@@ -145,6 +146,22 @@
                _authenticationState.User.Identity?.IsAuthenticated == true &&
                course.OwnerGuid == Guid.Empty &&
                _authenticationState.User.TryGetUserId(out _);
+    }
+
+    private async Task UpdateLocation(CourseResponse course)
+    {
+        var parameters = new ModalParameters
+        {
+            { nameof(ChangeCourseLocation.Course), course }
+        };
+
+        var modal = Modal.Show<ChangeCourseLocation>($"Uppdatera plats för {course.Name}", parameters);
+        var result = await modal.Result;
+        if (result.Cancelled)
+            return;
+
+        if (result.Data is CourseResponse updatedCourse)
+            _courses[_courses.IndexOf(course)] = updatedCourse;
     }
 
 }

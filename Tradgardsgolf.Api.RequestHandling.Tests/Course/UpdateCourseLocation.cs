@@ -99,6 +99,7 @@ public class UpdateCourseLocation
         };
         
         await handler.Invoking(x => x.Handle(command, CancellationToken.None)).Should().ThrowAsync<ForbiddenException>();
+        
         updatedCourses.Should().HaveCount(0);
     }
 }
