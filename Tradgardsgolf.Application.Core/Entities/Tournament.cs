@@ -12,7 +12,6 @@ public class Tournament : BaseEntity<Tournament>
         Name = name;
     }
 
-    public Guid Id { get; set; }
     public string Name { get; set; }
     public List<TournamentCourseDate> TournamentCourseDates { get; set; }
 

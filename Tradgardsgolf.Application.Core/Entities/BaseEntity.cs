@@ -1,3 +1,9 @@
-﻿namespace Tradgardsgolf.Core.Entities;
+﻿using System;
 
-public class BaseEntity<T> { }
+namespace Tradgardsgolf.Core.Entities;
+
+public class BaseEntity<T>
+{
+    public Guid Id { get; set; }
+    
+}

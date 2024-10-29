@@ -6,6 +6,7 @@ using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Exceptions;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
@@ -26,7 +27,7 @@ public class UpdateCourseLocationHandler : IRequestHandler<UpdateCourseLocationC
 
     public async Task<CourseResponse> Handle(UpdateCourseLocationCommand request, CancellationToken cancellationToken)
     {
-        var course = await _courseRepository.FirstOrDefaultAsync(new ById(request.Id), cancellationToken);
+        var course = await _courseRepository.FirstOrDefaultAsync(Specs.Course.ById(request.Id), cancellationToken);
         var user = _authenticationService.RequireAuthenticatedUser();
         
         if (user?.UserId != course.OwnerGuid)

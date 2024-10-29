@@ -17,7 +17,6 @@ public class Course : BaseEntity<Course>
         OwnerGuid = ownerGuid;
     }
 
-    public Guid Id { get; set; }
     public string Name { get; set; }
     public int Holes { get; set; }
     public double Longitude { get; set; }

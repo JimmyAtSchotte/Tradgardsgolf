@@ -7,6 +7,7 @@ using Tradgardsgolf.Api.ResponseFactory;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Contracts.Types;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Course;
@@ -23,7 +24,7 @@ public class GetCourse
         {
             dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
             {
-                mock.Setup(x => x.FirstOrDefaultAsync(new ById(course.Id), It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.FirstOrDefaultAsync(Specs.Course.ById(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
             });
 
@@ -56,7 +57,7 @@ public class GetCourse
         {
             dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
             {
-                mock.Setup(x => x.FirstOrDefaultAsync(new ById(course.Id), It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.FirstOrDefaultAsync(Specs.Course.ById(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
             });
 

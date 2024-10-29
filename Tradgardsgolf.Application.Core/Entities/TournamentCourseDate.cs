@@ -2,7 +2,7 @@
 
 namespace Tradgardsgolf.Core.Entities;
 
-public class TournamentCourseDate : BaseEntity<TournamentCourseDate>
+public class TournamentCourseDate
 {
     private TournamentCourseDate() { }
 

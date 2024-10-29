@@ -4,6 +4,7 @@ using MediatR;
 using Tradgardsgolf.Api.ResponseFactory;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
@@ -15,7 +16,7 @@ public class GetCourseHandler(
 {
     public async Task<CourseResponse> Handle(GetCourseCommand request, CancellationToken cancellationToken)
     {
-        var course = await courses.FirstOrDefaultAsync(new ById(request.Id), cancellationToken);
+        var course = await courses.FirstOrDefaultAsync(Specs.Course.ById(request.Id), cancellationToken);
 
         return courseResponseFactory.Create(course);
     }

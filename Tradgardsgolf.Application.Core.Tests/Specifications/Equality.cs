@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Tradgardsgolf.Core.Specifications;
+using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Application.Core.Tests.Specifications;
 
@@ -53,7 +54,7 @@ public class SpecificationEquality
     {
         var guid = Guid.NewGuid();
         var spec1 = new Tradgardsgolf.Core.Specifications.Scorecard.ById(guid);
-        var spec2 = new Tradgardsgolf.Core.Specifications.Course.ById(guid);
+        var spec2 = Specs.Course.ById(guid);
         
         spec1.GetHashCode().Should().NotBe(spec2.GetHashCode());
     }

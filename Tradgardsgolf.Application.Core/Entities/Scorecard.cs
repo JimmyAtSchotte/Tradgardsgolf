@@ -16,7 +16,6 @@ public class Scorecard : BaseEntity<Scorecard>
         Date = DateTime.Now;
     }
 
-    public Guid Id { get; set; }
     public Guid CourseId { get; private set; }
     public DateTime Date { get; set; }
     public Course Course { get; private set; }
