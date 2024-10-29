@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Statistics;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
@@ -14,7 +15,7 @@ public class CourseStatisticHandler(IRepository<Core.Entities.Scorecard> scoreca
     public async Task<CourseStatisticResponse> Handle(CourseStatisticCommand request,
         CancellationToken cancellationToken)
     {
-        var rounds = await scorecards.ListAsync(new ByCourse(request.CourseId), cancellationToken);
+        var rounds = await scorecards.ListAsync(Specs.Scorecard.ByCourse(request.CourseId), cancellationToken);
 
         return new CourseStatisticResponse
         {

@@ -5,6 +5,7 @@ using Moq;
 using Tradgardsgolf.Api.RequestHandling.Player;
 using Tradgardsgolf.Contracts.Players;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Players;
@@ -21,7 +22,7 @@ public class HasPlayedOnCourse
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
-                mock.Setup(x => x.ListAsync(new ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course.Scorecards.ToList);
             });
         });
@@ -50,7 +51,7 @@ public class HasPlayedOnCourse
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
-                mock.Setup(x => x.ListAsync(new ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course.Scorecards.ToList);
             });
         });
@@ -94,7 +95,7 @@ public class HasPlayedOnCourse
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
-                mock.Setup(x => x.ListAsync(new ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course.Scorecards.ToList);
             });
         });

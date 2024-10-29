@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
 using Tradgardsgolf.Core.Entities;
+using Tradgardsgolf.Core.Specifications;
+using Tradgardsgolf.Core.Specifications.Scorecard;
 using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Application.Infrastructure.Tests.Database.Specifications;
@@ -17,7 +19,7 @@ public class ScorecardSpecifications
         context.Add(course);
         await context.SaveChangesAsync();
         
-        var specification = new Core.Specifications.Scorecard.ByCourse(course.Id);
+        var specification = Specs.Scorecard.ByCourse(course.Id);
         var repository = new Repository<Scorecard>(context);
         var scorecards = await repository.ListAsync(specification);
 
@@ -35,7 +37,7 @@ public class ScorecardSpecifications
         context.Add(course);
         await context.SaveChangesAsync();
         
-        var specification = new Core.Specifications.Scorecard.ByCourse(Guid.NewGuid());
+        var specification = Specs.Scorecard.ByCourse(Guid.NewGuid());
         var repository = new Repository<Scorecard>(context);
         var scorecards = await repository.ListAsync(specification);
 

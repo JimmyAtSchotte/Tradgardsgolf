@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Players;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Player;
@@ -15,7 +16,7 @@ public class HasPlayedOnCourseHandler(IRepository<Core.Entities.Scorecard> score
     public async Task<IEnumerable<PlayerResponse>> Handle(HasPlayedOnCourseCommand request,
         CancellationToken cancellationToken)
     {
-        return (await scorecards.ListAsync(new ByCourse(request.CourseId), cancellationToken))
+        return (await scorecards.ListAsync(Specs.Scorecard.ByCourse(request.CourseId), cancellationToken))
             .SelectMany(x => x.Scores.Keys)
             .GroupBy(x => x)
             .OrderByDescending(x => x.Count() > 50)

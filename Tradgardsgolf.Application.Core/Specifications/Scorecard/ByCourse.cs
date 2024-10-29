@@ -4,7 +4,15 @@ using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Core.Specifications.Scorecard;
 
-public class ByCourse : SpecificationEquatable<Entities.Scorecard, ByCourse>
+
+public static partial class SpecificationSetExtensions
+{
+    public static ISpecification<Entities.Scorecard> ByCourse(this SpecificationSet<Entities.Scorecard> set,
+        Guid courseId)
+        => new ByCourse(courseId);
+}
+
+internal sealed class ByCourse : SpecificationEquatable<Entities.Scorecard, ByCourse>
 {
     public ByCourse(Guid courseId) : base(courseId)
     {
