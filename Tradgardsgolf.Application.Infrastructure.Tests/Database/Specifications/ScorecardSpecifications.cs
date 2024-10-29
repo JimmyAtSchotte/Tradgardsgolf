@@ -55,7 +55,7 @@ public class ScorecardSpecifications
         context.Add(course);
         await context.SaveChangesAsync();
         
-        var specification = new Core.Specifications.Scorecard.ById(scorecard.Id);
+        var specification = Specs.ById<Scorecard>(scorecard.Id);
         var repository = new Repository<Scorecard>(context);
         var result = await repository.FirstOrDefaultAsync(specification);
 
@@ -72,7 +72,7 @@ public class ScorecardSpecifications
         context.Add(course);
         await context.SaveChangesAsync();
         
-        var specification = new Core.Specifications.Scorecard.ById(Guid.NewGuid());
+        var specification = Specs.ById<Scorecard>(Guid.NewGuid());
         var repository = new Repository<Scorecard>(context);
         var result = await repository.FirstOrDefaultAsync(specification);
 

@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Specifications;
-using Tradgardsgolf.Core.Specifications.Course;
 using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Application.Infrastructure.Tests.Database.Specifications;
@@ -17,7 +16,7 @@ public class CourseSpecifications
         context.Add(course);
         await context.SaveChangesAsync();
         
-        var specification = Specs.Course.ById(course.Id);
+        var specification = Specs.ById<Course>(course.Id);
         var repository = new Repository<Course>(context);
 
         var result = await repository.FirstOrDefaultAsync(specification);
@@ -34,7 +33,7 @@ public class CourseSpecifications
         context.Add(course);
         await context.SaveChangesAsync();
         
-        var specification = Specs.Course.ById(Guid.NewGuid());
+        var specification = Specs.ById<Course>(Guid.NewGuid());
         var repository = new Repository<Course>(context);
 
         var result = await repository.FirstOrDefaultAsync(specification);

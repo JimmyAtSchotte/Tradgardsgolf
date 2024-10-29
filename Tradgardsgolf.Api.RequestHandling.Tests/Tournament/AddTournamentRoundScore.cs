@@ -5,6 +5,7 @@ using Moq;
 using Tradgardsgolf.Api.RequestHandling.Tournament;
 using Tradgardsgolf.Contracts.Tournament;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Tournament;
@@ -29,7 +30,7 @@ public class AddTournamentRoundScore
                 {
                     dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
                     {
-                        mock.Setup(x => x.FirstOrDefaultAsync(new ById(scorecard.Id), It.IsAny<CancellationToken>()))
+                        mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Scorecard>(scorecard.Id), It.IsAny<CancellationToken>()))
                             .ReturnsAsync(scorecard);
 
                         mock.Setup(x => x.UpdateAsync(It.IsAny<Core.Entities.Scorecard>(), It.IsAny<CancellationToken>()))

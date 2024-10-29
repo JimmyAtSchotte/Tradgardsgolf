@@ -5,7 +5,7 @@ using Ardalis.Specification;
 namespace Tradgardsgolf.Core.Specifications;
 
 public abstract class SpecificationEquatable<TEntity, TSpecification> : Specification<TEntity>, IEquatable<SpecificationEquatable<TEntity, TSpecification>>
-{
+ {
     private readonly object[] _args;
     protected SpecificationEquatable(params object[] args)
     {

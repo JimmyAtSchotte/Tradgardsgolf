@@ -10,7 +10,6 @@ using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Exceptions;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Course;
 
@@ -32,7 +31,7 @@ public class UpdateCourseLocation
 
             dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
             {
-                mock.Setup(x => x.FirstOrDefaultAsync(Specs.Course.ById(course.Id), It.IsAny<CancellationToken>())).ReturnsAsync(course);
+                mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>())).ReturnsAsync(course);
                 mock.Setup(x => x.UpdateAsync(It.IsAny<Core.Entities.Course>(), It.IsAny<CancellationToken>()))
                     .Callback((Core.Entities.Course c, CancellationToken t) => updatedCourses.Add(c));
                 
@@ -84,7 +83,7 @@ public class UpdateCourseLocation
 
             dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
             {
-                mock.Setup(x => x.FirstOrDefaultAsync(Specs.Course.ById(course.Id), It.IsAny<CancellationToken>())).ReturnsAsync(course);
+                mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>())).ReturnsAsync(course);
                 mock.Setup(x => x.UpdateAsync(It.IsAny<Core.Entities.Course>(), It.IsAny<CancellationToken>()))
                     .Callback((Core.Entities.Course c, CancellationToken t) => updatedCourses.Add(c));
                 

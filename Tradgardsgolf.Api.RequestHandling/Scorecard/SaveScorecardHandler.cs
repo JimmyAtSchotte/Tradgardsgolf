@@ -5,7 +5,6 @@ using MediatR;
 using Tradgardsgolf.Contracts.Scorecard;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Api.RequestHandling.Scorecard;
 
@@ -14,7 +13,7 @@ public class SaveScorecardHandler(IRepository<Core.Entities.Course> courses)
 {
     public async Task<ScorecardResponse> Handle(SaveScorecardCommand request, CancellationToken cancellationToken)
     {
-        var course = await courses.FirstOrDefaultAsync(Specs.Course.ById(request.CourseId), cancellationToken);
+        var course = await courses.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.CourseId), cancellationToken);
         var scorecard = course.CreateScorecard();
 
         foreach (var playerScore in request.PlayerScores)

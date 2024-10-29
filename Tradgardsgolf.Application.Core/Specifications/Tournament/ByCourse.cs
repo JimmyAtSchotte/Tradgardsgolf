@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Ardalis.Specification;
-using Tradgardsgolf.Core.Entities;
-using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Core.Specifications.Tournament;
 

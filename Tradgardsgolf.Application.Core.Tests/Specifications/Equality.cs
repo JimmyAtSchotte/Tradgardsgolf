@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
+using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Specifications;
-using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Application.Core.Tests.Specifications;
 
@@ -53,8 +53,8 @@ public class SpecificationEquality
     public void ShouldNotHaveSameHashCodeWhenDifferentType()
     {
         var guid = Guid.NewGuid();
-        var spec1 = new Tradgardsgolf.Core.Specifications.Scorecard.ById(guid);
-        var spec2 = Specs.Course.ById(guid);
+        var spec1 = Specs.ById<Scorecard>(guid);
+        var spec2 = Specs.ById<Course>(guid);
         
         spec1.GetHashCode().Should().NotBe(spec2.GetHashCode());
     }
@@ -70,7 +70,8 @@ public class SpecificationEquality
             var specificationType = typeof(SpecificationEquatable<,>);
             var types = typeof(SpecificationEquatable<,>).Assembly.GetTypes().Where(t =>
                 t is { IsClass: true, IsAbstract: false, BaseType.IsGenericType: true }
-                && t.BaseType.GetGenericTypeDefinition() == specificationType);
+                && t.BaseType.GetGenericTypeDefinition() == specificationType
+                && t.ContainsGenericParameters == false);
 
             foreach (var type in types)
             {

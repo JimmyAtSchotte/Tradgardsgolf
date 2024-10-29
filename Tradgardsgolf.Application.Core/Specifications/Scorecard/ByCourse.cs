@@ -1,6 +1,5 @@
 ﻿using System;
 using Ardalis.Specification;
-using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Core.Specifications.Scorecard;
 

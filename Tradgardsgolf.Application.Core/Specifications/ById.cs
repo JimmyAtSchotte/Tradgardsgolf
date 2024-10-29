@@ -4,9 +4,9 @@ using Tradgardsgolf.Core.Entities;
 
 namespace Tradgardsgolf.Core.Specifications;
 
-public sealed class ById<T> : Specification<T> where T : BaseEntity<T>
+public sealed class ById<T> : SpecificationEquatable<T, ById<T>> where T : BaseEntity<T>
 {
-    public ById(Guid id)
+    public ById(Guid id) : base(id)
     {
         Query.Where(x => x.Id == id);
     }

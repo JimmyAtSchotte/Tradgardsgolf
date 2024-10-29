@@ -7,7 +7,6 @@ using Tradgardsgolf.Api.ResponseFactory;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Contracts.Types;
 using Tradgardsgolf.Core.Infrastructure;
-using Tradgardsgolf.Core.Specifications.Course;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Course;
 
