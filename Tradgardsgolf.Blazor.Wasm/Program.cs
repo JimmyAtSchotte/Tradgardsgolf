@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AspNetMonsters.Blazor.Geolocation;
+using AzureMapsControl.Components;
 using Blazored.LocalStorage;
 using Blazored.Modal;
 using Blazorise;
@@ -64,6 +65,8 @@ public class Program
             .AddBlazorise(options => options.Immediate = true)
             .AddMaterialProviders()
             .AddMaterialIcons();
+        
+        builder.Services.AddAzureMapsControl(configuration => configuration.SubscriptionKey = "");
 
         var host = builder.Build();
 

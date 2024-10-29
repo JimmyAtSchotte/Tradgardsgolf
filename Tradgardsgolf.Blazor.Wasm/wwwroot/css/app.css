@@ -115,4 +115,7 @@ h3.bm-title {
     font-size: 1.5rem;
 }
 
-
+#map {
+    height: 300px;
+    margin-bottom: 10px;
+}

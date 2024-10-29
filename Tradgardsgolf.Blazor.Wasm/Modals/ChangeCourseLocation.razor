@@ -1,39 +1,80 @@
-﻿@using System.IO
-@using Blazorise.Icons.Material
+﻿@using Blazorise.Icons.Material
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.Contracts.Course
-@using Icon = Blazorise.Icon
+@using AzureMapsControl.Components.Map
+@using AzureMapsControl.Components.Markers
+@using Position = AzureMapsControl.Components.Atlas.Position
 @inject IApiDispatcher ApiDispatcher;
 
-<Field>
-    <FieldLabel>Longitude</FieldLabel>
-    <NumericEdit @bind-Value="@Location.Longitude"/>
-</Field>
-
-<Field>
-    <FieldLabel>Latitude</FieldLabel>
-    <NumericEdit @bind-Value="@Location.Latitude" />
-</Field>
+<AzureMap Id="map"
+          StyleOptions="StyleOptions"
+          OnReady="OnMapReady"
+          OnClick="OnMapClick"
+          EventActivationFlags="MapEventActivationFlags
+              .None()
+              .Enable(MapEventType.Ready)
+              .Enable(MapEventType.Click)"/>
 
 <Button Color="Color.Primary" Clicked="async () => await SaveLocation()">Spara plats <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
 
 
 @code {
-
     [Parameter] public CourseResponse Course { get; set; }
     [CascadingParameter] public Location Location { get; set; }
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    
+    private HtmlMarker marker;
+    
+    public StyleOptions StyleOptions = new StyleOptions
+    {
+        Style = MapStyle.Road,
+        ShowLogo = false,
+        ShowFeedbackLink = false,
+    };
 
     private async Task SaveLocation()
     {
+        if(marker is null)
+            return;
+        
         var course = await ApiDispatcher.Dispatch(new UpdateCourseLocationCommand()
         {
             Id = Course.Id,
-            Longitude = decimal.ToDouble(Location.Longitude),
-            Latitude = decimal.ToDouble(Location.Latitude)
+            Longitude = marker.Options.Position.Longitude,
+            Latitude = marker.Options.Position.Latitude,
         });
 
         await BlazoredModal.CloseAsync(ModalResult.Ok(course));
     }
 
+    private async Task OnMapReady(MapEventArgs events)
+    {
+        await events.Map.SetCameraOptionsAsync(config =>
+        {
+            config.Center = new Position(decimal.ToDouble(Location.Longitude), decimal.ToDouble(Location.Latitude));
+            config.Zoom = 14;
+        });
+        
+        marker = new HtmlMarker(new HtmlMarkerOptions
+        {
+            Position = new Position(decimal.ToDouble(Location.Longitude), decimal.ToDouble(Location.Latitude)),
+            Draggable = false
+        });
+        
+        await events.Map.AddHtmlMarkersAsync(marker);
+    }
+
+    private async Task OnMapClick(MapMouseEventArgs args)
+    {
+        if(marker != null)
+            await args.Map.RemoveHtmlMarkersAsync(marker);
+        
+        marker = new HtmlMarker(new HtmlMarkerOptions
+        {
+            Position = args.Position,
+            Draggable = false
+        });
+
+        await args.Map.AddHtmlMarkersAsync(marker);
+    }
 }
