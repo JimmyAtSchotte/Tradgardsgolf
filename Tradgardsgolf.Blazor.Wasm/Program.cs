@@ -1,9 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AspNetMonsters.Blazor.Geolocation;
 using AzureMapsControl.Components;
+using AzureMapsControl.Components.Animations;
+using AzureMapsControl.Components.Configuration;
+using AzureMapsControl.Components.FullScreen;
+using AzureMapsControl.Components.Geolocation;
+using AzureMapsControl.Components.Indoor;
+using AzureMapsControl.Components.Map;
 using Blazored.LocalStorage;
 using Blazored.Modal;
 using Blazorise;
@@ -12,10 +20,12 @@ using Blazorise.Material;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using Polly;
 using Polly.Extensions.Http;
 using Tradgardsgolf.BlazorWasm.ApiServices;
 using Tradgardsgolf.BlazorWasm.Options;
+using Tradgardsgolf.Contracts.Settings;
 
 namespace Tradgardsgolf.BlazorWasm;
 
@@ -32,7 +42,7 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
+        
         var backend = builder.Configuration.GetSection("Backend").Get<Backend>();
 
         if (string.IsNullOrEmpty(backend.Url))
@@ -58,18 +68,34 @@ public class Program
         builder.Services.AddBlazoredModal();
         builder.Services.AddScoped<LocationService>();
         builder.Services.AddScoped<AppendBearerAuthorizationMessageHandler>();
-        builder.Services.AddScoped<IApiDispatcher, ApiDispatcher>();
+        builder.Services.AddSingleton<IApiDispatcher, ApiDispatcher>();
         builder.Services.AddOptions<Backend>().Bind(builder.Configuration.GetSection("Backend"));
+
+        var azureMapsSubscriptionKey = await GetAzureMapsSubscriptionKey(builder.Services.BuildServiceProvider());
+        
+        builder.Services.AddAzureMapsControl(configuration =>
+        {
+            configuration.SubscriptionKey = azureMapsSubscriptionKey;
+        });
 
         builder.Services
             .AddBlazorise(options => options.Immediate = true)
             .AddMaterialProviders()
             .AddMaterialIcons();
-        
-        builder.Services.AddAzureMapsControl(configuration => configuration.SubscriptionKey = "");
 
         var host = builder.Build();
+        
 
         await host.RunAsync();
     }
+
+    private static async Task<string> GetAzureMapsSubscriptionKey(IServiceProvider provider)
+    {
+        var dispatcher = provider.GetRequiredService<IApiDispatcher>();
+        var mapsKeyResponse = await dispatcher.Dispatch(new AzureMapsSubscriptionKeyCommand());
+        var azureMapsSubscriptionKey = mapsKeyResponse.Key;
+        return azureMapsSubscriptionKey;
+    }
 }
+
+

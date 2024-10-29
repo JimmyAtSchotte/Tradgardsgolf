@@ -32,7 +32,9 @@ public static class Services
         builder.Services.AddApplicationInsightsTelemetry();
 
         builder.Services.AddOptions<AllowPlayDistance>().Bind(configuration.GetSection("AllowPlayDistance"));
+        builder.Services.AddOptions<AzureMapsSubscriptionKey>().Bind(configuration.GetSection("AzureMapsSubscriptionKey"));
         builder.Services.AddOptions<AzureStorageOptions>().Bind(configuration.GetSection("AzureStorage"));
+        
 
         builder.Services.AddDbContext<TradgardsgolfContext>(dbContextOptionsBuilder =>
         {
