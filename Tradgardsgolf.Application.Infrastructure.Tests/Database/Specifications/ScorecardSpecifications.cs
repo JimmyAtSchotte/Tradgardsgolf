@@ -94,7 +94,7 @@ public class ScorecardSpecifications
         
         await context.SaveChangesAsync();
         
-        var specification = new Core.Specifications.Scorecard.ByTournament(tournament.Id);
+        var specification = Specs.Scorecard.ByTournament(tournament.Id);
         var repository = new Repository<Scorecard>(context);
         var scorecards = await repository.ListAsync(specification);
 

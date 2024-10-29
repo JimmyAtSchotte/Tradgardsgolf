@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Tournament;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament;
@@ -15,7 +16,7 @@ public class GetTournamentScoresHandler(IRepository<Core.Entities.Scorecard> sco
     public async Task<IEnumerable<TournamentScore>> Handle(GetTournamentScoresCommand request,
         CancellationToken cancellationToken)
     {
-        var tournament = await scorecards.ListAsync(new ByTournament(request.TournamentId), cancellationToken);
+        var tournament = await scorecards.ListAsync(Specs.Scorecard.ByTournament(request.TournamentId), cancellationToken);
 
         return tournament.SelectMany(x => x.Scores)
             .GroupBy(x => x.Key)

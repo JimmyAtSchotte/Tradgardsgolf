@@ -5,6 +5,7 @@ using Moq;
 using Tradgardsgolf.Api.RequestHandling.Tournament;
 using Tradgardsgolf.Contracts.Tournament;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Tournament;
@@ -26,7 +27,7 @@ public class GetTournamentScores
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
-                mock.Setup(x => x.ListAsync(new ByTournament(tournament.Id), It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.ListAsync(Specs.Scorecard.ByTournament(tournament.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(scorecards);
             });
         });
@@ -65,7 +66,7 @@ public class GetTournamentScores
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
-                mock.Setup(x => x.ListAsync(new ByTournament(tournament.Id), It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.ListAsync(Specs.Scorecard.ByTournament(tournament.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(scorecards);
             });
         });
