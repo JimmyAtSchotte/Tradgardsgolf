@@ -11,10 +11,10 @@ using Tradgardsgolf.Core.Specifications.Tournament;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament;
 
-public class ListTodaysTournamentsHandler(IRepository<Core.Entities.Tournament> tournaments)
-    : IRequestHandler<ListTodaysTournamentsCommand, IEnumerable<Contracts.Tournament.Tournament>>
+public class QueryTodaysTournamentsHandler(IRepository<Core.Entities.Tournament> tournaments)
+    : IRequestHandler<QueryTodaysTournamentsCommand, IEnumerable<Contracts.Tournament.Tournament>>
 {
-    public async Task<IEnumerable<Contracts.Tournament.Tournament>> Handle(ListTodaysTournamentsCommand request,
+    public async Task<IEnumerable<Contracts.Tournament.Tournament>> Handle(QueryTodaysTournamentsCommand request,
         CancellationToken cancellationToken)
     {
         var list = await tournaments.ListAsync(Specs.Tournament.ByCourseAndDate(request.CourseId, DateTime.Today), cancellationToken);

@@ -19,7 +19,7 @@ public class ListTodaysTournamets
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         
 
-        var arrange = Arrange.Dependencies<ListTodaysTournamentsHandler, ListTodaysTournamentsHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryTodaysTournamentsHandler, QueryTodaysTournamentsHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Tournament>>(mock =>
             {
@@ -28,8 +28,8 @@ public class ListTodaysTournamets
             });
         });
         
-        var handler = arrange.Resolve<ListTodaysTournamentsHandler>();
-        var command = new ListTodaysTournamentsCommand()
+        var handler = arrange.Resolve<QueryTodaysTournamentsHandler>();
+        var command = new QueryTodaysTournamentsCommand()
         {
             CourseId = course.Id,
         };
@@ -46,7 +46,7 @@ public class ListTodaysTournamets
         var tournament = Core.Entities.Tournament.Create("tournament");
         tournament.Id = Guid.NewGuid();
         
-        var arrange = Arrange.Dependencies<ListTodaysTournamentsHandler, ListTodaysTournamentsHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryTodaysTournamentsHandler, QueryTodaysTournamentsHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Tournament>>(mock =>
             {
@@ -58,8 +58,8 @@ public class ListTodaysTournamets
             });
         });
         
-        var handler = arrange.Resolve<ListTodaysTournamentsHandler>();
-        var command = new ListTodaysTournamentsCommand()
+        var handler = arrange.Resolve<QueryTodaysTournamentsHandler>();
+        var command = new QueryTodaysTournamentsCommand()
         {
             CourseId = course.Id,
         };

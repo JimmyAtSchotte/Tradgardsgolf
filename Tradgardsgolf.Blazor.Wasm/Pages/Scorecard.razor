@@ -126,7 +126,7 @@
             return;
         }
 
-        Tournaments = await apiDispatcher.Dispatch(new ListTodaysTournamentsCommand
+        Tournaments = await apiDispatcher.Dispatch(new QueryTodaysTournamentsCommand
         {
             CourseId = State.AppState.ScorecardState.CourseResponse.Id
         });
