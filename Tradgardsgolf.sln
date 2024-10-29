@@ -59,6 +59,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IaC", "IaC", "{B13318B7-CF0
 		IaC\storage.bicep = IaC\storage.bicep
 		IaC\webApi.bicep = IaC\webApi.bicep
 		IaC\webApp.bicep = IaC\webApp.bicep
+		IaC\maps.bicep = IaC\maps.bicep
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Azure Functions", "04 Azure Functions", "{69C1E831-BA49-496E-9089-57C8333B6619}"

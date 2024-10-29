@@ -20,6 +20,9 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   resource cosmosConnectionString 'secrets' existing = {
     name: 'cosmos-connection-string'
   }
+  resource mapsSubscriptionKey 'secrets' existing = {
+    name: 'maps-subscription-key'
+  }
 }
 
 
@@ -80,6 +83,10 @@ resource webApiConfig 'Microsoft.Web/sites/config@2023-01-01' = {
       {
         name: 'AzureStorage__ConnectionString'
         value: '@Microsoft.KeyVault(SecretUri=${keyvault::storageConnectionString.properties.secretUri})'
+      }
+      {
+        name: 'AzureMapsSubscriptionKey__Value'
+        value: '@Microsoft.KeyVault(SecretUri=${keyvault::mapsSubscriptionKey.properties.secretUri})'
       }
       {
         name: 'AzureStorage__Container'

@@ -10,15 +10,6 @@ var container = {
   tag: tag
 }
 
-resource deploymentResourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' existing = {
-  name: 'deployment'
-}
-
-resource deploymentkeyvalues 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
-  name: 'deploymentkeyvalues'
-  scope: deploymentResourceGroup
-}
-
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   name: resourceGroupName
   location: location
@@ -29,6 +20,15 @@ module keyvault 'keyvault.bicep' = {
   scope: resourceGroup
   params: {
     location: location
+    prefix: resourceGroupName
+  }
+}
+
+module maps 'maps.bicep' = {
+  name: 'maps'
+  scope: resourceGroup
+  params: {
+    keyvaultName: keyvault.outputs.keyvaultName
     prefix: resourceGroupName
   }
 }
