@@ -5,6 +5,7 @@ using Moq;
 using Tradgardsgolf.Api.RequestHandling.Tournament;
 using Tradgardsgolf.Contracts.Tournament;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Tournament;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Tournament;
@@ -22,7 +23,7 @@ public class ListTodaysTournamets
         {
             dependencies.UseMock<IRepository<Core.Entities.Tournament>>(mock =>
             {
-                mock.Setup(x => x.ListAsync(new TournamentsOnCourse(course.Id, DateTime.Today), It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.ListAsync(Specs.Tournament.ByCourseAndDate(course.Id, DateTime.Today), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new List<Core.Entities.Tournament>());
             });
         });
@@ -49,7 +50,7 @@ public class ListTodaysTournamets
         {
             dependencies.UseMock<IRepository<Core.Entities.Tournament>>(mock =>
             {
-                mock.Setup(x => x.ListAsync(new TournamentsOnCourse(course.Id, DateTime.Today), It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.ListAsync(Specs.Tournament.ByCourseAndDate(course.Id, DateTime.Today), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new List<Core.Entities.Tournament>()
                     {
                         tournament

@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Tradgardsgolf.Core.Entities;
+using Tradgardsgolf.Core.Specifications;
+using Tradgardsgolf.Core.Specifications.Tournament;
 using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Application.Infrastructure.Tests.Database.Specifications;
@@ -22,7 +24,7 @@ public class TournamentSpecifications
         
         await context.SaveChangesAsync();
         
-        var specification = new Core.Specifications.Tournament.TournamentsOnCourse(course.Id, DateTime.Today);
+        var specification = Specs.Tournament.ByCourseAndDate(course.Id, DateTime.Today);
         var repository = new Repository<Tournament>(context);
         var tournaments = await repository.ListAsync(specification);
         tournaments.Should().HaveCount(1);
@@ -42,7 +44,7 @@ public class TournamentSpecifications
         
         await context.SaveChangesAsync();
         
-        var specification = new Core.Specifications.Tournament.TournamentsOnCourse(course.Id, DateTime.Today);
+        var specification = Specs.Tournament.ByCourseAndDate(course.Id, DateTime.Today);
         var repository = new Repository<Tournament>(context);
         var tournaments = await repository.ListAsync(specification);
         tournaments.Should().HaveCount(0);
