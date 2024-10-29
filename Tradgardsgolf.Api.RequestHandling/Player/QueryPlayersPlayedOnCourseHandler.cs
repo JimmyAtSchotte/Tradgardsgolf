@@ -10,10 +10,10 @@ using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Player;
 
-public class HasPlayedOnCourseHandler(IRepository<Core.Entities.Scorecard> scorecards)
-    : IRequestHandler<HasPlayedOnCourseCommand, IEnumerable<PlayerResponse>>
+public class QueryPlayersPlayedOnCourseHandler(IRepository<Core.Entities.Scorecard> scorecards)
+    : IRequestHandler<QueryPlayersPlayedOnCourse, IEnumerable<PlayerResponse>>
 {
-    public async Task<IEnumerable<PlayerResponse>> Handle(HasPlayedOnCourseCommand request,
+    public async Task<IEnumerable<PlayerResponse>> Handle(QueryPlayersPlayedOnCourse request,
         CancellationToken cancellationToken)
     {
         return (await scorecards.ListAsync(Specs.Scorecard.ByCourse(request.CourseId), cancellationToken))

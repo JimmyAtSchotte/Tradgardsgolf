@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Tradgardsgolf.Contracts.Players;
 
-public record HasPlayedOnCourseCommand : IRequest<IEnumerable<PlayerResponse>>
+public record QueryPlayersPlayedOnCourse : IRequest<IEnumerable<PlayerResponse>>
 {
     public Guid CourseId { get; init; }
 }

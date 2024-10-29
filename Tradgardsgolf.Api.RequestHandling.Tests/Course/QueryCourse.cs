@@ -12,14 +12,14 @@ using Tradgardsgolf.Core.Specifications;
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Course;
 
 [TestFixture]
-public class GetCourse
+public class QueryCourse
 {
     [Test]
     public async Task ShouldFindCourse()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         
-        var arrange = Arrange.Dependencies<GetCourseHandler, GetCourseHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryCourseHandler, QueryCourseHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
             {
@@ -31,8 +31,8 @@ public class GetCourse
             dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
         });
 
-        var handler = arrange.Resolve<GetCourseHandler>();
-        var command = new GetCourseCommand()
+        var handler = arrange.Resolve<QueryCourseHandler>();
+        var command = new Contracts.Course.QueryCourse()
         {
             Id = course.Id
         };
@@ -52,7 +52,7 @@ public class GetCourse
             p.Image = "myimage.png";
         });
         
-        var arrange = Arrange.Dependencies<GetCourseHandler, GetCourseHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryCourseHandler, QueryCourseHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
             {
@@ -64,8 +64,8 @@ public class GetCourse
             dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
         });
 
-        var handler = arrange.Resolve<GetCourseHandler>();
-        var command = new GetCourseCommand()
+        var handler = arrange.Resolve<QueryCourseHandler>();
+        var command = new Contracts.Course.QueryCourse()
         {
             Id = course.Id
         };

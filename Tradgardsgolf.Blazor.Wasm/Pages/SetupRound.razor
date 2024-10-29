@@ -100,7 +100,7 @@ else if (AvailablePlayers.Any())
 
     protected override async Task OnInitializedAsync()
     {
-        _availablePlayers = (await ApiDispatcher.Dispatch(new HasPlayedOnCourseCommand
+        _availablePlayers = (await ApiDispatcher.Dispatch(new QueryPlayersPlayedOnCourse
         {
             CourseId = State.AppState.ScorecardState.CourseResponse.Id
         }) ?? Array.Empty<PlayerResponse>()).ToList();

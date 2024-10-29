@@ -11,7 +11,7 @@ using Tradgardsgolf.Core.Infrastructure;
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Course;
 
 [TestFixture]
-public class ListAllCourses
+public class QueryAllCourses
 {
     [Test]
     public async Task ShouldListAllCourses()
@@ -23,7 +23,7 @@ public class ListAllCourses
         };
         
         
-        var arrange = Arrange.Dependencies<ListAllCoursesHandler, ListAllCoursesHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryAllCoursesHandler, QueryAllCoursesHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
             {
@@ -35,8 +35,8 @@ public class ListAllCourses
             dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
         });
 
-        var handler = arrange.Resolve<ListAllCoursesHandler>();
-        var command = new ListAllCoursesCommand();
+        var handler = arrange.Resolve<QueryAllCoursesHandler>();
+        var command = new Contracts.Course.QueryAllCourses();
         
         var result = await handler.Handle(command, CancellationToken.None);
 

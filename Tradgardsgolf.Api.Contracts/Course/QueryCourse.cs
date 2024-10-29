@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Tradgardsgolf.Contracts.Course;
 
-public record GetCourseCommand : IRequest<CourseResponse>
+public record QueryCourse : IRequest<CourseResponse>
 {
     public Guid Id { get; set; }
 }

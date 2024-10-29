@@ -66,8 +66,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _allowPlayDistance = (await ApiDispatcher.Dispatch(new AllowPlayDistanceCommand())).Value;
-        _models = await ApiDispatcher.Dispatch(new ListAllCoursesCommand());
+        _allowPlayDistance = (await ApiDispatcher.Dispatch(new QueryAllowPlayDistance())).Value;
+        _models = await ApiDispatcher.Dispatch(new QueryAllCourses());
         _authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
         OrderCoursesByDistance();

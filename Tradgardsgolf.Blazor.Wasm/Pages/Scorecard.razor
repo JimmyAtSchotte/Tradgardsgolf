@@ -216,7 +216,7 @@
     private async Task OnSelectedTournamentChanged(Guid tournamentId)
     {
         SelectedTournament = Tournaments.FirstOrDefault(x => x.Id == tournamentId);
-        TournamentScores = (await apiDispatcher.Dispatch(new GetTournamentScoresCommand
+        TournamentScores = (await apiDispatcher.Dispatch(new QueryTournamentScores
         {
             TournamentId = tournamentId
         }) ?? Array.Empty<TournamentScore>()).ToList();

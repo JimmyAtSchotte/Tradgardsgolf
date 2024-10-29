@@ -92,7 +92,7 @@ public class Program
     private static async Task<string> GetAzureMapsSubscriptionKey(IServiceProvider provider)
     {
         var dispatcher = provider.GetRequiredService<IApiDispatcher>();
-        var mapsKeyResponse = await dispatcher.Dispatch(new AzureMapsSubscriptionKeyCommand());
+        var mapsKeyResponse = await dispatcher.Dispatch(new QueryAzureMapsSubscriptionKey());
         var azureMapsSubscriptionKey = mapsKeyResponse.Key;
         return azureMapsSubscriptionKey;
     }

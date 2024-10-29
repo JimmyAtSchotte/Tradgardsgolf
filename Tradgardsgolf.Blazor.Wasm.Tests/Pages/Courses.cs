@@ -20,14 +20,14 @@ public class CoursesTests
         return apiMock =>
         {
             apiMock
-                .Setup(x => x.Dispatch(It.IsAny<AllowPlayDistanceCommand>()))
+                .Setup(x => x.Dispatch(It.IsAny<QueryAllowPlayDistance>()))
                 .ReturnsAsync(new SettingResponse<int>
                 {
                     Value = allowPlayDistance
                 });
 
             apiMock
-                .Setup(x => x.Dispatch(It.IsAny<ListAllCoursesCommand>()))
+                .Setup(x => x.Dispatch(It.IsAny<QueryAllCourses>()))
                 .ReturnsAsync(courseResponses);
         };
     }

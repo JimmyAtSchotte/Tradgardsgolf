@@ -7,16 +7,16 @@ using Tradgardsgolf.Core.Config;
 
 namespace Tradgardsgolf.Api.RequestHandling.Configuration;
 
-public class AzureMapsSubscriptionKeyHandler : IRequestHandler<AzureMapsSubscriptionKeyCommand, AzureMapsSubscriptionKeyResponse>
+public class QueryAzureMapsSubscriptionKeyHandler : IRequestHandler<QueryAzureMapsSubscriptionKey, AzureMapsSubscriptionKeyResponse>
 {
     private readonly IOptionsMonitor<AzureMapsSubscriptionKey> _optionsMonitor;
     
-    public AzureMapsSubscriptionKeyHandler(IOptionsMonitor<AzureMapsSubscriptionKey> optionsMonitor)
+    public QueryAzureMapsSubscriptionKeyHandler(IOptionsMonitor<AzureMapsSubscriptionKey> optionsMonitor)
     {
         _optionsMonitor = optionsMonitor;
     }
 
-    public Task<AzureMapsSubscriptionKeyResponse> Handle(AzureMapsSubscriptionKeyCommand request, CancellationToken cancellationToken)
+    public Task<AzureMapsSubscriptionKeyResponse> Handle(QueryAzureMapsSubscriptionKey request, CancellationToken cancellationToken)
     {
         return Task.FromResult(new AzureMapsSubscriptionKeyResponse()
         {

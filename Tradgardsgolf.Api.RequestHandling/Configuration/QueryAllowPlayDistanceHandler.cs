@@ -7,10 +7,10 @@ using Tradgardsgolf.Core.Config;
 
 namespace Tradgardsgolf.Api.RequestHandling.Configuration;
 
-public class AllowPlayDistanceHandler(IOptionsMonitor<AllowPlayDistance> settings)
-    : IRequestHandler<AllowPlayDistanceCommand, SettingResponse<int>>
+public class QueryAllowPlayDistanceHandler(IOptionsMonitor<AllowPlayDistance> settings)
+    : IRequestHandler<QueryAllowPlayDistance, SettingResponse<int>>
 {
-    public Task<SettingResponse<int>> Handle(AllowPlayDistanceCommand request, CancellationToken cancellationToken)
+    public Task<SettingResponse<int>> Handle(QueryAllowPlayDistance request, CancellationToken cancellationToken)
     {
         var response = new SettingResponse<int>
         {

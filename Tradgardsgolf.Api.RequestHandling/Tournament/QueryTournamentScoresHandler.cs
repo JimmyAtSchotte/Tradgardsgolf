@@ -10,10 +10,10 @@ using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament;
 
-public class GetTournamentScoresHandler(IRepository<Core.Entities.Scorecard> scorecards)
-    : IRequestHandler<GetTournamentScoresCommand, IEnumerable<TournamentScore>>
+public class QueryTournamentScoresHandler(IRepository<Core.Entities.Scorecard> scorecards)
+    : IRequestHandler<QueryTournamentScores, IEnumerable<TournamentScore>>
 {
-    public async Task<IEnumerable<TournamentScore>> Handle(GetTournamentScoresCommand request,
+    public async Task<IEnumerable<TournamentScore>> Handle(QueryTournamentScores request,
         CancellationToken cancellationToken)
     {
         var tournament = await scorecards.ListAsync(Specs.Scorecard.ByTournament(request.TournamentId), cancellationToken);

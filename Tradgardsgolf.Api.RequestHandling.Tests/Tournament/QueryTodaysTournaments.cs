@@ -11,7 +11,7 @@ using Tradgardsgolf.Core.Specifications.Tournament;
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Tournament;
 
 [TestFixture]
-public class ListTodaysTournamets
+public class QueryTodaysTournaments
 {
     [Test]
     public async Task ShouldNotHaveAnyTournaments()

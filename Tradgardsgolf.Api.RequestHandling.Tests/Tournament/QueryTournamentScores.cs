@@ -3,7 +3,6 @@ using ArrangeDependencies.Autofac.Extensions;
 using FluentAssertions;
 using Moq;
 using Tradgardsgolf.Api.RequestHandling.Tournament;
-using Tradgardsgolf.Contracts.Tournament;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Scorecard;
@@ -11,7 +10,7 @@ using Tradgardsgolf.Core.Specifications.Scorecard;
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Tournament;
 
 [TestFixture]
-public class GetTournamentScores
+public class QueryTournamentScores
 {
     
     [Test]
@@ -23,7 +22,7 @@ public class GetTournamentScores
 
         var scorecards = new List<Core.Entities.Scorecard>();
         
-        var arrange = Arrange.Dependencies<GetTournamentScoresHandler, GetTournamentScoresHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryTournamentScoresHandler, QueryTournamentScoresHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
@@ -32,8 +31,8 @@ public class GetTournamentScores
             });
         });
         
-        var handler = arrange.Resolve<GetTournamentScoresHandler>();
-        var command = new GetTournamentScoresCommand()
+        var handler = arrange.Resolve<QueryTournamentScoresHandler>();
+        var command = new Contracts.Tournament.QueryTournamentScores()
         {
             TournamentId = tournament.Id,
         };
@@ -62,7 +61,7 @@ public class GetTournamentScores
             scorecards.Add(scorecard);
         }
         
-        var arrange = Arrange.Dependencies<GetTournamentScoresHandler, GetTournamentScoresHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryTournamentScoresHandler, QueryTournamentScoresHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
@@ -71,8 +70,8 @@ public class GetTournamentScores
             });
         });
         
-        var handler = arrange.Resolve<GetTournamentScoresHandler>();
-        var command = new GetTournamentScoresCommand()
+        var handler = arrange.Resolve<QueryTournamentScoresHandler>();
+        var command = new Contracts.Tournament.QueryTournamentScores()
         {
             TournamentId = tournament.Id,
         };

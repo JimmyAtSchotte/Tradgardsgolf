@@ -13,7 +13,7 @@ public class AllowPlayDistance
     [Test]
     public async Task ShouldGetAllowPlayDistance()
     {
-        var arrange = Arrange.Dependencies<AllowPlayDistanceHandler, AllowPlayDistanceHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryAllowPlayDistanceHandler, QueryAllowPlayDistanceHandler>(dependencies =>
         {
             dependencies.UseMock<IOptionsMonitor<Tradgardsgolf.Core.Config.AllowPlayDistance>>(mock => mock
                 .Setup(x => x.CurrentValue).Returns(new Tradgardsgolf.Core.Config.AllowPlayDistance()
@@ -22,8 +22,8 @@ public class AllowPlayDistance
                 }));
         });
         
-        var handler = arrange.Resolve<AllowPlayDistanceHandler>();
-        var result = await handler.Handle(new AllowPlayDistanceCommand(), CancellationToken.None);
+        var handler = arrange.Resolve<QueryAllowPlayDistanceHandler>();
+        var result = await handler.Handle(new QueryAllowPlayDistance(), CancellationToken.None);
 
         result.Value.Should().Be(100);
     }

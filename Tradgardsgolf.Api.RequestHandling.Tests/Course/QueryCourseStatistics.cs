@@ -11,7 +11,7 @@ using Tradgardsgolf.Core.Specifications.Scorecard;
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Course;
 
 [TestFixture]
-public class CourseStatistics
+public class QueryCourseStatistics
 {
     [Test]
     public async Task ShouldFindScorecardsOnCourse()
@@ -20,7 +20,7 @@ public class CourseStatistics
         var scorecards = new List<Core.Entities.Scorecard>();
         scorecards.Add(course.CreateScorecard());
         
-        var arrange = Arrange.Dependencies<CourseStatisticHandler, CourseStatisticHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryCourseStatisticsHandler, QueryCourseStatisticsHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
@@ -29,8 +29,8 @@ public class CourseStatistics
             });
         });
         
-        var handler = arrange.Resolve<CourseStatisticHandler>();
-        var command = new CourseStatisticCommand()
+        var handler = arrange.Resolve<QueryCourseStatisticsHandler>();
+        var command = new Contracts.Statistics.QueryCourseStatistics()
         {
             CourseId = course.Id
         };
@@ -53,7 +53,7 @@ public class CourseStatistics
         
         scorecards.Add(scorecard1);
         
-        var arrange = Arrange.Dependencies<CourseStatisticHandler, CourseStatisticHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryCourseStatisticsHandler, QueryCourseStatisticsHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
@@ -62,8 +62,8 @@ public class CourseStatistics
             });
         });
         
-        var handler = arrange.Resolve<CourseStatisticHandler>();
-        var command = new CourseStatisticCommand()
+        var handler = arrange.Resolve<QueryCourseStatisticsHandler>();
+        var command = new Contracts.Statistics.QueryCourseStatistics()
         {
             CourseId = course.Id
         };

@@ -9,12 +9,12 @@ using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
-public class ListAllCoursesHandler(
+public class QueryAllCoursesHandler(
     IRepository<Core.Entities.Course> courses,
     IResponseFactory<CourseResponse, Core.Entities.Course> courseResponseFactory)
-    : IRequestHandler<ListAllCoursesCommand, IEnumerable<CourseResponse>>
+    : IRequestHandler<QueryAllCourses, IEnumerable<CourseResponse>>
 {
-    public async Task<IEnumerable<CourseResponse>> Handle(ListAllCoursesCommand request,
+    public async Task<IEnumerable<CourseResponse>> Handle(QueryAllCourses request,
         CancellationToken cancellationToken)
     {
         var list = await courses.ListAsync(cancellationToken);

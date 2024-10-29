@@ -11,14 +11,14 @@ using Tradgardsgolf.Core.Specifications.Scorecard;
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Players;
 
 [TestFixture]
-public class HasPlayedOnCourse
+public class QueryPlayersPlayedOnCourse
 {
     [Test]
     public async Task ShouldHaveNoPlayers()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
 
-        var arrange = Arrange.Dependencies<HasPlayedOnCourseHandler, HasPlayedOnCourseHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
@@ -27,8 +27,8 @@ public class HasPlayedOnCourse
             });
         });
         
-        var handler = arrange.Resolve<HasPlayedOnCourseHandler>();
-        var command = new HasPlayedOnCourseCommand()
+        var handler = arrange.Resolve<QueryPlayersPlayedOnCourseHandler>();
+        var command = new Contracts.Players.QueryPlayersPlayedOnCourse()
         {
             CourseId = course.Id,
         };
@@ -47,7 +47,7 @@ public class HasPlayedOnCourse
         scorecard.AddPlayerScores("B", 2);
         scorecard.AddPlayerScores("A", 1);
 
-        var arrange = Arrange.Dependencies<HasPlayedOnCourseHandler, HasPlayedOnCourseHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
@@ -56,8 +56,8 @@ public class HasPlayedOnCourse
             });
         });
         
-        var handler = arrange.Resolve<HasPlayedOnCourseHandler>();
-        var command = new HasPlayedOnCourseCommand()
+        var handler = arrange.Resolve<QueryPlayersPlayedOnCourseHandler>();
+        var command = new Contracts.Players.QueryPlayersPlayedOnCourse()
         {
             CourseId = course.Id,
         };
@@ -91,7 +91,7 @@ public class HasPlayedOnCourse
         for (int i = 0; i < 51; i++)
             course.CreateScorecard().AddPlayerScores("MoreThan50-A", 2);
 
-        var arrange = Arrange.Dependencies<HasPlayedOnCourseHandler, HasPlayedOnCourseHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
             {
@@ -100,8 +100,8 @@ public class HasPlayedOnCourse
             });
         });
         
-        var handler = arrange.Resolve<HasPlayedOnCourseHandler>();
-        var command = new HasPlayedOnCourseCommand()
+        var handler = arrange.Resolve<QueryPlayersPlayedOnCourseHandler>();
+        var command = new Contracts.Players.QueryPlayersPlayedOnCourse()
         {
             CourseId = course.Id,
         };
