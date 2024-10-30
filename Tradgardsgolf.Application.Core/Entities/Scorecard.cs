@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tradgardsgolf.Core.Entities;
 
-public class Scorecard : BaseEntity<Scorecard>
+public class Scorecard : BaseEntity
 {
     private IDictionary<string, int[]> _scores;
 

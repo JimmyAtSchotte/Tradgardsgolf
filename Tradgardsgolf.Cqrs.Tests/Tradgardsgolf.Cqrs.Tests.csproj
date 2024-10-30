@@ -18,4 +18,10 @@
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Application.Core\Tradgardsgolf.Application.Core.csproj" />
+      <ProjectReference Include="..\Tradgardsgolf.Cqrs\Tradgardsgolf.Cqrs.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tradgardsgolf.Core.Entities;
 
-public class Tournament : BaseEntity<Tournament>
+public class Tournament : BaseEntity
 {
     private Tournament() { }
 

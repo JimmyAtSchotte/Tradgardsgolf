@@ -3,7 +3,7 @@ using Tradgardsgolf.Contracts.Types;
 
 namespace Tradgardsgolf.Contracts.Course;
 
-public record CourseResponse
+public record CourseResponse : IResponse
 {
     public Guid Id { get; init; }
     public string Name { get; init; }

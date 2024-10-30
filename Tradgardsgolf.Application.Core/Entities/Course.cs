@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Tradgardsgolf.Core.Entities;
 
 [Table("course")]
-public class Course : BaseEntity<Course>
+public class Course : BaseEntity
 {
     private ICollection<Scorecard> _rounds;
 

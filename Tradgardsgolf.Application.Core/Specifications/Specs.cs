@@ -11,8 +11,8 @@ public class Specs
     public static SpecificationSet<Entities.Tournament> Tournament => new SpecificationSet<Entities.Tournament>();
     
     public static ISpecification<T> ById<T>(Guid id) 
-        where T : BaseEntity<T> => new ById<T>(id);
+        where T : BaseEntity => new ById<T>(id);
     
     public static ISpecification<T> ById<T>(Guid id, Action<ISpecificationBuilder<T>> specification) 
-        where T : BaseEntity<T> => new ById<T>(id, specification);
+        where T : BaseEntity => new ById<T>(id, specification);
 }
