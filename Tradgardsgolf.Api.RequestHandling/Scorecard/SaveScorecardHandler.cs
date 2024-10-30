@@ -8,18 +8,18 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Scorecard;
 
-public class SaveScorecardHandler(IRepository<Core.Entities.Course> courses)
+public class SaveScorecardHandler(IRepository repository)
     : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
 {
     public async Task<ScorecardResponse> Handle(SaveScorecardCommand request, CancellationToken cancellationToken)
     {
-        var course = await courses.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.CourseId), cancellationToken);
+        var course = await repository.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.CourseId), cancellationToken);
         var scorecard = course.CreateScorecard();
 
         foreach (var playerScore in request.PlayerScores)
             scorecard.AddPlayerScores(playerScore.Name, playerScore.HoleScores.ToArray());
 
-        await courses.UpdateAsync(course, cancellationToken);
+        await repository.UpdateAsync(course, cancellationToken);
 
         return new ScorecardResponse
         {

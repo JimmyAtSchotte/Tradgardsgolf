@@ -20,7 +20,7 @@ public class QueryPlayersPlayedOnCourse
 
         var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course.Scorecards.ToList);
@@ -49,7 +49,7 @@ public class QueryPlayersPlayedOnCourse
 
         var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course.Scorecards.ToList);
@@ -93,7 +93,7 @@ public class QueryPlayersPlayedOnCourse
 
         var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course.Scorecards.ToList);

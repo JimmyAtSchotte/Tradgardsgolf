@@ -25,9 +25,9 @@ public class QueryAllCourses
         
         var arrange = Arrange.Dependencies<QueryAllCoursesHandler, QueryAllCoursesHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
-                mock.Setup(x => x.ListAsync(It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.ListAsync<Core.Entities.Course>(It.IsAny<CancellationToken>()))
                     .ReturnsAsync(courses);
             });
 

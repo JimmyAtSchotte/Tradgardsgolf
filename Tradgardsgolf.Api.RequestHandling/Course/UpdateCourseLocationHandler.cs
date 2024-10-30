@@ -13,20 +13,20 @@ namespace Tradgardsgolf.Api.RequestHandling.Course;
 public class UpdateCourseLocationHandler : IRequestHandler<UpdateCourseLocationCommand, CourseResponse>
 {
     private readonly IResponseFactory<CourseResponse, Core.Entities.Course> _responseFactory;
-    private readonly IRepository<Core.Entities.Course> _courseRepository;
+    private readonly IRepository _repository;
     private readonly IAuthenticationService _authenticationService;
     
-    public UpdateCourseLocationHandler(IResponseFactory<CourseResponse, Core.Entities.Course> responseFactory, IRepository<Core.Entities.Course> courseRepository, IAuthenticationService authenticationService)
+    public UpdateCourseLocationHandler(IResponseFactory<CourseResponse, Core.Entities.Course> responseFactory, IRepository repository, IAuthenticationService authenticationService)
     {
         _responseFactory = responseFactory;
-        _courseRepository = courseRepository;
+        _repository = repository;
         _authenticationService = authenticationService;
     }
 
 
     public async Task<CourseResponse> Handle(UpdateCourseLocationCommand request, CancellationToken cancellationToken)
     {
-        var course = await _courseRepository.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.Id), cancellationToken);
+        var course = await _repository.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.Id), cancellationToken);
         var user = _authenticationService.RequireAuthenticatedUser();
         
         if (user?.UserId != course.OwnerGuid)
@@ -35,7 +35,7 @@ public class UpdateCourseLocationHandler : IRequestHandler<UpdateCourseLocationC
         course.Longitude = request.Longitude;
         course.Latitude = request.Latitude;
         
-        await _courseRepository.UpdateAsync(course, cancellationToken);
+        await _repository.UpdateAsync(course, cancellationToken);
         
         return _responseFactory.Create(course);
     }

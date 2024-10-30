@@ -17,9 +17,9 @@ public class CourseSpecifications
         await context.SaveChangesAsync();
         
         var specification = Specs.ById<Course>(course.Id);
-        var repository = new Repository<Course>(context);
+        var repository = new Repository(context);
 
-        var result = await repository.FirstOrDefaultAsync(specification);
+        var result = await repository.FirstOrDefaultAsync(specification, CancellationToken.None);
         
         result.Should().NotBeNull();
         result.Name.Should().Be(course.Name);
@@ -34,9 +34,9 @@ public class CourseSpecifications
         await context.SaveChangesAsync();
         
         var specification = Specs.ById<Course>(Guid.NewGuid());
-        var repository = new Repository<Course>(context);
+        var repository = new Repository(context);
 
-        var result = await repository.FirstOrDefaultAsync(specification);
+        var result = await repository.FirstOrDefaultAsync(specification, CancellationToken.None);
         result.Should().BeNull();
     }
 }

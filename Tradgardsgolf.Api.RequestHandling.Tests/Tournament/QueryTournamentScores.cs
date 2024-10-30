@@ -24,7 +24,7 @@ public class QueryTournamentScores
         
         var arrange = Arrange.Dependencies<QueryTournamentScoresHandler, QueryTournamentScoresHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByTournament(tournament.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(scorecards);
@@ -63,7 +63,7 @@ public class QueryTournamentScores
         
         var arrange = Arrange.Dependencies<QueryTournamentScoresHandler, QueryTournamentScoresHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByTournament(tournament.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(scorecards);

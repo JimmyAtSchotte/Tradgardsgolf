@@ -27,7 +27,7 @@ public class ChangeCourseImage
                 UserId = Guid.NewGuid(),
             }));
 
-            dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
@@ -63,7 +63,7 @@ public class ChangeCourseImage
                 UserId = course.OwnerGuid
             }));
 
-            dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
@@ -118,7 +118,7 @@ public class ChangeCourseImage
                 UserId = course.OwnerGuid
             }));
 
-            dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);

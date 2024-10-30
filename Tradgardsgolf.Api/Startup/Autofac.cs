@@ -24,7 +24,6 @@ public static class Autofac
                 };
 
                 containerBuilder.RegisterAssemblyTypes(assemblies).AsImplementedInterfaces();
-                containerBuilder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
             });
     }
 }

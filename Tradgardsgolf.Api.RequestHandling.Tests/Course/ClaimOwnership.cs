@@ -24,7 +24,7 @@ public class ClaimOwnership
 
         var arrange = Arrange.Dependencies<SUT, SUT>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(It.IsAny<ISpecification<Core.Entities.Course>>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
@@ -66,7 +66,7 @@ public class ClaimOwnership
 
         var arrange = Arrange.Dependencies<SUT, SUT>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(It.IsAny<ISpecification<Core.Entities.Course>>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);

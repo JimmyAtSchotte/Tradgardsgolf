@@ -28,7 +28,7 @@ public class AddTournamentRoundScore
         var arrange = Arrange.Dependencies<AddTournamentRoundScoreHandler,AddTournamentRoundScoreHandler>(
                 dependencies =>
                 {
-                    dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
+                    dependencies.UseMock<IRepository>(mock =>
                     {
                         mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Scorecard>(scorecard.Id), It.IsAny<CancellationToken>()))
                             .ReturnsAsync(scorecard);

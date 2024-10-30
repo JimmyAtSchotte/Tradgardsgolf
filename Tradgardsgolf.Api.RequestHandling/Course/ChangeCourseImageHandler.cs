@@ -16,7 +16,7 @@ using Tradgardsgolf.Core.Specifications;
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
 public class ChangeCourseImageHandler(
-    IRepository<Core.Entities.Course> courses,
+    IRepository repository,
     IAuthenticationService authenticationService,
     IFileService files,
     IResponseFactory<CourseResponse, Core.Entities.Course> courseResponseFactory)
@@ -25,7 +25,7 @@ public class ChangeCourseImageHandler(
     public async Task<CourseResponse> Handle(ChangeCourseImage request, CancellationToken cancellationToken)
     {
         var user = authenticationService.RequireAuthenticatedUser();
-        var course = await courses.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.Id), cancellationToken);
+        var course = await repository.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.Id), cancellationToken);
 
         if (user.UserId != course.OwnerGuid)
             throw new ForbiddenException();
@@ -40,7 +40,7 @@ public class ChangeCourseImageHandler(
 
         course.Image = filename;
 
-        await courses.UpdateAsync(course, cancellationToken);
+        await repository.UpdateAsync(course, cancellationToken);
 
         return courseResponseFactory.Create(course);
     }

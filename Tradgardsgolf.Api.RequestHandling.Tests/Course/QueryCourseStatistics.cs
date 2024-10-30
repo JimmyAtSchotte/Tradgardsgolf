@@ -22,7 +22,7 @@ public class QueryCourseStatistics
         
         var arrange = Arrange.Dependencies<QueryCourseStatisticsHandler, QueryCourseStatisticsHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(scorecards);
@@ -55,7 +55,7 @@ public class QueryCourseStatistics
         
         var arrange = Arrange.Dependencies<QueryCourseStatisticsHandler, QueryCourseStatisticsHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Scorecard>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(scorecards);

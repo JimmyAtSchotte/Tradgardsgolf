@@ -25,8 +25,8 @@ public class TournamentSpecifications
         await context.SaveChangesAsync();
         
         var specification = Specs.Tournament.ByCourseAndDate(course.Id, DateTime.Today);
-        var repository = new Repository<Tournament>(context);
-        var tournaments = await repository.ListAsync(specification);
+        var repository = new Repository(context);
+        var tournaments = await repository.ListAsync(specification, CancellationToken.None);
         tournaments.Should().HaveCount(1);
     }
     
@@ -45,8 +45,8 @@ public class TournamentSpecifications
         await context.SaveChangesAsync();
         
         var specification = Specs.Tournament.ByCourseAndDate(course.Id, DateTime.Today);
-        var repository = new Repository<Tournament>(context);
-        var tournaments = await repository.ListAsync(specification);
+        var repository = new Repository(context);
+        var tournaments = await repository.ListAsync(specification, CancellationToken.None);
         tournaments.Should().HaveCount(0);
     }
 }

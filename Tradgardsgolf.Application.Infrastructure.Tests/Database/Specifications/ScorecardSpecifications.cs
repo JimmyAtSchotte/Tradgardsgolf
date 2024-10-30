@@ -20,8 +20,8 @@ public class ScorecardSpecifications
         await context.SaveChangesAsync();
         
         var specification = Specs.Scorecard.ByCourse(course.Id);
-        var repository = new Repository<Scorecard>(context);
-        var scorecards = await repository.ListAsync(specification);
+        var repository = new Repository(context);
+        var scorecards = await repository.ListAsync(specification, CancellationToken.None);
 
         scorecards.Should().HaveCount(1);
         scorecards.Should().Contain(scorecard);
@@ -38,8 +38,8 @@ public class ScorecardSpecifications
         await context.SaveChangesAsync();
         
         var specification = Specs.Scorecard.ByCourse(Guid.NewGuid());
-        var repository = new Repository<Scorecard>(context);
-        var scorecards = await repository.ListAsync(specification);
+        var repository = new Repository(context);
+        var scorecards = await repository.ListAsync(specification, CancellationToken.None);
 
         scorecards.Should().HaveCount(0);
     }
@@ -56,8 +56,8 @@ public class ScorecardSpecifications
         await context.SaveChangesAsync();
         
         var specification = Specs.ById<Scorecard>(scorecard.Id);
-        var repository = new Repository<Scorecard>(context);
-        var result = await repository.FirstOrDefaultAsync(specification);
+        var repository = new Repository(context);
+        var result = await repository.FirstOrDefaultAsync(specification, CancellationToken.None);
 
         result.Should().NotBeNull();
     }
@@ -73,8 +73,8 @@ public class ScorecardSpecifications
         await context.SaveChangesAsync();
         
         var specification = Specs.ById<Scorecard>(Guid.NewGuid());
-        var repository = new Repository<Scorecard>(context);
-        var result = await repository.FirstOrDefaultAsync(specification);
+        var repository = new Repository(context);
+        var result = await repository.FirstOrDefaultAsync(specification, CancellationToken.None);
 
         result.Should().BeNull();
     }
@@ -95,8 +95,8 @@ public class ScorecardSpecifications
         await context.SaveChangesAsync();
         
         var specification = Specs.Scorecard.ByTournament(tournament.Id);
-        var repository = new Repository<Scorecard>(context);
-        var scorecards = await repository.ListAsync(specification);
+        var repository = new Repository(context);
+        var scorecards = await repository.ListAsync(specification, CancellationToken.None);
 
         scorecards.Should().HaveCount(1);
     }

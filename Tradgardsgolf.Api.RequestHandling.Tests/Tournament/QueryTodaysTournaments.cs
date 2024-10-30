@@ -21,7 +21,7 @@ public class QueryTodaysTournaments
 
         var arrange = Arrange.Dependencies<QueryTodaysTournamentsHandler, QueryTodaysTournamentsHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Tournament>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Tournament.ByCourseAndDate(course.Id, DateTime.Today), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new List<Core.Entities.Tournament>());
@@ -48,7 +48,7 @@ public class QueryTodaysTournaments
         
         var arrange = Arrange.Dependencies<QueryTodaysTournamentsHandler, QueryTodaysTournamentsHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Tournament>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Tournament.ByCourseAndDate(course.Id, DateTime.Today), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(new List<Core.Entities.Tournament>()

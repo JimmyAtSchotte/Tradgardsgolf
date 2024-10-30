@@ -20,7 +20,7 @@ public class SaveScorecard
         
         var arrange = Arrange.Dependencies<SaveScorecardHandler, SaveScorecardHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository<Core.Entities.Course>>(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
