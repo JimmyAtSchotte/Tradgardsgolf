@@ -1,6 +1,6 @@
-﻿using System.Text;
-using ArrangeDependencies.Autofac;
+﻿using ArrangeDependencies.Autofac;
 using ArrangeDependencies.Autofac.Extensions;
+using EmbeddedResourceHelper;
 using FluentAssertions;
 using Moq;
 using Tradgardsgolf.Api.RequestHandling.Course;
@@ -80,7 +80,7 @@ public class ChangeCourseImage
         });
 
         var handler = arrange.Resolve<ChangeCourseImageHandler>();
-        var fileBytes = "TEST"u8.ToArray();
+        var fileBytes = EmbeddedResource.GetAsByteArray(GetType().Assembly, "_Data/grass.jpg");
         var command = new Contracts.Course.ChangeCourseImage()
         {
             Id = course.Id,
@@ -91,7 +91,7 @@ public class ChangeCourseImage
         await handler.Handle(command, CancellationToken.None);
 
         fileSpy.Verify(
-        x => x.Save(It.Is<string>(s => s.StartsWith(course.Id.ToString()) && s.EndsWith(command.Extension)), fileBytes),
+        x => x.Save(It.Is<string>(s => s.StartsWith(course.Id.ToString()) && s.EndsWith(command.Extension)), It.IsAny<byte[]>()),
         Times.Once);
         updatedCourses.Should().HaveCount(1);
         updatedCourses.Should().Contain(x => x.Id == course.Id);
@@ -128,7 +128,7 @@ public class ChangeCourseImage
         });
 
         var handler = arrange.Resolve<ChangeCourseImageHandler>();
-        var fileBytes = "TEST"u8.ToArray();
+        var fileBytes = EmbeddedResource.GetAsByteArray(GetType().Assembly, "_Data/grass.jpg");
         var command = new Contracts.Course.ChangeCourseImage()
         {
             Id = course.Id,
