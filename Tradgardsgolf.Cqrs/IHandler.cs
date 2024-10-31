@@ -2,5 +2,6 @@
 
 public interface IHandler<out TResult>
 {
-    TResult Handle();
+    int Score(IMessage message, HandlerResult previousResult);
+    TResult Handle(IMessage message, HandlerResult previousResult);
 }

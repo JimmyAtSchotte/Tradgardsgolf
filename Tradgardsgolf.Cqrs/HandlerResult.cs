@@ -4,7 +4,7 @@ public class HandlerResult
 {
     private readonly object _result;
 
-    public HandlerResult(object result)
+    private HandlerResult(object result)
     {
         _result = result;
     }
@@ -20,4 +20,7 @@ public class HandlerResult
     }
     
     public bool IsOfType<T>() => _result?.GetType() == typeof(T);
+
+    public static HandlerResult Empty() => new HandlerResult(null);
+    public static HandlerResult Success(object obj) => new HandlerResult(obj);
 }

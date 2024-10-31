@@ -1,21 +1,21 @@
 ﻿namespace Tradgardsgolf.Cqrs;
 
-public class CqrsPipeline
+public class MessagePipeline
 {
     private readonly IPipeline[] _pipelines;
-    public CqrsPipeline(IPipeline[] pipelines)
+    public MessagePipeline(IPipeline[] pipelines)
     {
         _pipelines = pipelines;
     }
 
-    public TResult? Handle<TResult>(ICommand<TResult> command) 
+    public TResult? Handle<TResult>(IMessage<TResult> message) 
         where TResult : class
     {
-        var currentResult = new HandlerResult(null);
+        var currentResult = HandlerResult.Empty();
         
         foreach (var pipeline in _pipelines)
         {
-            currentResult = pipeline.Handle(command, currentResult);
+            currentResult = pipeline.Handle(message, currentResult);
         }
 
         return currentResult.GetValue<TResult>();

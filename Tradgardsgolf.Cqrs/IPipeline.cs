@@ -2,5 +2,5 @@
 
 public interface IPipeline
 {
-    HandlerResult Handle(ICommand command, HandlerResult previousResult);
+    HandlerResult Handle(IMessage message, HandlerResult previousResult);
 }
