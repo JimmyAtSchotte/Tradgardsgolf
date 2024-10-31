@@ -1,4 +1,4 @@
-﻿namespace Tradgardsgolf.Cqrs;
+﻿namespace Tradgardsgolf.PipelineMessenger;
 
 public interface IHandler<out TResult>
 {

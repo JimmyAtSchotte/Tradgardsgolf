@@ -1,7 +1,7 @@
 ﻿using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Entities;
 
-namespace Tradgardsgolf.Cqrs.Tests.Pipelines.Responses;
+namespace Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Responses;
 
 public class CourseResponseHandler : BasePreviousResultHandler<CourseResponse, Course>
 {

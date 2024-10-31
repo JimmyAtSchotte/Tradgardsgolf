@@ -1,6 +1,6 @@
 using Tradgardsgolf.Contracts.Course;
 
-namespace Tradgardsgolf.Cqrs.Tests.Pipelines.Messages;
+namespace Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Messages;
 
 public interface ICourseByIdMessage : IMessage
 {
