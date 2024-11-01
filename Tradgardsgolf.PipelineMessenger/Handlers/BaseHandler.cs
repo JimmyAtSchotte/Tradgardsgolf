@@ -6,7 +6,7 @@ public abstract class BaseHandler<TResult, TMessage, TPreviousResult> : IHandler
     where TPreviousResult : class 
     where TMessage : class, IMessage
 {
-    public virtual int Score(IMessage message, HandlerResult previousResult)
+    public virtual double Score(IMessage message, HandlerResult previousResult)
     {
         return (message.IsOfType<TMessage>() ? 1 : 0) +
                 (previousResult.IsOfType<TPreviousResult>() ? 1 : 0);

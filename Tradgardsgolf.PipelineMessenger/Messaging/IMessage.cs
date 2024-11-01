@@ -9,10 +9,8 @@ public interface IMessage<TResult> : IMessage;
 
 public static class MessageExtensions
 {
-    public static bool TryGetMessageReturnType(this IMessage message, out Type returnType)
+    public static bool IsResultArray(this IMessage message)
     {
-        returnType = null;
-        
         var iMessageInterface = message.GetType()
             .GetInterfaces()
             .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMessage<>));
@@ -20,8 +18,8 @@ public static class MessageExtensions
         if (iMessageInterface == null)
             return false;
         
-        returnType = iMessageInterface.GetGenericArguments()[0];
+        var returnType = iMessageInterface.GetGenericArguments()[0];
         
-        return true;
+        return returnType.IsArray;
     }
 }

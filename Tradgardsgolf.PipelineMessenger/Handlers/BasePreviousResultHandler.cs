@@ -5,22 +5,17 @@ namespace Tradgardsgolf.PipelineMessenger.Handlers;
 public abstract class BasePreviousResultHandler<TResult, TPreviousResult> : IHandler
     where TPreviousResult : class
 {
-    public virtual int Score(IMessage message, HandlerResult previousResult)
+    public virtual double Score(IMessage message, HandlerResult previousResult)
     {
         var score = (previousResult.IsOfType<TPreviousResult>() ? 1 : 0);
         
         if (score > 0)
             return score;
 
-        if (!message.TryGetMessageReturnType(out var messageReturnType))
-            return score;
-
-        if (!messageReturnType.IsArray || !previousResult.IsArray()) 
+        if (!message.IsResultArray() || !previousResult.IsArray()) 
             return score;
         
-        score = typeof(TPreviousResult) == previousResult.GetValueType().GetElementType()  ? 1 : 0;
-
-        return score;
+        return typeof(TPreviousResult) == previousResult.GetValueType().GetElementType() ? 0.5 : 0;
     }
 
     public HandlerResult Handle(IMessage message, HandlerResult previousResult)

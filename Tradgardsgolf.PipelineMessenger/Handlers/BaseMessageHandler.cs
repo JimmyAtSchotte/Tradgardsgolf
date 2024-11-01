@@ -5,7 +5,7 @@ namespace Tradgardsgolf.PipelineMessenger.Handlers;
 public abstract class BaseMessageHandler<TResult, TMessage> : IHandler
     where TMessage : class, IMessage
 {
-    public virtual int Score(IMessage message, HandlerResult previousResult)
+    public virtual double Score(IMessage message, HandlerResult previousResult)
     {
         return  (message.IsOfType<TMessage>() ? 1 : 0);
     }

@@ -120,6 +120,6 @@ public class Tests
     {
         var handler = new CourseResponseHandler();
         var score = handler.Score(new QueryAllCourses(), HandlerResult.Success(new[] { Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid()) }));
-        score.Should().Be(1);
+        score.Should().Be(0.5);
     }
 }
