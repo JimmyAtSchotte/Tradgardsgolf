@@ -12,15 +12,10 @@ public abstract class BasePreviousResultHandler<TResult, TPreviousResult> : IHan
         if (score > 0)
             return score;
 
-        var iMessageInterface = message.GetType()
-            .GetInterfaces()
-            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMessage<>));
-
-        if (iMessageInterface == null)
+        if (!message.TryGetMessageReturnType(out var messageReturnType))
             return score;
-        
-        var resultType = iMessageInterface.GetGenericArguments()[0];
-        if (!resultType.IsArray || !previousResult.IsArray()) 
+
+        if (!messageReturnType.IsArray || !previousResult.IsArray()) 
             return score;
         
         score = typeof(TPreviousResult) == previousResult.GetValueType().GetElementType()  ? 1 : 0;
