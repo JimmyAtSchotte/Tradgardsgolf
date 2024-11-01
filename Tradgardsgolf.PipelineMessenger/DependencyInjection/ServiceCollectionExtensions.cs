@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Tradgardsgolf.PipelineMessenger.Handlers;
+using Tradgardsgolf.PipelineMessenger.Pipelines;
 
-namespace Tradgardsgolf.PipelineMessenger;
+namespace Tradgardsgolf.PipelineMessenger.DependencyInjection;
 
 public class MessagePipelineOptions
 {

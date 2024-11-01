@@ -1,4 +1,6 @@
-﻿namespace Tradgardsgolf.PipelineMessenger;
+﻿using Tradgardsgolf.PipelineMessenger.Messaging;
+
+namespace Tradgardsgolf.PipelineMessenger.Handlers;
 
 public abstract class BaseMessageHandler<TResult, TMessage> : IHandler
     where TMessage : class, IMessage

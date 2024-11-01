@@ -1,4 +1,4 @@
-﻿namespace Tradgardsgolf.PipelineMessenger;
+﻿namespace Tradgardsgolf.PipelineMessenger.Messaging;
 
 public abstract class BaseMessage<TResult> : IMessage<TResult>
 {

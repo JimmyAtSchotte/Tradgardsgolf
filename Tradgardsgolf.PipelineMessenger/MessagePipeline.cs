@@ -1,4 +1,7 @@
-﻿namespace Tradgardsgolf.PipelineMessenger;
+﻿using Tradgardsgolf.PipelineMessenger.Messaging;
+using Tradgardsgolf.PipelineMessenger.Pipelines;
+
+namespace Tradgardsgolf.PipelineMessenger;
 
 public class MessagePipeline(IPipeline[] pipelines)
 {

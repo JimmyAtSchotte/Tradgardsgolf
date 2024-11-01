@@ -1,4 +1,6 @@
-﻿namespace Tradgardsgolf.PipelineMessenger;
+﻿using Tradgardsgolf.PipelineMessenger.Messaging;
+
+namespace Tradgardsgolf.PipelineMessenger.Handlers;
 
 public interface IHandler
 {

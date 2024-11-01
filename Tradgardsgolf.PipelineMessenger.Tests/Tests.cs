@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Tradgardsgolf.Contracts;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Entities;
+using Tradgardsgolf.PipelineMessenger.DependencyInjection;
+using Tradgardsgolf.PipelineMessenger.Pipelines;
 using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Domain;
 using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Messages;
 using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Repository;

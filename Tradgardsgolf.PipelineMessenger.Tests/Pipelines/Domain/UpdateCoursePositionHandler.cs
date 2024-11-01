@@ -1,4 +1,5 @@
 ﻿using Tradgardsgolf.Core.Entities;
+using Tradgardsgolf.PipelineMessenger.Handlers;
 using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Messages;
 
 namespace Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Domain;
