@@ -5,17 +5,15 @@ namespace Tradgardsgolf.PipelineMessenger.Handlers;
 public abstract class BasePreviousResultHandler<TResult, TPreviousResult> : IHandler
     where TPreviousResult : class
 {
-    public virtual double Score(IMessage message, HandlerResult previousResult)
+    public virtual bool HandlerAppliesTo(IMessage message, HandlerResult previousResult)
     {
-        var score = (previousResult.IsOfType<TPreviousResult>() ? 1 : 0);
-        
-        if (score > 0)
-            return score;
+        if (previousResult.IsOfType<TPreviousResult>())
+            return true;
 
         if (!message.IsResultArray() || !previousResult.IsArray()) 
-            return score;
-        
-        return typeof(TPreviousResult) == previousResult.GetValueType().GetElementType() ? 0.5 : 0;
+            return false;
+
+        return typeof(TPreviousResult) == previousResult.GetValueType().GetElementType();
     }
 
     public HandlerResult Handle(IMessage message, HandlerResult previousResult)
@@ -35,5 +33,5 @@ public abstract class BasePreviousResultHandler<TResult, TPreviousResult> : IHan
         throw new InvalidOperationException();
     }
     
-    protected abstract TResult Handle(TPreviousResult course);
+    protected abstract TResult Handle(TPreviousResult entity);
 }

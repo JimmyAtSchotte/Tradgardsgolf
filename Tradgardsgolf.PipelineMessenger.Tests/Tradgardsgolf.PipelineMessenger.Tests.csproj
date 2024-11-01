@@ -20,8 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tradgardsgolf.Api.Contracts\Tradgardsgolf.Api.Contracts.csproj" />
-      <ProjectReference Include="..\Tradgardsgolf.Application.Core\Tradgardsgolf.Application.Core.csproj" />
       <ProjectReference Include="..\Tradgardsgolf.PipelineMessenger\Tradgardsgolf.PipelineMessenger.csproj" />
     </ItemGroup>
 

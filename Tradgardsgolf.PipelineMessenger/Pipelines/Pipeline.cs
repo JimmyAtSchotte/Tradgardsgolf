@@ -14,15 +14,10 @@ public class Pipeline : IPipeline
 
     public HandlerResult Handle(IMessage message, HandlerResult previousResult)
     {
-        var handler = _handlerFactories
-            .Select(x => new { Score = x.Score(message, previousResult), Handler = x })
-            .Where(x => x.Score > 0)
-            .OrderByDescending(x => x.Score)
-            .Select(x => x.Handler)
-            .FirstOrDefault();
-        
-        if(handler == null)
-            throw new NotImplementedException($"Handler not implemented: {message.GetType().Name}, {previousResult.GetValueType().Name}");
+        var handler = _handlerFactories.FirstOrDefault(x => x.HandlerAppliesTo(message, previousResult));
+
+        if (handler == null)
+            return previousResult;
         
         return handler.Handle(message, previousResult);
     }

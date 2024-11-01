@@ -1,0 +1,15 @@
+﻿using Tradgardsgolf.PipelineMessenger.Handlers;
+using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Entities;
+using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Messages;
+
+namespace Tradgardsgolf.PipelineMessenger.Tests.Pipelines.DomainHandlers;
+
+public class UpdateEntityANameHandler : BaseHandler<TestEntityA, UpdateEntityANameMessage, TestEntityA>
+{
+    protected override TestEntityA Handle(UpdateEntityANameMessage message, TestEntityA entity)
+    {
+        entity.Name = message.Name;
+        
+        return entity;
+    }
+}

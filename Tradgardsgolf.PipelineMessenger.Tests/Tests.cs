@@ -1,125 +1,91 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Tradgardsgolf.Contracts;
-using Tradgardsgolf.Contracts.Course;
-using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.PipelineMessenger.DependencyInjection;
-using Tradgardsgolf.PipelineMessenger.Pipelines;
-using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Domain;
+using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.DomainHandlers;
+using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Entities;
 using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Messages;
-using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Repository;
+using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.RepositoryHandlers;
+using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.ResponseHandlers;
 using Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Responses;
-using QueryAllCourses = Tradgardsgolf.PipelineMessenger.Tests.Pipelines.Messages.QueryAllCourses;
 
 namespace Tradgardsgolf.PipelineMessenger.Tests;
 
 public class Tests
 {
-    [Test]
-    public void RealWorld()
+    private MessagePipeline _messagePipeline;
+    
+    [SetUp]
+    public void Setup()
     {
-        var repositoryPipeline = new Pipeline([new CourseByIdHandler()]);
-        var domainPipeline = new Pipeline([new UpdateCoursePositionHandler()]);
-        var responsePipeline = new Pipeline([new CourseResponseHandler()]);
-        
-        var handler = new MessagePipeline([repositoryPipeline, domainPipeline, responsePipeline]);
-
-        var command = new UpdateCoursePositionMessage()
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddMessagePipeline(builder =>
         {
-            CourseId = Guid.NewGuid(),
-            Latitude = 12.3d,
-            Longitude = 13.4d,
+            builder.AddPipeline(typeof(EntityAByIdHandler), typeof(QueryAllEntityAHandler));
+            builder.AddPipeline(typeof(UpdateEntityANameHandler));
+            builder.AddPipeline(typeof(SingleTestEntityAResponseHandler), typeof(MultiTestEntityAResponseHandler));
+        });
+        
+        var provider = serviceCollection.BuildServiceProvider();
+        _messagePipeline = provider.GetRequiredService<MessagePipeline>();
+    }
+    
+    
+    [Test]
+    public void ShouldMutateEntityInPipeline()
+    {
+        var command = new UpdateEntityANameMessage()
+        {
+            EntityId = Guid.NewGuid(),
+            Name = "Test"
         };
         
-        var result = handler.Handle(command);
-        result.Should().BeOfType<CourseResponse>();
-        result.Id.Should().Be(command.CourseId);
-        result.Longitude.Should().Be(command.Longitude);
-        result.Latitude.Should().Be(command.Latitude);
+        var result = _messagePipeline.Handle(command);
+        result.Should().BeOfType<TestEntityAResponse>();
+        result.Id.Should().Be(command.EntityId);
+        result.Name.Should().Be(command.Name);
     }
     
     [Test]
-    public void ServiceProviderAddConcretePipelines()
+    public void ShouldSkipPipelinesWithNoHandlers()
+    {
+        var command = new QueryTestEntityA()
+        {
+            EntityId = Guid.NewGuid()
+        };
+        
+        var result = _messagePipeline.Handle(command);
+        result.Should().BeOfType<TestEntityAResponse>();
+    }
+    
+    [Test]
+    public void ShouldInvokeMatchingHandlerMultipleTimesToCreateAnArray()
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddMessagePipeline(options =>
         {
-            options.AddPipeline(new Pipeline([new CourseByIdHandler()]));
-            options.AddPipeline(new Pipeline([new UpdateCoursePositionHandler()]));
-            options.AddPipeline(new Pipeline([new CourseResponseHandler()]));
+            options.AddPipeline(typeof(QueryAllEntityAHandler));
+            options.AddPipeline(typeof(SingleTestEntityAResponseHandler));
         });
         
         var provider = serviceCollection.BuildServiceProvider();
         var messagePipeline = provider.GetRequiredService<MessagePipeline>();
         
-        var command = new UpdateCoursePositionMessage()
+        var command = new QueryAllTestEntityA()
         {
-            CourseId = Guid.NewGuid(),
-            Latitude = 12.3d,
-            Longitude = 13.4d,
-        };
-        
-        
-        var result = messagePipeline.Handle(command);
-        result.Should().BeOfType<CourseResponse>();
-        result.Id.Should().Be(command.CourseId);
-        result.Longitude.Should().Be(command.Longitude);
-        result.Latitude.Should().Be(command.Latitude);
-    }
-    
-    [Test]
-    public void ServiceProviderAddPipelinesFromTypes()
-    {
-        var serviceCollection = new ServiceCollection();
-        serviceCollection.AddTransient<CourseByIdHandler>();
-        serviceCollection.AddTransient<UpdateCoursePositionHandler>();
-        serviceCollection.AddTransient<CourseResponseHandler>();
-        
-        serviceCollection.AddMessagePipeline(options =>
-        {
-            options.AddPipeline(typeof(CourseByIdHandler), typeof(QueryAllCourses));
-            options.AddPipeline(typeof(UpdateCoursePositionHandler));
-            options.AddPipeline(typeof(CourseResponseHandler));
-        });
-        
-        var provider = serviceCollection.BuildServiceProvider();
-        var messagePipeline = provider.GetRequiredService<MessagePipeline>();
-        
-        var command = new UpdateCoursePositionMessage()
-        {
-            CourseId = Guid.NewGuid(),
-            Latitude = 12.3d,
-            Longitude = 13.4d,
+            
         };
         
         var result = messagePipeline.Handle(command);
-        result.Should().BeOfType<CourseResponse>();
-        result.Id.Should().Be(command.CourseId);
-        result.Longitude.Should().Be(command.Longitude);
-        result.Latitude.Should().Be(command.Latitude);
-    }
-    
-    [Test]
-    public void ShouldHandleArrayResponses()
-    {
-        var repositoryPipeline = new Pipeline([new QueryAllCoursesHandler()]);
-        var responsePipeline = new Pipeline([new CourseResponseHandler()]);
-        
-        var handler = new MessagePipeline([repositoryPipeline, responsePipeline]);
-
-        var command = new QueryAllCourses()
-        {
-        };
-        
-        var result = handler.Handle(command);
-        result.Should().BeOfType<CourseResponse[]>();
+        result.Should().BeOfType<TestEntityAResponse[]>();
     }
 
     [Test]
-    public void ShouldScoreWhenResponseIsArrayAndPreviousResultIsArray()
+    public void ShouldApplyToHandlerWhenResultIsAnArrayButExpectsSingleResult()
     {
-        var handler = new CourseResponseHandler();
-        var score = handler.Score(new QueryAllCourses(), HandlerResult.Success(new[] { Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid()) }));
-        score.Should().Be(0.5);
+        var handler = new SingleTestEntityAResponseHandler();
+        
+       handler
+           .HandlerAppliesTo(new QueryAllTestEntityA(), HandlerResult.Success(new[] { new TestEntityA() }))
+           .Should().BeTrue();
     }
 }

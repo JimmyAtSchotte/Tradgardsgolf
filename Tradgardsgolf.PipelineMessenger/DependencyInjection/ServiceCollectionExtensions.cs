@@ -4,49 +4,53 @@ using Tradgardsgolf.PipelineMessenger.Pipelines;
 
 namespace Tradgardsgolf.PipelineMessenger.DependencyInjection;
 
-public class MessagePipelineOptions
+public class MessagePipelineBuilder
 {
-    private readonly IServiceProvider _services;
-    private readonly List<IPipeline> _pipelines;
+    private readonly IServiceCollection _services;
+    private readonly List<Type[]> _pipelines;
 
-    public MessagePipelineOptions(IServiceProvider services)
+    public MessagePipelineBuilder(IServiceCollection  services)
     {
         _services = services;
-        _pipelines = new List<IPipeline>();
-    }
-
-    public IPipeline[] GetPipelines() => _pipelines.ToArray();
-
-    public MessagePipelineOptions AddPipeline(IPipeline pipeline)
-    {
-        _pipelines.Add(pipeline);
-        return this;
+        _pipelines = new List<Type[]>();
     }
     
-    public MessagePipelineOptions AddPipeline(params Type[] handlers)
+    public MessagePipelineBuilder AddPipeline(params Type[] handlers)
     {
-        _pipelines.Add(new Pipeline(handlers
-            .Where(type => typeof(IHandler).IsAssignableFrom(type))
-            .Select(type => _services.GetRequiredService(type))
-            .Cast<IHandler>()
-            .ToArray()));
+        foreach (var handler in handlers)
+        {
+            if (_services.All(service => service.ServiceType != handler))
+                _services.AddTransient(handler);
+        }
+        
+        _pipelines.Add(handlers);
         
         return this;
+    }
+
+    public MessagePipeline Build(IServiceProvider provider)
+    {
+        var pipelines = _pipelines.Select(types => new Pipeline(types
+                                                                    .Where(type => typeof(IHandler).IsAssignableFrom(type))
+                                                                    .Select(provider.GetRequiredService)
+                                                                    .Cast<IHandler>()
+                                                                    .ToArray()
+                                                                ))
+                                  .Cast<IPipeline>()
+                                  .ToArray();
+        
+        return new MessagePipeline(pipelines);
     }
 }
 
 public static class ServiceCollectionExtensions
 {
-    public static ServiceCollection AddMessagePipeline(this ServiceCollection serviceCollection, Action<MessagePipelineOptions> configureOptions)
+    public static IServiceCollection AddMessagePipeline(this IServiceCollection services, Action<MessagePipelineBuilder> configure)
     {
-        serviceCollection.AddScoped<MessagePipeline>(services =>
-        {
-            var messagePipelineOptions = new MessagePipelineOptions(services);
-            configureOptions(messagePipelineOptions);
-            
-            return new MessagePipeline(messagePipelineOptions.GetPipelines());
-        });
-
-        return serviceCollection;
+        var builder = new MessagePipelineBuilder(services);
+        configure(builder);
+        
+        services.AddSingleton(provider => builder.Build(provider));
+        return services;
     }
 }
