@@ -8,10 +8,10 @@ public class MessagePipeline(IPipeline[] pipelines)
         var currentResult = HandlerResult.Empty();
         
         foreach (var pipeline in pipelines)
-        {
             currentResult = pipeline.Handle(message, currentResult);
-        }
 
-        return currentResult.GetValue<TResult>();
+        return currentResult.TryGetValue<TResult>(out var result) 
+            ? result 
+            : default;
     }
 }

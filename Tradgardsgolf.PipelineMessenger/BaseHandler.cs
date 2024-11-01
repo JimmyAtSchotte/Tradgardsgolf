@@ -1,28 +1,28 @@
 ﻿namespace Tradgardsgolf.PipelineMessenger;
 
-public abstract class BaseHandler<TOutput, TMessage, TPreviousResult> : IHandler<TOutput> 
+public abstract class BaseHandler<TResult, TMessage, TPreviousResult> : IHandler 
     where TPreviousResult : class 
     where TMessage : class, IMessage
 {
     public virtual int Score(IMessage message, HandlerResult previousResult)
     {
-        return  (message.IsOfType<TMessage>() ? 1 : 0) +
+        return (message.IsOfType<TMessage>() ? 1 : 0) +
                 (previousResult.IsOfType<TPreviousResult>() ? 1 : 0);
     }
 
-    public TOutput Handle(IMessage message, HandlerResult previousResult)
+    public HandlerResult Handle(IMessage message, HandlerResult previousResult)
     {
-        var p = previousResult.GetValue<TPreviousResult>();
-        var m = message as TMessage;
-        
-        if(p == null)
-            throw new InvalidOperationException();
-        
-        if(m == null)
+        if(message is not TMessage m)
             throw new InvalidOperationException();
 
-        return Handle(m, p);
+        if (previousResult.TryGetValue<TPreviousResult>(out var previousResultValue))
+        {
+            var result = Handle(m, previousResultValue);
+            return HandlerResult.Success(result);
+        }
+            
+        throw new InvalidOperationException();
     }
     
-    protected abstract TOutput Handle(TMessage message, TPreviousResult course);
+    protected abstract TResult Handle(TMessage message, TPreviousResult course);
 }

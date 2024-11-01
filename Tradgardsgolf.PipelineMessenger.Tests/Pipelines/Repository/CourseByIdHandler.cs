@@ -10,4 +10,3 @@ public class CourseByIdHandler : BaseMessageHandler<Course, ICourseByIdMessage>
         return Course.Create(Guid.NewGuid(), p => p.Id = message.CourseId);
     }
 }
-

@@ -1,10 +1,10 @@
 ﻿namespace Tradgardsgolf.PipelineMessenger;
 
-public class Pipeline<TResult> : IPipeline
+public class Pipeline : IPipeline
 {
-    private readonly IHandler<TResult>[] _handlerFactories;
+    private readonly IHandler[] _handlerFactories;
     
-    public Pipeline(IHandler<TResult>[] handlerFactories)
+    public Pipeline(IHandler[] handlerFactories)
     {
         _handlerFactories = handlerFactories;
     }
@@ -21,8 +21,6 @@ public class Pipeline<TResult> : IPipeline
         if(handler == null)
             throw new NotImplementedException($"Handler not implemented: {message.GetType().Name}, {previousResult.GetValueType().Name}");
         
-        var result = handler.Handle(message, previousResult);
-        
-        return HandlerResult.Success(result);
+        return handler.Handle(message, previousResult);
     }
 }

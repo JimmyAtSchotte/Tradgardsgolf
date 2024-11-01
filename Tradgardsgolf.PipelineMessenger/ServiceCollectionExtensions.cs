@@ -21,12 +21,12 @@ public class MessagePipelineOptions
         return this;
     }
     
-    public MessagePipelineOptions AddPipeline<TResult>(params Type[] handlers)
+    public MessagePipelineOptions AddPipeline(params Type[] handlers)
     {
-        _pipelines.Add(new Pipeline<TResult>(handlers
-            .Where(type => typeof(IHandler<TResult>).IsAssignableFrom(type))
+        _pipelines.Add(new Pipeline(handlers
+            .Where(type => typeof(IHandler).IsAssignableFrom(type))
             .Select(type => _services.GetRequiredService(type))
-            .Cast<IHandler<TResult>>()
+            .Cast<IHandler>()
             .ToArray()));
         
         return this;

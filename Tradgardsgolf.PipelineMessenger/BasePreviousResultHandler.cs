@@ -1,22 +1,47 @@
 ﻿namespace Tradgardsgolf.PipelineMessenger;
 
-public abstract class BasePreviousResultHandler<TOutput, TPreviousResult> : IHandler<TOutput> 
+public abstract class BasePreviousResultHandler<TResult, TPreviousResult> : IHandler
     where TPreviousResult : class
 {
     public virtual int Score(IMessage message, HandlerResult previousResult)
     {
-        return  (previousResult.IsOfType<TPreviousResult>() ? 1 : 0);
+        var score = (previousResult.IsOfType<TPreviousResult>() ? 1 : 0);
+        
+        if (score > 0)
+            return score;
+
+        var iMessageInterface = message.GetType()
+            .GetInterfaces()
+            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMessage<>));
+
+        if (iMessageInterface == null)
+            return score;
+        
+        var resultType = iMessageInterface.GetGenericArguments()[0];
+        if (!resultType.IsArray || !previousResult.IsArray()) 
+            return score;
+        
+        score = typeof(TPreviousResult) == previousResult.GetValueType().GetElementType()  ? 1 : 0;
+
+        return score;
     }
 
-    public TOutput Handle(IMessage message, HandlerResult previousResult)
+    public HandlerResult Handle(IMessage message, HandlerResult previousResult)
     {
-        var p = previousResult.GetValue<TPreviousResult>();
-        
-        if(p == null)
-            throw new InvalidOperationException();
+        if (previousResult.TryGetValue<TPreviousResult>(out var previousResultValue))
+        {
+            var result = Handle(previousResultValue);
+            return HandlerResult.Success(result);
+        }
 
-        return Handle(p);
+        if (previousResult.TryGetArrayValue<TPreviousResult>(out var previousResultArrayValue))
+        {
+            var result = previousResultArrayValue.Select(Handle).ToArray();
+            return HandlerResult.Success(result);
+        }
+        
+        throw new InvalidOperationException();
     }
     
-    protected abstract TOutput Handle(TPreviousResult course);
+    protected abstract TResult Handle(TPreviousResult course);
 }
