@@ -6,8 +6,9 @@ namespace Tradgardsgolf.PipelineMessenger.Tests.Pipelines.RepositoryHandlers;
 
 public class EntityAByIdHandler : BaseMessageHandler<TestEntityA, IEntityByIdMessage>
 {
-    protected override TestEntityA Handle(IEntityByIdMessage message)
+  
+    protected override Task<TestEntityA> HandleAsync(IEntityByIdMessage message)
     {
-        return new TestEntityA(message.EntityId);
+         return Task.FromResult(new TestEntityA(message.EntityId));
     }
 }

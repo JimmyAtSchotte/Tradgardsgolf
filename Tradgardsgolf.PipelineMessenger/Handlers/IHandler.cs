@@ -5,5 +5,5 @@ namespace Tradgardsgolf.PipelineMessenger.Handlers;
 public interface IHandler
 {
     bool HandlerAppliesTo(IMessage message, HandlerResult previousResult);
-    HandlerResult Handle(IMessage message, HandlerResult previousResult);
+    Task<HandlerResult> HandleAsync(IMessage message, HandlerResult previousResult);
 }

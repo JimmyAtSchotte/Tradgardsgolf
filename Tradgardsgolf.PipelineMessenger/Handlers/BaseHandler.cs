@@ -11,19 +11,19 @@ public abstract class BaseHandler<TResult, TMessage, TPreviousResult> : IHandler
         return message.IsOfType<TMessage>() && previousResult.IsOfType<TPreviousResult>();
     }
 
-    public HandlerResult Handle(IMessage message, HandlerResult previousResult)
+    public async Task<HandlerResult> HandleAsync(IMessage message, HandlerResult previousResult)
     {
         if(message is not TMessage m)
             throw new InvalidOperationException($"{GetType().Name} expected a message of type {typeof(TMessage)}, but got {message.GetType()}");
 
         if (previousResult.TryGetValue<TPreviousResult>(out var previousResultValue))
         {
-            var result = Handle(m, previousResultValue);
+            var result = await Handle(m, previousResultValue);
             return HandlerResult.Success(result);
         }
             
         throw new InvalidOperationException();
     }
     
-    protected abstract TResult Handle(TMessage message, TPreviousResult entity);
+    protected abstract Task<TResult> Handle(TMessage message, TPreviousResult entity);
 }

@@ -4,5 +4,5 @@ namespace Tradgardsgolf.PipelineMessenger.Pipelines;
 
 public interface IPipeline
 {
-    HandlerResult Handle(IMessage message, HandlerResult previousResult);
+    Task<HandlerResult> HandleAsync(IMessage message, HandlerResult previousResult);
 }

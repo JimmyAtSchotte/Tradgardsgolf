@@ -16,22 +16,23 @@ public abstract class BasePreviousResultHandler<TResult, TPreviousResult> : IHan
         return typeof(TPreviousResult) == previousResult.GetValueType().GetElementType();
     }
 
-    public HandlerResult Handle(IMessage message, HandlerResult previousResult)
+    public async Task<HandlerResult> HandleAsync(IMessage message, HandlerResult previousResult)
     {
         if (previousResult.TryGetValue<TPreviousResult>(out var previousResultValue))
         {
-            var result = Handle(previousResultValue);
+            var result = await HandleAsync(previousResultValue);
             return HandlerResult.Success(result);
         }
 
         if (previousResult.TryGetArrayValue<TPreviousResult>(out var previousResultArrayValue))
         {
-            var result = previousResultArrayValue.Select(Handle).ToArray();
-            return HandlerResult.Success(result);
+            var tasks = previousResultArrayValue.Select(HandleAsync).ToArray();
+            await Task.WhenAll(tasks);
+            return HandlerResult.Success(tasks.Select(x => x.Result).ToArray());
         }
         
         throw new InvalidOperationException();
     }
     
-    protected abstract TResult Handle(TPreviousResult entity);
+    protected abstract Task<TResult> HandleAsync(TPreviousResult entity);
 }

@@ -31,7 +31,7 @@ public class Tests
     
     
     [Test]
-    public void ShouldMutateEntityInPipeline()
+    public async Task ShouldMutateEntityInPipeline()
     {
         var command = new UpdateEntityANameMessage()
         {
@@ -39,26 +39,26 @@ public class Tests
             Name = "Test"
         };
         
-        var result = _messagePipeline.Handle(command);
+        var result = await _messagePipeline.HandleAsync(command);
         result.Should().BeOfType<TestEntityAResponse>();
         result.Id.Should().Be(command.EntityId);
         result.Name.Should().Be(command.Name);
     }
     
     [Test]
-    public void ShouldSkipPipelinesWithNoHandlers()
+    public async Task ShouldSkipPipelinesWithNoHandlers()
     {
         var command = new QueryTestEntityA()
         {
             EntityId = Guid.NewGuid()
         };
         
-        var result = _messagePipeline.Handle(command);
+        var result = await _messagePipeline.HandleAsync(command);
         result.Should().BeOfType<TestEntityAResponse>();
     }
     
     [Test]
-    public void ShouldInvokeMatchingHandlerMultipleTimesToCreateAnArray()
+    public async Task ShouldInvokeMatchingHandlerMultipleTimesToCreateAnArray()
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddMessagePipeline(options =>
@@ -75,7 +75,7 @@ public class Tests
             
         };
         
-        var result = messagePipeline.Handle(command);
+        var result = await messagePipeline.HandleAsync(command);
         result.Should().BeOfType<TestEntityAResponse[]>();
     }
 

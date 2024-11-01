@@ -6,12 +6,13 @@ namespace Tradgardsgolf.PipelineMessenger.Tests.Pipelines.ResponseHandlers;
 
 public class MultiTestEntityAResponseHandler : BasePreviousResultHandler<TestEntityAResponse[], TestEntityA[]>
 {
-    protected override TestEntityAResponse[] Handle(TestEntityA[] entities)
+ 
+    protected override Task<TestEntityAResponse[]> HandleAsync(TestEntityA[] entities)
     {
-        return entities.Select(entity => new TestEntityAResponse()
+        return Task.FromResult(entities.Select(entity => new TestEntityAResponse()
         {
             Id = entity.Id,
             Name = entity.Name,
-        }).ToArray();
+        }).ToArray());
     }
 }

@@ -6,13 +6,13 @@ namespace Tradgardsgolf.PipelineMessenger.Tests.Pipelines.RepositoryHandlers;
 
 public class QueryAllEntityAHandler : BaseMessageHandler<TestEntityA[], QueryAllTestEntityA>
 {
-    protected override TestEntityA[] Handle(QueryAllTestEntityA message)
+    protected override Task<TestEntityA[]> HandleAsync(QueryAllTestEntityA message)
     {
-        return new[]
+        return Task.FromResult(new[]
         {
             new TestEntityA(),
             new TestEntityA(),
             new TestEntityA(),
-        };
+        });
     }
 }

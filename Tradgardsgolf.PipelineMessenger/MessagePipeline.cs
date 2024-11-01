@@ -5,13 +5,13 @@ namespace Tradgardsgolf.PipelineMessenger;
 
 public class MessagePipeline(IPipeline[] pipelines)
 {
-    public TResult? Handle<TResult>(IMessage<TResult> message) 
+    public async Task<TResult?> HandleAsync<TResult>(IMessage<TResult> message) 
         where TResult : class
     {
         var currentResult = HandlerResult.Empty();
         
         foreach (var pipeline in pipelines)
-            currentResult = pipeline.Handle(message, currentResult);
+            currentResult = await pipeline.HandleAsync(message, currentResult);
 
         return currentResult.TryGetValue<TResult>(out var result) 
             ? result 

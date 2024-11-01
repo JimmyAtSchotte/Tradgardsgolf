@@ -12,13 +12,13 @@ public class Pipeline : IPipeline
         _handlerFactories = handlerFactories;
     }
 
-    public HandlerResult Handle(IMessage message, HandlerResult previousResult)
+    public async Task<HandlerResult> HandleAsync(IMessage message, HandlerResult previousResult)
     {
         var handler = _handlerFactories.FirstOrDefault(x => x.HandlerAppliesTo(message, previousResult));
 
         if (handler == null)
             return previousResult;
         
-        return handler.Handle(message, previousResult);
+        return await handler.HandleAsync(message, previousResult);
     }
 }

@@ -10,18 +10,18 @@ public abstract class BaseMessageHandler<TResult, TMessage> : IHandler
         return message.IsOfType<TMessage>();
     }
 
-    public HandlerResult Handle(IMessage message, HandlerResult previousResult)
+    public async Task<HandlerResult> HandleAsync(IMessage message, HandlerResult previousResult)
     {
         var m = message as TMessage;
         
         if(m == null)
             throw new InvalidOperationException();
         
-        var result = Handle(m);
+        var result = await HandleAsync(m);
 
         return HandlerResult.Success(result);
 
     }
     
-    protected abstract TResult Handle(TMessage message);
+    protected abstract Task<TResult> HandleAsync(TMessage message);
 }

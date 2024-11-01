@@ -6,10 +6,10 @@ namespace Tradgardsgolf.PipelineMessenger.Tests.Pipelines.DomainHandlers;
 
 public class UpdateEntityANameHandler : BaseHandler<TestEntityA, UpdateEntityANameMessage, TestEntityA>
 {
-    protected override TestEntityA Handle(UpdateEntityANameMessage message, TestEntityA entity)
+    protected override Task<TestEntityA> Handle(UpdateEntityANameMessage message, TestEntityA entity)
     {
         entity.Name = message.Name;
         
-        return entity;
+        return Task.FromResult(entity);
     }
 }
