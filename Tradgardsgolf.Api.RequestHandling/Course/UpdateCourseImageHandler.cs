@@ -15,14 +15,14 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
-public class ChangeCourseImageHandler(
+public class UpdateCourseImageHandler(
     IRepository repository,
     IAuthenticationService authenticationService,
     IFileService files,
     IResponseFactory<CourseResponse, Core.Entities.Course> courseResponseFactory)
-    : IRequestHandler<ChangeCourseImage, CourseResponse>
+    : IRequestHandler<UpdateCourseImage, CourseResponse>
 {
-    public async Task<CourseResponse> Handle(ChangeCourseImage request, CancellationToken cancellationToken)
+    public async Task<CourseResponse> Handle(UpdateCourseImage request, CancellationToken cancellationToken)
     {
         var user = authenticationService.RequireAuthenticatedUser();
         var course = await repository.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.Id), cancellationToken);

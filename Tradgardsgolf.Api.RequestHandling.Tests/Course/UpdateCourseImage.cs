@@ -12,14 +12,14 @@ using Tradgardsgolf.Core.Specifications;
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Course;
 
 [TestFixture]
-public class ChangeCourseImage
+public class UpdateCourseImage
 {
     [Test]
     public async Task ShouldThrowForbiddenWhenNotTheOwner()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
 
-        var arrange = Arrange.Dependencies<ChangeCourseImageHandler, ChangeCourseImageHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<UpdateCourseImageHandler, UpdateCourseImageHandler>(dependencies =>
         {
             dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(
             new AuthenticatedUser()
@@ -34,8 +34,8 @@ public class ChangeCourseImage
             });
         });
 
-        var handler = arrange.Resolve<ChangeCourseImageHandler>();
-        var command = new Contracts.Course.ChangeCourseImage()
+        var handler = arrange.Resolve<UpdateCourseImageHandler>();
+        var command = new Contracts.Course.UpdateCourseImage()
         {
             Id = course.Id,
             Extension = ".png",
@@ -55,7 +55,7 @@ public class ChangeCourseImage
         var updatedCourses = new List<Core.Entities.Course>();
         var savedFiles = new List<string>();
 
-        var arrange = Arrange.Dependencies<ChangeCourseImageHandler, ChangeCourseImageHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<UpdateCourseImageHandler, UpdateCourseImageHandler>(dependencies =>
         {
             dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(
             new AuthenticatedUser()
@@ -79,9 +79,9 @@ public class ChangeCourseImage
             }, out fileSpy);
         });
 
-        var handler = arrange.Resolve<ChangeCourseImageHandler>();
+        var handler = arrange.Resolve<UpdateCourseImageHandler>();
         var fileBytes = EmbeddedResource.GetAsByteArray(GetType().Assembly, "_Data/grass.jpg");
-        var command = new Contracts.Course.ChangeCourseImage()
+        var command = new Contracts.Course.UpdateCourseImage()
         {
             Id = course.Id,
             Extension = ".png",
@@ -110,7 +110,7 @@ public class ChangeCourseImage
         });
         var fileSpy = default(Mock<IFileService>);
 
-        var arrange = Arrange.Dependencies<ChangeCourseImageHandler, ChangeCourseImageHandler>(dependencies =>
+        var arrange = Arrange.Dependencies<UpdateCourseImageHandler, UpdateCourseImageHandler>(dependencies =>
         {
             dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(
             new AuthenticatedUser()
@@ -127,9 +127,9 @@ public class ChangeCourseImage
             dependencies.UseMock(out fileSpy);
         });
 
-        var handler = arrange.Resolve<ChangeCourseImageHandler>();
+        var handler = arrange.Resolve<UpdateCourseImageHandler>();
         var fileBytes = EmbeddedResource.GetAsByteArray(GetType().Assembly, "_Data/grass.jpg");
-        var command = new Contracts.Course.ChangeCourseImage()
+        var command = new Contracts.Course.UpdateCourseImage()
         {
             Id = course.Id,
             Extension = ".png",
