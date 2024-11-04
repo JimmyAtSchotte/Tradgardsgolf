@@ -26,7 +26,16 @@
     <script src="_content/AzureMapsControl.Components/azure-maps-control.min.js"></script>
     <!-- End AzureMapsControl.Components -->
     
-   <link href="css/app.css" rel="stylesheet" /> 
+   <link href="css/app.css" rel="stylesheet" />  
+    
+    <style>
+        #app-init-logger {
+            color: #9e9e9e;
+            transition: opacity 0.5s ease;
+            opacity: 0;
+            font-size: 6pt;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,6 +44,7 @@
             <div class="loading-splash-content">
                 <div class="spinner-border"></div>
                 <p>Laddar app...</p>
+                <p id="app-init-logger"></p>
             </div>
         </div>     
     </div>
@@ -65,6 +75,7 @@
     <!-- End Chronos.Blazor.Cropper dependencies -->
 
     <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
+    <script src="js/logger.js"></script>
 </body>
 
 </html>

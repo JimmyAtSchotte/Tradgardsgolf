@@ -1,17 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AspNetMonsters.Blazor.Geolocation;
 using AzureMapsControl.Components;
-using AzureMapsControl.Components.Animations;
-using AzureMapsControl.Components.Configuration;
-using AzureMapsControl.Components.FullScreen;
-using AzureMapsControl.Components.Geolocation;
-using AzureMapsControl.Components.Indoor;
-using AzureMapsControl.Components.Map;
 using Blazored.LocalStorage;
 using Blazored.Modal;
 using Blazorise;
@@ -20,11 +12,11 @@ using Blazorise.Material;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
 using Polly;
 using Polly.Extensions.Http;
 using Tradgardsgolf.BlazorWasm.ApiServices;
 using Tradgardsgolf.BlazorWasm.Options;
+using Tradgardsgolf.Contracts.Health;
 using Tradgardsgolf.Contracts.Settings;
 
 namespace Tradgardsgolf.BlazorWasm;
@@ -92,6 +84,8 @@ public class Program
     private static async Task<string> GetAzureMapsSubscriptionKey(IServiceProvider provider)
     {
         var dispatcher = provider.GetRequiredService<IApiDispatcher>();
+        await dispatcher.Dispatch(new IsHealthy());
+        
         var mapsKeyResponse = await dispatcher.Dispatch(new QueryAzureMapsSubscriptionKey());
         var azureMapsSubscriptionKey = mapsKeyResponse.Key;
         return azureMapsSubscriptionKey;
