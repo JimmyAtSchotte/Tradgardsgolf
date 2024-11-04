@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Api.ResponseFactory;
@@ -38,10 +37,4 @@ public class ResetCourseScoreHandler : IRequestHandler<ResetCourseScoreCommand, 
 
         return _courseResponseFactory.Create(course);
     }
-}
-
-public class ResetCourseScoreCommand : IRequest<CourseResponse>
-{
-    public Guid CourseId { get; set; }
-    public DateTime ResetDate { get; set; }
 }

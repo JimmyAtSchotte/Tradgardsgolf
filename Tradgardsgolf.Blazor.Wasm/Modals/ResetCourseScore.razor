@@ -1,0 +1,40 @@
+﻿@using System.IO
+@using Blazorise.Icons.Material
+@using Tradgardsgolf.BlazorWasm.ApiServices
+@using Tradgardsgolf.Contracts.Course
+@using Icon = Blazorise.Icon
+@inject IApiDispatcher ApiDispatcher;
+
+<p>
+    Nollställer banrekord och snitt på hålen. Används då banan har genomgått en strörre förändring.
+    All tidigare historik finns kvar.
+</p>
+
+<DatePicker TValue="DateTime" @bind-Date="@_resetDate" Inline />
+
+<Button Color="Color.Primary" Clicked="async () => await ResetScore()">Nollställ resultat<Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+
+
+@code {
+
+    [Parameter] 
+    public CourseResponse Course { get; set; }
+
+    [CascadingParameter] 
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    
+    private DateTime _resetDate = DateTime.Today;
+    
+
+    private async Task ResetScore()
+    {
+        var course = await ApiDispatcher.Dispatch(new ResetCourseScoreCommand()
+        {
+            CourseId = Course.Id,
+            ResetDate = _resetDate
+        });
+
+        await BlazoredModal.CloseAsync(ModalResult.Ok(course));
+    }
+
+}
