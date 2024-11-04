@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Tradgardsgolf.Contracts.Course;
 
-public class UpdateCourseImage : IRequest<CourseResponse>
+public class UpdateCourseImageCommand : IRequest<CourseResponse>
 {
     public Guid Id { get; set; }
     public string ImageBase64 { get; set; }

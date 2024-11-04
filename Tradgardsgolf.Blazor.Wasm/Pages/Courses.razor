@@ -7,8 +7,6 @@
 @using Tradgardsgolf.BlazorWasm.Extensions
 @using Tradgardsgolf.Contracts.Course
 @using Tradgardsgolf.Contracts.Settings
-@using ChangeCourseImage = Tradgardsgolf.BlazorWasm.Modals.ChangeCourseImage
-@using Icon = Blazorise.Icon
 @using IModalService = Blazored.Modal.Services.IModalService
 @implements IDisposable
 
@@ -35,7 +33,7 @@
                                     <Blazorise.Icon Name="MaterialIcons.Settings"></Blazorise.Icon>
                                 </DropdownToggle>
                                 <DropdownMenu>
-                                    <DropdownItem Clicked="() => ChangeImage(course)">Byt bild</DropdownItem>
+                                    <DropdownItem Clicked="() => UpdateImage(course)">Byt bild</DropdownItem>
                                     <DropdownItem Clicked="() => UpdateLocation(course)">Uppdatera plats</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
@@ -111,7 +109,7 @@
 
     private async Task ClaimOwnership(CourseResponse course)
     {
-        var updatedCourse = await ApiDispatcher.Dispatch(new ClaimOwnership
+        var updatedCourse = await ApiDispatcher.Dispatch(new ClaimOwnershipCommand
         {
             Id = course.Id
         });
@@ -124,14 +122,14 @@
         ((IDisposable)StateProvider)?.Dispose();
     }
 
-    private async Task ChangeImage(CourseResponse course)
+    private async Task UpdateImage(CourseResponse course)
     {
         var parameters = new ModalParameters
         {
-            { nameof(ChangeCourseImage.Course), course }
+            { nameof(UpdateCourseImage.Course), course }
         };
 
-        var modal = Modal.Show<ChangeCourseImage>($"Byt bild för {course.Name}", parameters);
+        var modal = Modal.Show<UpdateCourseImage>($"Byt bild för {course.Name}", parameters);
         var result = await modal.Result;
         if (result.Cancelled)
             return;
@@ -152,10 +150,10 @@
     {
         var parameters = new ModalParameters
         {
-            { nameof(ChangeCourseLocation.Course), course }
+            { nameof(UpdateCourseLocation.Course), course }
         };
 
-        var modal = Modal.Show<ChangeCourseLocation>($"Uppdatera plats för {course.Name}", parameters);
+        var modal = Modal.Show<UpdateCourseLocation>($"Uppdatera plats för {course.Name}", parameters);
         var result = await modal.Result;
         if (result.Cancelled)
             return;

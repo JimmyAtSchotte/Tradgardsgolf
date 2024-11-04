@@ -61,7 +61,7 @@ else
         var imageBytes = await croped.GetDataAsync();
         var imageBase64 = Convert.ToBase64String(imageBytes);
 
-        var course = await ApiDispatcher.Dispatch(new Contracts.Course.UpdateCourseImage
+        var course = await ApiDispatcher.Dispatch(new Contracts.Course.UpdateCourseImageCommand
         {
             Id = Course.Id,
             Extension = _fileExtension,

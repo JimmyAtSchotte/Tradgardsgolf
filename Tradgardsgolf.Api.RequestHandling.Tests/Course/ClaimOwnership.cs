@@ -46,7 +46,7 @@ public class ClaimOwnership
         });
 
         var handler = arrange.Resolve<SUT>();
-        var command = new Contracts.Course.ClaimOwnership
+        var command = new Contracts.Course.ClaimOwnershipCommand
         {
             Id = course.Id
         };
@@ -85,7 +85,7 @@ public class ClaimOwnership
         });
 
         var handler = arrange.Resolve<SUT>();
-        var command = new Contracts.Course.ClaimOwnership
+        var command = new Contracts.Course.ClaimOwnershipCommand
         {
             Id = course.Id
         };

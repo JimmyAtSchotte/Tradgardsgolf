@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Tradgardsgolf.Contracts.Course;
 
-public class ClaimOwnership : IRequest<CourseResponse>
+public class ClaimOwnershipCommand : IRequest<CourseResponse>
 {
     public Guid Id { get; set; }
 }

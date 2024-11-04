@@ -35,7 +35,7 @@ public class UpdateCourseImage
         });
 
         var handler = arrange.Resolve<UpdateCourseImageHandler>();
-        var command = new Contracts.Course.UpdateCourseImage()
+        var command = new Contracts.Course.UpdateCourseImageCommand()
         {
             Id = course.Id,
             Extension = ".png",
@@ -81,7 +81,7 @@ public class UpdateCourseImage
 
         var handler = arrange.Resolve<UpdateCourseImageHandler>();
         var fileBytes = EmbeddedResource.GetAsByteArray(GetType().Assembly, "_Data/grass.jpg");
-        var command = new Contracts.Course.UpdateCourseImage()
+        var command = new Contracts.Course.UpdateCourseImageCommand()
         {
             Id = course.Id,
             Extension = ".png",
@@ -129,7 +129,7 @@ public class UpdateCourseImage
 
         var handler = arrange.Resolve<UpdateCourseImageHandler>();
         var fileBytes = EmbeddedResource.GetAsByteArray(GetType().Assembly, "_Data/grass.jpg");
-        var command = new Contracts.Course.UpdateCourseImage()
+        var command = new Contracts.Course.UpdateCourseImageCommand()
         {
             Id = course.Id,
             Extension = ".png",

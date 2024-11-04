@@ -14,9 +14,9 @@ public class ClaimOwnershipHandler(
     IRepository repository,
     IResponseFactory<CourseResponse, Core.Entities.Course> courseResponseFactory,
     IAuthenticationService authenticationService)
-    : IRequestHandler<ClaimOwnership, CourseResponse>
+    : IRequestHandler<ClaimOwnershipCommand, CourseResponse>
 {
-    public async Task<CourseResponse> Handle(ClaimOwnership request, CancellationToken cancellationToken)
+    public async Task<CourseResponse> Handle(ClaimOwnershipCommand request, CancellationToken cancellationToken)
     {
         var user = authenticationService.RequireAuthenticatedUser();
         var course = await repository.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.Id), cancellationToken);

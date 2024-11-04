@@ -20,9 +20,9 @@ public class UpdateCourseImageHandler(
     IAuthenticationService authenticationService,
     IFileService files,
     IResponseFactory<CourseResponse, Core.Entities.Course> courseResponseFactory)
-    : IRequestHandler<UpdateCourseImage, CourseResponse>
+    : IRequestHandler<UpdateCourseImageCommand, CourseResponse>
 {
-    public async Task<CourseResponse> Handle(UpdateCourseImage request, CancellationToken cancellationToken)
+    public async Task<CourseResponse> Handle(UpdateCourseImageCommand request, CancellationToken cancellationToken)
     {
         var user = authenticationService.RequireAuthenticatedUser();
         var course = await repository.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.Id), cancellationToken);
