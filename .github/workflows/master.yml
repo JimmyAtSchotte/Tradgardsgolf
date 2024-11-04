@@ -28,7 +28,7 @@ jobs:
           
           Write-Host "Starting Cosmos DB Emulator"
           Import-Module "$env:ProgramFiles\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
-          Start-CosmosDbEmulator -NoUI -NoFirewall
+          Start-CosmosDbEmulator -NoUI -NoFirewall -Timeout 300
           
           Write-Host "Waiting for Cosmos DB Emulator to be ready..."
           $attempts = 0
