@@ -1,0 +1,58 @@
+﻿@using Blazorise.Icons.Material
+@using Tradgardsgolf.BlazorWasm.ApiServices
+@using Tradgardsgolf.Contracts.Course
+@inject IApiDispatcher ApiDispatcher;
+
+
+<Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+    <CardBody>
+        <CardTitle>Nollställ banrekord</CardTitle>
+
+        @if (_isReset == false)
+        {
+            <CardText>
+                Nollställer banrekord och snitt på hålen. Används då banan har genomgått en strörre förändring.
+                All tidigare historik finns kvar.
+                <DatePicker TValue="DateTime" @bind-Date="@_resetDate" Inline FirstDayOfWeek="DayOfWeek.Monday" />
+            </CardText>
+            <Container Margin="Margin.Is2.OnAll">
+                <Button Color="Color.Primary" Float="Float.End" Clicked="async () => await ResetScore()">Nollställ resultat<Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+            </Container>
+        }
+        else
+        {
+            <CardText>
+                Banrekord är nollställt från och med @_resetDate.ToString("yyyy-MM-dd")
+            </CardText>
+        }
+   
+    </CardBody>
+</Card>
+
+
+
+
+@code {
+
+    [Parameter] 
+    public CourseResponse Course { get; set; }
+
+    [CascadingParameter] 
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    
+    private DateTime _resetDate = DateTime.Today;
+    private bool _isReset;
+
+
+    private async Task ResetScore()
+    {
+        await ApiDispatcher.Dispatch(new ResetCourseScoreCommand()
+        {
+            CourseId = Course.Id,
+            ResetDate = _resetDate
+        });
+
+        _isReset = true;
+    }
+
+}

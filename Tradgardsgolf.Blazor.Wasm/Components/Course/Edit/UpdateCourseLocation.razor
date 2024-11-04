@@ -6,16 +6,26 @@
 @using Position = AzureMapsControl.Components.Atlas.Position
 @inject IApiDispatcher ApiDispatcher;
 
-<AzureMap Id="map"
-          StyleOptions="StyleOptions"
-          OnReady="OnMapReady"
-          OnClick="OnMapClick"
-          EventActivationFlags="MapEventActivationFlags
-              .None()
-              .Enable(MapEventType.Ready)
-              .Enable(MapEventType.Click)"/>
 
-<Button Color="Color.Primary" Clicked="async () => await SaveLocation()">Spara plats <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+@if (_positionUpdated == false)
+{
+    <Container>
+        <AzureMap Id="map"
+                  StyleOptions="StyleOptions"
+                  OnReady="OnMapReady"
+                  OnClick="OnMapClick"
+                  EventActivationFlags="MapEventActivationFlags
+                      .None()
+                      .Enable(MapEventType.Ready)
+                      .Enable(MapEventType.Click)"/>
+    </Container>
+
+    <Button Color="Color.Primary" Float="Float.End"  Clicked="async () => await SaveLocation()">Spara plats <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+}
+else
+{
+    <p>Positionen för @Course.Name är uppdaterad</p>
+}
 
 
 @code {
@@ -32,19 +42,21 @@
         ShowFeedbackLink = false,
     };
 
+    private bool _positionUpdated;
+
     private async Task SaveLocation()
     {
         if(marker is null)
             return;
         
-        var course = await ApiDispatcher.Dispatch(new UpdateCourseLocationCommand()
+        await ApiDispatcher.Dispatch(new UpdateCourseLocationCommand()
         {
             Id = Course.Id,
             Longitude = marker.Options.Position.Longitude,
             Latitude = marker.Options.Position.Latitude,
         });
 
-        await BlazoredModal.CloseAsync(ModalResult.Ok(course));
+        _positionUpdated = true;
     }
 
     private async Task OnMapReady(MapEventArgs events)

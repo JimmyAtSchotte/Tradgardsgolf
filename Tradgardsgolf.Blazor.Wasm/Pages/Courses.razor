@@ -28,16 +28,7 @@
                             <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Blazorise.Icon Name="MaterialIcons.GolfCourse"></Blazorise.Icon></Button>
                         </ConditionalComponent>
                         <ConditionalComponent Condition="() => AllowEdit(course)" Name="Edit">
-                            <Dropdown Float="Float.Start">
-                                <DropdownToggle Color="Color.Secondary">
-                                    <Blazorise.Icon Name="MaterialIcons.Settings"></Blazorise.Icon>
-                                </DropdownToggle>
-                                <DropdownMenu>
-                                    <DropdownItem Clicked="() => UpdateImage(course)">Byt bild</DropdownItem>
-                                    <DropdownItem Clicked="() => ResetScore(course)">Nollställ banrekord</DropdownItem>
-                                    <DropdownItem Clicked="() => UpdateLocation(course)">Uppdatera plats</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
+                            <Button Clicked="async () => await Edit(course)" Color="Color.Secondary"><Blazorise.Icon Name="MaterialIcons.Settings"></Blazorise.Icon></Button>
                         </ConditionalComponent>
                         <ConditionalComponent Condition="() => AllowClaimOwnerShip(course)" Name="ClaimOwnerShip">
                             <Button Clicked="async () => await ClaimOwnership(course)" Color="Color.Secondary">Ta ägarskap</Button>
@@ -105,7 +96,7 @@
     {
         StateProvider.AppState.NewScorecard(this, course);
         await Task.Delay(1);
-        NavigationManager.NavigateTo(nameof(SetupRound));
+        NavigationManager.NavigateTo("setup-round");
     }
 
     private async Task ClaimOwnership(CourseResponse course)
@@ -122,23 +113,7 @@
     {
         ((IDisposable)StateProvider)?.Dispose();
     }
-
-    private async Task UpdateImage(CourseResponse course)
-    {
-        var parameters = new ModalParameters
-        {
-            { nameof(UpdateCourseImage.Course), course }
-        };
-
-        var modal = Modal.Show<UpdateCourseImage>($"Byt bild för {course.Name}", parameters);
-        var result = await modal.Result;
-        if (result.Cancelled)
-            return;
-
-        if (result.Data is CourseResponse updatedCourse)
-            _courses[_courses.IndexOf(course)] = updatedCourse;
-    }
-
+    
     private bool AllowClaimOwnerShip(CourseResponse course)
     {
         return AllowPlay(course) &&
@@ -146,38 +121,10 @@
                course.OwnerGuid == Guid.Empty &&
                _authenticationState.User.TryGetUserId(out _);
     }
-
-    private async Task UpdateLocation(CourseResponse course)
-    {
-        var parameters = new ModalParameters
-        {
-            { nameof(UpdateCourseLocation.Course), course }
-        };
-
-        var modal = Modal.Show<UpdateCourseLocation>($"Uppdatera plats för {course.Name}", parameters);
-        var result = await modal.Result;
-        if (result.Cancelled)
-            return;
-
-        if (result.Data is CourseResponse updatedCourse)
-            _courses[_courses.IndexOf(course)] = updatedCourse;
-    }
     
-    
-    private async Task ResetScore(CourseResponse course)
+    private async Task Edit(CourseResponse course)
     {
-        var parameters = new ModalParameters
-        {
-            { nameof(ResetCourseScore.Course), course }
-        };
-
-        var modal = Modal.Show<ResetCourseScore>($"Nollställ banrekord för {course.Name}", parameters);
-        var result = await modal.Result;
-        if (result.Cancelled)
-            return;
-
-        if (result.Data is CourseResponse updatedCourse)
-            _courses[_courses.IndexOf(course)] = updatedCourse;
+        NavigationManager.NavigateTo($"edit-course?CourseId={course.Id}");
     }
 
 }

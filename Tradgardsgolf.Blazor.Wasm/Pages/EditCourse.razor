@@ -1,0 +1,51 @@
+﻿@page "/edit-course"
+@using Tradgardsgolf.BlazorWasm.ApiServices
+@using Tradgardsgolf.Contracts.Course
+@inject IApiDispatcher ApiDispatcher;
+
+<Loading IsLoading="_course == null" LoadingText="Hämtar bana...">
+    <CascadingCourse Course="_course">
+        <CourseCard>
+            <CourseHead>
+            </CourseHead>
+        </CourseCard>
+    </CascadingCourse>
+
+    <Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+        <CardBody>
+            <CardTitle>Ändra bild</CardTitle>
+            <UpdateCourseImage Course="_course" OnSaveImage="course => OnSaved(course)" ></UpdateCourseImage>
+        </CardBody>
+    </Card>
+
+
+    <ResetCourseScore Course="_course"></ResetCourseScore>
+   
+    
+    <Card>
+        <CardBody>
+            <CardTitle>Ändra plats</CardTitle>
+            <UpdateCourseLocation Course="_course"></UpdateCourseLocation>
+        </CardBody>
+    </Card>
+
+</Loading>
+
+@code {
+    private CourseResponse _course;
+
+    [SupplyParameterFromQuery]
+    private Guid CourseId { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _course= await ApiDispatcher.Dispatch(new QueryCourse(){ Id = CourseId });
+    }
+
+    private void OnSaved(CourseResponse course)
+    {
+        _course = course;
+        StateHasChanged();
+    }
+
+}

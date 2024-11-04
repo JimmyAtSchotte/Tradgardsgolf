@@ -506,4 +506,10 @@
         <None Remove="out\wwwroot\_content\Blazored.Modal\Blazored.Modal.bundle.scp.css"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Components\Course\Edit\ResetCourseScore.razor" />
+      <AdditionalFiles Include="Components\Course\Edit\UpdateCourseImage.razor" />
+      <AdditionalFiles Include="Components\Course\Edit\UpdateCourseLocation.razor" />
+    </ItemGroup>
+
 </Project>

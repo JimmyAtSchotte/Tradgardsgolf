@@ -1,4 +1,4 @@
-﻿@page "/Scorecard"
+﻿@page "/scorecard"
 @using Blazorise.Icons.Material
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.Contracts.Scorecard
@@ -183,7 +183,7 @@
                 break;
             case PlayAgainModal.Results.ChangePlayers:
                 await State.AppState.ScorecardState.ResetScores(this);
-                NavigationManager.NavigateTo(nameof(SetupRound));
+                NavigationManager.NavigateTo("setup-round");
                 break;
             case PlayAgainModal.Results.Yes:
                 Saving = false;

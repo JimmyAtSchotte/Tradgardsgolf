@@ -2,7 +2,6 @@
 @using Blazorise.Icons.Material
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.Contracts.Course
-@using Icon = Blazorise.Icon
 @inject IApiDispatcher ApiDispatcher;
 
 @if (File is null)
@@ -27,19 +26,18 @@ else
         </Cropper>
     </Field>
 
-    <Button Color="Color.Primary" Clicked="async () => await SaveImage()">Spara bild <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+    <Button Color="Color.Primary" Float="Float.End" Clicked="async () => await SaveImage()">Spara bild <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
 }
 
 @code {
 
     [Parameter] public CourseResponse Course { get; set; }
-
-    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    [Parameter] public Action<CourseResponse> OnSaveImage { get; set; }
 
     public IBrowserFile File { get; set; }
-
     private Cropper _cropper;
     private string _fileExtension;
+
 
     private async Task OnFileUpload(FileChangedEventArgs e)
     {
@@ -68,7 +66,10 @@ else
             ImageBase64 = imageBase64
         });
 
-        await BlazoredModal.CloseAsync(ModalResult.Ok(course));
+        File = null;
+        _fileExtension = null;
+        
+        OnSaveImage?.Invoke(course);
     }
-
 }
+

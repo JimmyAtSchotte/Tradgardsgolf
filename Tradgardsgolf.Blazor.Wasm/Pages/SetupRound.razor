@@ -1,4 +1,4 @@
-﻿@page "/SetupRound"
+﻿@page "/setup-round"
 @using Blazorise.Icons.Material
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.Contracts.Players
@@ -129,7 +129,7 @@ else if (AvailablePlayers.Any())
         if (!State.AppState.ScorecardState.PlayerScores.Any())
             return;
         await Task.Delay(1);
-        NavigationManager.NavigateTo("Scorecard");
+        NavigationManager.NavigateTo("scorecard");
     }
 
     private async Task NewPlayer()
