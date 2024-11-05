@@ -7,34 +7,38 @@
 @inject IApiDispatcher ApiDispatcher;
 
 
-@if (_positionUpdated == false)
-{
-    <Container>
-        <AzureMap Id="map"
-                  StyleOptions="StyleOptions"
-                  OnReady="OnMapReady"
-                  OnClick="OnMapClick"
-                  EventActivationFlags="MapEventActivationFlags
-                      .None()
-                      .Enable(MapEventType.Ready)
-                      .Enable(MapEventType.Click)"/>
-    </Container>
+<Card>
+    <CardBody>
+        <CardTitle>Ändra plats</CardTitle>
+        @if (_positionUpdated == false)
+        {
+            <Container>
+                <AzureMap Id="map"
+                          StyleOptions="StyleOptions"
+                          OnReady="OnMapReady"
+                          OnClick="OnMapClick"
+                          EventActivationFlags="MapEventActivationFlags
+                          .None()
+                          .Enable(MapEventType.Ready)
+                          .Enable(MapEventType.Click)"/>
+            </Container>
 
-    <Button Color="Color.Primary" Float="Float.End"  Clicked="async () => await SaveLocation()">Spara plats <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
-}
-else
-{
-    <p>Positionen för @Course.Name är uppdaterad</p>
-}
-
+            <Button Color="Color.Primary" Float="Float.End"  Clicked="async () => await SaveLocation()">Spara plats <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+        }
+        else
+        {
+            <p>Positionen för @Course.Name är uppdaterad</p>
+        }
+    </CardBody>
+</Card>
 
 @code {
     [Parameter] public CourseResponse Course { get; set; }
     [CascadingParameter] public Location Location { get; set; }
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
-    
+
     private HtmlMarker marker;
-    
+
     public StyleOptions StyleOptions = new StyleOptions
     {
         Style = MapStyle.Road,
@@ -46,9 +50,9 @@ else
 
     private async Task SaveLocation()
     {
-        if(marker is null)
+        if (marker is null)
             return;
-        
+
         await ApiDispatcher.Dispatch(new UpdateCourseLocationCommand()
         {
             Id = Course.Id,
@@ -66,21 +70,21 @@ else
             config.Center = new Position(decimal.ToDouble(Location.Longitude), decimal.ToDouble(Location.Latitude));
             config.Zoom = 14;
         });
-        
+
         marker = new HtmlMarker(new HtmlMarkerOptions
         {
             Position = new Position(decimal.ToDouble(Location.Longitude), decimal.ToDouble(Location.Latitude)),
             Draggable = false
         });
-        
+
         await events.Map.AddHtmlMarkersAsync(marker);
     }
 
     private async Task OnMapClick(MapMouseEventArgs args)
     {
-        if(marker != null)
+        if (marker != null)
             await args.Map.RemoveHtmlMarkersAsync(marker);
-        
+
         marker = new HtmlMarker(new HtmlMarkerOptions
         {
             Position = args.Position,
@@ -89,4 +93,5 @@ else
 
         await args.Map.AddHtmlMarkersAsync(marker);
     }
+
 }
