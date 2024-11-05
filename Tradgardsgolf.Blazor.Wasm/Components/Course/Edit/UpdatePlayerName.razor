@@ -5,7 +5,7 @@
 @inject IApiDispatcher ApiDispatcher;
 
 
-<Card>
+<Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
     <CardBody>
         <CardTitle>Ändra spelares namn</CardTitle>
         <Field>
@@ -22,9 +22,11 @@
             <FieldLabel>Nytt namn</FieldLabel>
             <TextEdit @bind-Text="_newName"></TextEdit>
         </Field>
-
-        <Button Color="Color.Primary" Float="Float.End"  Clicked="async () => await UpdateName()">Uppdatera <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
     </CardBody>
+
+    <CardFooter Class="bg-light">
+        <Button Color="Color.Primary" Float="Float.End"  Clicked="async () => await UpdateName()">Ändra namn <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+    </CardFooter>
 </Card>
 
 

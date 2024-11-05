@@ -15,9 +15,7 @@
                 All tidigare historik finns kvar.
                 <DatePicker TValue="DateTime" @bind-Date="@_resetDate" Inline FirstDayOfWeek="DayOfWeek.Monday" />
             </CardText>
-            <Container Margin="Margin.Is2.OnAll">
-                <Button Color="Color.Primary" Float="Float.End" Clicked="async () => await ResetScore()">Nollställ resultat<Blazorise.Icon Name="MaterialIcons.Save"/></Button>
-            </Container>
+              
         }
         else
         {
@@ -25,8 +23,15 @@
                 Banrekord är nollställt från och med @_resetDate.ToString("yyyy-MM-dd")
             </CardText>
         }
-   
+     
     </CardBody>
+
+    @if (_isReset == false)
+    {
+        <CardFooter Class="bg-light">
+            <Button Color="Color.Primary" Float="Float.End" Clicked="async () => await ResetScore()">Nollställ resultat<Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+        </CardFooter>
+    }
 </Card>
 
 

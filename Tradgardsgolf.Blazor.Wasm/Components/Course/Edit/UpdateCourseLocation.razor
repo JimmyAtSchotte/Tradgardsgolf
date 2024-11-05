@@ -7,29 +7,35 @@
 @inject IApiDispatcher ApiDispatcher;
 
 
-<Card>
+<Card  Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
     <CardBody>
         <CardTitle>Ändra plats</CardTitle>
         @if (_positionUpdated == false)
         {
-            <Container>
-                <AzureMap Id="map"
-                          StyleOptions="StyleOptions"
-                          OnReady="OnMapReady"
-                          OnClick="OnMapClick"
-                          EventActivationFlags="MapEventActivationFlags
+            <AzureMap Id="map"
+                      StyleOptions="StyleOptions"
+                      OnReady="OnMapReady"
+                      OnClick="OnMapClick"
+                      EventActivationFlags="MapEventActivationFlags
                           .None()
                           .Enable(MapEventType.Ready)
                           .Enable(MapEventType.Click)"/>
-            </Container>
 
-            <Button Color="Color.Primary" Float="Float.End"  Clicked="async () => await SaveLocation()">Spara plats <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+                
+             
         }
         else
         {
             <p>Positionen för @Course.Name är uppdaterad</p>
         }
     </CardBody>
+    
+    @if (_positionUpdated == false)
+    {
+        <CardFooter Class="bg-light">
+            <Button Color="Color.Primary" Float="Float.End" Clicked="async () => await SaveLocation()">Spara plats <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+        </CardFooter>
+    }
 </Card>
 
 @code {

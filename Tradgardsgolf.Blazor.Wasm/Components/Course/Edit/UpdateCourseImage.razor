@@ -31,11 +31,19 @@
                     @ref="_cropper">
                 </Cropper>
             </Field>
-
-            <Button Color="Color.Secondary" Float="Float.Start" Clicked="() => ResetImage()"><Blazorise.Icon Name="MaterialIcons.Repeat"/></Button> 
-            <Button Color="Color.Primary" Float="Float.End" Clicked="async () => await SaveImage()">Spara bild <Blazorise.Icon Name="MaterialIcons.Save"/></Button> 
+            
+            
+           
         }
     </CardBody>
+
+    @if (File is not null)
+    {
+        <CardFooter Class="bg-light">
+            <Button Color="Color.Secondary" Float="Float.Start" Clicked="() => ResetImage()"><Blazorise.Icon Name="MaterialIcons.Repeat"/></Button>
+            <Button Color="Color.Primary" Float="Float.End" Clicked="async () => await SaveImage()">Spara bild <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+        </CardFooter>
+    }
 </Card>
 
 
