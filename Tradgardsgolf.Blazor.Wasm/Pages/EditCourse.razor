@@ -11,24 +11,10 @@
         </CourseCard>
     </CascadingCourse>
 
-    <Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
-        <CardBody>
-            <CardTitle>Ändra bild</CardTitle>
-            <UpdateCourseImage Course="_course" OnSaveImage="course => OnSaved(course)" ></UpdateCourseImage>
-        </CardBody>
-    </Card>
-
-
+    <UpdateCourseImage Course="_course" OnSave="course => OnSaved(course)" ></UpdateCourseImage>
     <ResetCourseScore Course="_course"></ResetCourseScore>
-   
-    
-    <Card>
-        <CardBody>
-            <CardTitle>Ändra plats</CardTitle>
-            <UpdateCourseLocation Course="_course"></UpdateCourseLocation>
-        </CardBody>
-    </Card>
-
+    <UpdateCourseLocation Course="_course"></UpdateCourseLocation>
+        
 </Loading>
 
 @code {
