@@ -4,43 +4,66 @@
 @using Tradgardsgolf.Contracts.Course
 @inject IApiDispatcher ApiDispatcher;
 
-@if (File is null)
-{
-    <Field>
-        <FieldLabel>Ladda upp bild</FieldLabel>
-        <FileEdit Changed="@OnFileUpload" Filter="image/*"/>
-    </Field>
-}
-else
-{
-    <Field>
-        <FieldLabel>Bildbeskärning</FieldLabel>
-        <Cropper
-            ImageFile="File"
-            RequireAspectRatio="true"
-            AspectRatio="0.525"
-            Quality="80"
-            InitCropWidth="300"
-            CropperHeight="300"
-            @ref="_cropper">
-        </Cropper>
-    </Field>
 
-    <Button Color="Color.Primary" Float="Float.End" Clicked="async () => await SaveImage()">Spara bild <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
-}
+<Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+    <CardBody>
+        <CardTitle>Ändra bild</CardTitle>
+        
+        @if (File is null)
+        {
+            <Progress Value="_progress" Display="@(_stage == Stage.Uploading ? Display.Block : Display.None)"></Progress>
+            <Field Display="@(_stage == Stage.SelectFile ? Display.Block : Display.None)">
+                <FieldLabel>Ladda upp bild</FieldLabel>
+                <FileEdit Changed="@OnFileUpload" Progressed="@OnProgressed" Filter="image/*"/>
+            </Field>
+        }
+        else
+        {
+            <Field>
+                <FieldLabel>Bildbeskärning</FieldLabel>
+                <Cropper
+                    ImageFile="File"
+                    RequireAspectRatio="true"
+                    AspectRatio="0.525"
+                    Quality="80"
+                    InitCropWidth="300"
+                    CropperHeight="300"
+                    @ref="_cropper">
+                </Cropper>
+            </Field>
+
+            <Button Color="Color.Secondary" Float="Float.Start" Clicked="() => ResetImage()"><Blazorise.Icon Name="MaterialIcons.Repeat"/></Button> 
+            <Button Color="Color.Primary" Float="Float.End" Clicked="async () => await SaveImage()">Spara bild <Blazorise.Icon Name="MaterialIcons.Save"/></Button> 
+        }
+    </CardBody>
+</Card>
+
+
 
 @code {
 
     [Parameter] public CourseResponse Course { get; set; }
-    [Parameter] public Action<CourseResponse> OnSaveImage { get; set; }
+    [Parameter] public Action<CourseResponse> OnSave { get; set; }
 
     public IBrowserFile File { get; set; }
     private Cropper _cropper;
     private string _fileExtension;
+    private int _progress;
+    private Stage _stage = Stage.SelectFile;
+
+    private enum Stage
+    {
+        SelectFile,
+        Uploading,
+        Cropping
+    }
 
 
     private async Task OnFileUpload(FileChangedEventArgs e)
     {
+        _stage = Stage.Uploading;
+        StateHasChanged();
+        
         var file = e.Files.FirstOrDefault();
 
         if (file == null)
@@ -51,6 +74,18 @@ else
         File = new StreamFile(new MemoryStream(result.ToArray()));
 
         _fileExtension = Path.GetExtension(file.Name);
+        
+        _stage = Stage.Cropping;
+        StateHasChanged();
+    }
+    
+    private void OnProgressed(FileProgressedEventArgs e)
+    {
+        _progress = (int)e.Progress;
+        StateHasChanged();
+        
+        Console.WriteLine( $"File: {e.File.Name} Progress: {e.Percentage}" );
+        Console.WriteLine( $"Progress bar {_progress}" );
     }
 
     private async Task SaveImage()
@@ -69,7 +104,14 @@ else
         File = null;
         _fileExtension = null;
         
-        OnSaveImage?.Invoke(course);
+        OnSave?.Invoke(course);
     }
+
+    private void ResetImage()
+    {
+        File = null;
+        _stage = Stage.SelectFile;
+    }
+
 }
 
