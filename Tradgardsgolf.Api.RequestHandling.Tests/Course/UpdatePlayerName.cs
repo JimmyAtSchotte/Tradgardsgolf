@@ -16,7 +16,7 @@ namespace Tradgardsgolf.Api.RequestHandling.Tests.Course;
 public class UpdatePlayerName
 {
     [Test]
-    public async Task UpdatePlayerName1()
+    public async Task ShouldUpdatePlayerName()
     {
         var repositorySpy = default(Mock<IRepository>);
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
@@ -52,7 +52,7 @@ public class UpdatePlayerName
         
         await handler.Handle(command, CancellationToken.None);
         
-        repositorySpy.Verify(x => x.UpdateAsync(It.Is<Core.Entities.Scorecard>(s => s.Scores.ContainsKey(command.NewName)), It.IsAny<CancellationToken>()), Times.Once);
+        repositorySpy.Verify(x => x.UpdateRangeAsync(It.Is<Core.Entities.Scorecard[]>(a => a.Any(s => s.Scores.ContainsKey(command.NewName))), It.IsAny<CancellationToken>()), Times.Once);
     }
     
     [Test]
