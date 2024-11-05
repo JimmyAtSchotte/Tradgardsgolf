@@ -49,6 +49,17 @@ public class Repository : IRepository
 
         return entity;
     }
+    
+    public async Task<TEntity[]> UpdateRangeAsync<TEntity>(TEntity[] entitites, CancellationToken cancellationToken)
+        where TEntity : class
+    {
+        foreach (var entity in entitites)
+            _context.Set<TEntity>().Update(entity);
+        
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return entitites;
+    }
 }
     
 

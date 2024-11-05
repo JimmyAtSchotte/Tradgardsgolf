@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Tradgardsgolf.Api.Authentication;
+using Tradgardsgolf.Api.CosmosRUTracking;
 using Tradgardsgolf.Api.RequestHandling;
 using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Config;
@@ -34,14 +35,14 @@ public static class Services
         builder.Services.AddOptions<AllowPlayDistance>().Bind(configuration.GetSection("AllowPlayDistance"));
         builder.Services.AddOptions<AzureMapsSubscriptionKey>().Bind(configuration.GetSection("AzureMapsSubscriptionKey"));
         builder.Services.AddOptions<AzureStorageOptions>().Bind(configuration.GetSection("AzureStorage"));
-        
 
-        builder.Services.AddDbContext<TradgardsgolfContext>(dbContextOptionsBuilder =>
+        builder.Services.AddCosmosRuTracking();
+
+        builder.Services.AddDbContext<TradgardsgolfContext>((services, dbContextOptionsBuilder) =>
         {
             var connectionString = configuration.GetConnectionString("Database");
-
             dbContextOptionsBuilder.UseCosmos(connectionString, "tradgardsgolf-db");
-            dbContextOptionsBuilder.EnableSensitiveDataLogging();
+            dbContextOptionsBuilder.EnableCosmosRuTracking(services);
         });
 
         builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();

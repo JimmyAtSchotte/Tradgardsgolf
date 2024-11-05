@@ -1,0 +1,76 @@
+﻿@using Blazorise.Icons.Material
+@using Tradgardsgolf.BlazorWasm.ApiServices
+@using Tradgardsgolf.Contracts.Course
+@using Tradgardsgolf.Contracts.Players
+@inject IApiDispatcher ApiDispatcher;
+
+
+<Card>
+    <CardBody>
+        <CardTitle>Ändra spelares namn</CardTitle>
+        <Field>
+            <FieldLabel>Nuvarande namn</FieldLabel>
+            <Select TValue="string" SelectedValue="@_oldName" SelectedValueChanged="@OnSelectedValueChanged">
+                @foreach (var player in _players)
+                {
+                    <SelectItem Value="player">@player</SelectItem>
+                }
+            </Select>
+        </Field>
+
+        <Field>
+            <FieldLabel>Nytt namn</FieldLabel>
+            <TextEdit @bind-Text="_newName"></TextEdit>
+        </Field>
+
+        <Button Color="Color.Primary" Float="Float.End"  Clicked="async () => await UpdateName()">Uppdatera <Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+    </CardBody>
+</Card>
+
+
+@code {
+    private string _newName;
+    private string _oldName;
+    private List<string> _players = new ();
+    
+    [Parameter] public CourseResponse Course { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var players = (await ApiDispatcher.Dispatch(new QueryPlayersPlayedOnCourse()
+        {
+            CourseId = Course.Id
+        })).Select(x => x.Name).OrderBy(x => x).ToList();
+        
+        players.Insert(0, "- Välj -");
+        _players = players;
+    }
+
+    private async Task UpdateName()
+    {
+        await ApiDispatcher.Dispatch(new UpdatePlayerNameCommand()
+        {
+            NewName = _newName,
+            OldName = _oldName,
+            CourseId = Course.Id
+        });
+
+        _players.Remove(_oldName);
+        _players.Add(_newName);
+        _players = _players.OrderBy(x => x).ToList();
+        _oldName = string.Empty;
+        _newName = string.Empty;
+    }
+
+    private void OnSelectedValueChanged(string value)
+    {
+        if(value == "- Välj -")
+            return;
+        
+        _oldName = value;
+        _newName = value;
+        StateHasChanged();
+        
+    }
+
+}

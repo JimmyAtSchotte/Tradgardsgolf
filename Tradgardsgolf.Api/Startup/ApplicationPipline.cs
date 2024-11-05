@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Tradgardsgolf.Api.CosmosRUTracking;
 
 namespace Tradgardsgolf.Api.Startup;
 
@@ -22,6 +23,8 @@ public static class ApplicationPipline
 
         app.UseAuthentication();
         app.UseAuthorization();
+        
+        app.UseMiddleware<CosmosRuTrackerMiddleware>();
 
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }

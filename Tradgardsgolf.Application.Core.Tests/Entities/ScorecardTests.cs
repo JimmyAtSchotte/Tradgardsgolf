@@ -28,4 +28,28 @@ public class ScorecardTests
         scorecard.Scores.Should().HaveCount(1);
         scorecard.Scores["Test"].Should().HaveCount(3);
     }
+    
+    [Test]
+    public void ShouldReplaceName()
+    {
+        var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
+        var scorecard = course.CreateScorecard();
+        scorecard.AddPlayerScores("Test", 1, 2, 3);
+        
+        scorecard.ReplaceName("Test", "Updated");
+        
+        scorecard.Scores["Updated"].Should().HaveCount(3);
+        scorecard.Scores.ContainsKey("Test").Should().BeFalse();
+    }
+    
+    [Test]
+    public void ShouldNotThrowWhenReplaceNameDoesntExists()
+    {
+        var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
+        var scorecard = course.CreateScorecard();
+        scorecard.AddPlayerScores("Test", 1, 2, 3);
+        
+        scorecard.Invoking(x => x.ReplaceName("Test1", "Updated")).Should().NotThrow();
+        
+    }
 }

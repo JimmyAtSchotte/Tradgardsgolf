@@ -38,4 +38,15 @@ public class Scorecard : BaseEntity
         var scorecard = new Scorecard(course);
         return scorecard;
     }
+
+    public bool ReplaceName(string oldnName, string newName)
+    {
+        if(!Scores.ContainsKey(oldnName))
+            return false;
+        
+        Scores.Add(newName, _scores[oldnName]);
+        Scores.Remove(oldnName);
+
+        return true;
+    }
 }

@@ -15,14 +15,14 @@ public class QueryCourseStatisticsHandler(IRepository repository)
     public async Task<CourseStatisticResponse> Handle(QueryCourseStatistics request,
         CancellationToken cancellationToken)
     {
-        var rounds = await repository.ListAsync(Specs.Scorecard.ByCourse(request.CourseId), cancellationToken);
+        var scorecards = await repository.ListAsync(Specs.Scorecard.ByCourse(request.CourseId), cancellationToken);
 
         return new CourseStatisticResponse
         {
-            Scorecards = rounds.Select(round => new ScorecardResponse
+            Scorecards = scorecards.Select(scorecard => new ScorecardResponse
             {
-                Date = round.Date,
-                Scores = round.Scores.SelectMany(keyValuePair => keyValuePair.Value.Select((score, hole) =>
+                Date = scorecard.Date,
+                Scores = scorecard.Scores.SelectMany(keyValuePair => keyValuePair.Value.Select((score, hole) =>
                     new HoleScoreResponse
                     {
                         Player = keyValuePair.Key,
