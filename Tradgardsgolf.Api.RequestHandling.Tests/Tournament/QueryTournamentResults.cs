@@ -30,6 +30,8 @@ public class QueryTournamentResults
     public async Task HasTournaments()
     {
         var tournament = Core.Entities.Tournament.Create("Test");
+        var course = Core.Entities.Course.Create(Guid.NewGuid(),  p => p.Id = new Guid());
+        tournament.AddCourseDate(course, DateTime.Today);
         
         var arrange = Arrange.Dependencies<SUT, SUT>(dependencies =>
         {
@@ -54,6 +56,7 @@ public class QueryTournamentResults
     {
         var tournament = Core.Entities.Tournament.Create("Test");
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
+        tournament.AddCourseDate(course, DateTime.Today);
         var scorecard = course.CreateScorecard();
         
         scorecard.AddPlayerScores("player A", 1, 1);
@@ -93,6 +96,7 @@ public class QueryTournamentResults
     {
         var tournament = Core.Entities.Tournament.Create("Test");
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
+        tournament.AddCourseDate(course, DateTime.Today);
         var scorecard1 = course.CreateScorecard();
         scorecard1.AddPlayerScores("player A", 1, 1);
         scorecard1.AddPlayerScores("player B", 1, 2);
@@ -137,6 +141,7 @@ public class QueryTournamentResults
     {
         var tournament = Core.Entities.Tournament.Create("Test");
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
+        tournament.AddCourseDate(course, DateTime.Today);
         var scorecard1 = course.CreateScorecard();
         scorecard1.AddPlayerScores("player A", 1, 2);
         scorecard1.AddPlayerScores("player B", 1, 1);
