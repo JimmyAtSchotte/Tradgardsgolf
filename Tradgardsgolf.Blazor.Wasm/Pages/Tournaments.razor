@@ -1,0 +1,63 @@
+﻿@page "/Tournaments"
+@using Tradgardsgolf.BlazorWasm.ApiServices
+@using Tradgardsgolf.Contracts.Tournament
+@inject IApiDispatcher apiDispatcher
+
+@foreach (var tournament in _tournaments)
+{
+    <Card Class="course" Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+        <CardHeader>
+            <CardImage Source="images/grass.jpg"></CardImage>
+            <h1>@tournament.Name</h1>
+        </CardHeader>
+        <CardBody>
+            @if (tournament.PlayerTournamentScores.Any())
+            {
+                    <Table>
+                        @foreach (var item in tournament.PlayerTournamentScores.Select((value, position) => new { Position = position + 1, Player = value }))
+                        {
+                            <TableRow>
+                                <TableRowCell ColumnSpan="@(tournament.PlayerTournamentScores.Max(x => x.Results.Count()) + 1)">
+                                    <strong>@(item.Position). @item.Player.Name</strong>
+                                </TableRowCell>
+                            </TableRow>
+                            <TableRow>
+                                @for (var i = 0; i < tournament.PlayerTournamentScores.Max(x => x.Results.Count()); i++)
+                                {
+                                    var index = i;
+                                    <TableRowCell Style="border-top: none">@GetScore(item.Player, index)</TableRowCell>
+                                }
+                                <TableRowCell Style="border-top: none">
+                                    <strong>@item.Player.Total</strong>
+                                </TableRowCell>
+                            </TableRow>
+                        }
+                    </Table>
+                    
+            }
+            else
+            {
+                <CardText>Turneringen har ännu ej påbörjat spelats</CardText>
+            }
+        </CardBody>
+    </Card>
+}
+
+
+@code {
+
+    private TournamentResultResponse[] _tournaments = [];
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _tournaments = await apiDispatcher.Dispatch(new QueryTournamentResultsCommand());
+    }
+
+    private string GetScore(PlayerTournamentScore result, int index)
+    {
+        return index < result.Results.Count()
+            ? result.Results.ElementAt(index).ToString()
+            : "-";
+    }
+
+}

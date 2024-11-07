@@ -65,28 +65,46 @@ public static class SetupDatabaseExtensions
         context.Add(berlin);
 
         for (var r = 0; r < 300; r++)
-            AddScorecard(context, kumhof);
+            AddScorecard(context, kumhof, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
 
         for (var r = 0; r < 60; r++)
-            AddScorecard(context, tornehof);
+            AddScorecard(context, tornehof, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
 
         for (var r = 0; r < 25; r++)
-            AddScorecard(context, berlin);
+            AddScorecard(context, berlin, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
 
 
-        var tournament = Tournament.Create("Touren");
-        tournament.AddCourseDate(kumhof, DateTime.Today);
-        tournament.AddCourseDate(tornehof, DateTime.Today);
+        for (int i = 1; i < 5; i++)
+        {
+            var previousTorunament = Tournament.Create($"Touren {DateTime.Today.AddYears(-i).Year}");
+            previousTorunament.AddCourseDate(kumhof, DateTime.Today.AddYears(-i));
+            previousTorunament.AddCourseDate(tornehof, DateTime.Today.AddYears(-i));
+            context.Add(previousTorunament);
+            
+            for (var r = 0; r < 2; r++)
+                AddScorecard(context, kumhof, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" }, previousTorunament);
+        
+            for (var r = 0; r < 2; r++)
+                AddScorecard(context, tornehof, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" }, previousTorunament);
+        
+            for (var r = 0; r < 2; r++)
+                AddScorecard(context, kumhof, new[] { "Kalle", "Bengt" }, previousTorunament);
+            
+            
+        }
 
-        context.Add(tournament);
+        var todaysTournament = Tournament.Create($"Touren {DateTime.Today.Year}");
+        todaysTournament.AddCourseDate(kumhof, DateTime.Today);
+        todaysTournament.AddCourseDate(tornehof, DateTime.Today);
+        context.Add(todaysTournament);
 
         await context.SaveChangesAsync();
     }
 
-    private static void AddScorecard(this TradgardsgolfContext context, Course course)
+    private static void AddScorecard(this TradgardsgolfContext context, Course course, string[] players, Tournament tournament = null)
     {
         var scorecard = Scorecard.Create(course);
-        var players = new[] { "Jimmy", "Patrik", "Amanda", "Hanna" };
+        scorecard.TournamentId = tournament?.Id ?? Guid.Empty;
 
         foreach (var player in players)
             scorecard.AddPlayerScores(player,
@@ -94,7 +112,7 @@ public static class SetupDatabaseExtensions
 
         context.Add(scorecard);
     }
-
+    
     private static int GenerateRandomScore()
     {
         var score = Random.Next(0, 100);
