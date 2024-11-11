@@ -42,6 +42,7 @@ public static class SetupDatabaseExtensions
             p.Name = "Kumhof (IN MEMORY)";
             p.Latitude = 59.331181;
             p.Longitude = 18.040736;
+            p.ScoreReset = DateTime.Today.AddYears(-2).AddDays(-1);
         });
 
         var tornehof = Course.Create(Guid.Empty, p =>
@@ -63,15 +64,33 @@ public static class SetupDatabaseExtensions
         context.Add(kumhof);
         context.Add(tornehof);
         context.Add(berlin);
-
-        for (var r = 0; r < 300; r++)
-            AddScorecard(context, kumhof, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+        
+        for (var r = 0; r < 90; r++)
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-6), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+        
+        for (var r = 0; r < 90; r++)
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-5), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+        
+        for (var r = 0; r < 90; r++)
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-4), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+        
+        for (var r = 0; r < 90; r++)
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-3), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+        
+        for (var r = 0; r < 90; r++)
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-2), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+        
+        for (var r = 0; r < 90; r++)
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-1), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+        
+        for (var r = 0; r < 90; r++)
+            AddScorecard(context, kumhof, DateTime.Today, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
 
         for (var r = 0; r < 60; r++)
-            AddScorecard(context, tornehof, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, tornehof,  DateTime.Today, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
 
         for (var r = 0; r < 25; r++)
-            AddScorecard(context, berlin, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, berlin, DateTime.Today, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
 
 
         for (int i = 1; i < 5; i++)
@@ -82,15 +101,13 @@ public static class SetupDatabaseExtensions
             context.Add(previousTorunament);
             
             for (var r = 0; r < 2; r++)
-                AddScorecard(context, kumhof, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" }, previousTorunament);
+                AddScorecard(context, kumhof, DateTime.Today.AddYears(-i), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" }, previousTorunament);
         
             for (var r = 0; r < 2; r++)
-                AddScorecard(context, tornehof, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" }, previousTorunament);
+                AddScorecard(context, tornehof, DateTime.Today.AddYears(-i),new[] { "Jimmy", "Patrik", "Amanda", "Hanna" }, previousTorunament);
         
             for (var r = 0; r < 2; r++)
-                AddScorecard(context, kumhof, new[] { "Kalle", "Bengt" }, previousTorunament);
-            
-            
+                AddScorecard(context, kumhof, DateTime.Today.AddYears(-i), new[] { "Kalle", "Bengt" }, previousTorunament);
         }
 
         var todaysTournament = Tournament.Create($"Touren {DateTime.Today.Year}");
@@ -101,11 +118,11 @@ public static class SetupDatabaseExtensions
         await context.SaveChangesAsync();
     }
 
-    private static void AddScorecard(this TradgardsgolfContext context, Course course, string[] players, Tournament tournament = null)
+    private static void AddScorecard(this TradgardsgolfContext context, Course course, DateTime date, string[] players,  Tournament tournament = null)
     {
         var scorecard = Scorecard.Create(course);
         scorecard.TournamentId = tournament?.Id ?? Guid.Empty;
-        scorecard.Date = DateTime.Now.AddDays(-7);
+        scorecard.Date = date;
 
         foreach (var player in players)
             scorecard.AddPlayerScores(player,

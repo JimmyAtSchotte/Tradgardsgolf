@@ -1,0 +1,56 @@
+﻿@using Blazorise.Icons.Material
+@using Tradgardsgolf.BlazorWasm.ApiServices
+@using Tradgardsgolf.Contracts.Course
+@inject IApiDispatcher ApiDispatcher;
+
+
+<Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+    <CardBody>
+        <CardTitle>Räkna om  statistik</CardTitle>
+
+        @if (_isReset == false)
+        {
+            <CardText>
+                Sammanställer alla score-kort för att räkna om banans statistik.
+            </CardText>
+              
+        }
+        else
+        {
+            <CardText>
+                Statistiken har nu räknats om
+            </CardText>
+        }
+     
+    </CardBody>
+
+    @if (_isReset == false)
+    {
+        <CardFooter Class="bg-light">
+            <Button Color="Color.Primary" Float="Float.End" Clicked="async () => await Recalculate()">Räkna om<Blazorise.Icon Name="MaterialIcons.Save"/></Button>
+        </CardFooter>
+    }
+</Card>
+
+
+
+
+@code {
+
+    [Parameter] 
+    public CourseResponse Course { get; set; }
+    
+    private bool _isReset;
+
+
+    private async Task Recalculate()
+    {
+        await ApiDispatcher.Dispatch(new RecalculateStatisticsCommand()
+        {
+            CourseId = Course.Id
+        });
+
+        _isReset = true;
+    }
+
+}

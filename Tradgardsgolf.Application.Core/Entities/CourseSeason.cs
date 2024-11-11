@@ -8,8 +8,8 @@ public class CourseSeason : BaseEntity
 {
     private Dictionary<string, List<int>> _players;
     
-    public Guid CourseId { get; }
-    public int Season { get; }
+    public Guid CourseId { get; private set;  }
+    public int Season { get; private set; }
 
     public Dictionary<string, List<int>> Players
     {
@@ -26,6 +26,11 @@ public class CourseSeason : BaseEntity
     public static CourseSeason Create(Guid courseId, int season)
     {
         return new CourseSeason(courseId, season);
+    }
+
+    public CourseSeason()
+    {
+        
     }
 
     public void Add(Scorecard scorecard)

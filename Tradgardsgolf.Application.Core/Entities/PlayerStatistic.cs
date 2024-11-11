@@ -10,11 +10,11 @@ public class PlayerStatistic : BaseEntity
     private Dictionary<int, IList<int>> _seasons;
     private IEnumerable<HoleStatistic> _holeStatistics;
 
-    public string Name { get; set; }
-    public Guid CourseId { get; set; }
+    public string Name { get; private set; }
+    public Guid CourseId { get; private set; }
     public double AverageScore { get; set; }
     public int TimesPlayed { get; set; }
-    public int CourseRevision { get; set; }
+    public int CourseRevision { get; private set; }
 
     public IEnumerable<HoleStatistic> HoleStatistics
     {
@@ -27,14 +27,18 @@ public class PlayerStatistic : BaseEntity
         get => _bestScore ??= new BestScore();
         set => _bestScore = value;
     }
-
-    public string PartitionKey => $"{CourseId}_{CourseRevision}";
+    
 
     private PlayerStatistic(Guid courseId, int courseRevision, string name)
     {
         CourseId = courseId;
         CourseRevision = courseRevision;
         Name = name;
+    }
+
+    public PlayerStatistic()
+    {
+        
     }
 
 

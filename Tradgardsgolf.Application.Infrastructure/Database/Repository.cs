@@ -27,6 +27,14 @@ public class Repository : IRepository
         return await _specificationEvaluator.GetQuery(_context.Set<TEntity>().AsQueryable(), specification).FirstOrDefaultAsync(cancellationToken);
     }
 
+    public async Task<TEntity> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken) where TEntity : class
+    {
+        _context.Set<TEntity>().Add(entity);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return entity;
+    }
+
     public async Task<IEnumerable<TEntity>> ListAsync<TEntity>(CancellationToken cancellationToken)
         where TEntity : class
     {

@@ -48,7 +48,7 @@ public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options
         modelBuilder.Entity<PlayerStatistic>(builder =>
         {
             builder.ToContainer("PlayerStatistic");
-            builder.HasPartitionKey(x => x.PartitionKey);
+            builder.HasPartitionKey(x => x.CourseId);
             builder.HasKey(x => x.Id);
             builder.HasNoDiscriminator();
         });

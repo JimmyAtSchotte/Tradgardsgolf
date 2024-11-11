@@ -143,15 +143,4 @@ public class PlayerStatisticTests
         playerStatistic.BestScore.Score.Should().Be(0);
         playerStatistic.BestScore.Date.Should().Be(DateTime.MinValue);
     }
-
-
-    [Test]
-    public void PartitionKey()
-    {
-        var courseId = Guid.NewGuid();
-        var revision = 1;
-        var playerStatistic = PlayerStatistic.Create(courseId, revision, "playerName");
-        playerStatistic.PartitionKey.Should().Be($"{courseId}_{revision}");
-
-    }
 }
