@@ -82,6 +82,8 @@ public class ResetCourseScore
         
         var response = await handler.Handle(command, CancellationToken.None);
         course.ScoreReset.Should().Be(command.ResetDate);
+        course.Revision.Should().Be(1);
+        
         repositorySpy.Verify(spy => spy.UpdateAsync(course, It.IsAny<CancellationToken>()), Times.Once);
         response.ScoreReset.Should().Be(command.ResetDate);
     }

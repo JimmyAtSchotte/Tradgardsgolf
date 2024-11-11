@@ -16,6 +16,15 @@ public class Scorecard : BaseEntity
         Date = DateTime.Now;
     }
 
+    private Scorecard(Guid courseId, int courseRevision)
+    {
+        CourseId = courseId;
+        CourseRevision = courseRevision;
+        Date = DateTime.Now;
+    }
+
+    public int CourseRevision { get; set; }
+
     public Guid CourseId { get; private set; }
     public DateTime Date { get; set; }
     public Course Course { get; private set; }
@@ -48,5 +57,11 @@ public class Scorecard : BaseEntity
         Scores.Remove(oldnName);
 
         return true;
+    }
+
+    public static Scorecard Create(Guid courseId, int courseRevision)
+    {
+        var scorecard = new Scorecard(courseId, courseRevision);
+        return scorecard;
     }
 }

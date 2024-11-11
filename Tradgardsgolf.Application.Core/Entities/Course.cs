@@ -25,7 +25,8 @@ public class Course : BaseEntity
     public DateTime? ScoreReset { get; set; }
     public string Image { get; set; }
     public Guid OwnerGuid { get; set; }
-
+    public int Revision { get; set; }
+    
     public ICollection<Scorecard> Scorecards
     {
         get => _rounds ??= new List<Scorecard>();
@@ -45,5 +46,11 @@ public class Course : BaseEntity
         var scorecard = Scorecard.Create(this);
         Scorecards.Add(scorecard);
         return scorecard;
+    }
+
+    public void ResetScore(DateTime date)
+    {
+        ScoreReset = date;
+        Revision++;
     }
 }

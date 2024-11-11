@@ -105,6 +105,7 @@ public static class SetupDatabaseExtensions
     {
         var scorecard = Scorecard.Create(course);
         scorecard.TournamentId = tournament?.Id ?? Guid.Empty;
+        scorecard.Date = DateTime.Now.AddDays(-7);
 
         foreach (var player in players)
             scorecard.AddPlayerScores(player,

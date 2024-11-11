@@ -31,7 +31,8 @@ public class ResetCourseScoreHandler : IRequestHandler<ResetCourseScoreCommand, 
         if (course?.OwnerGuid != authenticatedUser.UserId)
             throw new ForbiddenException();
 
-        course.ScoreReset = request.ResetDate;
+        course.ResetScore(request.ResetDate);
+
         
         await _repository.UpdateAsync(course, cancellationToken);
 
