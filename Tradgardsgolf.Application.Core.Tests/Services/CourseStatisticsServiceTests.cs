@@ -200,7 +200,7 @@ public class CourseStatisticsServiceTests
         var scorecard2 = Scorecard.Create(course.Id, 0);
         scorecard2.AddPlayerScores("Player1", 1,1,1);
 
-        var courseSeason = CourseSeason.Create(scorecard.CourseId, scorecard.Date.Year);
+        var courseSeason = CourseSeason.Create(scorecard.CourseId, scorecard.GetSeason());
         courseSeason.Id = Guid.NewGuid();
         courseSeason.Add(scorecard);
         courseSeason.Add(scorecard2);

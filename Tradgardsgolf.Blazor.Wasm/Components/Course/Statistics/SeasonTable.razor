@@ -32,7 +32,7 @@
 
     [CascadingParameter] public CascadingCourse CascadingCourse { get; set; }
 
-    [Parameter] public int? Year { get; set; }
+    [Parameter] public string Season { get; set; }
 
     private IEnumerable<SeasonTableModel> _seasonTableModels;
 
@@ -41,7 +41,7 @@
         if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
-        if (!Year.HasValue)
+        if (string.IsNullOrEmpty(Season))
             return;
 
         RenderSeasonTable();
@@ -50,7 +50,7 @@
     private void RenderSeasonTable()
     {
         _seasonTableModels = CascadingCourseStatistics.CourseStatisticResponse?.Seasons?
-            .FirstOrDefault(x => x.Season == Year)?
+            .FirstOrDefault(x => x.Season == Season)?
             .Players.Select(kvp => new SeasonTableModel
             {
                 Player = kvp.Key,

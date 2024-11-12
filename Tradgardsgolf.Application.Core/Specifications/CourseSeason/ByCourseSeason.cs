@@ -7,13 +7,13 @@ namespace Tradgardsgolf.Core.Specifications.CourseSeason;
 public static partial class CourseSeasonSpecificationExtensions
 {
     public static ISpecification<Entities.CourseSeason> ByCourseSeason(this SpecificationSet<Entities.CourseSeason> set,
-        Guid courseId, int season)
+        Guid courseId, string season)
         => new ByCourseSeason(courseId, season);
 }
 
 internal sealed class ByCourseSeason : SpecificationEquatable<Entities.CourseSeason, ByCourse>
 {
-    public ByCourseSeason(Guid courseId, int season) : base(courseId, season)
+    public ByCourseSeason(Guid courseId, string season) : base(courseId, season)
     {
         Query.Where(x => x.CourseId == courseId && x.Season == season);
     }

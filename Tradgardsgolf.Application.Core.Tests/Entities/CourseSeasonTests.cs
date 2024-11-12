@@ -14,7 +14,7 @@ public class CourseSeasonTests
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         var scorecard = Scorecard.Create(course.Id, course.Revision);
         scorecard.AddPlayerScores(playerName, 1, 2, 3);
-        var courseSeason = CourseSeason.Create(course.Id, 2024);
+        var courseSeason = CourseSeason.Create(course.Id, "2024");
 
         courseSeason.Add(scorecard);
         
@@ -30,7 +30,7 @@ public class CourseSeasonTests
         var scorecard = Scorecard.Create(course.Id, course.Revision);
         scorecard.AddPlayerScores("test a", 1, 2, 3);
         scorecard.AddPlayerScores("test b", 1, 2, 3);
-        var courseSeason = CourseSeason.Create(course.Id, 2024);
+        var courseSeason = CourseSeason.Create(course.Id, "2024");
 
         courseSeason.Add(scorecard);
         
@@ -44,7 +44,7 @@ public class CourseSeasonTests
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
 
-        var courseSeason = CourseSeason.Create(course.Id, 2024);
+        var courseSeason = CourseSeason.Create(course.Id, "2024");
         
         var scorecard1 =Scorecard.Create(course.Id, course.Revision);
         scorecard1.AddPlayerScores(playerName, 1, 2, 3);

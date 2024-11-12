@@ -49,6 +49,6 @@ public class Scorecard : BaseEntity
         return scorecard;
     }
 
-    public int GetSeason() => Date.Year;
+    public string GetSeason() => Date.Year.ToString();
     
 }

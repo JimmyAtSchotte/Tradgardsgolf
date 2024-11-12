@@ -3,17 +3,17 @@
       FullWidth="true"
       Pills="true">
     <Items>
-        @foreach (var year in _years)
+        @foreach (var year in _seasons)
         {
             <Tab Name="@year.ToString()">@year</Tab>
         }
     </Items>
     <Content>
-        @foreach (var y in _years)
+        @foreach (var y in _seasons)
         {
             var year = y;
             <TabPanel Name="@year.ToString()">
-                <SeasonTable Year="@year"></SeasonTable>
+                <SeasonTable Season="@year"></SeasonTable>
             </TabPanel>
         }
     </Content>
@@ -24,7 +24,7 @@
     [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
 
     private string _selectedTab = string.Empty;
-    private int[] _years = Enumerable.Empty<int>().ToArray();
+    private string[] _seasons = Enumerable.Empty<string>().ToArray();
 
     private void OnSelectedTabChanged(string name)
     {
@@ -36,7 +36,7 @@
         if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
-        _years = CascadingCourseStatistics.CourseStatisticResponse.Seasons
+        _seasons = CascadingCourseStatistics.CourseStatisticResponse.Seasons
             .Select(x => x.Season)
             .OrderByDescending(x => x)
             .ToArray();
