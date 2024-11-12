@@ -3,8 +3,11 @@ using ArrangeDependencies.Autofac.Extensions;
 using Moq;
 using Tradgardsgolf.Api.RequestHandling.Course;
 using Tradgardsgolf.Contracts.Course;
+using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
+using Tradgardsgolf.Core.Specifications.CourseSeason;
+using Tradgardsgolf.Core.Specifications.PlayerStatistic;
 using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Course;
@@ -31,7 +34,19 @@ public class RecalculateStatistics
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync([scorecard]);
                 
+                mock.Setup(x => x.ListAsync(Specs.PlayerStatistic.ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync([]);
+                
+                mock.Setup(x => x.ListAsync<Core.Entities.CourseSeason>(Specs.CourseSeason.ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync([]);
+                
             }, out repositorySpy);
+
+            dependencies.UseMock<IAuthenticationService>(mock =>
+            {
+                mock.Setup(x => x.RequireAuthenticatedUser())
+                    .Returns(new AuthenticatedUser() { UserId = course.OwnerGuid });
+            });
         });
         
         var handler = arrange.Resolve<RecalculateStatisticsHandler>();
@@ -42,8 +57,8 @@ public class RecalculateStatistics
         
         await handler.Handle(command, CancellationToken.None);
         
-        repositorySpy.Verify(x => x.AddAsync(It.IsAny<Core.Entities.PlayerStatistic>(), It.IsAny<CancellationToken>()), Times.Once);
-        repositorySpy.Verify(x => x.AddAsync(It.IsAny<Core.Entities.CourseSeason>(), It.IsAny<CancellationToken>()), Times.Once);
+        repositorySpy.Verify(x => x.AddRangeAsync(It.Is<Core.Entities.PlayerStatistic[]>(entities => entities.Length == 1), It.IsAny<CancellationToken>()), Times.Once);
+        repositorySpy.Verify(x => x.AddRangeAsync(It.Is<Core.Entities.CourseSeason[]>(entities => entities.Length == 1), It.IsAny<CancellationToken>()), Times.Once);
     }
     
     [Test]
@@ -68,7 +83,19 @@ public class RecalculateStatistics
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync([scorecard1, scorecard2]);
                 
+                mock.Setup(x => x.ListAsync(Specs.PlayerStatistic.ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync([]);
+                
+                mock.Setup(x => x.ListAsync<Core.Entities.CourseSeason>(Specs.CourseSeason.ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync([]);
+                
             }, out repositorySpy);
+
+            dependencies.UseMock<IAuthenticationService>(mock =>
+            {
+                mock.Setup(x => x.RequireAuthenticatedUser())
+                    .Returns(new AuthenticatedUser() { UserId = course.OwnerGuid });
+            });
         });
         
         var handler = arrange.Resolve<RecalculateStatisticsHandler>();
@@ -79,8 +106,11 @@ public class RecalculateStatistics
         
         await handler.Handle(command, CancellationToken.None);
         
-        repositorySpy.Verify(x => x.AddAsync(It.IsAny<Core.Entities.PlayerStatistic>(), It.IsAny<CancellationToken>()), Times.Once);
-        repositorySpy.Verify(x => x.AddAsync(It.IsAny<Core.Entities.CourseSeason>(), It.IsAny<CancellationToken>()), Times.Once);
+        
+        
+        repositorySpy.Verify(x => x.AddRangeAsync(It.Is<Core.Entities.PlayerStatistic[]>(entities => entities.Length == 1), It.IsAny<CancellationToken>()), Times.Once);
+        repositorySpy.Verify(x => x.AddRangeAsync(It.Is<Core.Entities.CourseSeason[]>(entities => entities.Length == 1), It.IsAny<CancellationToken>()), Times.Once);
+        
     }
     
     
@@ -90,6 +120,7 @@ public class RecalculateStatistics
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         var scorecard1 = Core.Entities.Scorecard.Create(course.Id, course.Revision);
         scorecard1.AddPlayerScores("Player 1", 1, 1, 1);
+        scorecard1.Date = DateTime.Now.AddDays(-1);
 
         course.ResetScore(DateTime.Today);
         
@@ -108,7 +139,19 @@ public class RecalculateStatistics
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync([scorecard1, scorecard2]);
                 
+                mock.Setup(x => x.ListAsync(Specs.PlayerStatistic.ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync([]);
+                
+                mock.Setup(x => x.ListAsync<Core.Entities.CourseSeason>(Specs.CourseSeason.ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync([]);
+                
             }, out repositorySpy);
+
+            dependencies.UseMock<IAuthenticationService>(mock =>
+            {
+                mock.Setup(x => x.RequireAuthenticatedUser())
+                    .Returns(new AuthenticatedUser() { UserId = course.OwnerGuid });
+            });
         });
         
         var handler = arrange.Resolve<RecalculateStatisticsHandler>();
@@ -119,8 +162,9 @@ public class RecalculateStatistics
         
         await handler.Handle(command, CancellationToken.None);
         
-        repositorySpy.Verify(x => x.AddAsync(It.IsAny<Core.Entities.PlayerStatistic>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
-        repositorySpy.Verify(x => x.AddAsync(It.IsAny<Core.Entities.CourseSeason>(), It.IsAny<CancellationToken>()), Times.Once);
+        repositorySpy.Verify(x => x.AddRangeAsync(It.Is<Core.Entities.PlayerStatistic[]>(entities => entities.Length == 2), It.IsAny<CancellationToken>()), Times.Once);
+        repositorySpy.Verify(x => x.AddRangeAsync(It.Is<Core.Entities.CourseSeason[]>(entities => entities.Length == 1), It.IsAny<CancellationToken>()), Times.Once);
+
     }
     
     [Test]
@@ -147,7 +191,19 @@ public class RecalculateStatistics
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync([scorecard1, scorecard2]);
                 
+                mock.Setup(x => x.ListAsync(Specs.PlayerStatistic.ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync([]);
+                
+                mock.Setup(x => x.ListAsync<Core.Entities.CourseSeason>(Specs.CourseSeason.ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync([]);
+                
             }, out repositorySpy);
+
+            dependencies.UseMock<IAuthenticationService>(mock =>
+            {
+                mock.Setup(x => x.RequireAuthenticatedUser())
+                    .Returns(new AuthenticatedUser() { UserId = course.OwnerGuid });
+            });
         });
         
         var handler = arrange.Resolve<RecalculateStatisticsHandler>();
@@ -158,8 +214,9 @@ public class RecalculateStatistics
         
         await handler.Handle(command, CancellationToken.None);
         
-        repositorySpy.Verify(x => x.AddAsync(It.IsAny<Core.Entities.PlayerStatistic>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
-        repositorySpy.Verify(x => x.AddAsync(It.IsAny<Core.Entities.CourseSeason>(), It.IsAny<CancellationToken>()), Times.Once);
-        repositorySpy.Verify(x => x.UpdateRangeAsync(It.IsAny<Core.Entities.Scorecard[]>(), It.IsAny<CancellationToken>()), Times.Once);
+        
+        repositorySpy.Verify(x => x.AddRangeAsync(It.Is<Core.Entities.PlayerStatistic[]>(entities => entities.Length == 2), It.IsAny<CancellationToken>()), Times.Once);
+        repositorySpy.Verify(x => x.AddRangeAsync(It.Is<Core.Entities.CourseSeason[]>(entities => entities.Length == 1), It.IsAny<CancellationToken>()), Times.Once);
+        repositorySpy.Verify(x => x.UpdateRangeAsync(It.Is<Core.Entities.Scorecard[]>(entities => entities.Length == 1), It.IsAny<CancellationToken>()), Times.Once);
     }
 }
