@@ -11,7 +11,7 @@ public class Tests
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         var scorecard = Scorecard.Create(course.Id, course.Revision);
 
-        var courseMigrator = new CourseMigrator(course, [scorecard]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
         courseMigrator.ShouldMigrateCourseToRevision().Should().BeFalse();
     }
@@ -25,7 +25,7 @@ public class Tests
         
         var scorecard = Scorecard.Create(course.Id, course.Revision);
 
-        var courseMigrator = new CourseMigrator(course, [scorecard]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
         courseMigrator.ShouldMigrateCourseToRevision().Should().BeTrue();
     }
@@ -39,7 +39,7 @@ public class Tests
         
         var scorecard = Scorecard.Create(course.Id, course.Revision);
 
-        var courseMigrator = new CourseMigrator(course, [scorecard]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
         courseMigrator.ShouldMigrateCourseToRevision().Should().BeFalse();
     }
@@ -53,7 +53,7 @@ public class Tests
         
         var scorecard = Scorecard.Create(course.Id, course.Revision);
 
-        var courseMigrator = new CourseMigrator(course, [scorecard]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
         var result = courseMigrator.MigrateCourseToRevision();
         
@@ -70,7 +70,7 @@ public class Tests
         
         var scorecard = Scorecard.Create(course.Id, 0);
 
-        var courseMigrator = new CourseMigrator(course, [scorecard]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
         var result = courseMigrator.MigrateScorecardsToRevision();
 
@@ -88,7 +88,7 @@ public class Tests
         
         var scorecard = Scorecard.Create(course.Id, 1);
 
-        var courseMigrator = new CourseMigrator(course, [scorecard]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
         var result = courseMigrator.MigrateScorecardsToRevision();
 
@@ -106,7 +106,7 @@ public class Tests
         var scorecard = Scorecard.Create(course.Id, 0);
         scorecard.Date = course.ScoreReset.Value.AddDays(-1);
 
-        var courseMigrator = new CourseMigrator(course, [scorecard]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
         var result = courseMigrator.MigrateScorecardsToRevision();
 
@@ -121,7 +121,7 @@ public class Tests
   
         var scorecard = Scorecard.Create(course.Id, 0);
 
-        var courseMigrator = new CourseMigrator(course, [scorecard]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
         var result = courseMigrator.MigrateScorecardsToRevision();
 
@@ -136,7 +136,7 @@ public class Tests
         var scorecard = Scorecard.Create(course.Id, 0);
         scorecard.AddPlayerScores("Player1", 1,1,1);
 
-        var courseMigrator = new CourseMigrator(course, [scorecard]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
         var result = courseMigrator.MigratePlayerStats();
 
@@ -157,7 +157,7 @@ public class Tests
         var playerStatistic = PlayerStatistic.Create(scorecard.CourseId, scorecard.CourseRevision, "Player1");
         playerStatistic.Add(scorecard);
         
-        var courseMigrator = new CourseMigrator(course, [scorecard], [playerStatistic], []);
+        var courseMigrator = new CourseStatisticService(course, [scorecard], [playerStatistic], []);
 
         var result = courseMigrator.MigratePlayerStats();
 
@@ -179,7 +179,7 @@ public class Tests
         var scorecard2 = Scorecard.Create(course.Id, 0);
         scorecard2.AddPlayerScores("Player1", 1,1,1);
 
-        var courseMigrator = new CourseMigrator(course, [scorecard, scorecard2]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard, scorecard2]);
 
         var result = courseMigrator.MigrateCourseSeasons();
 
@@ -205,7 +205,7 @@ public class Tests
         courseSeason.Add(scorecard);
         courseSeason.Add(scorecard2);
         
-        var courseMigrator = new CourseMigrator(course, [scorecard, scorecard2], [], [courseSeason]);
+        var courseMigrator = new CourseStatisticService(course, [scorecard, scorecard2], [], [courseSeason]);
 
         var result = courseMigrator.MigrateCourseSeasons();
 

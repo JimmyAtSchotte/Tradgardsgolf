@@ -1,13 +1,13 @@
 ﻿using Tradgardsgolf.Core.Entities;
 
-public class CourseMigrator
+public class CourseStatisticService
 {
     private readonly Course _course;
     private readonly IEnumerable<Scorecard> _scorecards;
     private readonly List<PlayerStatistic> _playerStatistics;
     private readonly List<CourseSeason> _courseSeasons;
 
-    public CourseMigrator(Course course, IEnumerable<Scorecard> scorecards, List<PlayerStatistic> playerStatistics, List<CourseSeason> courseSeasons)
+    public CourseStatisticService(Course course, IEnumerable<Scorecard> scorecards, List<PlayerStatistic> playerStatistics, List<CourseSeason> courseSeasons)
     {
         _course = course;
         _scorecards = scorecards;
@@ -15,7 +15,7 @@ public class CourseMigrator
         _courseSeasons = courseSeasons;
     }
     
-    public CourseMigrator(Course course, IEnumerable<Scorecard> scorecards) : this(course, scorecards, [], [])
+    public CourseStatisticService(Course course, IEnumerable<Scorecard> scorecards) : this(course, scorecards, [], [])
     {
         
     }

@@ -75,7 +75,7 @@ Console.WriteLine($"Total: {ruUsages.Sum(x => x.Ru)} RU");
 return;
 
 
-static IEnumerable<CourseMigrator> GetCourseMigrators(TradgardsgolfContext context)
+static IEnumerable<CourseStatisticService> GetCourseMigrators(TradgardsgolfContext context)
 {
     var courses = context.Courses.ToList();
 
@@ -85,6 +85,6 @@ static IEnumerable<CourseMigrator> GetCourseMigrators(TradgardsgolfContext conte
         var playerStats = context.PlayerStatistic.Where(x => x.CourseId == course.Id).ToList();
         var courseSeasons = context.CourseSeason.Where(x => x.CourseId == course.Id).ToList();
 
-        yield return new CourseMigrator(course, scorecards, playerStats, courseSeasons);
+        yield return new CourseStatisticService(course, scorecards, playerStats, courseSeasons);
     }
 }
