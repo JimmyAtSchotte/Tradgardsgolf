@@ -3,16 +3,18 @@ using ArrangeDependencies.Autofac.Extensions;
 using FluentAssertions;
 using Moq;
 using Tradgardsgolf.Api.RequestHandling.Player;
-using Tradgardsgolf.Contracts.Players;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using Tradgardsgolf.Core.Specifications.Scorecard;
+using Tradgardsgolf.Core.Specifications.PlayerStatistic;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Players;
 
 [TestFixture]
 public class QueryPlayersPlayedOnCourse
 {
+    private readonly Guid courseId = Guid.NewGuid();
+    
+    
     [Test]
     public async Task ShouldHaveNoPlayers()
     {
@@ -22,7 +24,7 @@ public class QueryPlayersPlayedOnCourse
         {
             dependencies.UseMock<IRepository>(mock =>
             {
-                mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
+                mock.Setup(x => x.ListAsync(Specs.PlayerStatistic.ByCourse(courseId), It.IsAny<CancellationToken>()))
                     .ReturnsAsync([]);
             });
         });
@@ -41,25 +43,26 @@ public class QueryPlayersPlayedOnCourse
     [Test]
     public async Task ShouldOrderPlayersByName()
     {
-        var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-
-        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
-        scorecard.AddPlayerScores("B", 2);
-        scorecard.AddPlayerScores("A", 1);
+        var playerStatistics = new Core.Entities.PlayerStatistic[]
+        {
+            CreatePlayerStatistic("B", 3),
+            CreatePlayerStatistic("A", 3),
+            
+        };
 
         var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository>(mock =>
             {
-                mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync([scorecard]);
+                mock.Setup(x => x.ListAsync(Specs.PlayerStatistic.ByCourse(courseId), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(playerStatistics);
             });
         });
         
         var handler = arrange.Resolve<QueryPlayersPlayedOnCourseHandler>();
         var command = new Contracts.Players.QueryPlayersPlayedOnCourse()
         {
-            CourseId = course.Id,
+            CourseId = courseId,
         };
         
         var result = await handler.Handle(command, CancellationToken.None);
@@ -71,64 +74,30 @@ public class QueryPlayersPlayedOnCourse
     [Test]
     public async Task ShouldOrderPlayersOnHowMuchTheyHavePlayedOnCourse()
     {
-        var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecards = new List<Core.Entities.Scorecard>();
-
-        for (int i = 0; i < 100; i++)
+        var playerStatistics = new Core.Entities.PlayerStatistic[]
         {
-            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
-            scorecard.AddPlayerScores("MoreThan50-B", 2);
-            scorecards.Add(scorecard);
-        }
-
-        for (int i = 0; i < 11; i++)
-        {
-            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
-            scorecard.AddPlayerScores("MoreThan10-A", 2);
-            scorecards.Add(scorecard);
-        }
-
-        for (int i = 0; i < 50; i++)
-        {
-            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
-            scorecard.AddPlayerScores("MoreThan10-B", 2);
-            scorecards.Add(scorecard);
-        }
-
-        for (int i = 0; i < 3; i++)
-        {
-            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
-            scorecard.AddPlayerScores("LessThan10-A", 2);
-            scorecards.Add(scorecard);
-        }
-
-        for (int i = 0; i < 10; i++)
-        {
-            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
-            scorecard.AddPlayerScores("LessThan10-B", 2);
-            scorecards.Add(scorecard);
-        }
-
-        for (int i = 0; i < 51; i++)
-        {
-            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
-            scorecard.AddPlayerScores("MoreThan50-A", 2);
-            scorecards.Add(scorecard);
-        }
+            CreatePlayerStatistic("MoreThan50-B", 100),
+            CreatePlayerStatistic("MoreThan50-A", 51),
+            CreatePlayerStatistic("MoreThan10-A", 11),
+            CreatePlayerStatistic("MoreThan10-B", 50),
+            CreatePlayerStatistic("LessThan10-A", 3),
+            CreatePlayerStatistic("LessThan10-B", 9),
+            
+        };
 
         var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository>(mock =>
             {
-                mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(scorecards);
+                mock.Setup(x => x.ListAsync(Specs.PlayerStatistic.ByCourse(courseId), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(playerStatistics);
             });
         });
         
         var handler = arrange.Resolve<QueryPlayersPlayedOnCourseHandler>();
         var command = new Contracts.Players.QueryPlayersPlayedOnCourse()
         {
-            CourseId = course.Id,
+            CourseId = courseId,
         };
         
         var result = await handler.Handle(command, CancellationToken.None);
@@ -139,5 +108,44 @@ public class QueryPlayersPlayedOnCourse
         result.ElementAt(3).Name.Should().Be("MoreThan10-B");
         result.ElementAt(4).Name.Should().Be("LessThan10-A");
         result.ElementAt(5).Name.Should().Be("LessThan10-B");
+    }
+    
+    [Test]
+    public async Task ShouldOrderPlayersOnHowMuchTheyHavePlayedOnCourseNoMatterRevisions()
+    {
+        var playerStatistics = new Core.Entities.PlayerStatistic[]
+        {
+            CreatePlayerStatistic("A", 40),
+            CreatePlayerStatistic("B", 30, 0),
+            CreatePlayerStatistic("B", 30, 1),
+            
+        };
+
+        var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
+        {
+            dependencies.UseMock<IRepository>(mock =>
+            {
+                mock.Setup(x => x.ListAsync(Specs.PlayerStatistic.ByCourse(courseId), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(playerStatistics);
+            });
+        });
+        
+        var handler = arrange.Resolve<QueryPlayersPlayedOnCourseHandler>();
+        var command = new Contracts.Players.QueryPlayersPlayedOnCourse()
+        {
+            CourseId = courseId,
+        };
+        
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        result.ElementAt(0).Name.Should().Be("B");
+        result.ElementAt(1).Name.Should().Be("A");
+    }
+
+    private Core.Entities.PlayerStatistic CreatePlayerStatistic(string name, int timesPlayed, int courseRevision = 0)
+    {
+        var playerStatistic = Core.Entities.PlayerStatistic.Create(courseId, courseRevision, name);
+        playerStatistic.TimesPlayed = timesPlayed;
+        return playerStatistic;
     }
 }

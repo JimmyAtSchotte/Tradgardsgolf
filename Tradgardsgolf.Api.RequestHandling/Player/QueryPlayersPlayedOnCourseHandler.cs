@@ -6,7 +6,7 @@ using MediatR;
 using Tradgardsgolf.Contracts.Players;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using Tradgardsgolf.Core.Specifications.Scorecard;
+using Tradgardsgolf.Core.Specifications.PlayerStatistic;
 
 namespace Tradgardsgolf.Api.RequestHandling.Player;
 
@@ -16,15 +16,19 @@ public class QueryPlayersPlayedOnCourseHandler(IRepository repository)
     public async Task<IEnumerable<PlayerResponse>> Handle(QueryPlayersPlayedOnCourse request,
         CancellationToken cancellationToken)
     {
-        return (await repository.ListAsync(Specs.Scorecard.ByCourse(request.CourseId), cancellationToken))
-            .SelectMany(x => x.Scores.Keys)
-            .GroupBy(x => x)
-            .OrderByDescending(x => x.Count() > 50)
-            .ThenByDescending(x => x.Count() > 10)
-            .ThenBy(x => x.Key)
+        return (await repository.ListAsync(Specs.PlayerStatistic.ByCourse(request.CourseId), cancellationToken))
+            .GroupBy(x => x.Name)
+            .Select(x => new
+            {
+                Name = x.Key, 
+                TimesPlayed = x.Sum(statistic => statistic.TimesPlayed)
+            })
+            .OrderByDescending(x => x.TimesPlayed > 50)
+            .ThenByDescending(x => x.TimesPlayed > 10)
+            .ThenBy(x => x.Name)
             .Select(x => new PlayerResponse
             {
-                Name = x.Key
+                Name = x.Name
             }).ToList();
     }
 }
