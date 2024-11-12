@@ -17,6 +17,11 @@ public class CourseSeason : BaseEntity
         set => _players = value;
     }
 
+    
+    private CourseSeason()
+    {
+    }
+    
     private CourseSeason(Guid courseId, int season)
     {
         CourseId = courseId;
@@ -26,11 +31,6 @@ public class CourseSeason : BaseEntity
     public static CourseSeason Create(Guid courseId, int season)
     {
         return new CourseSeason(courseId, season);
-    }
-
-    public CourseSeason()
-    {
-        
     }
 
     public void Add(Scorecard scorecard)

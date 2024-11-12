@@ -6,16 +6,20 @@ namespace Tradgardsgolf.Core.Entities;
 public class Scorecard : BaseEntity
 {
     private IDictionary<string, int[]> _scores;
+    
+    
+    public int CourseRevision { get; set; }
+    public Guid CourseId { get; private set; }
+    public DateTime Date { get; set; }
+    public IDictionary<string, int[]> Scores
+    {
+        get => _scores ??= new Dictionary<string, int[]>();
+        set => _scores = value;
+    }
+    public Guid TournamentId { get; set; }
 
     private Scorecard() { }
-
-    private Scorecard(Course course)
-    {
-        CourseId = course.Id;
-        Course = course;
-        Date = DateTime.Now;
-    }
-
+    
     private Scorecard(Guid courseId, int courseRevision)
     {
         CourseId = courseId;
@@ -23,29 +27,9 @@ public class Scorecard : BaseEntity
         Date = DateTime.Now;
     }
 
-    public int CourseRevision { get; set; }
-
-    public Guid CourseId { get; private set; }
-    public DateTime Date { get; set; }
-    public Course Course { get; private set; }
-
-    public IDictionary<string, int[]> Scores
-    {
-        get => _scores ??= new Dictionary<string, int[]>();
-        set => _scores = value;
-    }
-
-    public Guid TournamentId { get; set; }
-
     public void AddPlayerScores(string player, params int[] scores)
     {
         Scores.Add(player, scores);
-    }
-
-    public static Scorecard Create(Course course)
-    {
-        var scorecard = new Scorecard(course);
-        return scorecard;
     }
 
     public bool ReplaceName(string oldnName, string newName)

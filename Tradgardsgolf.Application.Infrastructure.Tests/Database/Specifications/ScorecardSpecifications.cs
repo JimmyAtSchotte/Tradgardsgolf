@@ -12,14 +12,13 @@ public class ScorecardSpecifications
     [Test]
     public async Task ShouldFindScorecardsByCourse()
     {
-        var course = Course.Create(Guid.NewGuid());
-        var scorecard = course.CreateScorecard();
+        var scorecard =Scorecard.Create(Guid.NewGuid(), 0);
 
         var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
-        context.Add(course);
+        context.Add(scorecard);
         await context.SaveChangesAsync();
         
-        var specification = Specs.Scorecard.ByCourse(course.Id);
+        var specification = Specs.Scorecard.ByCourse(scorecard.CourseId);
         var repository = new Repository(context);
         var scorecards = await repository.ListAsync(specification, CancellationToken.None);
 
@@ -30,11 +29,10 @@ public class ScorecardSpecifications
     [Test]
     public async Task ShouldNotFindAnyScorecardsOnUnknownCourse()
     {
-        var course = Course.Create(Guid.NewGuid());
-        course.CreateScorecard();
+        var scorecard =Scorecard.Create(Guid.NewGuid(), 0);
 
         var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
-        context.Add(course);
+        context.Add(scorecard);
         await context.SaveChangesAsync();
         
         var specification = Specs.Scorecard.ByCourse(Guid.NewGuid());
@@ -48,11 +46,10 @@ public class ScorecardSpecifications
     [Test]
     public async Task ShouldFindScorecardById()
     {
-        var course = Course.Create(Guid.NewGuid());
-        var scorecard = course.CreateScorecard();
+        var scorecard =Scorecard.Create(Guid.NewGuid(), 0);
 
         var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
-        context.Add(course);
+        context.Add(scorecard);
         await context.SaveChangesAsync();
         
         var specification = Specs.ById<Scorecard>(scorecard.Id);
@@ -65,11 +62,10 @@ public class ScorecardSpecifications
     [Test]
     public async Task ShouldNotFindAnUnknownScorecardById()
     {
-        var course = Course.Create(Guid.NewGuid());
-        course.CreateScorecard();
+        var scorecard =Scorecard.Create(Guid.NewGuid(), 0);
 
         var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
-        context.Add(course);
+        context.Add(scorecard);
         await context.SaveChangesAsync();
         
         var specification = Specs.ById<Scorecard>(Guid.NewGuid());
@@ -87,10 +83,9 @@ public class ScorecardSpecifications
         var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
         context.Add(tournament);
         
-        var course = Course.Create(Guid.NewGuid());
-        var scorecard = course.CreateScorecard();
+        var scorecard =Scorecard.Create(Guid.NewGuid(), 0);
         scorecard.TournamentId = tournament.Id;
-        context.Add(course);
+        context.Add(scorecard);
         
         await context.SaveChangesAsync();
         

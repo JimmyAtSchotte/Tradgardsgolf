@@ -23,7 +23,7 @@ public class QueryPlayersPlayedOnCourse
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(course.Scorecards.ToList);
+                    .ReturnsAsync([]);
             });
         });
         
@@ -43,7 +43,7 @@ public class QueryPlayersPlayedOnCourse
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
 
-        var scorecard = course.CreateScorecard();
+        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
         scorecard.AddPlayerScores("B", 2);
         scorecard.AddPlayerScores("A", 1);
 
@@ -52,7 +52,7 @@ public class QueryPlayersPlayedOnCourse
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(course.Scorecards.ToList);
+                    .ReturnsAsync([scorecard]);
             });
         });
         
@@ -72,31 +72,56 @@ public class QueryPlayersPlayedOnCourse
     public async Task ShouldOrderPlayersOnHowMuchTheyHavePlayedOnCourse()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        
+        var scorecards = new List<Core.Entities.Scorecard>();
+
         for (int i = 0; i < 100; i++)
-            course.CreateScorecard().AddPlayerScores("MoreThan50-B", 2);
-        
+        {
+            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+            scorecard.AddPlayerScores("MoreThan50-B", 2);
+            scorecards.Add(scorecard);
+        }
+
         for (int i = 0; i < 11; i++)
-            course.CreateScorecard().AddPlayerScores("MoreThan10-A", 2);
-        
+        {
+            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+            scorecard.AddPlayerScores("MoreThan10-A", 2);
+            scorecards.Add(scorecard);
+        }
+
         for (int i = 0; i < 50; i++)
-            course.CreateScorecard().AddPlayerScores("MoreThan10-B", 2);
-        
+        {
+            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+            scorecard.AddPlayerScores("MoreThan10-B", 2);
+            scorecards.Add(scorecard);
+        }
+
         for (int i = 0; i < 3; i++)
-            course.CreateScorecard().AddPlayerScores("LessThan10-A", 2);
-        
+        {
+            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+            scorecard.AddPlayerScores("LessThan10-A", 2);
+            scorecards.Add(scorecard);
+        }
+
         for (int i = 0; i < 10; i++)
-            course.CreateScorecard().AddPlayerScores("LessThan10-B", 2);
-        
+        {
+            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+            scorecard.AddPlayerScores("LessThan10-B", 2);
+            scorecards.Add(scorecard);
+        }
+
         for (int i = 0; i < 51; i++)
-            course.CreateScorecard().AddPlayerScores("MoreThan50-A", 2);
+        {
+            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+            scorecard.AddPlayerScores("MoreThan50-A", 2);
+            scorecards.Add(scorecard);
+        }
 
         var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(course.Scorecards.ToList);
+                    .ReturnsAsync(scorecards);
             });
         });
         

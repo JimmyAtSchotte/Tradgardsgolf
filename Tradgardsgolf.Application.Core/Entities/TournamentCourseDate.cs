@@ -5,20 +5,18 @@ namespace Tradgardsgolf.Core.Entities;
 public class TournamentCourseDate
 {
     private TournamentCourseDate() { }
+    
+    public Guid CourseId { get; init; }
+    public DateTime Date { get; init; }
 
-    private TournamentCourseDate(Course course, DateTime date)
+    private TournamentCourseDate(Guid courseId, DateTime date)
     {
-        CourseId = course.Id;
-        Course = course;
+        CourseId = courseId;
         Date = date;
     }
 
-    public Guid CourseId { get; init; }
-    public DateTime Date { get; init; }
-    public Course Course { get; init; }
-
-    public static TournamentCourseDate Create(Course course, DateTime date)
+    public static TournamentCourseDate Create(Guid courseId, DateTime date)
     {
-        return new TournamentCourseDate(course, date);
+        return new TournamentCourseDate(courseId, date);
     }
 }

@@ -96,8 +96,8 @@ public static class SetupDatabaseExtensions
         for (int i = 1; i < 5; i++)
         {
             var previousTorunament = Tournament.Create($"Touren {DateTime.Today.AddYears(-i).Year}");
-            previousTorunament.AddCourseDate(kumhof, DateTime.Today.AddYears(-i));
-            previousTorunament.AddCourseDate(tornehof, DateTime.Today.AddYears(-i));
+            previousTorunament.AddCourseDate(kumhof.Id, DateTime.Today.AddYears(-i));
+            previousTorunament.AddCourseDate(tornehof.Id, DateTime.Today.AddYears(-i));
             context.Add(previousTorunament);
             
             for (var r = 0; r < 2; r++)
@@ -111,8 +111,8 @@ public static class SetupDatabaseExtensions
         }
 
         var todaysTournament = Tournament.Create($"Touren {DateTime.Today.Year}");
-        todaysTournament.AddCourseDate(kumhof, DateTime.Today);
-        todaysTournament.AddCourseDate(tornehof, DateTime.Today);
+        todaysTournament.AddCourseDate(kumhof.Id, DateTime.Today);
+        todaysTournament.AddCourseDate(tornehof.Id, DateTime.Today);
         context.Add(todaysTournament);
 
         await context.SaveChangesAsync();
@@ -120,7 +120,7 @@ public static class SetupDatabaseExtensions
 
     private static void AddScorecard(this TradgardsgolfContext context, Course course, DateTime date, string[] players,  Tournament tournament = null)
     {
-        var scorecard = Scorecard.Create(course);
+        var scorecard = Scorecard.Create(course.Id, course.Revision);
         scorecard.TournamentId = tournament?.Id ?? Guid.Empty;
         scorecard.Date = date;
 

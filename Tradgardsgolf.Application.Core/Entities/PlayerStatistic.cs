@@ -27,6 +27,9 @@ public class PlayerStatistic : BaseEntity
         set => _bestScore = value;
     }
     
+    private PlayerStatistic()
+    {
+    }
 
     private PlayerStatistic(Guid courseId, int courseRevision, string name)
     {
@@ -34,12 +37,6 @@ public class PlayerStatistic : BaseEntity
         CourseRevision = courseRevision;
         Name = name;
     }
-
-    private PlayerStatistic()
-    {
-        
-    }
-
 
     public static PlayerStatistic Create(Guid courseId, int courseRevision, string name)
     {

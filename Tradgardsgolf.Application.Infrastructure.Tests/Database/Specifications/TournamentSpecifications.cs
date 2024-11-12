@@ -13,18 +13,17 @@ public class TournamentSpecifications
     [Test]
     public async Task ShouldFindTournamentsByCourse()
     {
-        var course = Course.Create(Guid.NewGuid()); 
+        var courseId = Guid.NewGuid();
         
         var tournament = Tournament.Create("Test");
-        tournament.AddCourseDate(course, DateTime.Today);
+        tournament.AddCourseDate(courseId, DateTime.Today);
         
         var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
-        context.Add(course);
         context.Add(tournament);
         
         await context.SaveChangesAsync();
         
-        var specification = Specs.Tournament.ByCourseAndDate(course.Id, DateTime.Today);
+        var specification = Specs.Tournament.ByCourseAndDate(courseId, DateTime.Today);
         var repository = new Repository(context);
         var tournaments = await repository.ListAsync(specification, CancellationToken.None);
         tournaments.Should().HaveCount(1);
@@ -33,18 +32,17 @@ public class TournamentSpecifications
     [Test]
     public async Task ShouldNotFindTournamentsOnDifferentDate()
     {
-        var course = Course.Create(Guid.NewGuid()); 
+        var courseId = Guid.NewGuid();
         
         var tournament = Tournament.Create("Test");
-        tournament.AddCourseDate(course, DateTime.Now.AddDays(1).Date);
+        tournament.AddCourseDate(courseId, DateTime.Now.AddDays(1).Date);
         
         var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
-        context.Add(course);
         context.Add(tournament);
         
         await context.SaveChangesAsync();
         
-        var specification = Specs.Tournament.ByCourseAndDate(course.Id, DateTime.Today);
+        var specification = Specs.Tournament.ByCourseAndDate(courseId, DateTime.Today);
         var repository = new Repository(context);
         var tournaments = await repository.ListAsync(specification, CancellationToken.None);
         tournaments.Should().HaveCount(0);

@@ -7,15 +7,6 @@ namespace Tradgardsgolf.Core.Entities;
 [Table("course")]
 public class Course : BaseEntity
 {
-    private ICollection<Scorecard> _rounds;
-
-    private Course() { }
-
-    private Course(Guid ownerGuid)
-    {
-        Created = DateTime.Now;
-        OwnerGuid = ownerGuid;
-    }
 
     public string Name { get; set; }
     public int Holes { get; set; }
@@ -27,25 +18,20 @@ public class Course : BaseEntity
     public Guid OwnerGuid { get; set; }
     public int Revision { get; set; }
     
-    public ICollection<Scorecard> Scorecards
-    {
-        get => _rounds ??= new List<Scorecard>();
-        set => _rounds = value;
-    }
+    private Course() { }
 
+    private Course(Guid ownerGuid)
+    {
+        Created = DateTime.Now;
+        OwnerGuid = ownerGuid;
+    }
+    
     public static Course Create(Guid ownerId, Action<Course> properties = null)
     {
         var course = new Course(ownerId);
         properties?.Invoke(course);
 
         return course;
-    }
-
-    public Scorecard CreateScorecard()
-    {
-        var scorecard = Scorecard.Create(this);
-        Scorecards.Add(scorecard);
-        return scorecard;
     }
 
     public void ResetScore(DateTime date)

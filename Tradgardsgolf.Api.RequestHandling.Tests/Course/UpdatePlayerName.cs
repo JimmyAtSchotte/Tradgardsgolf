@@ -20,7 +20,7 @@ public class UpdatePlayerName
     {
         var repositorySpy = default(Mock<IRepository>);
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = course.CreateScorecard();
+        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
         scorecard.AddPlayerScores("Test", 1,1,1,1,1,1);
         
         var arrange = Arrange.Dependencies<UpdatePlayerNameHandler, UpdatePlayerNameHandler>(dependencies =>
@@ -31,7 +31,7 @@ public class UpdatePlayerName
                     .ReturnsAsync(course);
                 
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(course.Scorecards);
+                    .ReturnsAsync([scorecard]);
                 
             }, out repositorySpy);
             
@@ -60,7 +60,7 @@ public class UpdatePlayerName
     {
         var repositorySpy = default(Mock<IRepository>);
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = course.CreateScorecard();
+        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
         scorecard.AddPlayerScores("Test", 1,1,1,1,1,1);
         
         var arrange = Arrange.Dependencies<UpdatePlayerNameHandler, UpdatePlayerNameHandler>(dependencies =>
@@ -71,7 +71,7 @@ public class UpdatePlayerName
                     .ReturnsAsync(course);
                 
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(course.Scorecards);
+                    .ReturnsAsync([scorecard]);
                 
             }, out repositorySpy);
 

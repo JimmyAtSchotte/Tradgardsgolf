@@ -54,7 +54,7 @@ public class QueryTournamentScores
         
         for (int i = 0; i < rounds; i++)
         {
-            var scorecard = course.CreateScorecard();
+            var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
             scorecard.TournamentId = tournament.Id;
             scorecard.AddPlayerScores("Player A", 3, 4, 2);
             scorecard.AddPlayerScores("Player B", 5, 6, 4);

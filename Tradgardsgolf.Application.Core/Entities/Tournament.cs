@@ -5,6 +5,14 @@ namespace Tradgardsgolf.Core.Entities;
 
 public class Tournament : BaseEntity
 {
+    private List<TournamentCourseDate> _tournamentCourseDates;
+    public string Name { get; set; }
+    public List<TournamentCourseDate> TournamentCourseDates
+    {
+        get => _tournamentCourseDates ??= new List<TournamentCourseDate>();
+        set => _tournamentCourseDates = value;
+    }
+    
     private Tournament() { }
 
     private Tournament(string name)
@@ -12,15 +20,11 @@ public class Tournament : BaseEntity
         Name = name;
     }
 
-    public string Name { get; set; }
-    public List<TournamentCourseDate> TournamentCourseDates { get; set; }
 
-    public void AddCourseDate(Course course, DateTime date)
+
+    public void AddCourseDate(Guid courseId, DateTime date)
     {
-        if (TournamentCourseDates is null)
-            TournamentCourseDates = new List<TournamentCourseDate>();
-
-        TournamentCourseDates.Add(TournamentCourseDate.Create(course, date));
+        TournamentCourseDates.Add(TournamentCourseDate.Create(courseId, date));
     }
 
     public static Tournament Create(string name)

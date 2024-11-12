@@ -20,11 +20,10 @@ public class TournamentTests
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         var date = DateTime.Today;
 
-        tournament.AddCourseDate(course, date);
+        tournament.AddCourseDate(course.Id, date);
         
         tournament.TournamentCourseDates.Should().HaveCount(1);
         tournament.TournamentCourseDates.First().Date.Should().Be(date);
-        tournament.TournamentCourseDates.First().Course.Should().Be(course);
         tournament.TournamentCourseDates.First().CourseId.Should().Be(course.Id);
     }
 }

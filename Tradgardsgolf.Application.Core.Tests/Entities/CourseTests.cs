@@ -12,14 +12,4 @@ public class CourseTests
         var course = Course.Create(Guid.NewGuid(), p => p.Name = "Test");
         course.Name.Should().Be("Test");
     }
-    
-    [Test]
-    public void ShouldHaveEmptyScorecards()
-    {
-        var course = Course.Create(Guid.NewGuid());
-        course.Scorecards.Should().BeEmpty();
-    }
-    
-
-    
 }
