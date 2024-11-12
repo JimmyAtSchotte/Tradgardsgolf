@@ -99,12 +99,12 @@ public class CourseStatisticService
     private CourseSeason FindOrCreateCourseSeason(Scorecard scorecard)
     {
         var courseSeason = _courseSeasons.FirstOrDefault(x =>
-            x.CourseId == scorecard.CourseId && x.Season == scorecard.Date.Year);
+            x.CourseId == scorecard.CourseId && x.Season == scorecard.GetSeason());
 
         if (courseSeason != null) 
             return courseSeason;
         
-        courseSeason = CourseSeason.Create(scorecard.CourseId, scorecard.Date.Year);
+        courseSeason = CourseSeason.Create(scorecard.CourseId, scorecard.GetSeason());
         _courseSeasons.Add(courseSeason);
 
         return courseSeason;

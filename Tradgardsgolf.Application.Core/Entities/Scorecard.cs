@@ -48,4 +48,7 @@ public class Scorecard : BaseEntity
         var scorecard = new Scorecard(courseId, courseRevision);
         return scorecard;
     }
+
+    public int GetSeason() => Date.Year;
+    
 }

@@ -8,10 +8,10 @@ public class UpdateCourseSeasonHandler(IRepository repository) : INotificationHa
 {
     public async Task Handle(ScorecardSavedNotification notification, CancellationToken cancellationToken)
     {
-        var courseSeason = await repository.FirstOrDefaultAsync(Specs.CourseSeason.ByCourseSeason(notification.Scorecard.CourseId, notification.Scorecard.Date.Year), cancellationToken);
+        var courseSeason = await repository.FirstOrDefaultAsync(Specs.CourseSeason.ByCourseSeason(notification.Scorecard.CourseId, notification.Scorecard.GetSeason()), cancellationToken);
         
         if(courseSeason is null)
-            courseSeason = Core.Entities.CourseSeason.Create(notification.Scorecard.CourseId, notification.Scorecard.Date.Year);
+            courseSeason = Core.Entities.CourseSeason.Create(notification.Scorecard.CourseId, notification.Scorecard.GetSeason());
         
         courseSeason.Add(notification.Scorecard);
         

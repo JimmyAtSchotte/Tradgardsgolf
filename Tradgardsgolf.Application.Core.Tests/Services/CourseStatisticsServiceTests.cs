@@ -186,7 +186,7 @@ public class CourseStatisticsServiceTests
         result.Should().HaveCount(1);
         result.First().Players.Should().HaveCount(1);
         result.First().Players.ContainsKey("Player1").Should().BeTrue();
-        result.First().Season.Should().Be(scorecard.Date.Year);
+        result.First().Season.Should().Be(scorecard.GetSeason());
     }
     
         
@@ -214,6 +214,6 @@ public class CourseStatisticsServiceTests
         result.First().Players.Should().HaveCount(1);
         result.First().Players.ContainsKey("Player1").Should().BeTrue();
         result.First().Players["Player1"].Should().HaveCount(2);
-        result.First().Season.Should().Be(scorecard.Date.Year);
+        result.First().Season.Should().Be(scorecard.GetSeason());
     }
 }
