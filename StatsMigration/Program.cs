@@ -29,7 +29,6 @@ context.Database.EnsureCreated();
 
 var courseMigrators = GetCourseMigrators(context).ToList();
 
-
 foreach (var courseMigrator in courseMigrators)
 {
     if (courseMigrator.ShouldMigrateCourseToRevision())
@@ -40,7 +39,7 @@ foreach (var courseMigrator in courseMigrators)
     if(scorecards.Any())
         context.Scorecards.UpdateRange(scorecards);
 
-    var playerStatistics = courseMigrator.MigratePlayerStats().ToList();
+    var playerStatistics = courseMigrator.GeneratePlayerStatistics().ToList();
     var addPlayerStatistics = playerStatistics.Where(x => x.Id == Guid.Empty).ToList();
     var updatePlayerStatistics = playerStatistics.Where(x => x.Id != Guid.Empty).ToList();
 
@@ -50,7 +49,7 @@ foreach (var courseMigrator in courseMigrators)
     if(updatePlayerStatistics.Any())
         context.PlayerStatistic.UpdateRange(updatePlayerStatistics);
 
-    var courseSeasons = courseMigrator.MigrateCourseSeasons().ToList();
+    var courseSeasons = courseMigrator.GenerateCourseSeasons().ToList();
     var addCourseSeasons = courseSeasons.Where(x => x.Id == Guid.Empty).ToList();
     var updateCourseSeasons = courseSeasons.Where(x => x.Id != Guid.Empty).ToList();
 

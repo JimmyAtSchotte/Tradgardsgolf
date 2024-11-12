@@ -17,7 +17,7 @@ public class QueryCourseStatisticsHandler(IRepository repository)
         CancellationToken cancellationToken)
     {
         var courseSeasons = await repository.ListAsync(Specs.CourseSeason.ByCourse(request.CourseId), cancellationToken);
-        var playerStatistics = await repository.ListAsync(Specs.PlayerStatistic.ByCourse(request.CourseId, request.Revision), cancellationToken);
+        var playerStatistics = await repository.ListAsync(Specs.PlayerStatistic.ByCourseRevision(request.CourseId, request.Revision), cancellationToken);
 
         return new CourseStatisticResponse
         {

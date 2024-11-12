@@ -4,7 +4,7 @@ using Ardalis.Specification;
 namespace Tradgardsgolf.Core.Specifications.PlayerStatistic;
 
 
-public static partial class SpecificationSetExtensions
+public static partial class PlayerStatisticsSpecificationExtensions
 {
     public static ISpecification<Entities.PlayerStatistic> ByCoursePlayer(this SpecificationSet<Entities.PlayerStatistic> set,
         Guid courseId, int revision, string playername)

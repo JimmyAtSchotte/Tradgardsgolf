@@ -4,7 +4,7 @@ using Ardalis.Specification;
 namespace Tradgardsgolf.Core.Specifications.CourseSeason;
 
 
-public static partial class SpecificationSetExtensions
+public static partial class CourseSeasonSpecificationExtensions
 {
     public static ISpecification<Entities.CourseSeason> ByCourse(this SpecificationSet<Entities.CourseSeason> set,
         Guid courseId)

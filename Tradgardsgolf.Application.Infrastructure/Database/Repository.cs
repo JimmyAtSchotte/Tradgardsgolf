@@ -49,6 +49,14 @@ public class Repository : IRepository
         return specification.PostProcessingAction == null ? queryResult : specification.PostProcessingAction(queryResult).ToList();
     }
 
+    public async Task<IEnumerable<TEntity>> AddRangeAsync<TEntity>(TEntity[] entities, CancellationToken cancellationToken) where TEntity : class
+    {
+        await _context.Set<TEntity>().AddRangeAsync(entities);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return entities;
+    }
+
     public async Task<TEntity> UpdateAsync<TEntity>(TEntity entity, CancellationToken cancellationToken)
         where TEntity : class
     {
@@ -58,7 +66,7 @@ public class Repository : IRepository
         return entity;
     }
     
-    public async Task<TEntity[]> UpdateRangeAsync<TEntity>(TEntity[] entitites, CancellationToken cancellationToken)
+    public async Task<IEnumerable<TEntity>> UpdateRangeAsync<TEntity>(TEntity[] entitites, CancellationToken cancellationToken)
         where TEntity : class
     {
         foreach (var entity in entitites)

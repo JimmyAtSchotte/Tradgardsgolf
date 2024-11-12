@@ -15,9 +15,10 @@ public interface IRepository
     
     Task<TEntity> UpdateAsync<TEntity>(TEntity entity, CancellationToken cancellationToken) where TEntity : class;
 
-    Task<TEntity[]> UpdateRangeAsync<TEntity>(TEntity[] entitites, CancellationToken cancellationToken)
+    Task<IEnumerable<TEntity>> UpdateRangeAsync<TEntity>(TEntity[] entitites, CancellationToken cancellationToken)
         where TEntity : class;
     
     Task<IEnumerable<TEntity>> ListAsync<TEntity>(CancellationToken cancellationToken) where TEntity : class;
     Task<IEnumerable<TEntity>> ListAsync<TEntity>(ISpecification<TEntity> specification, CancellationToken cancellationToken) where TEntity : class;
+    Task<IEnumerable<TEntity>> AddRangeAsync<TEntity>(TEntity[] entities, CancellationToken cancellationToken) where TEntity : class;
 }

@@ -4,7 +4,7 @@ using Ardalis.Specification;
 namespace Tradgardsgolf.Core.Specifications.Scorecard;
 
 
-public static partial class SpecificationSetExtensions
+public static partial class ScorecardSpecificationExtensions
 {
     public static ISpecification<Entities.Scorecard> ByCourse(this SpecificationSet<Entities.Scorecard> set,
         Guid courseId)

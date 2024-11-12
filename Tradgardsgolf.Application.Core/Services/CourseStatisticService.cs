@@ -1,4 +1,6 @@
-﻿using Tradgardsgolf.Core.Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Tradgardsgolf.Core.Entities;
 
 public class CourseStatisticService
 {
@@ -49,7 +51,7 @@ public class CourseStatisticService
         }
     }
 
-    public IEnumerable<PlayerStatistic> MigratePlayerStats()
+    public IEnumerable<PlayerStatistic> GeneratePlayerStatistics()
     {
         foreach (var playerStatistic in _playerStatistics)
             playerStatistic.Reset();
@@ -80,7 +82,7 @@ public class CourseStatisticService
         return playerStatistic;
     }
 
-    public IEnumerable<CourseSeason> MigrateCourseSeasons()
+    public IEnumerable<CourseSeason> GenerateCourseSeasons()
     {
         foreach (var courseSeason in _courseSeasons)
             courseSeason.Reset();

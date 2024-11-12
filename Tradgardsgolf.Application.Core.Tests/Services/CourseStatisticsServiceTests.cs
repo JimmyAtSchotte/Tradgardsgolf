@@ -1,9 +1,9 @@
 using FluentAssertions;
 using Tradgardsgolf.Core.Entities;
 
-namespace StatsMigration.Tests;
+namespace Tradgardsgolf.Application.Core.Tests.Services;
 
-public class Tests
+public class CourseStatisticsServiceTests
 {
     [Test]
     public void CourseHasNoRevision()
