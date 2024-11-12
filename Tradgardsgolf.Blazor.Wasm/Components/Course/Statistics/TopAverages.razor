@@ -43,28 +43,15 @@
         if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
-        var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
-
-        _topAverages = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
-            .Where(x => x.Date > scoreReset)
-            .Select(x => new
-            {
-                Rounds = x.Scores.GroupBy(score => score.Player)
-                    .Select(p => new
-                    {
-                        Player = p.Key,
-                        ToatalScore = p.Sum(s => s.Score)
-                    })
-            }).SelectMany(x => x.Rounds)
-            .GroupBy(x => x.Player)
+        _topAverages = CascadingCourseStatistics.CourseStatisticResponse
+            .PlayerStatistics.OrderBy(x => x.AverageScore)
+            .Take(_listCount)
             .Select(x => new TopAverageModel
             {
-                Player = x.Key,
-                Average = x.Sum(score => score.ToatalScore) / (double)x.Count()
+                Player = x.Name,
+                Average = x.AverageScore
             })
-            .OrderBy(x => x.Average)
-            .Take(_listCount)
-            .ToArray();
+            .ToArray();            
     }
 
     private class TopAverageModel

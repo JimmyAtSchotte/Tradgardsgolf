@@ -49,30 +49,21 @@
 
     private void RenderSeasonTable()
     {
-        _seasonTableModels = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
-            .Where(x => x.Date.Year == Year.GetValueOrDefault(0))
-            .Select(x => new
+        _seasonTableModels = CascadingCourseStatistics.CourseStatisticResponse?.Seasons?
+            .FirstOrDefault(x => x.Season == Year)?
+            .Players.Select(kvp => new SeasonTableModel
             {
-                Rounds = x.Scores.GroupBy(score => score.Player)
-                    .Select(p => new
-                    {
-                        Player = p.Key,
-                        ToatalScore = p.Sum(s => s.Score)
-                    })
-            })
-            .SelectMany(x => x.Rounds)
-            .GroupBy(x => x.Player)
-            .Select(x => new SeasonTableModel
-            {
-                Player = x.Key,
-                Scores = x.OrderBy(s => s.ToatalScore)
+                Player = kvp.Key,
+                Scores = kvp.Value.OrderBy(x => x)
                     .Take(CascadingCourse.Course.SeasonTableRounds)
-                    .Select(s => s.ToatalScore)
                     .ToArray()
             })
-            .OrderByDescending(x => x.Scores.Count())
-            .ThenBy(x => x.Scores.Sum());
+            .OrderByDescending(m => m.Scores.Count())
+            .ThenBy(m => m.Scores.Sum()) 
+                             ?? Enumerable.Empty<SeasonTableModel>();
     }
+
+
 
     private bool Display()
     {

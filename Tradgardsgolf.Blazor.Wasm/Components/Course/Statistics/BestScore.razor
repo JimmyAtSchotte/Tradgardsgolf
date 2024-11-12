@@ -15,22 +15,15 @@
         if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
-        var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
-
-        _bestScore = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
-            .Where(x => x.Date > scoreReset)
-            .Select(x => new
+        _bestScore = CascadingCourseStatistics.CourseStatisticResponse.PlayerStatistics
+            .OrderBy(x => x.BestScore.Score)
+            .ThenBy(x => x.BestScore.Date)
+            .Select(x => new BestScoreModel()
             {
-                Rounds = x.Scores.GroupBy(score => score.Player)
-                    .Select(p => new BestScoreModel
-                    {
-                        Date = x.Date,
-                        Player = p.Key,
-                        ToatalScore = p.Sum(s => s.Score)
-                    })
-            }).SelectMany(x => x.Rounds)
-            .OrderBy(x => x.ToatalScore)
-            .ThenBy(x => x.Date)
+                Date = x.BestScore.Date,
+                Player = x.Name,
+                ToatalScore = x.BestScore.Score
+            })
             .FirstOrDefault();
     }
 

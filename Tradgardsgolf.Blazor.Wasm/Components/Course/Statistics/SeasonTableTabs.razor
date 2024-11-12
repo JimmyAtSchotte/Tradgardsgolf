@@ -36,9 +36,8 @@
         if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
-        _years = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
-            .Select(x => x.Date.Year)
-            .Distinct()
+        _years = CascadingCourseStatistics.CourseStatisticResponse.Seasons
+            .Select(x => x.Season)
             .OrderByDescending(x => x)
             .ToArray();
     }

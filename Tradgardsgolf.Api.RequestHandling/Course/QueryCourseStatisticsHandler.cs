@@ -5,7 +5,8 @@ using MediatR;
 using Tradgardsgolf.Contracts.Statistics;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using Tradgardsgolf.Core.Specifications.Scorecard;
+using Tradgardsgolf.Core.Specifications.CourseSeason;
+using Tradgardsgolf.Core.Specifications.PlayerStatistic;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
@@ -15,20 +16,31 @@ public class QueryCourseStatisticsHandler(IRepository repository)
     public async Task<CourseStatisticResponse> Handle(QueryCourseStatistics request,
         CancellationToken cancellationToken)
     {
-        var scorecards = await repository.ListAsync(Specs.Scorecard.ByCourse(request.CourseId), cancellationToken);
+        var courseSeasons = await repository.ListAsync(Specs.CourseSeason.ByCourse(request.CourseId), cancellationToken);
+        var playerStatistics = await repository.ListAsync(Specs.PlayerStatistic.ByCourse(request.CourseId, request.Revision), cancellationToken);
 
         return new CourseStatisticResponse
         {
-            Scorecards = scorecards.Select(scorecard => new ScorecardResponse
+            Seasons = courseSeasons.Select(x => new CourseSeasonResposne()
             {
-                Date = scorecard.Date,
-                Scores = scorecard.Scores.SelectMany(keyValuePair => keyValuePair.Value.Select((score, hole) =>
-                    new HoleScoreResponse
-                    {
-                        Player = keyValuePair.Key,
-                        Hole = hole + 1,
-                        Score = score
-                    }))
+                Season = x.Season,
+                Players = x.Players
+            }),
+            PlayerStatistics = playerStatistics.Select(x => new PlayerStatisticResponse()
+            {
+                AverageScore = x.AverageScore,
+                Name = x.Name,
+                TimesPlayed = x.TimesPlayed,
+                BestScore = new BestScoreResponse()
+                {
+                    Date = x.BestScore.Date,
+                    Score = x.BestScore.Score,
+                },
+                HoleStatistics = x.HoleStatistics.Select(h => new HoleStatisticResponse()
+                {
+                    AverageScore = h.AverageScore,
+                    HoleInOnes = h.HoleInOnes
+                })
             })
         };
     }

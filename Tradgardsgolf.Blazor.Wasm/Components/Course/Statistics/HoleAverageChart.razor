@@ -28,29 +28,21 @@
         if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
-        var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
-
-        _holeAverageModels = CascadingCourseStatistics.CourseStatisticResponse.Scorecards
-            .Where(x => x.Date > scoreReset)
-            .Select(x => new
+        _holeAverageModels = CascadingCourseStatistics.CourseStatisticResponse.PlayerStatistics
+            .SelectMany(x => x.HoleStatistics.Select((h, index) => new
+                {
+                    Hole = index + 1,
+                    Total = x.TimesPlayed * h.AverageScore,
+                    x.TimesPlayed,
+                    h.HoleInOnes
+                }))
+            .GroupBy(arg => arg.Hole)
+            .Select(x => new HoleStatisticModel()
             {
-                Rounds = x.Scores.GroupBy(score => score.Hole)
-                    .Select(p => new
-                    {
-                        Hole = p.Key,
-                        Scores = p.Select(s => s.Score),
-                        PlayerCount = p.Count(),
-                        HoleInOnes = p.Count(s => s.Score == 1)
-                    })
-            }).SelectMany(x => x.Rounds)
-            .GroupBy(x => x.Hole)
-            .Select(x => new HoleStatisticModel
-            {
+                HoleInOnes = x.Sum(y => y.HoleInOnes),
                 Hole = x.Key,
-                Average = x.Sum(score => score.Scores.Sum()) / (double)x.Sum(p => p.PlayerCount),
-                HoleInOnes = x.Sum(s => s.HoleInOnes)
+                Average = x.Sum(y => y.Total) / x.Sum(y => y.TimesPlayed)
             })
-            .OrderBy(x => x.Hole)
             .ToArray();
     }
 
