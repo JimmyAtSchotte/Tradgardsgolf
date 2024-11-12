@@ -15,18 +15,18 @@ public class SaveScorecard
     [Test]
     public async Task ShouldSaveScorecard()
     {
-        var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var updatedCourses = new List<Core.Entities.Course>();
+        var addedScorecards = new List<Core.Entities.Scorecard>();
         
         var arrange = Arrange.Dependencies<SaveScorecardHandler, SaveScorecardHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository>(mock =>
             {
-                mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(course);
-                
-                mock.Setup(x => x.UpdateAsync(It.IsAny<Core.Entities.Course>(), It.IsAny<CancellationToken>()))
-                    .Callback((Core.Entities.Course c, CancellationToken t) => updatedCourses.Add(c));
+                mock.Setup(x => x.AddAsync(It.IsAny<Core.Entities.Scorecard>(), It.IsAny<CancellationToken>()))
+                    .Callback((Core.Entities.Scorecard c, CancellationToken t) =>
+                    {
+                        c.Id = Guid.NewGuid();
+                        addedScorecards.Add(c);
+                    });
             });
         });
         
@@ -34,7 +34,8 @@ public class SaveScorecard
         var scores = new List<int>() { 2, 3, 5, 2, 4, 1 };
         var command = new SaveScorecardCommand()
         {
-            CourseId = course.Id,
+            CourseId = Guid.NewGuid(),
+            Revision = 1,
             PlayerScores = new List<PlayerScore>()
             {
                 new PlayerScore()
@@ -47,13 +48,11 @@ public class SaveScorecard
         
         var result = await handler.Handle(command, CancellationToken.None);
 
-        updatedCourses.Should().HaveCount(1);
-        updatedCourses.First().Scorecards.Should().HaveCount(1);
-        updatedCourses.First().Scorecards.First().Scores.Should().ContainKey("Player A");
-        updatedCourses.First().Scorecards.First().Scores["Player A"].Should().BeEquivalentTo(scores);
+        addedScorecards.Should().HaveCount(1);
+        addedScorecards.First().Scores.Should().ContainKey("Player A");
+        addedScorecards.First().Scores["Player A"].Should().BeEquivalentTo(scores);
 
         result.PlayerScores.Should().BeEquivalentTo(command.PlayerScores);
-        result.CourseId.Should().Be(course.Id);
-        result.Id.Should().Be(updatedCourses.First().Scorecards.First().Id);
+        result.Id.Should().Be(addedScorecards.First().Id);
     }
 }

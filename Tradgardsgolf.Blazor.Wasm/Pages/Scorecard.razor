@@ -153,6 +153,7 @@
         var roundScore = await apiDispatcher.Dispatch(new SaveScorecardCommand
         {
             CourseId = State.AppState.ScorecardState.CourseResponse.Id,
+            Revision = State.AppState.ScorecardState.CourseResponse.Revision,
             PlayerScores = State.AppState.ScorecardState.PlayerScores.Select(x => new PlayerScore
             {
                 Name = x.PlayerResponse.Name,

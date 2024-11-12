@@ -15,4 +15,5 @@ public record CourseResponse : IResponse
     public ImageReference ImageReference { get; init; }
     public int SeasonTableRounds => 6;
     public Guid OwnerGuid { get; init; }
+    public int Revision { get; init; }
 }

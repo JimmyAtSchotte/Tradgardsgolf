@@ -7,5 +7,4 @@ public record ScorecardResponse
 {
     public Guid Id { get; init; }
     public IEnumerable<PlayerScore> PlayerScores { get; init; }
-    public Guid CourseId { get; init; }
 }

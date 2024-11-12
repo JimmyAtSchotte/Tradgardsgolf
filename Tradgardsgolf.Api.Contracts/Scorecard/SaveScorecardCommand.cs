@@ -8,4 +8,6 @@ public record SaveScorecardCommand : IRequest<ScorecardResponse>
 {
     public IEnumerable<PlayerScore> PlayerScores { get; init; }
     public Guid CourseId { get; init; }
+    
+    public int Revision { get; init; }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Tradgardsgolf.Api.Authentication;
 using Tradgardsgolf.Api.CosmosRUTracking;
+using Tradgardsgolf.Api.Notifications;
 using Tradgardsgolf.Api.RequestHandling;
 using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Config;
@@ -22,6 +23,7 @@ public static class Services
         builder.Services.AddMediatR(mediatr =>
         {
             mediatr.RegisterServicesFromAssembly(typeof(IRequestHandlingNamespaceMarker).Assembly);
+            mediatr.RegisterServicesFromAssembly(typeof(INotificationsNamespaceMarker).Assembly);
         });
 
         builder.Services.AddCors(options =>

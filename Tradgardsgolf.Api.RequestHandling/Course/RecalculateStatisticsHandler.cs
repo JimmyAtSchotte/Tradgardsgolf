@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Course;
-using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Scorecard;
@@ -34,7 +33,7 @@ public class RecalculateStatisticsHandler : IRequestHandler<RecalculateStatistic
 
     private async Task AddCourseSeasons(CancellationToken cancellationToken, List<Core.Entities.Scorecard> scorecards, Core.Entities.Course course)
     {
-        var seasons = scorecards.Select(x => x.Date.Year).Distinct().Select(season => CourseSeason.Create(course.Id, season)).ToList();
+        var seasons = scorecards.Select(x => x.Date.Year).Distinct().Select(season => Core.Entities.CourseSeason.Create(course.Id, season)).ToList();
         
         foreach (var scorecard in scorecards)
         {
@@ -53,7 +52,7 @@ public class RecalculateStatisticsHandler : IRequestHandler<RecalculateStatistic
 
     private async Task AddPlayerStatistics(CancellationToken cancellationToken, List<Core.Entities.Scorecard> scorecards, Core.Entities.Course course)
     {
-        var playerStatistics = new List<PlayerStatistic>();
+        var playerStatistics = new List<Core.Entities.PlayerStatistic>();
 
         if (course.Revision == 0 && course.ScoreReset.HasValue)
         {
@@ -70,7 +69,7 @@ public class RecalculateStatisticsHandler : IRequestHandler<RecalculateStatistic
             playerStatistics.AddRange(scorecards.Where(x => x.CourseRevision == revision)
                 .SelectMany(x => x.Scores.Keys)
                 .Distinct()
-                .Select(player => PlayerStatistic.Create(course.Id, revision, player)));
+                .Select(player => Core.Entities.PlayerStatistic.Create(course.Id, revision, player)));
         }
         
         foreach (var scorecard in scorecards)

@@ -19,7 +19,6 @@ public static class Autofac
                 {
                     Assembly.Load("Tradgardsgolf.Application.Core"),
                     Assembly.Load("Tradgardsgolf.Application.Infrastructure"),
-                    Assembly.Load("Tradgardsgolf.Api.RequestHandling"),
                     Assembly.Load("Tradgardsgolf.Api.ResponseFactory")
                 };
 

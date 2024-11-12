@@ -4,27 +4,26 @@ using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Scorecard;
 using Tradgardsgolf.Core.Infrastructure;
-using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Scorecard;
 
-public class SaveScorecardHandler(IRepository repository)
+public class SaveScorecardHandler(IRepository repository, IMediator mediator)
     : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
 {
     public async Task<ScorecardResponse> Handle(SaveScorecardCommand request, CancellationToken cancellationToken)
     {
-        var course = await repository.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(request.CourseId), cancellationToken);
-        var scorecard = course.CreateScorecard();
+        var scorecard = Core.Entities.Scorecard.Create(request.CourseId, request.Revision);
 
         foreach (var playerScore in request.PlayerScores)
             scorecard.AddPlayerScores(playerScore.Name, playerScore.HoleScores.ToArray());
 
-        await repository.UpdateAsync(course, cancellationToken);
+        await repository.AddAsync(scorecard, cancellationToken);
+
+        await mediator.Publish(new ScorecardSavedNotification(scorecard), cancellationToken);
 
         return new ScorecardResponse
         {
             Id = scorecard.Id,
-            CourseId = course.Id,
             PlayerScores = request.PlayerScores
         };
     }
