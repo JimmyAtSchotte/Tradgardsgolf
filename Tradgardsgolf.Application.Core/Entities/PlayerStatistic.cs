@@ -7,8 +7,7 @@ namespace Tradgardsgolf.Core.Entities;
 public class PlayerStatistic : BaseEntity
 {
     private BestScore _bestScore;
-    private Dictionary<int, IList<int>> _seasons;
-    private IEnumerable<HoleStatistic> _holeStatistics;
+    private ICollection<HoleStatistic> _holeStatistics;
 
     public string Name { get; private set; }
     public Guid CourseId { get; private set; }
@@ -16,7 +15,7 @@ public class PlayerStatistic : BaseEntity
     public int TimesPlayed { get; set; }
     public int CourseRevision { get; private set; }
 
-    public IEnumerable<HoleStatistic> HoleStatistics
+    public ICollection<HoleStatistic> HoleStatistics
     {
         get => _holeStatistics ??= new List<HoleStatistic>();
         set => _holeStatistics = value;
@@ -36,7 +35,7 @@ public class PlayerStatistic : BaseEntity
         Name = name;
     }
 
-    public PlayerStatistic()
+    private PlayerStatistic()
     {
         
     }
@@ -78,21 +77,31 @@ public class PlayerStatistic : BaseEntity
 
     private void UpdateHoleStatistics(int[] scores)
     {
-        var holeStatistics = HoleStatistics?.Any() == true ? HoleStatistics.ToArray() : Enumerable.Range(0, scores.Length).Select(_ => new HoleStatistic()).ToArray();
+        while (HoleStatistics.Count < scores.Length)
+            HoleStatistics.Add(new HoleStatistic()); 
+        
         for (var i = 0; i < scores.Length; i++)
         {
-            holeStatistics[i].AverageScore = ((holeStatistics[i].AverageScore * TimesPlayed) + scores[i]) / (TimesPlayed + 1);
+            var holeStatistic = HoleStatistics.ElementAt(i);
+        
+            holeStatistic.AverageScore = ((holeStatistic.AverageScore * TimesPlayed) + scores[i]) / (TimesPlayed + 1);
 
             if (scores[i] == 1)
-                holeStatistics[i].HoleInOnes++;
+                holeStatistic.HoleInOnes++;
         }
-
-        HoleStatistics = holeStatistics;
     }
 
     private void UpdateAverageScore(int sum)
     {
         AverageScore = ((AverageScore * TimesPlayed) + sum) / (TimesPlayed + 1);
+    }
+
+    public void Reset()
+    {
+        AverageScore = 0;
+        TimesPlayed = 0;
+        BestScore = new BestScore();
+        HoleStatistics = new List<HoleStatistic>();
     }
 }
 

@@ -46,4 +46,9 @@ public class CourseSeason : BaseEntity
             scores.Add(score.Value.Sum());
         }
     }
+
+    public void Reset()
+    {
+        Players.Clear();
+    }
 }
