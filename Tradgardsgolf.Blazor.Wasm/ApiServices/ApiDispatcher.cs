@@ -11,13 +11,13 @@ namespace Tradgardsgolf.BlazorWasm.ApiServices;
 
 public interface IApiDispatcher
 {
-    Task<TResponse?> Dispatch<TResponse>(IRequest<TResponse> request);
+    Task<TResponse> Dispatch<TResponse>(IRequest<TResponse> request);
     Task Dispatch(IRequest request);
 }
 
 public class ApiDispatcher(IHttpClientFactory httpClientFactory) : IApiDispatcher
 {
-    public async Task<TResponse?> Dispatch<TResponse>(IRequest<TResponse> request)
+    public async Task<TResponse> Dispatch<TResponse>(IRequest<TResponse> request)
     {
         var httpClient = httpClientFactory.CreateClient("ApiDispatcher");
 
