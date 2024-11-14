@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Azure.Identity;
-using Azure.Messaging.EventGrid;
 using Azure.ResourceManager;
 using Azure.ResourceManager.AppService;
 using Azure.ResourceManager.Consumption;
@@ -63,22 +62,4 @@ public static class CheckBudgetTrigger
 
         log.LogInformation("Api has stopped");
     }
-
-    private static async Task PublishBudgetSpentEventAsync()
-    {
-        var endpoint = Environment.GetEnvironmentVariable("EventGridTopicEndpoint");
-        var credential = new DefaultAzureCredential();
-        var client = new EventGridPublisherClient(new Uri(endpoint), credential);
-
-        var eventGridEvent = new EventGridEvent(
-        "/budgets/budget-spent",
-        "budget.spent",
-        "1.0",
-        new BudgetSpentEventData()
-        );
-
-        await client.SendEventAsync(eventGridEvent);
-    }
-
-    private class BudgetSpentEventData { }
 }
