@@ -106,7 +106,7 @@ public class SpecificationEquality
             if (type.IsEnum) return Enum.GetValues(type).GetValue(0)!;
             if (type.IsValueType) return Activator.CreateInstance(type) ?? throw new InvalidOperationException($"Cannot create default value for type {type.FullName}");
 
-            throw new NotImplementedException($"The type {type.FullName} is not implemented.");
+            throw new InvalidOperationException($"Cannot create default value for type {type.FullName}");
         }
         
         private static object GetOtherValue(Type type)
@@ -122,7 +122,7 @@ public class SpecificationEquality
             if (type.IsEnum) return Enum.GetValues(type).GetValue(Enum.GetValues(type).Length)!;
             if (type.IsValueType) return Activator.CreateInstance(type) ?? throw new InvalidOperationException($"Cannot create default value for type {type.FullName}");
             
-            throw new NotImplementedException($"The type {type.FullName} is not implemented.");
+            throw new InvalidOperationException($"Cannot create default value for type {type.FullName}");
         }
     }
 
