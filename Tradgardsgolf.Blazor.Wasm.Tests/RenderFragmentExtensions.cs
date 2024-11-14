@@ -1,7 +1,7 @@
 ﻿using Bunit;
 using Microsoft.AspNetCore.Components;
 
-namespace Tradgardsgolf.Blazor.Wasm.Tests.Pages;
+namespace Tradgardsgolf.Blazor.Wasm.Tests;
 
 public static class RenderFragmentExtensions
 {

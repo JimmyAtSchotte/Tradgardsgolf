@@ -30,6 +30,7 @@ public class TestContextBuilder : IDisposable
     public void Dispose()
     {
         _context.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     public TestContextBuilder UseAuthorization(Action<TestAuthorizationContext> auth)

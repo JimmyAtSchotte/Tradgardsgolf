@@ -1,7 +1,9 @@
 ﻿using System.Security.Claims;
 using AspNetMonsters.Blazor.Geolocation;
 using Bunit;
+using FluentAssertions;
 using Moq;
+using Tradgardsgolf.Blazor.Wasm.Tests.__Extensions;
 using Tradgardsgolf.BlazorWasm.ApiServices;
 using Tradgardsgolf.BlazorWasm.Components;
 using Tradgardsgolf.BlazorWasm.Components.Course;
@@ -47,7 +49,7 @@ public class CoursesTests
         var courseCards = courses
             .FindComponents<CascadingCourse>();
 
-        Assert.That(courseCards.Count, Is.EqualTo(1));
+        courseCards.Should().HaveCount(1);
     }
 
 
@@ -73,9 +75,9 @@ public class CoursesTests
 
         var edit = courses
             .FindComponent<CascadingCourse>()
-            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "Edit");
+            .RequireComponent<ConditionalComponent>(x => x.Instance.Name == "Edit");
 
-        Assert.That(edit.Markup, Is.Not.Empty);
+        edit.Markup.Should().NotBeEmpty();
     }
 
     [Test]
@@ -99,9 +101,9 @@ public class CoursesTests
 
         var edit = courses
             .FindComponent<CascadingCourse>()
-            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "Edit");
+            .RequireComponent<ConditionalComponent>(x => x.Instance.Name == "Edit");
 
-        Assert.That(edit.Markup, Is.Empty);
+        edit.Markup.Should().BeEmpty();
     }
 
     [Test]
@@ -129,9 +131,9 @@ public class CoursesTests
 
         var play = courses
             .FindComponent<CascadingCourse>()
-            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "Play");
+            .RequireComponent<ConditionalComponent>(x => x.Instance.Name == "Play");
 
-        Assert.That(play.Markup, Is.Not.Empty);
+        play.Markup.Should().NotBeEmpty();
     }
 
     [Test]
@@ -158,10 +160,10 @@ public class CoursesTests
 
         var play = courses
             .FindComponent<CascadingCourse>()
-            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "Play");
+            .RequireComponent<ConditionalComponent>(x => x.Instance.Name == "Play");
 
 
-        Assert.That(play.Markup, Is.Empty);
+        play.Markup.Should().BeEmpty();
     }
 
     [Test]
@@ -194,9 +196,9 @@ public class CoursesTests
 
         var claimOwnerShip = courses
             .FindComponent<CascadingCourse>()
-            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "ClaimOwnerShip");
+            .RequireComponent<ConditionalComponent>(x => x.Instance.Name == "ClaimOwnerShip");
 
-        Assert.That(claimOwnerShip.Markup, Is.Not.Empty);
+        claimOwnerShip.Markup.Should().NotBeEmpty();
     }
 
     [Test]
@@ -225,16 +227,16 @@ public class CoursesTests
 
         var claimOwnerShip = courses
             .FindComponent<CascadingCourse>()
-            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "ClaimOwnerShip");
+            .RequireComponent<ConditionalComponent>(x => x.Instance.Name == "ClaimOwnerShip");
 
         var edit = courses
             .FindComponent<CascadingCourse>()
-            .FindComponent<ConditionalComponent>(x => x.Instance.Name == "Edit");
+            .RequireComponent<ConditionalComponent>(x => x.Instance.Name == "Edit");
 
         Assert.Multiple(() =>
         {
-            Assert.That(claimOwnerShip.Markup, Is.Empty);
-            Assert.That(edit.Markup, Is.Empty);
+            claimOwnerShip.Markup.Should().BeEmpty();
+            edit.Markup.Should().BeEmpty();
         });
     }
 }
