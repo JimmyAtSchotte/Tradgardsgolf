@@ -5,17 +5,15 @@ namespace Tradgardsgolf.BlazorWasm.State;
 
 public class PlayerScores
 {
-    public PlayerScores() { }
-
     private PlayerScores(PlayerResponse playerResponse, HoleScoreCollection scores)
     {
         PlayerResponse = playerResponse;
         Scores = scores;
     }
 
-    public PlayerResponse PlayerResponse { get; set; }
+    public PlayerResponse PlayerResponse { get; }
 
-    public HoleScoreCollection Scores { get; set; }
+    public HoleScoreCollection Scores { get; }
 
     public static PlayerScores Create(string name, int holes)
     {

@@ -57,14 +57,14 @@ public class DispatchException(HttpResponseMessage response, string url, string 
     public string Body { get; } = body;
 }
 
-public class DispatchUrlBuilder
+public static class DispatchUrlBuilder
 {
-    private static readonly string ContractNamespacePrefix = typeof(IContractsNamespaceMarker).Namespace;
+    private static readonly string ContractNamespacePrefix = typeof(IContractsNamespaceMarker).Namespace!;
 
     public static string Build<TResponse>(IRequest<TResponse> request)
     {
         var requestType = request.GetType();
-        var domain = requestType.Namespace.Substring(ContractNamespacePrefix.Length + 1);
+        var domain = requestType.Namespace![(ContractNamespacePrefix.Length + 1)..];
 
         return $"/api/dispatch/{domain}/{requestType.Name}";
     }
@@ -72,7 +72,7 @@ public class DispatchUrlBuilder
     public static string Build(IRequest request)
     {
         var requestType = request.GetType();
-        var domain = requestType.Namespace.Substring(ContractNamespacePrefix.Length + 1);
+        var domain = requestType.Namespace![(ContractNamespacePrefix.Length + 1)..];
 
         return $"/api/dispatch/{domain}/{requestType.Name}";
     }

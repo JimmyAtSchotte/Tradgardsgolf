@@ -9,48 +9,43 @@ namespace Tradgardsgolf.BlazorWasm.State;
 
 public class ScorecardState : BaseState
 {
-    public ScorecardState() { }
-
     private ScorecardState(CourseResponse courseResponse, IEnumerable<PlayerScores> playerScores)
     {
         CourseResponse = courseResponse;
         PlayerScores = playerScores.ToList();
     }
 
-    [JsonPropertyName("courseResponse")] public CourseResponse CourseResponse { get; set; }
+    [JsonPropertyName("courseResponse")] public CourseResponse CourseResponse { get; init; }
 
-    [JsonPropertyName("playerScores")] public List<PlayerScores> PlayerScores { get; set; }
+    [JsonPropertyName("playerScores")] public List<PlayerScores> PlayerScores { get; init; }
 
     public static ScorecardState Create(CourseResponse courseResponseModel, params PlayerScores[] playerScores)
     {
-        return new ScorecardState
-        {
-            CourseResponse = courseResponseModel,
-            PlayerScores = playerScores.ToList()
-        };
+        return new ScorecardState(courseResponseModel, playerScores);
     }
 
-    public async Task AddPlayer(ComponentBase source, string name)
+    public Task AddPlayer(ComponentBase source, string name)
     {
         var player = State.PlayerScores.Create(name, CourseResponse.Holes);
         PlayerScores.Add(player);
-        await Task.Delay(1);
         base.NotifyStateChange(source, nameof(PlayerScores));
+        return Task.CompletedTask;
     }
 
-    public async Task RemovePlayer(ComponentBase source, string name)
+    public Task RemovePlayer(ComponentBase source, string name)
     {
         PlayerScores.RemoveAll(x => x.PlayerResponse.Name == name);
-        await Task.Delay(1);
         base.NotifyStateChange(source, nameof(PlayerScores));
+        return Task.CompletedTask;
     }
 
-    public async Task ResetScores(ComponentBase source)
+    public Task ResetScores(ComponentBase source)
     {
         foreach (var score in PlayerScores.SelectMany(player => player.Scores))
             score.Score = null;
-
-        await Task.Delay(1);
+        
+        base.NotifyStateChange(source, nameof(PlayerScores));
+        return Task.CompletedTask;
     }
 
     public async Task SetScore(ComponentBase source, string name, int hole, int score)

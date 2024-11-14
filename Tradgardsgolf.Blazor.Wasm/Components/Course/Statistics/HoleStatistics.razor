@@ -37,7 +37,7 @@
                     h.HoleInOnes
                 }))
             .GroupBy(arg => arg.Hole)
-            .Select(x => new HoleStatisticModel()
+            .Select(x => new HoleStatisticModel
             {
                 HoleInOnes = x.Sum(y => y.HoleInOnes),
                 Hole = x.Key,

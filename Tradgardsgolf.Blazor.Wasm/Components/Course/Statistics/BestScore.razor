@@ -18,7 +18,7 @@
         _bestScore = CascadingCourseStatistics.CourseStatisticResponse.PlayerStatistics
             .OrderBy(x => x.BestScore.Score)
             .ThenBy(x => x.BestScore.Date)
-            .Select(x => new BestScoreModel()
+            .Select(x => new BestScoreModel
             {
                 Date = x.BestScore.Date,
                 Player = x.Name,

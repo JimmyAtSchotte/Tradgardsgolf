@@ -45,7 +45,7 @@
 
     private async Task Recalculate()
     {
-        await ApiDispatcher.Dispatch(new RecalculateStatisticsCommand()
+        await ApiDispatcher.Dispatch(new RecalculateStatisticsCommand
         {
             CourseId = Course.Id
         });

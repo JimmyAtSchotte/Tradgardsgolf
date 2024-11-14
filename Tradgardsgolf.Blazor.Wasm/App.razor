@@ -25,42 +25,57 @@
 
     private static Theme CreateTheme(ThemeColor color)
     {
-        var theme = new Theme();
-
-        theme.ColorOptions = new ThemeColorOptions();
-        theme.BackgroundOptions = new ThemeBackgroundOptions();
-        theme.TextColorOptions = new ThemeTextColorOptions();
-        theme.BarOptions = new ThemeBarOptions();
+        var theme = new Theme
+        {
+            ColorOptions = new ThemeColorOptions(),
+            BackgroundOptions = new ThemeBackgroundOptions(),
+            TextColorOptions = new ThemeTextColorOptions(),
+            BarOptions = new ThemeBarOptions()
+        };
 
         theme.ColorOptions.Primary = color.ToRGBA();
         theme.BackgroundOptions.Primary = color.ToRGBA();
         theme.TextColorOptions.Primary = color.ToRGBA();
 
-        theme.BarOptions.DarkColors = new ThemeBarColorOptions();
-        theme.BarOptions.DarkColors.BackgroundColor = color.ToRGBA();
-        theme.BarOptions.DarkColors.Color = "#FFFFFF";
-        theme.BarOptions.DarkColors.BrandColorOptions = new ThemeBarBrandColorOptions();
-        theme.BarOptions.DarkColors.BrandColorOptions.BackgroundColor = color.ToRGBA();
-        theme.BarOptions.DarkColors.ItemColorOptions = new ThemeBarItemColorOptions();
-        theme.BarOptions.DarkColors.ItemColorOptions.ActiveColor = "#FFFFFF";
-        theme.BarOptions.DarkColors.ItemColorOptions.ActiveBackgroundColor = color.ToRGBA();
-        theme.BarOptions.DarkColors.ItemColorOptions.HoverColor = "#FFFFFF";
-        theme.BarOptions.DarkColors.ItemColorOptions.HoverBackgroundColor = color.ToRGBA();
+        theme.BarOptions.DarkColors = new ThemeBarColorOptions
+        {
+            BackgroundColor = color.ToRGBA(),
+            Color = "#FFFFFF",
+            BrandColorOptions = new ThemeBarBrandColorOptions
+            {
+                BackgroundColor = color.ToRGBA()
+            },
+            ItemColorOptions = new ThemeBarItemColorOptions
+            {
+                ActiveColor = "#FFFFFF",
+                ActiveBackgroundColor = color.ToRGBA(),
+                HoverColor = "#FFFFFF",
+                HoverBackgroundColor = color.ToRGBA()
+            }
+        };
 
-        theme.BarOptions.LightColors = new ThemeBarColorOptions();
-        theme.BarOptions.LightColors.BackgroundColor = color.ToRGBA();
-        theme.BarOptions.LightColors.Color = "#000000";
-        theme.BarOptions.LightColors.BrandColorOptions = new ThemeBarBrandColorOptions();
-        theme.BarOptions.LightColors.BrandColorOptions.BackgroundColor = color.ToRGBA(0.6);
-        theme.BarOptions.LightColors.ItemColorOptions = new ThemeBarItemColorOptions();
-        theme.BarOptions.LightColors.ItemColorOptions.ActiveColor = "#000000";
-        theme.BarOptions.LightColors.ItemColorOptions.ActiveBackgroundColor = color.ToRGBA(0.6);
-        theme.BarOptions.LightColors.ItemColorOptions.HoverColor = "#000000";
-        theme.BarOptions.LightColors.ItemColorOptions.HoverBackgroundColor = color.ToRGBA(0.6);
+        theme.BarOptions.LightColors = new ThemeBarColorOptions
+        {
+            BackgroundColor = color.ToRGBA(),
+            Color = "#000000",
+            BrandColorOptions = new ThemeBarBrandColorOptions
+            {
+                BackgroundColor = color.ToRGBA(0.6)
+            },
+            ItemColorOptions = new ThemeBarItemColorOptions
+            {
+                ActiveColor = "#000000",
+                ActiveBackgroundColor = color.ToRGBA(0.6),
+                HoverColor = "#000000",
+                HoverBackgroundColor = color.ToRGBA(0.6)
+            }
+        };
 
-        theme.InputOptions = new ThemeInputOptions();
-        theme.InputOptions.CheckColor = color.ToRGBA();
-        theme.InputOptions.SliderColor = color.ToRGBA();
+        theme.InputOptions = new ThemeInputOptions
+        {
+            CheckColor = color.ToRGBA(),
+            SliderColor = color.ToRGBA()
+        };
 
         return theme;
     }

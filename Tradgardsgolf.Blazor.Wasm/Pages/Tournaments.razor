@@ -53,7 +53,7 @@
         _tournaments = await apiDispatcher.Dispatch(new QueryTournamentResultsCommand());
     }
 
-    private string GetScore(PlayerTournamentScore result, int index)
+    private static string GetScore(PlayerTournamentScore result, int index)
     {
         return index < result.Results.Count()
             ? result.Results.ElementAt(index).ToString()

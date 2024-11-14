@@ -2,15 +2,13 @@
 
 public class HoleScoreModel
 {
-    public HoleScoreModel() { }
-
     private HoleScoreModel(int hole)
     {
         Hole = hole;
         Score = default;
     }
 
-    public int Hole { get; set; }
+    public int Hole { get; }
     public int? Score { get; set; }
 
     public static HoleScoreModel Create(int hole)
@@ -20,9 +18,6 @@ public class HoleScoreModel
 
     public override string ToString()
     {
-        if (Score.HasValue)
-            return Score.ToString();
-
-        return "-";
+        return Score.HasValue ? Score.ToString() : "-";
     }
 }

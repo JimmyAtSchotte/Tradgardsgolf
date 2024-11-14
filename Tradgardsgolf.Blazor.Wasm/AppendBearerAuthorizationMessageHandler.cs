@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -18,11 +19,11 @@ public class AppendBearerAuthorizationMessageHandler : DelegatingHandler, IDispo
     {
         _provider = provider;
 
-        if (_provider is AuthenticationStateProvider authStateProvider)
-        {
-            _authenticationStateChangedHandler = _ => { _lastToken = null; };
-            authStateProvider.AuthenticationStateChanged += _authenticationStateChangedHandler;
-        }
+        if (_provider is not AuthenticationStateProvider authStateProvider) 
+            return;
+        
+        _authenticationStateChangedHandler = _ => { _lastToken = null; };
+        authStateProvider.AuthenticationStateChanged += _authenticationStateChangedHandler;
     }
 
     void IDisposable.Dispose()
@@ -30,6 +31,7 @@ public class AppendBearerAuthorizationMessageHandler : DelegatingHandler, IDispo
         if (_provider is AuthenticationStateProvider authStateProvider)
             authStateProvider.AuthenticationStateChanged -= _authenticationStateChangedHandler;
         Dispose(true);
+        GC.SuppressFinalize(this);
     }
 
 

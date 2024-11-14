@@ -51,7 +51,7 @@
 
     private async Task ResetScore()
     {
-        await ApiDispatcher.Dispatch(new ResetCourseScoreCommand()
+        await ApiDispatcher.Dispatch(new ResetCourseScoreCommand
         {
             CourseId = Course.Id,
             ResetDate = _resetDate

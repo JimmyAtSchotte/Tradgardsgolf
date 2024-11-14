@@ -58,7 +58,7 @@
                     .Take(CascadingCourse.Course.SeasonTableRounds)
                     .ToArray()
             })
-            .OrderByDescending(m => m.Scores.Count())
+            .OrderByDescending(m => m.Scores.Length)
             .ThenBy(m => m.Scores.Sum()) 
                              ?? Enumerable.Empty<SeasonTableModel>();
     }
@@ -77,10 +77,7 @@
 
         public string GetScore(int i)
         {
-            if (Scores.Length <= i)
-                return "-";
-
-            return Scores[i].ToString();
+            return Scores.Length <= i ? "-" : Scores[i].ToString();
         }
     }
 

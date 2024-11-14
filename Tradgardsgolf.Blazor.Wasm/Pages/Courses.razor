@@ -25,10 +25,10 @@
                     </CourseContent>
                     <CourseButtons>
                         <ConditionalComponent Condition="() => AllowPlay(course)" Name="Play">
-                            <Button Clicked="async () => await SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Blazorise.Icon Name="MaterialIcons.GolfCourse"></Blazorise.Icon></Button>
+                            <Button Clicked="() => SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Blazorise.Icon Name="MaterialIcons.GolfCourse"></Blazorise.Icon></Button>
                         </ConditionalComponent>
                         <ConditionalComponent Condition="() => AllowEdit(course)" Name="Edit">
-                            <Button Clicked="async () => await Edit(course)" Color="Color.Secondary"><Blazorise.Icon Name="MaterialIcons.Settings"></Blazorise.Icon></Button>
+                            <Button Clicked="() => Edit(course)" Color="Color.Secondary"><Blazorise.Icon Name="MaterialIcons.Settings"></Blazorise.Icon></Button>
                         </ConditionalComponent>
                         <ConditionalComponent Condition="() => AllowClaimOwnerShip(course)" Name="ClaimOwnerShip">
                             <Button Clicked="async () => await ClaimOwnership(course)" Color="Color.Secondary">Ta ägarskap</Button>
@@ -92,10 +92,9 @@
                userId == course.OwnerGuid;
     }
 
-    private async Task SetupRound(CourseResponse course)
+    private void SetupRound(CourseResponse course)
     {
         StateProvider.AppState.NewScorecard(this, course);
-        await Task.Delay(1);
         NavigationManager.NavigateTo("setup-round");
     }
 
@@ -122,7 +121,7 @@
                _authenticationState.User.TryGetUserId(out _);
     }
     
-    private async Task Edit(CourseResponse course)
+    private void Edit(CourseResponse course)
     {
         NavigationManager.NavigateTo($"edit-course?CourseId={course.Id}");
     }

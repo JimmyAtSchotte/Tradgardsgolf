@@ -33,13 +33,13 @@
 @code {
     private string _newName;
     private string _oldName;
-    private List<string> _players = new ();
+    private List<string> _players = [];
     
     [Parameter] public CourseResponse Course { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var players = (await ApiDispatcher.Dispatch(new QueryPlayersPlayedOnCourse()
+        var players = (await ApiDispatcher.Dispatch(new QueryPlayersPlayedOnCourse
         {
             CourseId = Course.Id
         })).Select(x => x.Name).OrderBy(x => x).ToList();
@@ -50,7 +50,7 @@
 
     private async Task UpdateName()
     {
-        await ApiDispatcher.Dispatch(new UpdatePlayerNameCommand()
+        await ApiDispatcher.Dispatch(new UpdatePlayerNameCommand
         {
             NewName = _newName,
             OldName = _oldName,

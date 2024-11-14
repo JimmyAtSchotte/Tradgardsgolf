@@ -45,11 +45,11 @@
 
     private HtmlMarker marker;
 
-    public StyleOptions StyleOptions = new StyleOptions
+    public readonly StyleOptions StyleOptions = new()
     {
         Style = MapStyle.Road,
         ShowLogo = false,
-        ShowFeedbackLink = false,
+        ShowFeedbackLink = false
     };
 
     private bool _positionUpdated;
@@ -59,11 +59,11 @@
         if (marker is null)
             return;
 
-        await ApiDispatcher.Dispatch(new UpdateCourseLocationCommand()
+        await ApiDispatcher.Dispatch(new UpdateCourseLocationCommand
         {
             Id = Course.Id,
             Longitude = marker.Options.Position.Longitude,
-            Latitude = marker.Options.Position.Latitude,
+            Latitude = marker.Options.Position.Latitude
         });
 
         _positionUpdated = true;

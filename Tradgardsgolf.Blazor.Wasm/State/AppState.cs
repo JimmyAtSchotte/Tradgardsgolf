@@ -26,7 +26,7 @@ public class AppState : BaseState
 
     [JsonPropertyName("scorecardState")] public ScorecardState ScorecardState { get; set; }
 
-    [JsonPropertyName("lastAccessed")] public DateTime LastAccessed { get; set; }
+    [JsonPropertyName("lastAccessed")] private DateTime LastAccessed { get; set; }
 
     public void NewScorecard(ComponentBase source, CourseResponse courseResponseModel)
     {

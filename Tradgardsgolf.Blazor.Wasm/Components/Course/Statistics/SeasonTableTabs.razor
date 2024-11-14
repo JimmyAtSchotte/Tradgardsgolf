@@ -3,17 +3,17 @@
       FullWidth="true"
       Pills="true">
     <Items>
-        @foreach (var year in _seasons)
+        @foreach (var season in _seasons)
         {
-            <Tab Name="@year.ToString()">@year</Tab>
+            <Tab Name="@season">@season</Tab>
         }
     </Items>
     <Content>
         @foreach (var y in _seasons)
         {
-            var year = y;
-            <TabPanel Name="@year.ToString()">
-                <SeasonTable Season="@year"></SeasonTable>
+            var season = y;
+            <TabPanel Name="@season">
+                <SeasonTable Season="@season"></SeasonTable>
             </TabPanel>
         }
     </Content>

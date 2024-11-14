@@ -15,8 +15,6 @@
         if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
-        var scoreReset = CascadingCourseStatistics.CascadingCourse.Course.ScoreReset.GetValueOrDefault(DateTime.MinValue);
-
         _bestAverageModels = CascadingCourseStatistics.CourseStatisticResponse.PlayerStatistics.OrderBy(x => x.AverageScore)
             .Select(x => new BestAverageModel
             {

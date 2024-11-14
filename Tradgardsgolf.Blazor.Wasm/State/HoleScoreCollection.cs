@@ -11,7 +11,7 @@ public class HoleScoreCollection : IList<HoleScoreModel>
     public HoleScoreModel this[int index]
     {
         get => _holeScores.FirstOrDefault(x => x.Hole == index);
-        set => this[index] = value;
+        set => _holeScores[index] = value;
     }
 
     public int Count => _holeScores.Count;

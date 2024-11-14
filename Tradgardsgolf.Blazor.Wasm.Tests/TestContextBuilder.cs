@@ -39,15 +39,13 @@ public class TestContextBuilder : IDisposable
         return this;
     }
 
-    public TestContextBuilder UseMock<T>(Action<Mock<T>> mockSetup)
+    public void UseMock<T>(Action<Mock<T>> mockSetup)
         where T : class
     {
         var mock = new Mock<T>();
         mockSetup.Invoke(mock);
 
         _context.Services.AddSingleton(mock.Object);
-
-        return this;
     }
 
     public TestContext Build()

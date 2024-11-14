@@ -2,7 +2,6 @@
 @using Blazorise.Icons.Material
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.Contracts.Players
-@using Icon = Blazorise.Icon
 @using IModalService = Blazored.Modal.Services.IModalService
 @inject IApiDispatcher ApiDispatcher
 @inject NavigationManager NavigationManager
@@ -41,7 +40,7 @@
                 </Button>
                 <Button Clicked="async () => await Play()"
                         Float="Float.End"
-                        Disabled="!State.AppState.ScorecardState.PlayerScores.Any()"
+                        Disabled="@(State.AppState.ScorecardState.PlayerScores.Any() == false)"
                         Color="Color.Primary">
                     Börja spela <Blazorise.Icon Name="MaterialIcons.PlayArrow"></Blazorise.Icon>
                 </Button>
@@ -52,12 +51,12 @@
 </CascadingCourse>
 
 <AuthorizeView>
-    @if (State.AppState.ScorecardState.PlayerScores.All(x => x.PlayerResponse.Name != context.User.Identity.Name))
+    @if (State.AppState.ScorecardState.PlayerScores.All(x => x.PlayerResponse.Name != IdentityName(context)))
     {
         <Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
             <CardBody>
-                <PlayerListItem Player="new PlayerResponse { Name = context.User.Identity.Name }">
-                    <Button Clicked="async () => await AddPlayer(context.User.Identity.Name)" Float="Float.End" Color="Color.Primary">
+                <PlayerListItem Player="new PlayerResponse { Name = IdentityName(context) }">
+                    <Button Clicked="async () => await AddPlayer(IdentityName(context))" Float="Float.End" Color="Color.Primary">
                         <Blazorise.Icon Name="MaterialIcons.Add"></Blazorise.Icon>
                     </Button>
                 </PlayerListItem>
@@ -92,7 +91,6 @@ else if (AvailablePlayers.Any())
 {
     [CascadingParameter] public CascadingStateProvider State { get; set; }
 
-    private string PlayerName { get; set; }
     private IEnumerable<PlayerResponse> _availablePlayers;
 
     private IEnumerable<PlayerResponse> AvailablePlayers => _availablePlayers?
@@ -114,7 +112,6 @@ else if (AvailablePlayers.Any())
             return;
 
         await State.AppState.ScorecardState.AddPlayer(this, player);
-        PlayerName = string.Empty;
         StateHasChanged();
     }
 
@@ -134,12 +131,18 @@ else if (AvailablePlayers.Any())
 
     private async Task NewPlayer()
     {
-        var playAgain = Modal.Show<NewPlayerModal>("Lägg till ny spelare");
+        var newPlayerModal = Modal.Show<NewPlayerModal>("Lägg till ny spelare");
 
-        var result = await playAgain.Result;
+        var result = await newPlayerModal.Result;
         if (result.Cancelled)
             return;
+        
+        if(result.Data is string player && !string.IsNullOrEmpty(player))
+            await AddPlayer(player);
+    }
 
-        await AddPlayer(result.Data.ToString());
+    private static string IdentityName(AuthenticationState context)
+    {
+        return context.User?.Identity?.Name;
     }
 }

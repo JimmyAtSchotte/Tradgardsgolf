@@ -23,7 +23,7 @@ namespace Tradgardsgolf.BlazorWasm;
 
 public class Program
 {
-    private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+    private static Polly.Retry.AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy()
     {
         return HttpPolicyExtensions
             .HandleTransientHttpError()

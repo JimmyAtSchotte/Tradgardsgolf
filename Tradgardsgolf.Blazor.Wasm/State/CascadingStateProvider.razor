@@ -16,7 +16,7 @@
     protected override async Task OnParametersSetAsync()
     {
         AppState = await ReadAppSate();
-        AppState.StateChanged += async (source, property) => await SaveAppStateAsync();
+        AppState.StateChanged += AppStateOnStateChanged;
         _hasLoaded = true;
     }
 
@@ -44,7 +44,12 @@
 
     void IDisposable.Dispose()
     {
-        if (AppState != null) AppState.StateChanged -= async (source, property) => await SaveAppStateAsync();
+        if (AppState != null) AppState.StateChanged -= AppStateOnStateChanged;
+    }
+
+    private async void AppStateOnStateChanged(ComponentBase source, string property)
+    {
+        await SaveAppStateAsync();
     }
 
 }

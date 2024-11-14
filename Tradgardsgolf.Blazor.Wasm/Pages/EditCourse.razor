@@ -27,7 +27,7 @@
     
     protected override async Task OnInitializedAsync()
     {
-        _course= await ApiDispatcher.Dispatch(new QueryCourse(){ Id = CourseId });
+        _course= await ApiDispatcher.Dispatch(new QueryCourse{ Id = CourseId });
     }
 
     private void OnSaved(CourseResponse course)
