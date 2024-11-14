@@ -10,6 +10,7 @@ public class SpecificationEquality
     [TestCaseSource(typeof(TestSources), nameof(TestSources.Sources))]
     public void ShouldBeEqualByReference(TestSource source)
     {
+        // ReSharper disable once EqualExpressionComparison
         var isEqual = source.SourceObject.Equals(source.SourceObject);
         isEqual.Should().BeTrue();
     }
@@ -61,8 +62,6 @@ public class SpecificationEquality
 
     private class TestSources
     {
-        private static readonly Guid Guid = Guid.NewGuid();
-
         public static IEnumerable<TestSource> Sources = CreateTestSources();
 
         private static IEnumerable<TestSource> CreateTestSources()
@@ -86,9 +85,9 @@ public class SpecificationEquality
                     .Select(p => GetOtherValue(p.ParameterType))
                     .ToArray();
 
-                var sourceObject = Activator.CreateInstance(type, parameters);
-                var sameObject = Activator.CreateInstance(type, parameters);
-                var otherObject = Activator.CreateInstance(type, otherParameters);
+                var sourceObject = Activator.CreateInstance(type, parameters) ?? throw new InvalidOperationException($"Cannot create an instance of {type.Name}");
+                var sameObject = Activator.CreateInstance(type, parameters) ?? throw new InvalidOperationException($"Cannot create an instance of {type.Name}");
+                var otherObject = Activator.CreateInstance(type, otherParameters) ?? throw new InvalidOperationException($"Cannot create an instance of {type.Name}");
 
                 yield return new TestSource(sourceObject, sameObject, otherObject);
             }
@@ -104,9 +103,10 @@ public class SpecificationEquality
             if (type == typeof(long)) return 1L;
             if (type == typeof(double)) return 1.0;
             if (type == typeof(decimal)) return 1m;
-            if (type.IsEnum) return Enum.GetValues(type).GetValue(0);
-            if (type.IsValueType) return Activator.CreateInstance(type);
-            return null;
+            if (type.IsEnum) return Enum.GetValues(type).GetValue(0)!;
+            if (type.IsValueType) return Activator.CreateInstance(type) ?? throw new InvalidOperationException($"Cannot create default value for type {type.FullName}");
+
+            throw new NotImplementedException($"The type {type.FullName} is not implemented.");
         }
         
         private static object GetOtherValue(Type type)
@@ -119,23 +119,17 @@ public class SpecificationEquality
             if (type == typeof(long)) return 11L;
             if (type == typeof(double)) return 11.0;
             if (type == typeof(decimal)) return 11m;
-            if (type.IsEnum) return Enum.GetValues(type).GetValue(Enum.GetValues(type).Length);
-            if (type.IsValueType) return Activator.CreateInstance(type);
-            return null;
+            if (type.IsEnum) return Enum.GetValues(type).GetValue(Enum.GetValues(type).Length)!;
+            if (type.IsValueType) return Activator.CreateInstance(type) ?? throw new InvalidOperationException($"Cannot create default value for type {type.FullName}");
+            
+            throw new NotImplementedException($"The type {type.FullName} is not implemented.");
         }
     }
 
-    public class TestSource
+    public class TestSource(object sourceObject, object sameAsSourceObject, object otherObject)
     {
-        public TestSource(object sourceObject, object sameAsSourceObject, object otherObject)
-        {
-            SourceObject = sourceObject;
-            SameAsSourceObject = sameAsSourceObject;
-            OtherObject = otherObject;
-        }
-
-        public object OtherObject { get; set; }
-        public object SourceObject { get; set; }
-        public object SameAsSourceObject { get; set; }
+        public object OtherObject { get; } = otherObject;
+        public object SourceObject { get; } = sourceObject;
+        public object SameAsSourceObject { get; } = sameAsSourceObject;
     }
 }

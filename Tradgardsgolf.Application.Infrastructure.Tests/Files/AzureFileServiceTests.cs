@@ -27,9 +27,9 @@ public class AzureFileServiceTests
     [Test]
     public async Task UploadDownloadDelete()
     {
-        var testData = "Hello world!";
+        const string testData = "Hello world!";
         var bytes = Encoding.UTF8.GetBytes(testData);
-        var fileName = "test.txt";
+        const string fileName = "test.txt";
 
         var fileService = new AzureFileService(Options());
         await fileService.Save(fileName, bytes);

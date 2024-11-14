@@ -29,7 +29,7 @@ public class AzureFileService : IFileService
         var bytes = memoryStream.ToArray();
         memoryStream.Close();
 
-        return memoryStream.ToArray();
+        return bytes;
     }
 
     public async Task Save(string filename, byte[] bytes)

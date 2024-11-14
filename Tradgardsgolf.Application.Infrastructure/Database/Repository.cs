@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Infrastructure.Database;

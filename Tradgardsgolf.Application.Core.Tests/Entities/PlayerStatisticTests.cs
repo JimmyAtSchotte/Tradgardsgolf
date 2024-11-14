@@ -9,7 +9,7 @@ public class PlayerStatisticTests
     [Test]
     public void AddScorecardSinglePlayer()
     {
-        var playerName = "Jimmy";
+        const string playerName = "Jimmy";
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         var scorecard = Scorecard.Create(course.Id, course.Revision);
@@ -30,8 +30,8 @@ public class PlayerStatisticTests
     [Test]
     public void AddScorecardMultiplePlayers()
     {
-        var playerName1 = "Jimmy";
-        var playerName2 = "Patrik";
+        const string playerName1 = "Jimmy";
+        const string playerName2 = "Patrik";
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         var scorecard = Scorecard.Create(course.Id, course.Revision);
@@ -63,8 +63,8 @@ public class PlayerStatisticTests
     [Test]
     public void AddMultipleScorecardsMultiplePlayers()
     {
-        var playerName1 = "Jimmy";
-        var playerName2 = "Patrik";
+        const string playerName1 = "Jimmy";
+        const string playerName2 = "Patrik";
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         
@@ -100,7 +100,7 @@ public class PlayerStatisticTests
     [Test]
     public void PlayerNotInScorecard()
     {
-        var playerName = "Jimmy";
+        const string playerName = "Jimmy";
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         
@@ -121,7 +121,7 @@ public class PlayerStatisticTests
     [Test]
     public void NotCorrectCourseRevision()
     {
-        var playerName = "Jimmy";
+        const string playerName = "Jimmy";
         
         var course = Course.Create(Guid.NewGuid(), p =>
         {

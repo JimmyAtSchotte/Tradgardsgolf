@@ -2,6 +2,8 @@
 using System.Linq;
 using Tradgardsgolf.Core.Entities;
 
+namespace Tradgardsgolf.Core.Services;
+
 public class CourseStatisticService
 {
     private readonly Course _course;
@@ -29,7 +31,9 @@ public class CourseStatisticService
 
     public Course MigrateCourseToRevision()
     {
-        _course.ResetScore(_course.ScoreReset.Value);
+        if(_course.ScoreReset.HasValue)
+            _course.ResetScore(_course.ScoreReset.Value);
+        
         return _course;
     }
 

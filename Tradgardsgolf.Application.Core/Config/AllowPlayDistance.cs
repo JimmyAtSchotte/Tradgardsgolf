@@ -2,5 +2,5 @@
 
 public class AllowPlayDistance
 {
-    public int Value { get; set; }
+    public int Value { get; init; }
 }

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Tradgardsgolf.Core.Entities;
 
+[SuppressMessage("ReSharper", "UnusedMember.Local")]
+[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 public class TournamentCourseDate
 {
     private TournamentCourseDate() { }

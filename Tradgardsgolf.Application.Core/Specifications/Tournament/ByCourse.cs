@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Ardalis.Specification;
 
 namespace Tradgardsgolf.Core.Specifications.Tournament;
 
+[SuppressMessage("ReSharper", "UnusedParameter.Global")]
+[SuppressMessage("ReSharper", "PartialTypeWithSinglePart")]
 public static partial class TournamentSpecificationExtensions
 {
     public static ISpecification<Entities.Tournament> ByCourseAndDate(this SpecificationSet<Entities.Tournament> set,

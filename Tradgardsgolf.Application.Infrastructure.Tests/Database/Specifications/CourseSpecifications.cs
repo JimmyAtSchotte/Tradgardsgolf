@@ -1,5 +1,4 @@
-﻿using Ardalis.Specification;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Infrastructure.Database;

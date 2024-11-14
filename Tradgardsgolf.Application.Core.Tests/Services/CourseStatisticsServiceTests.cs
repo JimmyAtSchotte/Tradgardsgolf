@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Tradgardsgolf.Core.Entities;
+using Tradgardsgolf.Core.Services;
 
 namespace Tradgardsgolf.Application.Core.Tests.Services;
 
@@ -138,7 +139,7 @@ public class CourseStatisticsServiceTests
 
         var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
-        var result = courseMigrator.GeneratePlayerStatistics();
+        var result = courseMigrator.GeneratePlayerStatistics().ToList();
 
         result.Should().HaveCount(1);
         result.First().Name.Should().Be("Player1");
@@ -159,7 +160,7 @@ public class CourseStatisticsServiceTests
         
         var courseMigrator = new CourseStatisticService(course, [scorecard], [playerStatistic], []);
 
-        var result = courseMigrator.GeneratePlayerStatistics();
+        var result = courseMigrator.GeneratePlayerStatistics().ToList();
 
         result.Should().HaveCount(1);
         result.First().Name.Should().Be("Player1");
@@ -181,7 +182,7 @@ public class CourseStatisticsServiceTests
 
         var courseMigrator = new CourseStatisticService(course, [scorecard, scorecard2]);
 
-        var result = courseMigrator.GenerateCourseSeasons();
+        var result = courseMigrator.GenerateCourseSeasons().ToList();
 
         result.Should().HaveCount(1);
         result.First().Players.Should().HaveCount(1);
@@ -207,7 +208,7 @@ public class CourseStatisticsServiceTests
         
         var courseMigrator = new CourseStatisticService(course, [scorecard, scorecard2], [], [courseSeason]);
 
-        var result = courseMigrator.GenerateCourseSeasons();
+        var result = courseMigrator.GenerateCourseSeasons().ToList();
 
         result.Should().HaveCount(1);
         result.First().Id.Should().Be(courseSeason.Id);

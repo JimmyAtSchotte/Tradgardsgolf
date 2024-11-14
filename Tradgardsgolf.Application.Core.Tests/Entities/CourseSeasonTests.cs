@@ -9,7 +9,7 @@ public class CourseSeasonTests
     [Test]
     public void AddScorecardSinglePlayer()
     {
-        var playerName = "Jimmy";
+        const string playerName = "Jimmy";
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         var scorecard = Scorecard.Create(course.Id, course.Revision);
@@ -34,13 +34,13 @@ public class CourseSeasonTests
 
         courseSeason.Add(scorecard);
         
-        courseSeason.Players.Count().Should().Be(2);
+        courseSeason.Players.Count.Should().Be(2);
     }
     
     [Test]
     public void AddMultipleScorecardsSamePlayer()
     {
-        var playerName = "Jimmy";
+        const string playerName = "Jimmy";
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
 

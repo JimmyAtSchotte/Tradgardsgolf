@@ -3,6 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StatsMigration;
+using Tradgardsgolf.Core.Services;
 using Tradgardsgolf.Infrastructure.Database;
 
 

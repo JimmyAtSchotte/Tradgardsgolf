@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Tournament;

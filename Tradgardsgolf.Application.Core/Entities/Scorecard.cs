@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Tradgardsgolf.Core.Entities;
 
+[SuppressMessage("ReSharper", "UnusedMember.Local")]
 public class Scorecard : BaseEntity
 {
     private IDictionary<string, int[]> _scores;
@@ -14,7 +16,7 @@ public class Scorecard : BaseEntity
     public IDictionary<string, int[]> Scores
     {
         get => _scores ??= new Dictionary<string, int[]>();
-        set => _scores = value;
+        init => _scores = value;
     }
     public Guid TournamentId { get; set; }
 

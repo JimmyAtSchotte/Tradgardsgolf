@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Tradgardsgolf.Core.Entities;
 
+[SuppressMessage("ReSharper", "UnusedMember.Local")]
 public class CourseSeason : BaseEntity
 {
     private Dictionary<string, List<int>> _players;
@@ -14,7 +16,7 @@ public class CourseSeason : BaseEntity
     public Dictionary<string, List<int>> Players
     {
         get => _players ??= new Dictionary<string, List<int>>();
-        set => _players = value;
+        init => _players = value;
     }
 
     
@@ -39,7 +41,7 @@ public class CourseSeason : BaseEntity
         {
             if (!Players.TryGetValue(score.Key, out var scores))
             {
-                scores = new List<int>();
+                scores = [];
                 Players.Add(score.Key, scores);
             }
             

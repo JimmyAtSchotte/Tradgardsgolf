@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Tradgardsgolf.Core.Entities;
 
-[Table("course")]
+[SuppressMessage("ReSharper", "UnusedMember.Local")]
 public class Course : BaseEntity
 {
 
@@ -12,7 +11,7 @@ public class Course : BaseEntity
     public int Holes { get; set; }
     public double Longitude { get; set; }
     public double Latitude { get; set; }
-    public DateTime Created { get; set; }
+    public DateTime Created { get; init; }
     public DateTime? ScoreReset { get; set; }
     public string Image { get; set; }
     public Guid OwnerGuid { get; set; }

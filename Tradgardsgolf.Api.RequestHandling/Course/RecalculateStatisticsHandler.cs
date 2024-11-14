@@ -8,6 +8,7 @@ using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Auth;
 using Tradgardsgolf.Core.Exceptions;
 using Tradgardsgolf.Core.Infrastructure;
+using Tradgardsgolf.Core.Services;
 using Tradgardsgolf.Core.Specifications;
 using Tradgardsgolf.Core.Specifications.Scorecard;
 using Tradgardsgolf.Core.Specifications.CourseSeason;

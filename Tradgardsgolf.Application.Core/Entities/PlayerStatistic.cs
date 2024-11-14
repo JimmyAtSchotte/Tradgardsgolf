@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Tradgardsgolf.Core.Entities;
 
+[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Local")]
 public class PlayerStatistic : BaseEntity
 {
     private BestScore _bestScore;
@@ -45,13 +47,12 @@ public class PlayerStatistic : BaseEntity
 
     public void Add(Scorecard scorecard)
     {
-        if(!scorecard.Scores.ContainsKey(Name))
+        if(!scorecard.Scores.TryGetValue(Name, out var scores))
             return;
         
         if(scorecard.CourseRevision != CourseRevision)
             return;
             
-        var scores = scorecard.Scores[Name];
         var sum = scores.Sum();
         
         UpdateAverageScore(sum);
@@ -81,7 +82,7 @@ public class PlayerStatistic : BaseEntity
         {
             var holeStatistic = HoleStatistics.ElementAt(i);
         
-            holeStatistic.AverageScore = ((holeStatistic.AverageScore * TimesPlayed) + scores[i]) / (TimesPlayed + 1);
+            holeStatistic.AverageScore = (holeStatistic.AverageScore * TimesPlayed + scores[i]) / (TimesPlayed + 1);
 
             if (scores[i] == 1)
                 holeStatistic.HoleInOnes++;
@@ -90,7 +91,7 @@ public class PlayerStatistic : BaseEntity
 
     private void UpdateAverageScore(int sum)
     {
-        AverageScore = ((AverageScore * TimesPlayed) + sum) / (TimesPlayed + 1);
+        AverageScore = (AverageScore * TimesPlayed + sum) / (TimesPlayed + 1);
     }
 
     public void Reset()

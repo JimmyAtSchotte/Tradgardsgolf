@@ -21,9 +21,9 @@ public abstract class SpecificationEquatable<TEntity, TSpecification> : Specific
     {
         if (obj is null) return false;
         if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != GetType()) return false;
         
-        return Equals((SpecificationEquatable<TEntity, TSpecification>)obj);
+        return obj.GetType() == GetType() && 
+               Equals((SpecificationEquatable<TEntity, TSpecification>)obj);
     }
 
     public override int GetHashCode()

@@ -20,7 +20,7 @@ public class ScorecardSpecifications
         
         var specification = Specs.Scorecard.ByCourse(scorecard.CourseId);
         var repository = new Repository(context);
-        var scorecards = await repository.ListAsync(specification, CancellationToken.None);
+        var scorecards = (await repository.ListAsync(specification, CancellationToken.None)).ToList();
 
         scorecards.Should().HaveCount(1);
         scorecards.Should().Contain(scorecard);

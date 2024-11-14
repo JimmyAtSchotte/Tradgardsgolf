@@ -3,7 +3,7 @@ using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Application.Infrastructure.Tests.Database;
 
-public class TradgardsgolfContextFactory
+public static class TradgardsgolfContextFactory
 {
     internal static TradgardsgolfContext CreateTradgardsgolfContext()
     {

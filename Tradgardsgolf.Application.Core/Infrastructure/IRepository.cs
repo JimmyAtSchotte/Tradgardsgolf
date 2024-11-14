@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.Specification;
-using Tradgardsgolf.Core.Entities;
 
 namespace Tradgardsgolf.Core.Infrastructure;
 

@@ -5,11 +5,11 @@ namespace Tradgardsgolf.Infrastructure.Database;
 
 public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options) : DbContext(options)
 {
-    public DbSet<Course> Courses { get; set; }
-    public DbSet<Scorecard> Scorecards { get; set; }
-    public DbSet<Tournament> Tournament { get; set; }
-    public DbSet<CourseSeason> CourseSeason { get; set; }
-    public DbSet<PlayerStatistic> PlayerStatistic { get; set; }
+    public DbSet<Course> Courses { get; init; }
+    public DbSet<Scorecard> Scorecards { get; init; }
+    public DbSet<Tournament> Tournament { get; init; }
+    public DbSet<CourseSeason> CourseSeason { get; init; }
+    public DbSet<PlayerStatistic> PlayerStatistic { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
