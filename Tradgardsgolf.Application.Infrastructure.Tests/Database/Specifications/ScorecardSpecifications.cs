@@ -14,7 +14,7 @@ public class ScorecardSpecifications
     {
         var scorecard =Scorecard.Create(Guid.NewGuid(), 0);
 
-        var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
+        var context = await TradgardsgolfContextFactory.CreateTradgardsgolfContext();
         context.Add(scorecard);
         await context.SaveChangesAsync();
         
@@ -31,7 +31,7 @@ public class ScorecardSpecifications
     {
         var scorecard =Scorecard.Create(Guid.NewGuid(), 0);
 
-        var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
+        var context =  await TradgardsgolfContextFactory.CreateTradgardsgolfContext();
         context.Add(scorecard);
         await context.SaveChangesAsync();
         
@@ -48,7 +48,7 @@ public class ScorecardSpecifications
     {
         var scorecard =Scorecard.Create(Guid.NewGuid(), 0);
 
-        var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
+        var context =  await TradgardsgolfContextFactory.CreateTradgardsgolfContext();
         context.Add(scorecard);
         await context.SaveChangesAsync();
         
@@ -64,7 +64,7 @@ public class ScorecardSpecifications
     {
         var scorecard =Scorecard.Create(Guid.NewGuid(), 0);
 
-        var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
+        var context =  await TradgardsgolfContextFactory.CreateTradgardsgolfContext();
         context.Add(scorecard);
         await context.SaveChangesAsync();
         
@@ -80,7 +80,7 @@ public class ScorecardSpecifications
     {
         var tournament = Tournament.Create("Test");
         
-        var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
+        var context =  await TradgardsgolfContextFactory.CreateTradgardsgolfContext();
         context.Add(tournament);
         
         var scorecard =Scorecard.Create(Guid.NewGuid(), 0);

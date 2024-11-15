@@ -12,8 +12,8 @@ public class CourseSpecifications
     public async Task ShouldFindExistingCourseById()
     {
         var course = Course.Create(Guid.NewGuid(), p => p.Name = "TestCourse");
-        var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
-        context.Add(course);
+        var context = await TradgardsgolfContextFactory.CreateTradgardsgolfContext();
+        await context.AddAsync(course);
         await context.SaveChangesAsync();
         
         var specification = Specs.ById<Course>(course.Id);
@@ -29,8 +29,8 @@ public class CourseSpecifications
     public async Task ShouldNotFindAnUnknownCourseById()
     {
         var course = Course.Create(Guid.NewGuid(), p => p.Name = "TestCourse");
-        var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
-        context.Add(course);
+        var context = await TradgardsgolfContextFactory.CreateTradgardsgolfContext();
+        await context.AddAsync(course);
         await context.SaveChangesAsync();
         
         var specification = Specs.ById<Course>(Guid.NewGuid());

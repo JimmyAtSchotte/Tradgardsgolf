@@ -17,7 +17,7 @@ public class TournamentSpecifications
         var tournament = Tournament.Create("Test");
         tournament.AddCourseDate(courseId, DateTime.Today);
         
-        var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
+        var context =  await TradgardsgolfContextFactory.CreateTradgardsgolfContext();
         context.Add(tournament);
         
         await context.SaveChangesAsync();
@@ -36,7 +36,7 @@ public class TournamentSpecifications
         var tournament = Tournament.Create("Test");
         tournament.AddCourseDate(courseId, DateTime.Now.AddDays(1).Date);
         
-        var context = TradgardsgolfContextFactory.CreateTradgardsgolfContext();
+        var context =  await TradgardsgolfContextFactory.CreateTradgardsgolfContext();
         context.Add(tournament);
         
         await context.SaveChangesAsync();

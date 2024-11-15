@@ -28,7 +28,7 @@ public class Repository : IRepository
 
     public async Task<TEntity> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken) where TEntity : class
     {
-        _context.Set<TEntity>().Add(entity);
+        await _context.Set<TEntity>().AddAsync(entity);
         await _context.SaveChangesAsync(cancellationToken);
 
         return entity;
