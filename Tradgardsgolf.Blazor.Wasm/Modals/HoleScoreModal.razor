@@ -15,7 +15,7 @@
 
 @code {
 
-    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
+    [CascadingParameter] BlazoredModalInstance? ModalInstance { get; set; }
 
     private int ModalMaxScore { get; set; } = 12;
 
@@ -27,7 +27,7 @@
 
     private async Task ReturnResult(int score)
     {
-        await ModalInstance.CloseAsync(ModalResult.Ok(score));
+        if (ModalInstance != null) await ModalInstance.CloseAsync(ModalResult.Ok(score));
     }
 
 }

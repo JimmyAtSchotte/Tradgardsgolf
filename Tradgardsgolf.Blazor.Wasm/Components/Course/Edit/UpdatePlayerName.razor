@@ -31,14 +31,17 @@
 
 
 @code {
-    private string _newName;
-    private string _oldName;
+    private string _newName = string.Empty;
+    private string _oldName = string.Empty;
     private List<string> _players = [];
     
-    [Parameter] public CourseResponse Course { get; set; }
+    [Parameter] public CourseResponse? Course { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        if(Course is null)
+            return;
+        
         var players = (await ApiDispatcher.Dispatch(new QueryPlayersPlayedOnCourse
         {
             CourseId = Course.Id
@@ -50,6 +53,9 @@
 
     private async Task UpdateName()
     {
+        if(Course is null)
+            return;
+        
         await ApiDispatcher.Dispatch(new UpdatePlayerNameCommand
         {
             NewName = _newName,

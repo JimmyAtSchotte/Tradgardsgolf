@@ -7,7 +7,7 @@ namespace Tradgardsgolf.BlazorWasm.State;
 
 public abstract class BaseState
 {
-    public event Action<ComponentBase, string> StateChanged;
+    public event Action<ComponentBase, string>? StateChanged;
 
     protected virtual void NotifyStateChange(ComponentBase source, string property)
     {
@@ -19,14 +19,9 @@ public class AppState : BaseState
 {
     private readonly TimeSpan _stateValidTime = TimeSpan.FromHours(1);
 
-    public AppState()
-    {
-        LastAccessed = DateTime.Now;
-    }
+    [JsonPropertyName("scorecardState")] public ScorecardState? ScorecardState { get; set; }
 
-    [JsonPropertyName("scorecardState")] public ScorecardState ScorecardState { get; set; }
-
-    [JsonPropertyName("lastAccessed")] private DateTime LastAccessed { get; set; }
+    [JsonPropertyName("lastAccessed")] private DateTime LastAccessed { get; set; } = DateTime.Now;
 
     public void NewScorecard(ComponentBase source, CourseResponse courseResponseModel)
     {
@@ -49,5 +44,11 @@ public class AppState : BaseState
     public bool IsValid()
     {
         return DateTime.Now <= LastAccessed.Add(_stateValidTime);
+    }
+
+    public void Init()
+    {
+        if(ScorecardState is not null)
+            ScorecardState.StateChanged += ScorecardStateOnStateChanged;
     }
 }

@@ -7,14 +7,14 @@
 @inject NavigationManager NavigationManager
 @inject IModalService Modal
 
-<CascadingCourse Course="State.AppState.ScorecardState.CourseResponse">
+<CascadingCourse Course="State?.AppState?.ScorecardState?.CourseResponse">
     <CascadingCourseStatistics>
         <CourseCard>
             <CourseHead>
                 <CourseHeaderStatistics/>
             </CourseHead>
             <CourseContent>
-                @if (State.AppState.ScorecardState.PlayerScores.Any())
+                @if (State?.AppState?.ScorecardState?.PlayerScores.Any() == true)
                 {
                     <CardTitle>Valda spelare</CardTitle>
 
@@ -40,7 +40,7 @@
                 </Button>
                 <Button Clicked="async () => await Play()"
                         Float="Float.End"
-                        Disabled="@(State.AppState.ScorecardState.PlayerScores.Any() == false)"
+                        Disabled="@(State?.AppState?.ScorecardState?.PlayerScores.Any() == false)"
                         Color="Color.Primary">
                     Börja spela <Blazorise.Icon Name="MaterialIcons.PlayArrow"></Blazorise.Icon>
                 </Button>
@@ -51,7 +51,7 @@
 </CascadingCourse>
 
 <AuthorizeView>
-    @if (State.AppState.ScorecardState.PlayerScores.All(x => x.PlayerResponse.Name != IdentityName(context)))
+    @if (State?.AppState?.ScorecardState?.PlayerScores.All(x => x.PlayerResponse.Name != IdentityName(context)) == true)
     {
         <Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
             <CardBody>
@@ -73,7 +73,7 @@ else if (AvailablePlayers.Any())
 {
     <Card Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
         <CardBody>
-            <CardTitle>Har tidigare spelat på @State.AppState.ScorecardState.CourseResponse.Name</CardTitle>
+            <CardTitle>Har tidigare spelat på @State?.AppState?.ScorecardState?.CourseResponse.Name</CardTitle>
             @foreach (var player in AvailablePlayers)
             {
                 <PlayerListItem Player="player">
@@ -89,42 +89,43 @@ else if (AvailablePlayers.Any())
 
 @code
 {
-    [CascadingParameter] public CascadingStateProvider State { get; set; }
+    [CascadingParameter] public CascadingStateProvider? State { get; set; }
 
-    private IEnumerable<PlayerResponse> _availablePlayers;
+    private IEnumerable<PlayerResponse>? _availablePlayers;
 
     private IEnumerable<PlayerResponse> AvailablePlayers => _availablePlayers?
-        .Where(x => State.AppState.ScorecardState.PlayerScores.All(player => player.PlayerResponse.Name != x.Name)) ?? Enumerable.Empty<PlayerResponse>();
+        .Where(x => State?.AppState?.ScorecardState?.PlayerScores.All(player => player.PlayerResponse.Name != x.Name) == true) ?? [];
 
     protected override async Task OnInitializedAsync()
     {
         _availablePlayers = (await ApiDispatcher.Dispatch(new QueryPlayersPlayedOnCourse
         {
-            CourseId = State.AppState.ScorecardState.CourseResponse.Id
+            CourseId = State!.AppState!.ScorecardState!.CourseResponse.Id
         }) ?? Array.Empty<PlayerResponse>()).ToList();
 
         await base.OnInitializedAsync();
     }
 
-    private async Task AddPlayer(string player)
+    private async Task AddPlayer(string? player)
     {
         if (string.IsNullOrWhiteSpace(player))
             return;
 
-        await State.AppState.ScorecardState.AddPlayer(this, player);
+        await State!.AppState!.ScorecardState!.AddPlayer(this, player);
         StateHasChanged();
     }
 
     private async Task RemovePlayer(string player)
     {
-        await State.AppState.ScorecardState.RemovePlayer(this, player);
+        await State!.AppState!.ScorecardState!.RemovePlayer(this, player);
         StateHasChanged();
     }
 
     private async Task Play()
     {
-        if (!State.AppState.ScorecardState.PlayerScores.Any())
+        if (State?.AppState?.ScorecardState?.PlayerScores.Any() == false)
             return;
+        
         await Task.Delay(1);
         NavigationManager.NavigateTo("scorecard");
     }
@@ -141,8 +142,8 @@ else if (AvailablePlayers.Any())
             await AddPlayer(player);
     }
 
-    private static string IdentityName(AuthenticationState context)
+    private static string? IdentityName(AuthenticationState context)
     {
-        return context.User?.Identity?.Name;
+        return context.User.Identity?.Name;
     }
 }

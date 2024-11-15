@@ -40,10 +40,10 @@
 @code {
 
     [Parameter] 
-    public CourseResponse Course { get; set; }
+    public CourseResponse? Course { get; set; }
 
     [CascadingParameter] 
-    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    BlazoredModalInstance? BlazoredModal { get; set; }
     
     private DateTime _resetDate = DateTime.Today;
     private bool _isReset;
@@ -51,6 +51,9 @@
 
     private async Task ResetScore()
     {
+        if(Course is null)
+            return;
+        
         await ApiDispatcher.Dispatch(new ResetCourseScoreCommand
         {
             CourseId = Course.Id,

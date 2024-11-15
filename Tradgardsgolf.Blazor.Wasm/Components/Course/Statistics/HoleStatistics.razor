@@ -19,9 +19,9 @@
 
 @code {
 
-    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+    [CascadingParameter] public CascadingCourseStatistics? CascadingCourseStatistics { get; set; }
 
-    private HoleStatisticModel[] _holeAverageModels;
+    private HoleStatisticModel[] _holeAverageModels = [];
 
     protected override void OnParametersSet()
     {
@@ -37,25 +37,23 @@
                     h.HoleInOnes
                 }))
             .GroupBy(arg => arg.Hole)
-            .Select(x => new HoleStatisticModel
-            {
-                HoleInOnes = x.Sum(y => y.HoleInOnes),
-                Hole = x.Key,
-                Average = x.Sum(y => y.Total) / x.Sum(y => y.TimesPlayed)
-            })
+            .Select(x => new HoleStatisticModel(
+                hole: x.Key, 
+                average: x.Sum(y => y.Total) / x.Sum(y => y.TimesPlayed), 
+                holeInOnes: x.Sum(y => y.HoleInOnes)))
             .ToArray();
     }
 
     private bool Display()
     {
-        return CascadingCourseStatistics != null && _holeAverageModels != null && !CascadingCourseStatistics.Loading;
+        return CascadingCourseStatistics != null && _holeAverageModels.Any() && !CascadingCourseStatistics.Loading;
     }
 
-    private class HoleStatisticModel
+    private class HoleStatisticModel(int hole, double average, int holeInOnes)
     {
-        public int Hole { get; set; }
-        public double Average { get; set; }
-        public int HoleInOnes { get; set; }
+        public int Hole { get; } = hole;
+        public double Average { get; } = average;
+        public int HoleInOnes { get; } = holeInOnes;
     }
 
 }

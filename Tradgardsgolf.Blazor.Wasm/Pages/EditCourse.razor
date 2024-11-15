@@ -1,4 +1,5 @@
 ﻿@page "/edit-course"
+@using System.Diagnostics.CodeAnalysis
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.Contracts.Course
 @inject IApiDispatcher ApiDispatcher;
@@ -20,10 +21,11 @@
 </Loading>
 
 @code {
-    private CourseResponse _course;
+    private CourseResponse? _course;
 
     [SupplyParameterFromQuery]
-    private Guid CourseId { get; set; }
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
+    private Guid CourseId { get; init; }
     
     protected override async Task OnInitializedAsync()
     {

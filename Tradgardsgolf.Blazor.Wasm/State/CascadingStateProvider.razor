@@ -9,9 +9,9 @@
 @code {
     private bool _hasLoaded;
 
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    [Parameter] public AppState AppState { get; set; }
+    [Parameter] public AppState? AppState { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -26,10 +26,13 @@
         {
             var state = await LocalStorageService.GetItemAsync<AppState>(nameof(AppState));
 
-            if (state.IsValid())
+            if (state?.IsValid() == true)
+            {
+                state.Init();
                 return state;
+            }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             // ignored
         }

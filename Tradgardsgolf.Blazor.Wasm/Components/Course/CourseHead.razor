@@ -1,18 +1,18 @@
 ﻿<CardHeader>
     <CardImage Source="@GetImage()"></CardImage>
-    <h1>@CascadingCourse.Course.Name</h1>
+    <h1>@CascadingCourse?.Course?.Name</h1>
     @ChildContent
 </CardHeader>
 
 @code {
 
-    [CascadingParameter] public CascadingCourse CascadingCourse { get; set; }
+    [CascadingParameter] public CascadingCourse? CascadingCourse { get; set; }
 
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private string GetImage()
     {
-        return CascadingCourse.Course.ImageReference is null
+        return CascadingCourse?.Course?.ImageReference is null
             ? "images/grass.jpg"
             : CascadingCourse.Course.ImageReference.ToString();
     }

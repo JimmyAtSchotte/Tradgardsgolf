@@ -3,13 +3,12 @@
 @using Tradgardsgolf.BlazorWasm.ApiServices
 @using Tradgardsgolf.Contracts.Scorecard
 @using Tradgardsgolf.Contracts.Tournament
-@using Icon = Blazorise.Icon
 @using IModalService = Blazored.Modal.Services.IModalService
 @inject NavigationManager NavigationManager
 @inject IApiDispatcher apiDispatcher
 @inject IModalService Modal
 
-@if (State.AppState.ScorecardState is not null)
+@if (State?.AppState?.ScorecardState is not null)
 {
     <CascadingCourse Course="State.AppState.ScorecardState.CourseResponse">
         <CascadingCourseStatistics>
@@ -58,7 +57,7 @@
                                     @foreach (var player in State.AppState.ScorecardState.PlayerScores)
                                     {
                                         <TableRowCell>
-                                            <Button Clicked="() => SetScore(player, hole)" Disabled="@Saving">@player.Scores[hole].ToString()</Button>
+                                            <Button Clicked="() => SetScore(player, hole)" Disabled="@Saving">@player.GetHoleScore(hole)?.Score</Button>
                                         </TableRowCell>
                                     }
                                 </TableRow>
@@ -108,30 +107,27 @@
 
 @code
 {
-    [CascadingParameter] public CascadingStateProvider State { get; set; }
+    [CascadingParameter] public CascadingStateProvider? State { get; set; }
 
-    private bool DisableCompleteButton => State.AppState.ScorecardState.PlayerScores.Any(x => x.MissingScores()) || Saving;
+    private bool DisableCompleteButton => State?.AppState?.ScorecardState?.PlayerScores.Any(x => x.MissingScores()) == true || Saving;
     private bool Saving { get; set; }
 
     private IEnumerable<Tournament> Tournaments { get; set; } = new List<Tournament>();
     private List<TournamentScore> TournamentScores { get; set; } = [];
-    private Tournament SelectedTournament { get; set; }
-
-
-    protected override async Task OnInitializedAsync()
+    private Tournament? SelectedTournament { get; set; }
+    
+    protected override async Task OnParametersSetAsync()
     {
-        if (State.AppState.ScorecardState is null)
+        if (State?.AppState?.ScorecardState is null)
         {
             NavigationManager.NavigateTo("");
             return;
         }
-
+        
         Tournaments = await apiDispatcher.Dispatch(new QueryTodaysTournamentsCommand
         {
             CourseId = State.AppState.ScorecardState.CourseResponse.Id
         });
-
-        await base.OnInitializedAsync();
     }
 
     private async Task ChangePlayers()
@@ -139,14 +135,18 @@
         if (Saving)
         {
             Saving = false;
-            await State.AppState.ScorecardState.ResetScores(this);
+            if(State?.AppState?.ScorecardState is not null)
+                await State.AppState.ScorecardState.ResetScores(this);
         }
 
-        NavigationManager.NavigateTo("SetupRound");
+        NavigationManager.NavigateTo("setup-round");
     }
 
     private async Task CompleteRound()
     {
+        if(State?.AppState?.ScorecardState is null)
+            return;
+        
         Saving = true;
         StateHasChanged();
 
@@ -176,7 +176,7 @@
         if (result.Cancelled)
             return;
 
-        var command = (PlayAgainModal.Results)result.Data;
+        var command = result.Data as PlayAgainModal.Results?;
         switch (command)
         {
             case PlayAgainModal.Results.No:
@@ -198,6 +198,9 @@
 
     private async Task SetScore(PlayerScores playerScores, int hole)
     {
+        if(State?.AppState?.ScorecardState is null)
+            return;
+        
         var modal = Modal.Show<HoleScoreModal>($"Hål {hole}: {playerScores.PlayerResponse.Name}");
         var result = await modal.Result;
         if (result.Cancelled)

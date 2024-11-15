@@ -32,9 +32,9 @@
 
 @code {
 
-    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+    [CascadingParameter] public CascadingCourseStatistics? CascadingCourseStatistics { get; set; }
 
-    private TopAverageModel[] _topAverages;
+    private TopAverageModel[] _topAverages = [];
     private int _listCount = 10;
 
 
@@ -46,23 +46,19 @@
         _topAverages = CascadingCourseStatistics.CourseStatisticResponse
             .PlayerStatistics.OrderBy(x => x.AverageScore)
             .Take(_listCount)
-            .Select(x => new TopAverageModel
-            {
-                Player = x.Name,
-                Average = x.AverageScore
-            })
+            .Select(x => new TopAverageModel(x.Name, x.AverageScore))
             .ToArray();            
     }
 
-    private class TopAverageModel
+    private class TopAverageModel(string player, double average)
     {
-        public string Player { get; set; }
-        public double Average { get; set; }
+        public string Player { get; } = player;
+        public double Average { get; } = average;
     }
 
     private bool Display()
     {
-        return CascadingCourseStatistics != null && _topAverages != null && !CascadingCourseStatistics.Loading;
+        return CascadingCourseStatistics != null && _topAverages.Any() && !CascadingCourseStatistics.Loading;
     }
 
 }

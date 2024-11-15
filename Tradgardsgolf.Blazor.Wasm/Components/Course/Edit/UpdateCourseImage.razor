@@ -50,12 +50,12 @@
 
 @code {
 
-    [Parameter] public CourseResponse Course { get; set; }
-    [Parameter] public Action<CourseResponse> OnSave { get; set; }
+    [Parameter] public CourseResponse? Course { get; set; }
+    [Parameter] public Action<CourseResponse>? OnSave { get; set; }
 
-    public IBrowserFile File { get; set; }
+    private IBrowserFile? File { get; set; }
     private Cropper _cropper;
-    private string _fileExtension;
+    private string? _fileExtension;
     private int _progress;
     private Stage _stage = Stage.SelectFile;
 
@@ -98,6 +98,9 @@
 
     private async Task SaveImage()
     {
+        if(Course is null)
+            return;
+        
         var croped = await _cropper.GetCropedResult();
         var imageBytes = await croped.GetDataAsync();
         var imageBase64 = Convert.ToBase64String(imageBytes);

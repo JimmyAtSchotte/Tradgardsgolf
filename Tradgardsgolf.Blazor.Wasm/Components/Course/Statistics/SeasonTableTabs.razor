@@ -21,10 +21,10 @@
 
 @code {
 
-    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+    [CascadingParameter] public CascadingCourseStatistics? CascadingCourseStatistics { get; set; }
 
     private string _selectedTab = string.Empty;
-    private string[] _seasons = Enumerable.Empty<string>().ToArray();
+    private string[] _seasons = [];
 
     private void OnSelectedTabChanged(string name)
     {

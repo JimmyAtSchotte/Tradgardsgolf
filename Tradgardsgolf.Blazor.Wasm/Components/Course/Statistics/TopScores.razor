@@ -22,7 +22,7 @@
                     }
                 </TableRowCell>
                 <TableRowCell>@_topScore[index].Player</TableRowCell>
-                <TableRowCell>@_topScore[index].ToatalScore</TableRowCell>
+                <TableRowCell>@_topScore[index].TotalScore</TableRowCell>
                 <TableRowCell>@_topScore[index].Date.ToString("yyyy-MM-dd")</TableRowCell>
             </TableRow>
         }
@@ -31,9 +31,9 @@
 
 @code {
 
-    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+    [CascadingParameter] public CascadingCourseStatistics? CascadingCourseStatistics { get; set; }
 
-    private TopScoreModel[] _topScore;
+    private TopScoreModel[] _topScore = [];
     private int _listCount = 10;
 
     protected override void OnParametersSet()
@@ -43,27 +43,22 @@
 
         _topScore = CascadingCourseStatistics.CourseStatisticResponse.PlayerStatistics.OrderBy(x => x.BestScore.Score)
             .ThenBy(x => x.BestScore.Date)
-            .Select(p => new TopScoreModel
-            {
-                Date = p.BestScore.Date,
-                Player = p.Name,
-                ToatalScore =  p.BestScore.Score
-            })
+            .Select(p => new TopScoreModel(p.Name, p.BestScore.Date, p.BestScore.Score))
             .Take(_listCount)
             .ToArray();
     }
 
-    private class TopScoreModel
+    private class TopScoreModel(string player, DateTime date, int totalScore)
     {
-        public string Player { get; set; }
-        public DateTime Date { get; set; }
-        public int ToatalScore { get; set; }
+        public string Player { get; } = player;
+        public DateTime Date { get; } = date;
+        public int TotalScore { get; } = totalScore;
     }
 
 
     private bool Display()
     {
-        return CascadingCourseStatistics != null && _topScore != null && !CascadingCourseStatistics.Loading;
+        return CascadingCourseStatistics != null && _topScore.Any() && !CascadingCourseStatistics.Loading;
     }
 
 }

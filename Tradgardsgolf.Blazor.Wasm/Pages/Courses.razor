@@ -8,51 +8,53 @@
 @using Tradgardsgolf.Contracts.Course
 @using Tradgardsgolf.Contracts.Settings
 @using IModalService = Blazored.Modal.Services.IModalService
-@implements IDisposable
 
 
-<Loading IsLoading="_courses == null" LoadingText="Laddar banor i närheten...">
-    @foreach (var course in _courses)
+<Loading IsLoading="_courses is null" LoadingText="Laddar banor i närheten...">
+    @if (_courses is not null)
     {
-        <CascadingCourse Course="course">
-            <CascadingCourseStatistics>
-                <CourseCard>
-                    <CourseHead>
-                        <CourseHeaderStatistics/>
-                    </CourseHead>
-                    <CourseContent>
-                        <CourseStatistics></CourseStatistics>
-                    </CourseContent>
-                    <CourseButtons>
-                        <ConditionalComponent Condition="() => AllowPlay(course)" Name="Play">
-                            <Button Clicked="() => SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Blazorise.Icon Name="MaterialIcons.GolfCourse"></Blazorise.Icon></Button>
-                        </ConditionalComponent>
-                        <ConditionalComponent Condition="() => AllowEdit(course)" Name="Edit">
-                            <Button Clicked="() => Edit(course)" Color="Color.Secondary"><Blazorise.Icon Name="MaterialIcons.Settings"></Blazorise.Icon></Button>
-                        </ConditionalComponent>
-                        <ConditionalComponent Condition="() => AllowClaimOwnerShip(course)" Name="ClaimOwnerShip">
-                            <Button Clicked="async () => await ClaimOwnership(course)" Color="Color.Secondary">Ta ägarskap</Button>
-                        </ConditionalComponent>
-                    </CourseButtons>
-                </CourseCard>
-            </CascadingCourseStatistics>
-        </CascadingCourse>
+        @foreach (var course in _courses)
+        {
+            <CascadingCourse Course="course">
+                <CascadingCourseStatistics>
+                    <CourseCard>
+                        <CourseHead>
+                            <CourseHeaderStatistics/>
+                        </CourseHead>
+                        <CourseContent>
+                            <CourseStatistics></CourseStatistics>
+                        </CourseContent>
+                        <CourseButtons>
+                            <ConditionalComponent Condition="() => AllowPlay(course)" Name="Play">
+                                <Button Clicked="() => SetupRound(course)" Color="Color.Primary" Float="Float.End">Spela <Blazorise.Icon Name="MaterialIcons.GolfCourse"></Blazorise.Icon></Button>
+                            </ConditionalComponent>
+                            <ConditionalComponent Condition="() => AllowEdit(course)" Name="Edit">
+                                <Button Clicked="() => Edit(course)" Color="Color.Secondary"><Blazorise.Icon Name="MaterialIcons.Settings"></Blazorise.Icon></Button>
+                            </ConditionalComponent>
+                            <ConditionalComponent Condition="() => AllowClaimOwnerShip(course)" Name="ClaimOwnerShip">
+                                <Button Clicked="async () => await ClaimOwnership(course)" Color="Color.Secondary">Ta ägarskap</Button>
+                            </ConditionalComponent>
+                        </CourseButtons>
+                    </CourseCard>
+                </CascadingCourseStatistics>
+            </CascadingCourse>
+        }
     }
 </Loading>
 
 
 @code {
 
-    [CascadingParameter] public CascadingStateProvider StateProvider { get; set; }
+    [CascadingParameter] public CascadingStateProvider? StateProvider { get; set; }
 
-    [CascadingParameter] public Location Location { get; set; }
+    [CascadingParameter] public Location? Location { get; set; }
 
-    [CascadingParameter] public IModalService Modal { get; set; }
+    [CascadingParameter] public IModalService? Modal { get; set; }
 
-    private IEnumerable<CourseResponse> _models;
-    private IList<CourseResponse> _courses;
+    private IEnumerable<CourseResponse>? _models;
+    private IList<CourseResponse>? _courses;
     private int _allowPlayDistance;
-    private AuthenticationState _authenticationState;
+    private AuthenticationState? _authenticationState;
 
     protected override async Task OnInitializedAsync()
     {
@@ -65,9 +67,9 @@
 
     private void OrderCoursesByDistance()
     {
-        var distanceOrdered = _models
-            .OrderBy(x => x.GetDistance((double)Location.Longitude, (double)Location.Latitude))
-            .ToList();
+        var distanceOrdered = _models?
+            .OrderBy(x => Location is not null ? x.GetDistance((double)Location.Longitude, (double)Location.Latitude) : 0)
+            .ToList() ?? [];
 
         if (_courses != null && _courses.SequenceEqual(distanceOrdered))
             return;
@@ -82,19 +84,19 @@
     private bool AllowPlay(CourseResponse courseResponse)
     {
         return _allowPlayDistance <= 0 ||
-               courseResponse.GetDistance((double)Location.Longitude, (double)Location.Latitude) < _allowPlayDistance;
+               (Location is not null && courseResponse.GetDistance((double)Location.Longitude, (double)Location.Latitude) < _allowPlayDistance);
     }
 
     private bool AllowEdit(CourseResponse course)
     {
-        return _authenticationState.User.Identity?.IsAuthenticated == true &&
+        return _authenticationState?.User.Identity?.IsAuthenticated == true &&
                _authenticationState.User.TryGetUserId(out var userId) &&
                userId == course.OwnerGuid;
     }
 
     private void SetupRound(CourseResponse course)
     {
-        StateProvider.AppState.NewScorecard(this, course);
+        StateProvider?.AppState?.NewScorecard(this, course);
         NavigationManager.NavigateTo("setup-round");
     }
 
@@ -105,18 +107,14 @@
             Id = course.Id
         });
 
-        _courses[_courses.IndexOf(course)] = updatedCourse;
-    }
-
-    public void Dispose()
-    {
-        ((IDisposable)StateProvider)?.Dispose();
+        if(_courses is not null)
+            _courses[_courses.IndexOf(course)] = updatedCourse;
     }
     
     private bool AllowClaimOwnerShip(CourseResponse course)
     {
         return AllowPlay(course) &&
-               _authenticationState.User.Identity?.IsAuthenticated == true &&
+               _authenticationState?.User.Identity?.IsAuthenticated == true &&
                course.OwnerGuid == Guid.Empty &&
                _authenticationState.User.TryGetUserId(out _);
     }

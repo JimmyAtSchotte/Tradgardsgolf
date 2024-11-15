@@ -17,7 +17,7 @@
 
 @code {
 
-    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
+    [CascadingParameter] BlazoredModalInstance? ModalInstance { get; set; }
 
     public enum Results
     {
@@ -28,17 +28,17 @@
 
     private async Task No()
     {
-        await ModalInstance.CloseAsync(ModalResult.Ok(Results.No));
+        if (ModalInstance != null) await ModalInstance.CloseAsync(ModalResult.Ok(Results.No));
     }
 
     private async Task ChangePlayers()
     {
-        await ModalInstance.CloseAsync(ModalResult.Ok(Results.ChangePlayers));
+        if (ModalInstance != null) await ModalInstance.CloseAsync(ModalResult.Ok(Results.ChangePlayers));
     }
 
     private async Task Yes()
     {
-        await ModalInstance.CloseAsync(ModalResult.Ok(Results.Yes));
+        if (ModalInstance != null) await ModalInstance.CloseAsync(ModalResult.Ok(Results.Yes));
     }
 
 }

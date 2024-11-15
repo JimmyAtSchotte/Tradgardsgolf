@@ -26,7 +26,7 @@
         }
         else
         {
-            <p>Positionen för @Course.Name är uppdaterad</p>
+            <p>Positionen för @Course?.Name är uppdaterad</p>
         }
     </CardBody>
     
@@ -39,11 +39,11 @@
 </Card>
 
 @code {
-    [Parameter] public CourseResponse Course { get; set; }
-    [CascadingParameter] public Location Location { get; set; }
-    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    [Parameter] public CourseResponse? Course { get; set; }
+    [CascadingParameter] public Location? Location { get; set; }
+    [CascadingParameter] BlazoredModalInstance? BlazoredModal { get; set; }
 
-    private HtmlMarker marker;
+    private HtmlMarker? marker;
 
     public readonly StyleOptions StyleOptions = new()
     {
@@ -58,6 +58,9 @@
     {
         if (marker is null)
             return;
+        
+        if(Course is null)
+            return;
 
         await ApiDispatcher.Dispatch(new UpdateCourseLocationCommand
         {
@@ -71,15 +74,18 @@
 
     private async Task OnMapReady(MapEventArgs events)
     {
+        var longitude = decimal.ToDouble(Location?.Longitude ?? 0);
+        var latitude = decimal.ToDouble(Location?.Latitude ?? 0);
+        
         await events.Map.SetCameraOptionsAsync(config =>
         {
-            config.Center = new Position(decimal.ToDouble(Location.Longitude), decimal.ToDouble(Location.Latitude));
+            config.Center = new Position(longitude, latitude);
             config.Zoom = 14;
         });
 
         marker = new HtmlMarker(new HtmlMarkerOptions
         {
-            Position = new Position(decimal.ToDouble(Location.Longitude), decimal.ToDouble(Location.Latitude)),
+            Position = new Position(longitude, latitude),
             Draggable = false
         });
 

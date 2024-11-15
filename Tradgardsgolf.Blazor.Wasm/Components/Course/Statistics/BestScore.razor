@@ -1,14 +1,14 @@
 ﻿@if (Display())
 {
     <i class="material-icons">emoji_events</i>
-    <span>@_bestScore.Player (@_bestScore.ToatalScore)</span>
+    <span>@_bestScore?.Player (@_bestScore?.TotalScore)</span>
 }
 
 @code {
 
-    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+    [CascadingParameter] public CascadingCourseStatistics? CascadingCourseStatistics { get; set; }
 
-    private BestScoreModel _bestScore;
+    private BestScoreModel? _bestScore;
 
     protected override void OnParametersSet()
     {
@@ -18,20 +18,15 @@
         _bestScore = CascadingCourseStatistics.CourseStatisticResponse.PlayerStatistics
             .OrderBy(x => x.BestScore.Score)
             .ThenBy(x => x.BestScore.Date)
-            .Select(x => new BestScoreModel
-            {
-                Date = x.BestScore.Date,
-                Player = x.Name,
-                ToatalScore = x.BestScore.Score
-            })
+            .Select(x => new BestScoreModel(x.Name, x.BestScore.Date, x.BestScore.Score))
             .FirstOrDefault();
     }
 
-    private class BestScoreModel
+    private class BestScoreModel(string player, DateTime date, int totalScore)
     {
-        public string Player { get; set; }
-        public DateTime Date { get; set; }
-        public int ToatalScore { get; set; }
+        public string Player { get; } = player;
+        public DateTime Date { get; } = date;
+        public int TotalScore { get; } = totalScore;
     }
 
     private bool Display()

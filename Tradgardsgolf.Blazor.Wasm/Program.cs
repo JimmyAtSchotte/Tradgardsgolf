@@ -37,7 +37,7 @@ public class Program
         
         var backend = builder.Configuration.GetSection("Backend").Get<Backend>();
 
-        if (string.IsNullOrEmpty(backend.Url))
+        if (string.IsNullOrEmpty(backend?.Url))
             throw new Exception("Backend url is not configured");
 
         builder.RootComponents.Add<App>("#app");

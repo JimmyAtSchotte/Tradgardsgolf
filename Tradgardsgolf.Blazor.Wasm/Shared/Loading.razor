@@ -23,9 +23,9 @@ else
 
     [Parameter] public string LoadingText { get; set; } = "Laddar";
 
-    [Parameter] public RenderFragment LoadingTemplate { get; set; }
+    [Parameter] public RenderFragment? LoadingTemplate { get; set; }
 
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
 
 }

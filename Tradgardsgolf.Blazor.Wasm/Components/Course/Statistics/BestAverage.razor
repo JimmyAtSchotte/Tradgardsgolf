@@ -1,14 +1,14 @@
 ﻿@if (Display())
 {
     <i class="material-icons">insights</i>
-    <span>@_bestAverageModels.Player (@Math.Round(_bestAverageModels.Average, 1))</span>
+    <span>@_bestAverageModels?.Player (@Math.Round(_bestAverageModels?.Average ?? 0, 1))</span>
 }
 
 @code {
 
-    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+    [CascadingParameter] public CascadingCourseStatistics? CascadingCourseStatistics { get; set; }
 
-    private BestAverageModel _bestAverageModels;
+    private BestAverageModel? _bestAverageModels;
 
     protected override void OnParametersSet()
     {
@@ -16,18 +16,14 @@
             return;
 
         _bestAverageModels = CascadingCourseStatistics.CourseStatisticResponse.PlayerStatistics.OrderBy(x => x.AverageScore)
-            .Select(x => new BestAverageModel
-            {
-                Player = x.Name,
-                Average = x.AverageScore
-            })
+            .Select(x => new BestAverageModel(x.Name, x.AverageScore))
             .FirstOrDefault();
     }
 
-    private class BestAverageModel
+    private class BestAverageModel(string player, double average)
     {
-        public string Player { get; set; }
-        public double Average { get; set; }
+        public string Player { get; } = player;
+        public double Average { get; } = average;
     }
 
     private bool Display()

@@ -62,8 +62,7 @@
 @code {
     private bool topbarVisible;
 
-
-    [CascadingParameter] public CascadingStateProvider State { get; set; }
+    [CascadingParameter] public CascadingStateProvider? State { get; set; }
 
     private void OnLogout()
     {

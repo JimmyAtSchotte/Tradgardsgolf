@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -50,6 +51,7 @@ public class ApiDispatcher(IHttpClientFactory httpClientFactory) : IApiDispatche
     }
 }
 
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class DispatchException(HttpResponseMessage response, string url, string body) : Exception
 {
     public HttpResponseMessage Response { get; } = response;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -7,17 +8,24 @@ using Tradgardsgolf.Contracts.Course;
 
 namespace Tradgardsgolf.BlazorWasm.State;
 
+[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 public class ScorecardState : BaseState
 {
+    [JsonConstructor]
+    private ScorecardState()
+    {
+        
+    }
+    
     private ScorecardState(CourseResponse courseResponse, IEnumerable<PlayerScores> playerScores)
     {
         CourseResponse = courseResponse;
         PlayerScores = playerScores.ToList();
     }
 
-    [JsonPropertyName("courseResponse")] public CourseResponse CourseResponse { get; init; }
+    [JsonPropertyName("courseResponse")] public CourseResponse CourseResponse { get; set; }
 
-    [JsonPropertyName("playerScores")] public List<PlayerScores> PlayerScores { get; init; }
+    [JsonPropertyName("playerScores")] public List<PlayerScores> PlayerScores { get; set; }
 
     public static ScorecardState Create(CourseResponse courseResponseModel, params PlayerScores[] playerScores)
     {
@@ -41,8 +49,8 @@ public class ScorecardState : BaseState
 
     public Task ResetScores(ComponentBase source)
     {
-        foreach (var score in PlayerScores.SelectMany(player => player.Scores))
-            score.Score = null;
+        foreach (var playerScores in PlayerScores)
+            playerScores.ResetScores();
         
         base.NotifyStateChange(source, nameof(PlayerScores));
         return Task.CompletedTask;
@@ -54,7 +62,7 @@ public class ScorecardState : BaseState
         if (player == null)
             return;
 
-        player.Scores[hole].Score = score;
+        player.SetScore(hole, score);
         await Task.Delay(1);
         base.NotifyStateChange(source, nameof(PlayerScores));
     }

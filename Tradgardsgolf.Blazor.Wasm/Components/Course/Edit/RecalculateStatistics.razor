@@ -38,13 +38,16 @@
 @code {
 
     [Parameter] 
-    public CourseResponse Course { get; set; }
+    public CourseResponse? Course { get; set; }
     
     private bool _isReset;
 
 
     private async Task Recalculate()
     {
+        if(Course is null)
+            return;
+        
         await ApiDispatcher.Dispatch(new RecalculateStatisticsCommand
         {
             CourseId = Course.Id

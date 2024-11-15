@@ -4,7 +4,7 @@
         <Avatar Player="Player"></Avatar>
     </Column>
     <Column ColumnSize="ColumnSize.Is8">
-        <span>@Player.Name</span>
+        <span>@Player?.Name</span>
     </Column>
     <Column ColumnSize="ColumnSize.Is2">
         @ChildContent
@@ -13,8 +13,8 @@
 
 @code
 {
-    [Parameter] public PlayerResponse Player { get; set; }
+    [Parameter] public PlayerResponse? Player { get; set; }
 
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
 }

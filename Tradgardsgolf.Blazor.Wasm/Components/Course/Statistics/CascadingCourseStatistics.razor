@@ -8,16 +8,20 @@
 
 @code {
 
-    [CascadingParameter] public CascadingCourse CascadingCourse { get; set; }
+    [CascadingParameter] public CascadingCourse? CascadingCourse { get; set; }
 
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    public CourseStatisticResponse CourseStatisticResponse { get; private set; }
+    public CourseStatisticResponse? CourseStatisticResponse { get; private set; }
     public bool Loading { get; private set; }
 
     protected override async Task OnInitializedAsync()
     {
         Loading = true;
+        
+        if(CascadingCourse?.Course is null)
+            return;
+        
         CourseStatisticResponse = await apiDispatcher.Dispatch(new QueryCourseStatistics
         {
             CourseId = CascadingCourse.Course.Id,

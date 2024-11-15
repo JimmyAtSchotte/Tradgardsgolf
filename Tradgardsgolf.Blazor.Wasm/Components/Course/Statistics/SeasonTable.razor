@@ -8,12 +8,12 @@
         }))
         {
             <TableRow>
-                <TableRowCell ColumnSpan="@(CascadingCourse.Course.SeasonTableRounds + 1)">
+                <TableRowCell ColumnSpan="@(_seasonTableRounds + 1)">
                     <strong>@obj.Position. @obj.Model.Player</strong>
                 </TableRowCell>
             </TableRow>
             <TableRow>
-                @for (var i = 0; i < CascadingCourse.Course.SeasonTableRounds; i++)
+                @for (var i = 0; i < _seasonTableRounds; i++)
                 {
                     var index = i;
                     <TableRowCell Style="border-top: none">@obj.Model.GetScore(index)</TableRowCell>
@@ -28,13 +28,14 @@
 
 @code {
 
-    [CascadingParameter] public CascadingCourseStatistics CascadingCourseStatistics { get; set; }
+    [CascadingParameter] public CascadingCourseStatistics? CascadingCourseStatistics { get; set; }
 
-    [CascadingParameter] public CascadingCourse CascadingCourse { get; set; }
+    [CascadingParameter] public CascadingCourse? CascadingCourse { get; set; }
 
-    [Parameter] public string Season { get; set; }
+    [Parameter] public string? Season { get; set; }
 
-    private IEnumerable<SeasonTableModel> _seasonTableModels;
+    private IEnumerable<SeasonTableModel> _seasonTableModels = [];
+    private int _seasonTableRounds = 6;
 
     protected override void OnParametersSet()
     {
@@ -43,37 +44,38 @@
 
         if (string.IsNullOrEmpty(Season))
             return;
+        
+        if (CascadingCourse?.Course is null)
+            return;
+        
+        _seasonTableRounds = CascadingCourse.Course.SeasonTableRounds;
 
         RenderSeasonTable();
     }
 
     private void RenderSeasonTable()
     {
-        _seasonTableModels = CascadingCourseStatistics.CourseStatisticResponse?.Seasons?
+        var seasonTableRounds = CascadingCourse?.Course?.SeasonTableRounds ?? 6;
+        
+        _seasonTableModels = CascadingCourseStatistics?.CourseStatisticResponse?.Seasons?
             .FirstOrDefault(x => x.Season == Season)?
-            .Players.Select(kvp => new SeasonTableModel
-            {
-                Player = kvp.Key,
-                Scores = kvp.Value.OrderBy(x => x)
-                    .Take(CascadingCourse.Course.SeasonTableRounds)
-                    .ToArray()
-            })
+            .Players.Select(kvp => new SeasonTableModel(kvp.Key, kvp.Value.OrderBy(x => x)
+                .Take(seasonTableRounds)
+                .ToArray()))
             .OrderByDescending(m => m.Scores.Length)
             .ThenBy(m => m.Scores.Sum()) 
                              ?? Enumerable.Empty<SeasonTableModel>();
     }
 
-
-
     private bool Display()
     {
-        return CascadingCourseStatistics != null && _seasonTableModels != null && !CascadingCourseStatistics.Loading;
+        return CascadingCourseStatistics != null && _seasonTableModels.Any() && !CascadingCourseStatistics.Loading;
     }
 
-    private class SeasonTableModel
+    private class SeasonTableModel(string player, int[] scores)
     {
-        public string Player { get; set; }
-        public int[] Scores { get; set; }
+        public string Player { get; } = player;
+        public int[] Scores { get; } = scores;
 
         public string GetScore(int i)
         {
