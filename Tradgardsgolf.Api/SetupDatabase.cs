@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Tradgardsgolf.Core.Entities;
 using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Api;
@@ -27,122 +25,11 @@ public static class SetupDatabaseExtensions
             await context.Database.EnsureDeletedAsync();
             await context.Database.EnsureCreatedAsync();
 
-            await context.SeedData();
+            await DataSeeder.Create(context).SeedDataAsync();
+            
             return;
         }
 
         await context.Database.EnsureCreatedAsync();
-    }
-
-    private static async Task SeedData(this TradgardsgolfContext context)
-    {
-        var kumhof = Course.Create(Guid.Empty, p =>
-        {
-            p.Holes = 6;
-            p.Name = "Kumhof (IN MEMORY)";
-            p.Latitude = 59.331181;
-            p.Longitude = 18.040736;
-            p.ScoreReset = DateTime.Today.AddYears(-2).AddDays(-1);
-        });
-
-        var tornehof = Course.Create(Guid.Empty, p =>
-        {
-            p.Holes = 6;
-            p.Name = "Törnehof (IN MEMORY)";
-            p.Latitude = 59.5751198688695;
-            p.Longitude = 17.120523690349092;
-        });
-
-        var berlin = Course.Create(Guid.Empty, p =>
-        {
-            p.Holes = 6;
-            p.Name = "Berlin (IN MEMORY)";
-            p.Latitude = 52.520007;
-            p.Longitude = 13.404954;
-        });
-
-        context.Add(kumhof);
-        context.Add(tornehof);
-        context.Add(berlin);
-        
-        for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-6), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
-        
-        for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-5), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
-        
-        for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-4), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
-        
-        for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-3), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
-        
-        for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-2), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
-        
-        for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-1), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
-        
-        for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today, ["Jimmy", "Patrik", "Amanda", "Hanna"]);
-
-        for (var r = 0; r < 60; r++)
-            AddScorecard(context, tornehof,  DateTime.Today, ["Jimmy", "Patrik", "Amanda", "Hanna"]);
-
-        for (var r = 0; r < 25; r++)
-            AddScorecard(context, berlin, DateTime.Today, ["Jimmy", "Patrik", "Amanda", "Hanna"]);
-
-
-        for (var i = 1; i < 5; i++)
-        {
-            var previousTorunament = Tournament.Create($"Touren {DateTime.Today.AddYears(-i).Year}");
-            previousTorunament.AddCourseDate(kumhof.Id, DateTime.Today.AddYears(-i));
-            previousTorunament.AddCourseDate(tornehof.Id, DateTime.Today.AddYears(-i));
-            context.Add(previousTorunament);
-            
-            for (var r = 0; r < 2; r++)
-                AddScorecard(context, kumhof, DateTime.Today.AddYears(-i), ["Jimmy", "Patrik", "Amanda", "Hanna"], previousTorunament);
-        
-            for (var r = 0; r < 2; r++)
-                AddScorecard(context, tornehof, DateTime.Today.AddYears(-i), ["Jimmy", "Patrik", "Amanda", "Hanna"], previousTorunament);
-        
-            for (var r = 0; r < 2; r++)
-                AddScorecard(context, kumhof, DateTime.Today.AddYears(-i), ["Kalle", "Bengt"], previousTorunament);
-        }
-
-        var todaysTournament = Tournament.Create($"Touren {DateTime.Today.Year}");
-        todaysTournament.AddCourseDate(kumhof.Id, DateTime.Today);
-        todaysTournament.AddCourseDate(tornehof.Id, DateTime.Today);
-        context.Add(todaysTournament);
-
-        await context.SaveChangesAsync();
-    }
-
-    private static void AddScorecard(this TradgardsgolfContext context, Course course, DateTime date, string[] players,  Tournament tournament = null)
-    {
-        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
-        scorecard.TournamentId = tournament?.Id ?? Guid.Empty;
-        scorecard.Date = date;
-
-        foreach (var player in players)
-            scorecard.AddPlayerScores(player,
-            Enumerable.Repeat(0, course.Holes).Select(_ => GenerateRandomScore()).ToArray());
-
-        context.Add(scorecard);
-    }
-    
-    private static int GenerateRandomScore()
-    {
-        var score = Random.Next(0, 100);
-
-        return score switch
-        {
-            >= 95 => 1,
-            >= 85 => 2,
-            >= 50 => 3,
-            >= 30 => 4,
-            >= 15 => 5,
-            _ => 6
-        };
     }
 }
