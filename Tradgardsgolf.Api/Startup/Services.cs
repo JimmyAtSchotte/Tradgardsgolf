@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Tradgardsgolf.Api.ActionFilters;
 using Tradgardsgolf.Api.Authentication;
 using Tradgardsgolf.Api.CosmosRUTracking;
 using Tradgardsgolf.Api.Notifications;

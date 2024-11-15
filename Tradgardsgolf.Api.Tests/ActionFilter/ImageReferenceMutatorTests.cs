@@ -64,7 +64,7 @@ public class ImageReferenceMutatorTests
             }
         }, response);
 
-        Assert.That(response[0].ImageReference.Url, Is.EqualTo("https://localhost/images/"));
+        Assert.That(response[0].ImageReference?.Url, Is.EqualTo("https://localhost/images/"));
     }
 
     [Test]
@@ -83,10 +83,10 @@ public class ImageReferenceMutatorTests
 
         var result = response.ToArray();
 
-        Assert.That(result[0].ImageReference.Url, Is.EqualTo("https://localhost/images/"));
+        Assert.That(result[0].ImageReference?.Url, Is.EqualTo("https://localhost/images/"));
     }
 
-    private IEnumerable<CourseResponse> CreateEnumerable()
+    private static IEnumerable<CourseResponse> CreateEnumerable()
     {
         yield return new CourseResponse
         {

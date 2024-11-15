@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,7 @@ using Tradgardsgolf.Api.Startup;
 
 namespace Tradgardsgolf.Api;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class Program
 {
     public static async Task Main(string[] args)

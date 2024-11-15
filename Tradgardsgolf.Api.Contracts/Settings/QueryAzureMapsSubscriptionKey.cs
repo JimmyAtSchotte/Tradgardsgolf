@@ -2,4 +2,4 @@
 
 namespace Tradgardsgolf.Contracts.Settings;
 
-public class QueryAzureMapsSubscriptionKey : IRequest<AzureMapsSubscriptionKeyResponse> { }
+public class QueryAzureMapsSubscriptionKey : IRequest<AzureMapsSubscriptionKeyResponse>;

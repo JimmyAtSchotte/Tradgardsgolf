@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Tradgardsgolf.Api.CosmosRUTracking;
 
+[SuppressMessage("ReSharper", "UnusedMethodReturnValue.Global")]
 public static class DbContextOptionsBuilderExtensions
 {
     public static DbContextOptionsBuilder EnableCosmosRuTracking(this DbContextOptionsBuilder builder, IServiceProvider services)

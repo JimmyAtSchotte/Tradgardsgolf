@@ -5,7 +5,6 @@ using Moq;
 using Tradgardsgolf.Api.RequestHandling.Scorecard;
 using Tradgardsgolf.Contracts.Scorecard;
 using Tradgardsgolf.Core.Infrastructure;
-using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Scorecard;
 
@@ -22,7 +21,7 @@ public class SaveScorecard
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.AddAsync(It.IsAny<Core.Entities.Scorecard>(), It.IsAny<CancellationToken>()))
-                    .Callback((Core.Entities.Scorecard c, CancellationToken t) =>
+                    .Callback((Core.Entities.Scorecard c, CancellationToken _) =>
                     {
                         c.Id = Guid.NewGuid();
                         addedScorecards.Add(c);
@@ -31,14 +30,14 @@ public class SaveScorecard
         });
         
         var handler = arrange.Resolve<SaveScorecardHandler>();
-        var scores = new List<int>() { 2, 3, 5, 2, 4, 1 };
-        var command = new SaveScorecardCommand()
+        var scores = new List<int> { 2, 3, 5, 2, 4, 1 };
+        var command = new SaveScorecardCommand
         {
             CourseId = Guid.NewGuid(),
             Revision = 1,
-            PlayerScores = new List<PlayerScore>()
+            PlayerScores = new List<PlayerScore>
             {
-                new PlayerScore()
+                new ()
                 {
                     Name = "Player A",
                     HoleScores = scores

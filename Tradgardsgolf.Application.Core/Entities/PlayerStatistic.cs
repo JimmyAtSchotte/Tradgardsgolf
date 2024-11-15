@@ -29,6 +29,7 @@ public class PlayerStatistic : BaseEntity
         set => _bestScore = value;
     }
     
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private PlayerStatistic()
     {
     }

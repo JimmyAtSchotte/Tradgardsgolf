@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Api.ResponseFactory;
@@ -10,6 +11,7 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class ResetCourseScoreHandler : IRequestHandler<ResetCourseScoreCommand, CourseResponse>
 {
     private readonly IRepository _repository;

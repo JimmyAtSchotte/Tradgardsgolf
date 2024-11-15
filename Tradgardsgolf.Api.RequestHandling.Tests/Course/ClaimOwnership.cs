@@ -30,13 +30,13 @@ public class ClaimOwnership
                     .ReturnsAsync(course);
 
                 mock.Setup(x => x.UpdateAsync(It.IsAny<Core.Entities.Course>(), It.IsAny<CancellationToken>()))
-                    .Callback((Core.Entities.Course c, CancellationToken token) => updatedCourses.Add(c));
+                    .Callback((Core.Entities.Course c, CancellationToken _) => updatedCourses.Add(c));
             });
 
             dependencies
                 .UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
             dependencies
-                .UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>,
+                .UseImplementation<IResponseFactory<ImageReference?, Core.Entities.Course>,
                     ImageReferenceResponseFactory>();
             dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(
             new AuthenticatedUser
@@ -46,7 +46,7 @@ public class ClaimOwnership
         });
 
         var handler = arrange.Resolve<SUT>();
-        var command = new Contracts.Course.ClaimOwnershipCommand
+        var command = new ClaimOwnershipCommand
         {
             Id = course.Id
         };
@@ -74,7 +74,7 @@ public class ClaimOwnership
             dependencies
                 .UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
             dependencies
-                .UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>,
+                .UseImplementation<IResponseFactory<ImageReference?, Core.Entities.Course>,
                     ImageReferenceResponseFactory>();
 
             dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(
@@ -85,7 +85,7 @@ public class ClaimOwnership
         });
 
         var handler = arrange.Resolve<SUT>();
-        var command = new Contracts.Course.ClaimOwnershipCommand
+        var command = new ClaimOwnershipCommand
         {
             Id = course.Id
         };

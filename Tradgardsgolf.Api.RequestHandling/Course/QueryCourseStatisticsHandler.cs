@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -10,6 +11,7 @@ using Tradgardsgolf.Core.Specifications.PlayerStatistic;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class QueryCourseStatisticsHandler(IRepository repository)
     : IRequestHandler<QueryCourseStatistics, CourseStatisticResponse>
 {
@@ -21,22 +23,22 @@ public class QueryCourseStatisticsHandler(IRepository repository)
 
         return new CourseStatisticResponse
         {
-            Seasons = courseSeasons.Select(x => new CourseSeasonResposne()
+            Seasons = courseSeasons.Select(x => new CourseSeasonResposne
             {
                 Season = x.Season,
                 Players = x.Players
             }),
-            PlayerStatistics = playerStatistics.Select(x => new PlayerStatisticResponse()
+            PlayerStatistics = playerStatistics.Select(x => new PlayerStatisticResponse
             {
                 AverageScore = x.AverageScore,
                 Name = x.Name,
                 TimesPlayed = x.TimesPlayed,
-                BestScore = new BestScoreResponse()
+                BestScore = new BestScoreResponse
                 {
                     Date = x.BestScore.Date,
-                    Score = x.BestScore.Score,
+                    Score = x.BestScore.Score
                 },
-                HoleStatistics = x.HoleStatistics.Select(h => new HoleStatisticResponse()
+                HoleStatistics = x.HoleStatistics.Select(h => new HoleStatisticResponse
                 {
                     AverageScore = h.AverageScore,
                     HoleInOnes = h.HoleInOnes

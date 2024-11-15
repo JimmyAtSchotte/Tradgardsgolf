@@ -20,9 +20,9 @@ public class ResetCourseScore
     public async Task ShouldNotUpdateWhenNotTheOwner()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var authenticatedUser = new AuthenticatedUser()
+        var authenticatedUser = new AuthenticatedUser
         {
-            UserId = Guid.NewGuid(),
+            UserId = Guid.NewGuid()
         };
         
         var arrange = Arrange.Dependencies<ResetCourseScoreHandler, ResetCourseScoreHandler>(dependencies =>
@@ -37,7 +37,7 @@ public class ResetCourseScore
         });
         
         var handler = arrange.Resolve<ResetCourseScoreHandler>();
-        var command = new ResetCourseScoreCommand()
+        var command = new ResetCourseScoreCommand
         {
             CourseId = course.Id,
             ResetDate = DateTime.Today
@@ -51,7 +51,7 @@ public class ResetCourseScore
     public async Task ShouldResetScore()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var authenticatedUser = new AuthenticatedUser()
+        var authenticatedUser = new AuthenticatedUser
         {
             UserId = course.OwnerGuid
         };
@@ -60,7 +60,7 @@ public class ResetCourseScore
         
         var arrange = Arrange.Dependencies<ResetCourseScoreHandler, ResetCourseScoreHandler>(dependencies =>
         {
-            dependencies.UseMock<IRepository>(mock =>
+            dependencies.UseMock(mock =>
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
@@ -70,11 +70,11 @@ public class ResetCourseScore
             
             
             dependencies.UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
-            dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
+            dependencies.UseImplementation<IResponseFactory<ImageReference?, Core.Entities.Course>, ImageReferenceResponseFactory>();
         });
         
         var handler = arrange.Resolve<ResetCourseScoreHandler>();
-        var command = new ResetCourseScoreCommand()
+        var command = new ResetCourseScoreCommand
         {
             CourseId = course.Id,
             ResetDate = DateTime.Today
@@ -84,7 +84,7 @@ public class ResetCourseScore
         course.ScoreReset.Should().Be(command.ResetDate);
         course.Revision.Should().Be(1);
         
-        repositorySpy.Verify(spy => spy.UpdateAsync(course, It.IsAny<CancellationToken>()), Times.Once);
+        repositorySpy!.Verify(spy => spy.UpdateAsync(course, It.IsAny<CancellationToken>()), Times.Once);
         response.ScoreReset.Should().Be(command.ResetDate);
     }
     

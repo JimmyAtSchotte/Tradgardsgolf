@@ -1,3 +1,3 @@
 ﻿namespace Tradgardsgolf.Api.Notifications;
 
-public interface INotificationsNamespaceMarker { }
+public interface INotificationsNamespaceMarker;

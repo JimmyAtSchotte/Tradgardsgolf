@@ -1,3 +1,3 @@
 ﻿namespace Tradgardsgolf.Contracts;
 
-public interface IContractsNamespaceMarker { }
+public interface IContractsNamespaceMarker;

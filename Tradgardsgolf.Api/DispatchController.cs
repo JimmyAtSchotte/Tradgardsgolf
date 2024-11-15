@@ -23,7 +23,7 @@ public class DispatchController(IMediator mediator) : ControllerBase
     }
 }
 
-public class DispatchRequestBuilder
+public static class DispatchRequestBuilder
 {
     private static readonly string ContractNamespacePrefix = typeof(IContractsNamespaceMarker).Namespace;
     private static readonly string ContractAssemblyName = typeof(IContractsNamespaceMarker).Assembly.FullName;

@@ -5,5 +5,5 @@ namespace Tradgardsgolf.Contracts.Course;
 
 public record QueryCourse : IRequest<CourseResponse>
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 }

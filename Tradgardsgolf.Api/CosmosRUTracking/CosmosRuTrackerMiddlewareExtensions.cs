@@ -4,7 +4,7 @@ namespace Tradgardsgolf.Api.CosmosRUTracking;
 
 public static class CosmosRuTrackerMiddlewareExtensions
 {
-    public static void ConfigureApplicationPipeline(this WebApplication app)
+    public static void UseCosmosRuTracker(this WebApplication app)
     {
         app.UseMiddleware<CosmosRuTrackerMiddleware>();
     }

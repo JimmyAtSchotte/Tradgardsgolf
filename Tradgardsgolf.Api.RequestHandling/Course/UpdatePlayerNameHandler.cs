@@ -1,7 +1,7 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ardalis.Specification;
 using MediatR;
 using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Core.Auth;
@@ -12,6 +12,7 @@ using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class UpdatePlayerNameHandler : IRequestHandler<UpdatePlayerNameCommand, Unit>
 {
     private readonly IRepository _repository;
@@ -34,7 +35,7 @@ public class UpdatePlayerNameHandler : IRequestHandler<UpdatePlayerNameCommand, 
         var scorecards = await _repository.ListAsync(Specs.Scorecard.ByCourse(course.Id), cancellationToken);
         var updatedScorecards = scorecards.Where(s => s.ReplaceName(request.OldName, request.NewName)).ToArray();
         
-        if(updatedScorecards.Any())
+        if(updatedScorecards.Length != 0)
             await _repository.UpdateRangeAsync(updatedScorecards, cancellationToken);
    
         return Unit.Value;

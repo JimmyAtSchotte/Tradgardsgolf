@@ -16,7 +16,7 @@ public class QueryAllCourses
     [Test]
     public async Task ShouldListAllCourses()
     {
-        var courses = new List<Core.Entities.Course>()
+        var courses = new List<Core.Entities.Course>
         {
             Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid()),
             Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid())
@@ -32,7 +32,7 @@ public class QueryAllCourses
             });
 
             dependencies.UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
-            dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
+            dependencies.UseImplementation<IResponseFactory<ImageReference?, Core.Entities.Course>, ImageReferenceResponseFactory>();
         });
 
         var handler = arrange.Resolve<QueryAllCoursesHandler>();

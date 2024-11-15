@@ -2,6 +2,6 @@
 
 public class TournamentScore
 {
-    public string Name { get; set; }
-    public int Score { get; set; }
+    public string Name { get; init; } = string.Empty;
+    public int Score { get; init; }
 }

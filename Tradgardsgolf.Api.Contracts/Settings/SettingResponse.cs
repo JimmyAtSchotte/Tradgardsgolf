@@ -2,5 +2,5 @@
 
 public record SettingResponse<T>
 {
-    public T Value { get; set; }
+    public T? Value { get; init; } 
 }

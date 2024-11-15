@@ -7,14 +7,14 @@ using System.Text.RegularExpressions;
 
 namespace Tradgardsgolf.Api.CosmosRUTracking;
 
-public class CosmosRUTracker
+public partial class CosmosRUTracker
 {
     private readonly ConcurrentDictionary<string, List<string>> _requestEntries = new();
     
     public void Log(string entry, string traceId)
     {
         if (!_requestEntries.TryGetValue(traceId, out var entries))
-            entries = new List<string>();
+            entries = [];
         
         entries.Add(entry);
 
@@ -23,36 +23,35 @@ public class CosmosRUTracker
 
     public IEnumerable<RuUsage> TotalCharge(string traceId)
     {
-        var regex = new Regex(@"(?<Date>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\.\d{3}[\s\S]*?\([\d\.,]+\s+ms,\s+(?<RU>[\d\.,]+)\s+RU\)");
+        var regex = RuRegex();
         
-        if(!_requestEntries.ContainsKey(traceId))
+        if(!_requestEntries.TryGetValue(traceId, out var requestEntry))
             return [];
 
-        return _requestEntries[traceId]
+        return requestEntry
                     .Select(entry => regex.Match(entry))
                     .Where(match => match.Success)
-                    .Select(match => new RuUsage()
+                    .Select(match => new RuUsage
                     {
                         DateTime = ToDateTime(match.Groups["Date"].Value),
                         Ru = ToDouble(match.Groups["RU"].Value)
                     })
                     .GroupBy(x => x.DateTime, x => x.Ru)
-                    .Select(x => new RuUsage()
+                    .Select(x => new RuUsage
                     {
                         DateTime = x.Key,
                         Ru = x.Sum()
                     });
     }
 
-    private DateTime ToDateTime(string value)
+    private static DateTime ToDateTime(string value)
     {
-        if (DateTime.TryParseExact(value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp))
-            return timestamp;
-
-        return DateTime.MinValue;
+        return DateTime.TryParseExact(value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp) 
+            ? timestamp 
+            : DateTime.MinValue;
     }
 
-    private double ToDouble(string value)
+    private static double ToDouble(string value)
     {
         value = value.Replace(",", ".");
             
@@ -61,15 +60,14 @@ public class CosmosRUTracker
 
 
     }
+    
 
-    public void Clear()
-    {
-        _requestEntries.Clear();
-    }
+    [GeneratedRegex(@"(?<Date>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\.\d{3}[\s\S]*?\([\d\.,]+\s+ms,\s+(?<RU>[\d\.,]+)\s+RU\)")]
+    private static partial Regex RuRegex();
 }
 
 public class RuUsage
 {
-    public double Ru { get; set; }
-    public DateTime DateTime { get; set; }
+    public double Ru { get; init; }
+    public DateTime DateTime { get; init; }
 }

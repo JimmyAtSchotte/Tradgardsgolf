@@ -22,9 +22,9 @@ public class UpdateCourseImage
         var arrange = Arrange.Dependencies<UpdateCourseImageHandler, UpdateCourseImageHandler>(dependencies =>
         {
             dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(
-            new AuthenticatedUser()
+            new AuthenticatedUser
             {
-                UserId = Guid.NewGuid(),
+                UserId = Guid.NewGuid()
             }));
 
             dependencies.UseMock<IRepository>(mock =>
@@ -35,11 +35,11 @@ public class UpdateCourseImage
         });
 
         var handler = arrange.Resolve<UpdateCourseImageHandler>();
-        var command = new Contracts.Course.UpdateCourseImageCommand()
+        var command = new Contracts.Course.UpdateCourseImageCommand
         {
             Id = course.Id,
             Extension = ".png",
-            ImageBase64 = "000",
+            ImageBase64 = "000"
         };
 
         await handler.Invoking(h => h.Handle(command, CancellationToken.None))
@@ -58,7 +58,7 @@ public class UpdateCourseImage
         var arrange = Arrange.Dependencies<UpdateCourseImageHandler, UpdateCourseImageHandler>(dependencies =>
         {
             dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(
-            new AuthenticatedUser()
+            new AuthenticatedUser
             {
                 UserId = course.OwnerGuid
             }));
@@ -69,28 +69,28 @@ public class UpdateCourseImage
                     .ReturnsAsync(course);
 
                 mock.Setup(x => x.UpdateAsync(It.IsAny<Core.Entities.Course>(), It.IsAny<CancellationToken>()))
-                    .Callback((Core.Entities.Course c, CancellationToken token) => updatedCourses.Add(c));
+                    .Callback((Core.Entities.Course c, CancellationToken _) => updatedCourses.Add(c));
             });
 
             dependencies.UseMock(mock =>
             {
                 mock.Setup(x => x.Save(It.IsAny<string>(), It.IsAny<byte[]>()))
-                    .Callback((string filename, byte[] bytes) => savedFiles.Add(filename));
+                    .Callback((string filename, byte[] _) => savedFiles.Add(filename));
             }, out fileSpy);
         });
 
         var handler = arrange.Resolve<UpdateCourseImageHandler>();
         var fileBytes = EmbeddedResource.GetAsByteArray(GetType().Assembly, "_Data/grass.jpg");
-        var command = new Contracts.Course.UpdateCourseImageCommand()
+        var command = new Contracts.Course.UpdateCourseImageCommand
         {
             Id = course.Id,
             Extension = ".png",
-            ImageBase64 = Convert.ToBase64String(fileBytes),
+            ImageBase64 = Convert.ToBase64String(fileBytes)
         };
 
         await handler.Handle(command, CancellationToken.None);
 
-        fileSpy.Verify(
+        fileSpy!.Verify(
         x => x.Save(It.Is<string>(s => s.StartsWith(course.Id.ToString()) && s.EndsWith(command.Extension)), It.IsAny<byte[]>()),
         Times.Once);
         updatedCourses.Should().HaveCount(1);
@@ -102,7 +102,7 @@ public class UpdateCourseImage
     [Test]
     public async Task ShouldRemovePreviousFile()
     {
-        var previousFile = "previosfile.png";
+        const string previousFile = "previosfile.png";
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p =>
         {
             p.Id = Guid.NewGuid();
@@ -113,7 +113,7 @@ public class UpdateCourseImage
         var arrange = Arrange.Dependencies<UpdateCourseImageHandler, UpdateCourseImageHandler>(dependencies =>
         {
             dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(
-            new AuthenticatedUser()
+            new AuthenticatedUser
             {
                 UserId = course.OwnerGuid
             }));
@@ -129,15 +129,15 @@ public class UpdateCourseImage
 
         var handler = arrange.Resolve<UpdateCourseImageHandler>();
         var fileBytes = EmbeddedResource.GetAsByteArray(GetType().Assembly, "_Data/grass.jpg");
-        var command = new Contracts.Course.UpdateCourseImageCommand()
+        var command = new Contracts.Course.UpdateCourseImageCommand
         {
             Id = course.Id,
             Extension = ".png",
-            ImageBase64 = Convert.ToBase64String(fileBytes),
+            ImageBase64 = Convert.ToBase64String(fileBytes)
         };
 
         await handler.Handle(command, CancellationToken.None);
 
-        fileSpy.Verify(x => x.Delete(previousFile), Times.Once);
+        fileSpy!.Verify(x => x.Delete(previousFile), Times.Once);
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ using Tradgardsgolf.Core.Specifications.PlayerStatistic;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class RecalculateStatisticsHandler(IRepository repository, IAuthenticationService authenticationService)
     : IRequestHandler<RecalculateStatisticsCommand, Unit>
 {
@@ -53,7 +55,7 @@ public class RecalculateStatisticsHandler(IRepository repository, IAuthenticatio
     {
         var scorecards = courseStatisticService.MigrateScorecardsToRevision().ToList();
 
-        if(scorecards.Any())
+        if(scorecards.Count != 0)
             await repository.UpdateRangeAsync(scorecards.ToArray(), cancellationToken);
     }
     
@@ -63,10 +65,10 @@ public class RecalculateStatisticsHandler(IRepository repository, IAuthenticatio
         var addPlayerStatistics = playerStatistics.Where(x => x.Id == Guid.Empty).ToArray();
         var updatePlayerStatistics = playerStatistics.Where(x => x.Id != Guid.Empty).ToArray();
 
-        if (addPlayerStatistics.Any())
+        if (addPlayerStatistics.Length != 0)
             await repository.AddRangeAsync(addPlayerStatistics, cancellationToken);
 
-        if(updatePlayerStatistics.Any())
+        if(updatePlayerStatistics.Length != 0)
             await repository.UpdateRangeAsync(updatePlayerStatistics, cancellationToken);
     }
     
@@ -76,10 +78,10 @@ public class RecalculateStatisticsHandler(IRepository repository, IAuthenticatio
         var addCourseSeasons = courseSeasons.Where(x => x.Id == Guid.Empty).ToArray();
         var updateCourseSeasons = courseSeasons.Where(x => x.Id != Guid.Empty).ToArray();
 
-        if (addCourseSeasons.Any())
+        if (addCourseSeasons.Length != 0)
            await repository.AddRangeAsync(addCourseSeasons, cancellationToken);
 
-        if(updateCourseSeasons.Any())
+        if(updateCourseSeasons.Length != 0)
             await repository.UpdateRangeAsync(updateCourseSeasons, cancellationToken);
     }
 }

@@ -22,15 +22,11 @@ public class CosmosRuTrackerMiddleware
         try {
 
             foreach (var ruUsage in ruTrackingService.TotalCharge(context.TraceIdentifier))
-            {
-                logger.LogInformation($"RU Charge for request {context.Request.GetUri().ToString()} [{ruUsage.DateTime.ToString("yyyy-MM-dd HH:mm:ss")}]: {ruUsage.Ru} RUs");
-                
-            }
-            
+                logger.LogInformation("RU Charge for request {uri} [{dateTime}]: {ru} RUs", context.Request.GetUri().ToString(), ruUsage.DateTime.ToString("yyyy-MM-dd HH:mm:ss"), ruUsage.Ru);
         }
         catch (Exception e)
         {
-            logger.LogError(e, e.Message);
+            logger.LogError(e, "{message}", e.Message);
         }
         
     }

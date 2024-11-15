@@ -3,8 +3,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
-using Tradgardsgolf.Core.Infrastructure;
-using Tradgardsgolf.Infrastructure.Database;
 
 namespace Tradgardsgolf.Api.Startup;
 

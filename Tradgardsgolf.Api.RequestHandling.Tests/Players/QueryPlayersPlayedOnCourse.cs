@@ -30,9 +30,9 @@ public class QueryPlayersPlayedOnCourse
         });
         
         var handler = arrange.Resolve<QueryPlayersPlayedOnCourseHandler>();
-        var command = new Contracts.Players.QueryPlayersPlayedOnCourse()
+        var command = new Contracts.Players.QueryPlayersPlayedOnCourse
         {
-            CourseId = course.Id,
+            CourseId = course.Id
         };
         
         var result = await handler.Handle(command, CancellationToken.None);
@@ -43,10 +43,10 @@ public class QueryPlayersPlayedOnCourse
     [Test]
     public async Task ShouldOrderPlayersByName()
     {
-        var playerStatistics = new Core.Entities.PlayerStatistic[]
+        var playerStatistics = new []
         {
             CreatePlayerStatistic("B", 3),
-            CreatePlayerStatistic("A", 3),
+            CreatePlayerStatistic("A", 3)
             
         };
 
@@ -60,12 +60,12 @@ public class QueryPlayersPlayedOnCourse
         });
         
         var handler = arrange.Resolve<QueryPlayersPlayedOnCourseHandler>();
-        var command = new Contracts.Players.QueryPlayersPlayedOnCourse()
+        var command = new Contracts.Players.QueryPlayersPlayedOnCourse
         {
-            CourseId = courseId,
+            CourseId = courseId
         };
         
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = (await handler.Handle(command, CancellationToken.None)).ToList();
 
         result.ElementAt(0).Name.Should().Be("A");
         result.ElementAt(1).Name.Should().Be("B");
@@ -74,15 +74,14 @@ public class QueryPlayersPlayedOnCourse
     [Test]
     public async Task ShouldOrderPlayersOnHowMuchTheyHavePlayedOnCourse()
     {
-        var playerStatistics = new Core.Entities.PlayerStatistic[]
+        var playerStatistics = new []
         {
             CreatePlayerStatistic("MoreThan50-B", 100),
             CreatePlayerStatistic("MoreThan50-A", 51),
             CreatePlayerStatistic("MoreThan10-A", 11),
             CreatePlayerStatistic("MoreThan10-B", 50),
             CreatePlayerStatistic("LessThan10-A", 3),
-            CreatePlayerStatistic("LessThan10-B", 9),
-            
+            CreatePlayerStatistic("LessThan10-B", 9)
         };
 
         var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
@@ -95,12 +94,12 @@ public class QueryPlayersPlayedOnCourse
         });
         
         var handler = arrange.Resolve<QueryPlayersPlayedOnCourseHandler>();
-        var command = new Contracts.Players.QueryPlayersPlayedOnCourse()
+        var command = new Contracts.Players.QueryPlayersPlayedOnCourse
         {
-            CourseId = courseId,
+            CourseId = courseId
         };
         
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = (await handler.Handle(command, CancellationToken.None)).ToList();
 
         result.ElementAt(0).Name.Should().Be("MoreThan50-A");
         result.ElementAt(1).Name.Should().Be("MoreThan50-B");
@@ -113,12 +112,11 @@ public class QueryPlayersPlayedOnCourse
     [Test]
     public async Task ShouldOrderPlayersOnHowMuchTheyHavePlayedOnCourseNoMatterRevisions()
     {
-        var playerStatistics = new Core.Entities.PlayerStatistic[]
+        var playerStatistics = new []
         {
             CreatePlayerStatistic("A", 40),
-            CreatePlayerStatistic("B", 30, 0),
-            CreatePlayerStatistic("B", 30, 1),
-            
+            CreatePlayerStatistic("B", 30),
+            CreatePlayerStatistic("B", 30, 1)
         };
 
         var arrange = Arrange.Dependencies<QueryPlayersPlayedOnCourseHandler, QueryPlayersPlayedOnCourseHandler>(dependencies =>
@@ -131,12 +129,12 @@ public class QueryPlayersPlayedOnCourse
         });
         
         var handler = arrange.Resolve<QueryPlayersPlayedOnCourseHandler>();
-        var command = new Contracts.Players.QueryPlayersPlayedOnCourse()
+        var command = new Contracts.Players.QueryPlayersPlayedOnCourse
         {
-            CourseId = courseId,
+            CourseId = courseId
         };
         
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = (await handler.Handle(command, CancellationToken.None)).ToList();
 
         result.ElementAt(0).Name.Should().Be("B");
         result.ElementAt(1).Name.Should().Be("A");

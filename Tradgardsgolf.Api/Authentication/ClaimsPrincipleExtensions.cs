@@ -7,9 +7,9 @@ namespace Tradgardsgolf.Api.Authentication;
 public static class ClaimsPrincipleExtensions
 {
     private static readonly string[] UserIdClaimAliases =
-    {
+    [
         "oid", "objectidentifier"
-    };
+    ];
 
     public static bool TryGetUserId(this ClaimsPrincipal user, out Guid userId)
     {

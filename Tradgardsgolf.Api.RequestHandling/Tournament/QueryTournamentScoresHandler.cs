@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class QueryTournamentScoresHandler(IRepository repository)
     : IRequestHandler<QueryTournamentScores, IEnumerable<TournamentScore>>
 {
@@ -24,6 +26,6 @@ public class QueryTournamentScoresHandler(IRepository repository)
             {
                 Name = x.Key,
                 Score = x.Sum(scores => scores.Value.Sum(score => score))
-            }) ?? new List<TournamentScore>();
+            });
     }
 }

@@ -6,7 +6,6 @@ using Tradgardsgolf.Api.RequestHandling.Tournament;
 using Tradgardsgolf.Contracts.Tournament;
 using Tradgardsgolf.Core.Infrastructure;
 using Tradgardsgolf.Core.Specifications;
-using Tradgardsgolf.Core.Specifications.Scorecard;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tests.Tournament;
 
@@ -34,12 +33,12 @@ public class AddTournamentRoundScore
                             .ReturnsAsync(scorecard);
 
                         mock.Setup(x => x.UpdateAsync(It.IsAny<Core.Entities.Scorecard>(), It.IsAny<CancellationToken>()))
-                            .Callback((Core.Entities.Scorecard scorecard, CancellationToken _) => updatedScorecards.Add(scorecard));
+                            .Callback((Core.Entities.Scorecard s, CancellationToken _) => updatedScorecards.Add(s));
                     });
                 });
 
         var handler = arrange.Resolve<AddTournamentRoundScoreHandler>();
-        var command = new AddTournamentRoundScoreCommand()
+        var command = new AddTournamentRoundScoreCommand
         {
             ScorecardId = scorecard.Id,
             TournamentId = tournament.Id

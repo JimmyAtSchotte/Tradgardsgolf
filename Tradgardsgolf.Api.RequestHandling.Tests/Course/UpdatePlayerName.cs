@@ -36,14 +36,14 @@ public class UpdatePlayerName
             }, out repositorySpy);
             
             dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(
-            new AuthenticatedUser()
+            new AuthenticatedUser
             {
                 UserId = course.OwnerGuid
             }));
         });
         
         var handler = arrange.Resolve<UpdatePlayerNameHandler>();
-        var command = new UpdatePlayerNameCommand()
+        var command = new UpdatePlayerNameCommand
         {
             CourseId = course.Id,
             OldName = "Test",
@@ -52,20 +52,19 @@ public class UpdatePlayerName
         
         await handler.Handle(command, CancellationToken.None);
         
-        repositorySpy.Verify(x => x.UpdateRangeAsync(It.Is<Core.Entities.Scorecard[]>(a => a.Any(s => s.Scores.ContainsKey(command.NewName))), It.IsAny<CancellationToken>()), Times.Once);
+        repositorySpy?.Verify(x => x.UpdateRangeAsync(It.Is<Core.Entities.Scorecard[]>(a => a.Any(s => s.Scores.ContainsKey(command.NewName))), It.IsAny<CancellationToken>()), Times.Once);
     }
     
     [Test]
     public async Task ShouldThrowForbbidenWhenNotTheCourseOwner()
     {
-        var repositorySpy = default(Mock<IRepository>);
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
         scorecard.AddPlayerScores("Test", 1,1,1,1,1,1);
         
         var arrange = Arrange.Dependencies<UpdatePlayerNameHandler, UpdatePlayerNameHandler>(dependencies =>
         {
-            dependencies.UseMock(mock =>
+            dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(course);
@@ -73,17 +72,17 @@ public class UpdatePlayerName
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByCourse(course.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync([scorecard]);
                 
-            }, out repositorySpy);
+            });
 
             dependencies.UseMock<IAuthenticationService>(mock => mock.Setup(x => x.RequireAuthenticatedUser()).Returns(
-            new AuthenticatedUser()
+            new AuthenticatedUser
             {
                 UserId = Guid.NewGuid()
             }));
         });
         
         var handler = arrange.Resolve<UpdatePlayerNameHandler>();
-        var command = new UpdatePlayerNameCommand()
+        var command = new UpdatePlayerNameCommand
         {
             CourseId = course.Id,
             OldName = "Test",

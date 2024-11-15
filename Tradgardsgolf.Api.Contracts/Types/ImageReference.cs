@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace Tradgardsgolf.Contracts.Types;
+﻿namespace Tradgardsgolf.Contracts.Types;
 
 public class ImageReference
 {
-    public string Url { get; set; }
-    public string Path { get; set; }
+    public string Url { get; set; } = string.Empty;
+    public string Path { get; init; } = string.Empty;
 
     public override string ToString()
     {

@@ -28,11 +28,11 @@ public class QueryCourse
             });
 
             dependencies.UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
-            dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
+            dependencies.UseImplementation<IResponseFactory<ImageReference?, Core.Entities.Course>, ImageReferenceResponseFactory>();
         });
 
         var handler = arrange.Resolve<QueryCourseHandler>();
-        var command = new Contracts.Course.QueryCourse()
+        var command = new Contracts.Course.QueryCourse
         {
             Id = course.Id
         };
@@ -61,11 +61,11 @@ public class QueryCourse
             });
 
             dependencies.UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
-            dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
+            dependencies.UseImplementation<IResponseFactory<ImageReference?, Core.Entities.Course>, ImageReferenceResponseFactory>();
         });
 
         var handler = arrange.Resolve<QueryCourseHandler>();
-        var command = new Contracts.Course.QueryCourse()
+        var command = new Contracts.Course.QueryCourse
         {
             Id = course.Id
         };
@@ -73,6 +73,6 @@ public class QueryCourse
         var result = await handler.Handle(command, CancellationToken.None);
 
         result.Id.Should().Be(course.Id);
-        result.ImageReference.Path.Should().Be(course.Image);
+        result.ImageReference?.Path.Should().Be(course.Image);
     }
 }

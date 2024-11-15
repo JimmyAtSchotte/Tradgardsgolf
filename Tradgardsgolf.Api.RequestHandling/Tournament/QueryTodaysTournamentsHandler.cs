@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Tradgardsgolf.Core.Specifications.Tournament;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class QueryTodaysTournamentsHandler(IRepository repository)
     : IRequestHandler<QueryTodaysTournamentsCommand, IEnumerable<Contracts.Tournament.Tournament>>
 {

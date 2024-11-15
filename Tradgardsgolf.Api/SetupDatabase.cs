@@ -66,34 +66,34 @@ public static class SetupDatabaseExtensions
         context.Add(berlin);
         
         for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-6), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-6), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
         
         for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-5), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-5), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
         
         for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-4), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-4), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
         
         for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-3), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-3), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
         
         for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-2), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-2), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
         
         for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today.AddYears(-1), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, kumhof, DateTime.Today.AddYears(-1), ["Jimmy", "Patrik", "Amanda", "Hanna"]);
         
         for (var r = 0; r < 90; r++)
-            AddScorecard(context, kumhof, DateTime.Today, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, kumhof, DateTime.Today, ["Jimmy", "Patrik", "Amanda", "Hanna"]);
 
         for (var r = 0; r < 60; r++)
-            AddScorecard(context, tornehof,  DateTime.Today, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, tornehof,  DateTime.Today, ["Jimmy", "Patrik", "Amanda", "Hanna"]);
 
         for (var r = 0; r < 25; r++)
-            AddScorecard(context, berlin, DateTime.Today, new[] { "Jimmy", "Patrik", "Amanda", "Hanna" });
+            AddScorecard(context, berlin, DateTime.Today, ["Jimmy", "Patrik", "Amanda", "Hanna"]);
 
 
-        for (int i = 1; i < 5; i++)
+        for (var i = 1; i < 5; i++)
         {
             var previousTorunament = Tournament.Create($"Touren {DateTime.Today.AddYears(-i).Year}");
             previousTorunament.AddCourseDate(kumhof.Id, DateTime.Today.AddYears(-i));
@@ -101,13 +101,13 @@ public static class SetupDatabaseExtensions
             context.Add(previousTorunament);
             
             for (var r = 0; r < 2; r++)
-                AddScorecard(context, kumhof, DateTime.Today.AddYears(-i), new[] { "Jimmy", "Patrik", "Amanda", "Hanna" }, previousTorunament);
+                AddScorecard(context, kumhof, DateTime.Today.AddYears(-i), ["Jimmy", "Patrik", "Amanda", "Hanna"], previousTorunament);
         
             for (var r = 0; r < 2; r++)
-                AddScorecard(context, tornehof, DateTime.Today.AddYears(-i),new[] { "Jimmy", "Patrik", "Amanda", "Hanna" }, previousTorunament);
+                AddScorecard(context, tornehof, DateTime.Today.AddYears(-i), ["Jimmy", "Patrik", "Amanda", "Hanna"], previousTorunament);
         
             for (var r = 0; r < 2; r++)
-                AddScorecard(context, kumhof, DateTime.Today.AddYears(-i), new[] { "Kalle", "Bengt" }, previousTorunament);
+                AddScorecard(context, kumhof, DateTime.Today.AddYears(-i), ["Kalle", "Bengt"], previousTorunament);
         }
 
         var todaysTournament = Tournament.Create($"Touren {DateTime.Today.Year}");

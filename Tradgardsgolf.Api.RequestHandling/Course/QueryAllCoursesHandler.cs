@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class QueryAllCoursesHandler(
     IRepository repository,
     IResponseFactory<CourseResponse, Core.Entities.Course> courseResponseFactory)

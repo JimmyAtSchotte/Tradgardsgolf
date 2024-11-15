@@ -27,13 +27,13 @@ public class UpdateCourseLocation
         var arrange = Arrange.Dependencies<UpdateCourseLocationHandler, UpdateCourseLocationHandler>(dependencies =>
         {
             dependencies.UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
-            dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
+            dependencies.UseImplementation<IResponseFactory<ImageReference?, Core.Entities.Course>, ImageReferenceResponseFactory>();
 
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>())).ReturnsAsync(course);
                 mock.Setup(x => x.UpdateAsync(It.IsAny<Core.Entities.Course>(), It.IsAny<CancellationToken>()))
-                    .Callback((Core.Entities.Course c, CancellationToken t) => updatedCourses.Add(c));
+                    .Callback((Core.Entities.Course c, CancellationToken _) => updatedCourses.Add(c));
                 
             });
             
@@ -45,11 +45,11 @@ public class UpdateCourseLocation
         });
 
         var handler = arrange.Resolve<UpdateCourseLocationHandler>();
-        var command = new UpdateCourseLocationCommand()
+        var command = new UpdateCourseLocationCommand
         {
             Id = course.Id,
             Longitude = 54.10010,
-            Latitude = 46.13010,
+            Latitude = 46.13010
         };
         
         var result = await handler.Handle(command, CancellationToken.None);
@@ -79,23 +79,23 @@ public class UpdateCourseLocation
             }));
             
             dependencies.UseImplementation<IResponseFactory<CourseResponse, Core.Entities.Course>, CourseResponseFactory>();
-            dependencies.UseImplementation<IResponseFactory<ImageReference, Core.Entities.Course>, ImageReferenceResponseFactory>();
+            dependencies.UseImplementation<IResponseFactory<ImageReference?, Core.Entities.Course>, ImageReferenceResponseFactory>();
 
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.FirstOrDefaultAsync(Specs.ById<Core.Entities.Course>(course.Id), It.IsAny<CancellationToken>())).ReturnsAsync(course);
                 mock.Setup(x => x.UpdateAsync(It.IsAny<Core.Entities.Course>(), It.IsAny<CancellationToken>()))
-                    .Callback((Core.Entities.Course c, CancellationToken t) => updatedCourses.Add(c));
+                    .Callback((Core.Entities.Course c, CancellationToken _) => updatedCourses.Add(c));
                 
             });
         });
 
         var handler = arrange.Resolve<UpdateCourseLocationHandler>();
-        var command = new UpdateCourseLocationCommand()
+        var command = new UpdateCourseLocationCommand
         {
             Id = course.Id,
             Longitude = 54.10010,
-            Latitude = 46.13010,
+            Latitude = 46.13010
         };
         
         await handler.Invoking(x => x.Handle(command, CancellationToken.None)).Should().ThrowAsync<ForbiddenException>();

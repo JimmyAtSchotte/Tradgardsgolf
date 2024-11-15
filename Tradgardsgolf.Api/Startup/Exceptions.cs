@@ -13,8 +13,8 @@ public static class Exceptions
         builder.Services.AddFriendlyExceptionsTransforms(options =>
         {
             options.Transforms = TransformsCollectionBuilder.Begin()
-                .Map<UnauthorizedException>().To(HttpStatusCode.Unauthorized, "Unauthorized", ex => "Unauthorized")
-                .Map<ForbiddenException>().To(HttpStatusCode.Forbidden, "Forbidden", ex => "Forbidden")
+                .Map<UnauthorizedException>().To(HttpStatusCode.Unauthorized, "Unauthorized", _ => "Unauthorized")
+                .Map<ForbiddenException>().To(HttpStatusCode.Forbidden, "Forbidden", _ => "Forbidden")
                 .MapAllOthers().To(HttpStatusCode.InternalServerError, "Internal Server Error", ex => ex.Message)
                 .Done();
         });

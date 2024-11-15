@@ -11,9 +11,9 @@ var services = new ServiceCollection();
 
 var ruTracker = new CosmosRUTracker();
 
-services.AddDbContext<TradgardsgolfContext>((services, dbContextOptionsBuilder) =>
+services.AddDbContext<TradgardsgolfContext>((_, dbContextOptionsBuilder) =>
 {
-    var connectionString = "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+    const string connectionString = "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
     dbContextOptionsBuilder.UseCosmos(connectionString, "tradgardsgolf-db");
     
     
@@ -37,33 +37,33 @@ foreach (var courseMigrator in courseMigrators)
 
     var scorecards = courseMigrator.MigrateScorecardsToRevision().ToList();
 
-    if(scorecards.Any())
+    if(scorecards.Count != 0)
         context.Scorecards.UpdateRange(scorecards);
 
     var playerStatistics = courseMigrator.GeneratePlayerStatistics().ToList();
     var addPlayerStatistics = playerStatistics.Where(x => x.Id == Guid.Empty).ToList();
     var updatePlayerStatistics = playerStatistics.Where(x => x.Id != Guid.Empty).ToList();
 
-    if (addPlayerStatistics.Any())
+    if (addPlayerStatistics.Count != 0)
         context.PlayerStatistic.AddRange(addPlayerStatistics);
 
-    if(updatePlayerStatistics.Any())
+    if(updatePlayerStatistics.Count != 0)
         context.PlayerStatistic.UpdateRange(updatePlayerStatistics);
 
     var courseSeasons = courseMigrator.GenerateCourseSeasons().ToList();
     var addCourseSeasons = courseSeasons.Where(x => x.Id == Guid.Empty).ToList();
     var updateCourseSeasons = courseSeasons.Where(x => x.Id != Guid.Empty).ToList();
 
-    if (addCourseSeasons.Any())
+    if (addCourseSeasons.Count != 0)
         context.CourseSeason.AddRange(addCourseSeasons);
 
-    if(updateCourseSeasons.Any())
+    if(updateCourseSeasons.Count != 0)
         context.CourseSeason.UpdateRange(updateCourseSeasons);
 
     await context.SaveChangesAsync();
 }
 
-var ruUsages = ruTracker.TotalCharge("PROGRAM");
+var ruUsages = ruTracker.TotalCharge("PROGRAM").ToList();
 
 foreach (var ruUsage in ruUsages)
 {

@@ -1,12 +1,15 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Tradgardsgolf.Api.Notifications.ScorecardSaved;
 using Tradgardsgolf.Contracts.Scorecard;
 using Tradgardsgolf.Core.Infrastructure;
 
 namespace Tradgardsgolf.Api.RequestHandling.Scorecard;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class SaveScorecardHandler(IRepository repository, IMediator mediator)
     : IRequestHandler<SaveScorecardCommand, ScorecardResponse>
 {

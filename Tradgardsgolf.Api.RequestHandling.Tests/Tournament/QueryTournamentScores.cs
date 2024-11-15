@@ -16,25 +16,22 @@ public class QueryTournamentScores
     [Test]
     public async Task ShouldHaveNoScorecards()
     {
-        var course = Core.Entities.Course.Create(Guid.NewGuid());
         var tournament = Core.Entities.Tournament.Create("Tournament");
         tournament.Id = Guid.NewGuid();
-
-        var scorecards = new List<Core.Entities.Scorecard>();
         
         var arrange = Arrange.Dependencies<QueryTournamentScoresHandler, QueryTournamentScoresHandler>(dependencies =>
         {
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByTournament(tournament.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(scorecards);
+                    .ReturnsAsync(new List<Core.Entities.Scorecard>());
             });
         });
         
         var handler = arrange.Resolve<QueryTournamentScoresHandler>();
-        var command = new Contracts.Tournament.QueryTournamentScores()
+        var command = new Contracts.Tournament.QueryTournamentScores
         {
-            TournamentId = tournament.Id,
+            TournamentId = tournament.Id
         };
         
         var result = await handler.Handle(command, CancellationToken.None);
@@ -50,9 +47,9 @@ public class QueryTournamentScores
         tournament.Id = Guid.NewGuid();
         
         var scorecards = new List<Core.Entities.Scorecard>();
-        var rounds = 4;
+        const int rounds = 4;
         
-        for (int i = 0; i < rounds; i++)
+        for (var i = 0; i < rounds; i++)
         {
             var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
             scorecard.TournamentId = tournament.Id;
@@ -71,12 +68,12 @@ public class QueryTournamentScores
         });
         
         var handler = arrange.Resolve<QueryTournamentScoresHandler>();
-        var command = new Contracts.Tournament.QueryTournamentScores()
+        var command = new Contracts.Tournament.QueryTournamentScores
         {
-            TournamentId = tournament.Id,
+            TournamentId = tournament.Id
         };
         
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = (await handler.Handle(command, CancellationToken.None)).ToList();
 
         result.Should().HaveCount(2);
         result.First(x => x.Name == "Player A").Score.Should().Be(rounds * 9);

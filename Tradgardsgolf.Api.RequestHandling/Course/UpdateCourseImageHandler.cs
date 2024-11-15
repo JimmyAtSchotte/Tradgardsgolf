@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class UpdateCourseImageHandler(
     IRepository repository,
     IAuthenticationService authenticationService,
@@ -45,7 +47,7 @@ public class UpdateCourseImageHandler(
         return courseResponseFactory.Create(course);
     }
 
-    private byte[] CompressImage(byte[] bytes)
+    private static byte[] CompressImage(byte[] bytes)
     {
         using var image = Image.Load(bytes);
 

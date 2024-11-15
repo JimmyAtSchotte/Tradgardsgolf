@@ -18,7 +18,7 @@ public class QueryTournamentResults
     public async Task NoTournaments()
     {
         var arrange = Arrange.Dependencies<SUT, SUT>();
-        var handler = arrange.Resolve<QueryTournamentResultsHandler>();
+        var handler = arrange.Resolve<SUT>();
         var query = new QueryTournamentResultsCommand();
         
         var result = await handler.Handle(query, CancellationToken.None);
@@ -38,11 +38,11 @@ public class QueryTournamentResults
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync<Core.Entities.Tournament>(It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new List<Core.Entities.Tournament>() { tournament });
+                    .ReturnsAsync(new List<Core.Entities.Tournament> { tournament });
             });
         });
         
-        var handler = arrange.Resolve<QueryTournamentResultsHandler>();
+        var handler = arrange.Resolve<SUT>();
         var query = new QueryTournamentResultsCommand();
         
         var result = await handler.Handle(query, CancellationToken.None);
@@ -69,14 +69,14 @@ public class QueryTournamentResults
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync<Core.Entities.Tournament>(It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new List<Core.Entities.Tournament>() { tournament });
+                    .ReturnsAsync(new List<Core.Entities.Tournament> { tournament });
 
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByTournament(tournament.Id), It.IsAny<CancellationToken>()))
                     .ReturnsAsync([ scorecard ]);
             });
         });
         
-        var handler = arrange.Resolve<QueryTournamentResultsHandler>();
+        var handler = arrange.Resolve<SUT>();
         var query = new QueryTournamentResultsCommand();
         
         var result = await handler.Handle(query, CancellationToken.None);
@@ -113,14 +113,14 @@ public class QueryTournamentResults
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync<Core.Entities.Tournament>(It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new List<Core.Entities.Tournament>() { tournament });
+                    .ReturnsAsync(new List<Core.Entities.Tournament> { tournament });
 
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByTournament(tournament.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new[] { scorecard1, scorecard2 });
+                    .ReturnsAsync([scorecard1, scorecard2]);
             });
         });
         
-        var handler = arrange.Resolve<QueryTournamentResultsHandler>();
+        var handler = arrange.Resolve<SUT>();
         var query = new QueryTournamentResultsCommand();
         
         var result = await handler.Handle(query, CancellationToken.None);
@@ -159,14 +159,14 @@ public class QueryTournamentResults
             dependencies.UseMock<IRepository>(mock =>
             {
                 mock.Setup(x => x.ListAsync<Core.Entities.Tournament>(It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new List<Core.Entities.Tournament>() { tournament });
+                    .ReturnsAsync(new List<Core.Entities.Tournament> { tournament });
 
                 mock.Setup(x => x.ListAsync(Specs.Scorecard.ByTournament(tournament.Id), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new[] { scorecard1, scorecard2 });
+                    .ReturnsAsync([scorecard1, scorecard2]);
             });
         });
         
-        var handler = arrange.Resolve<QueryTournamentResultsHandler>();
+        var handler = arrange.Resolve<SUT>();
         var query = new QueryTournamentResultsCommand();
         
         var result = await handler.Handle(query, CancellationToken.None);

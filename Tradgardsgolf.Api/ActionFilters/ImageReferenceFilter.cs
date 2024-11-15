@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Tradgardsgolf.Api.ActionFilters;
 
-namespace Tradgardsgolf.Api;
+namespace Tradgardsgolf.Api.ActionFilters;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class ImageReferenceFilter : IActionFilter
 {
     public void OnActionExecuting(ActionExecutingContext context) { }

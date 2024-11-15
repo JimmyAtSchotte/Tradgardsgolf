@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Contracts.Tournament;
@@ -7,6 +8,7 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Tournament;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class AddTournamentRoundScoreHandler(IRepository repository)
     : IRequestHandler<AddTournamentRoundScoreCommand>
 {

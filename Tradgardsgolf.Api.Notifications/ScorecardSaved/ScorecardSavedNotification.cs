@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Tradgardsgolf.Api.RequestHandling;
+namespace Tradgardsgolf.Api.Notifications.ScorecardSaved;
 
 public class ScorecardSavedNotification : INotification
 {

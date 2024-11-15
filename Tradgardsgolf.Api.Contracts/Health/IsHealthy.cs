@@ -2,4 +2,4 @@
 
 namespace Tradgardsgolf.Contracts.Health;
 
-public class IsHealthy : IRequest<Unit> { }
+public class IsHealthy : IRequest<Unit>;

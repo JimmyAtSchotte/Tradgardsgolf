@@ -12,7 +12,7 @@ public class ImageReferenceTests
     [TestCase("https://localhost/images", "test.jpg")]
     public void ShouldCombineToFullUrl(string url, string path)
     {
-        var imageReference = new ImageReference()
+        var imageReference = new ImageReference
         {
             Url = url,
             Path = path

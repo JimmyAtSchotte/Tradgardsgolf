@@ -24,8 +24,8 @@ public static class ApplicationPipline
         app.UseAuthentication();
         app.UseAuthorization();
         
-        app.UseMiddleware<CosmosRuTrackerMiddleware>();
+        app.UseCosmosRuTracker();
 
-        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        app.MapControllers();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Tradgardsgolf.Api.ResponseFactory;
@@ -8,6 +9,7 @@ using Tradgardsgolf.Core.Specifications;
 
 namespace Tradgardsgolf.Api.RequestHandling.Course;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class QueryCourseHandler(
     IRepository repository,
     IResponseFactory<CourseResponse, Core.Entities.Course> courseResponseFactory)

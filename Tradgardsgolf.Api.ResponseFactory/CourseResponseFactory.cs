@@ -1,10 +1,12 @@
-﻿using Tradgardsgolf.Contracts.Course;
+﻿using System.Diagnostics.CodeAnalysis;
+using Tradgardsgolf.Contracts.Course;
 using Tradgardsgolf.Contracts.Types;
 using Tradgardsgolf.Core.Entities;
 
 namespace Tradgardsgolf.Api.ResponseFactory;
 
-public class CourseResponseFactory(IResponseFactory<ImageReference, Course> imageReferenceResponseFactory)
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+public class CourseResponseFactory(IResponseFactory<ImageReference?, Course> imageReferenceResponseFactory)
     : IResponseFactory<CourseResponse, Course>
 {
     public CourseResponse Create(Course course)

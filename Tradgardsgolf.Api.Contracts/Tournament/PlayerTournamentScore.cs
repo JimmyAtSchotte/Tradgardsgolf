@@ -4,7 +4,7 @@ namespace Tradgardsgolf.Contracts.Tournament;
 
 public class PlayerTournamentScore
 {
-    public string Name { get; set; }
-    public IEnumerable<int> Results { get; set; }
-    public int Total { get; set; }
+    public string Name { get; init; }
+    public IEnumerable<int> Results { get; init; } = new List<int>();
+    public int Total { get; init; }
 }

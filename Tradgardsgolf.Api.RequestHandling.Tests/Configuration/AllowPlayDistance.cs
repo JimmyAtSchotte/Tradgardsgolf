@@ -16,7 +16,7 @@ public class AllowPlayDistance
         var arrange = Arrange.Dependencies<QueryAllowPlayDistanceHandler, QueryAllowPlayDistanceHandler>(dependencies =>
         {
             dependencies.UseMock<IOptionsMonitor<Tradgardsgolf.Core.Config.AllowPlayDistance>>(mock => mock
-                .Setup(x => x.CurrentValue).Returns(new Tradgardsgolf.Core.Config.AllowPlayDistance()
+                .Setup(x => x.CurrentValue).Returns(new Tradgardsgolf.Core.Config.AllowPlayDistance
                 {
                     Value = 100
                 }));

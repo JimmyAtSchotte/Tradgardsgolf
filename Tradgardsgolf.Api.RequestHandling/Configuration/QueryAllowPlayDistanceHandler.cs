@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -7,6 +8,7 @@ using Tradgardsgolf.Core.Config;
 
 namespace Tradgardsgolf.Api.RequestHandling.Configuration;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class QueryAllowPlayDistanceHandler(IOptionsMonitor<AllowPlayDistance> settings)
     : IRequestHandler<QueryAllowPlayDistance, SettingResponse<int>>
 {
