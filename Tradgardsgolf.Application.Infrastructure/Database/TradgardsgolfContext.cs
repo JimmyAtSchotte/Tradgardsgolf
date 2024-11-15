@@ -18,6 +18,7 @@ public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options
             builder.ToContainer("Course");
             builder.HasPartitionKey(x => x.Id);
             builder.HasNoDiscriminator();
+            builder.Property(e => e.Revision).HasConversion(v => v, v => v == null ? 0 : v);
         });
 
         modelBuilder.Entity<Scorecard>(builder =>

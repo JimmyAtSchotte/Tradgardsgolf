@@ -15,7 +15,7 @@ public class Course : BaseEntity
     public DateTime? ScoreReset { get; set; }
     public string Image { get; set; }
     public Guid OwnerGuid { get; set; }
-    public int Revision { get; set; }
+    public int? Revision { get; set; }
     
     private Course() { }
 
@@ -36,6 +36,6 @@ public class Course : BaseEntity
     public void ResetScore(DateTime date)
     {
         ScoreReset = date;
-        Revision++;
+        Revision = Revision.GetValueOrDefault(0) + 1;
     }
 }

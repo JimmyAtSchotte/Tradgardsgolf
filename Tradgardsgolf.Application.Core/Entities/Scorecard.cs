@@ -45,9 +45,9 @@ public class Scorecard : BaseEntity
         return true;
     }
 
-    public static Scorecard Create(Guid courseId, int courseRevision)
+    public static Scorecard Create(Guid courseId, int? courseRevision)
     {
-        var scorecard = new Scorecard(courseId, courseRevision);
+        var scorecard = new Scorecard(courseId, courseRevision.GetValueOrDefault(0));
         return scorecard;
     }
 

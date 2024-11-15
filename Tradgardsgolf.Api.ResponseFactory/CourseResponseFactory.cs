@@ -16,7 +16,7 @@ public class CourseResponseFactory(IResponseFactory<ImageReference?, Course> ima
             Created = course.Created,
             Holes = course.Holes,
             Id = course.Id,
-            Revision = course.Revision,
+            Revision = course.Revision.GetValueOrDefault(),
             ImageReference = imageReferenceResponseFactory.Create(course),
             Latitude = course.Latitude,
             Longitude = course.Longitude,

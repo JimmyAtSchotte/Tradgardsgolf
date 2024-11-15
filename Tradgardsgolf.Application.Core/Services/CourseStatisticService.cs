@@ -26,7 +26,7 @@ public class CourseStatisticService
 
     public bool ShouldMigrateCourseToRevision()
     {
-        return _course.ScoreReset.HasValue && _course.Revision == 0;
+        return _course.ScoreReset.HasValue && _course.Revision.GetValueOrDefault(0) == 0;
     }
 
     public Course MigrateCourseToRevision()
