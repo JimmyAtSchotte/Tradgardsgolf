@@ -112,8 +112,8 @@
     private bool DisableCompleteButton => State?.AppState?.ScorecardState?.PlayerScores.Any(x => x.MissingScores()) == true || Saving;
     private bool Saving { get; set; }
 
-    private IEnumerable<Tournament> Tournaments { get; set; } = new List<Tournament>();
-    private List<TournamentScore> TournamentScores { get; set; } = [];
+    private IEnumerable<Tournament> Tournaments { get; set; } = [];
+    private IEnumerable<TournamentScore> TournamentScores { get; set; } = [];
     private Tournament? SelectedTournament { get; set; }
     
     protected override async Task OnParametersSetAsync()
@@ -170,8 +170,10 @@
             });
         }
 
+        await State.AppState.ScorecardState.ResetScores(this);
+        
         var playAgain = Modal.Show<PlayAgainModal>("Rundan är klar och sparad");
-
+        
         var result = await playAgain.Result;
         if (result.Cancelled)
             return;
@@ -183,12 +185,10 @@
                 NavigationManager.NavigateTo("");
                 break;
             case PlayAgainModal.Results.ChangePlayers:
-                await State.AppState.ScorecardState.ResetScores(this);
                 NavigationManager.NavigateTo("setup-round");
                 break;
             case PlayAgainModal.Results.Yes:
                 Saving = false;
-                await State.AppState.ScorecardState.ResetScores(this);
                 StateHasChanged();
                 break;
             default:
@@ -220,9 +220,9 @@
     private async Task OnSelectedTournamentChanged(Guid tournamentId)
     {
         SelectedTournament = Tournaments.FirstOrDefault(x => x.Id == tournamentId);
-        TournamentScores = (await apiDispatcher.Dispatch(new QueryTournamentScores
+        TournamentScores = await apiDispatcher.Dispatch(new QueryTournamentScores
         {
             TournamentId = tournamentId
-        }) ?? Array.Empty<TournamentScore>()).ToList();
+        });
     }
 }
