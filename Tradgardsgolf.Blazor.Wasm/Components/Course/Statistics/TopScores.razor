@@ -41,9 +41,11 @@
         if (CascadingCourseStatistics?.CourseStatisticResponse == null)
             return;
 
-        _topScore = CascadingCourseStatistics.CourseStatisticResponse.PlayerStatistics.OrderBy(x => x.BestScore.Score)
-            .ThenBy(x => x.BestScore.Date)
-            .Select(p => new TopScoreModel(p.Name, p.BestScore.Date, p.BestScore.Score))
+        _topScore = CascadingCourseStatistics.CourseStatisticResponse.PlayerStatistics
+            .Where(x => x.BestScore is not null)
+            .OrderBy(x => x.BestScore!.Score)
+            .ThenBy(x => x.BestScore!.Date)
+            .Select(p => new TopScoreModel(p.Name, p.BestScore!.Date, p.BestScore!.Score))
             .Take(_listCount)
             .ToArray();
     }

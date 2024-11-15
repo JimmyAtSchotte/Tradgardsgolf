@@ -57,7 +57,7 @@
     {
         var seasonTableRounds = CascadingCourse?.Course?.SeasonTableRounds ?? 6;
         
-        _seasonTableModels = CascadingCourseStatistics?.CourseStatisticResponse?.Seasons?
+        _seasonTableModels = CascadingCourseStatistics?.CourseStatisticResponse?.Seasons
             .FirstOrDefault(x => x.Season == Season)?
             .Players.Select(kvp => new SeasonTableModel(kvp.Key, kvp.Value.OrderBy(x => x)
                 .Take(seasonTableRounds)

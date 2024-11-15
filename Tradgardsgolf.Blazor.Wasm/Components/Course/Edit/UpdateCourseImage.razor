@@ -54,7 +54,8 @@
     [Parameter] public Action<CourseResponse>? OnSave { get; set; }
 
     private IBrowserFile? File { get; set; }
-    private Cropper _cropper;
+    private Cropper _cropper = new();
+    
     private string? _fileExtension;
     private int _progress;
     private Stage _stage = Stage.SelectFile;
@@ -108,8 +109,8 @@
         var course = await ApiDispatcher.Dispatch(new UpdateCourseImageCommand
         {
             Id = Course.Id,
-            Extension = _fileExtension,
-            ImageBase64 = imageBase64
+            Extension = _fileExtension ?? throw new NullReferenceException($"{nameof(_fileExtension)} is unexpectedly null"),
+            ImageBase64 = imageBase64 ?? throw new NullReferenceException($"{nameof(imageBase64)} is unexpectedly null")
         });
 
         File = null;

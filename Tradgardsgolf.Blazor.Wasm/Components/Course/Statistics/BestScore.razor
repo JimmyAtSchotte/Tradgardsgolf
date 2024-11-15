@@ -16,9 +16,10 @@
             return;
 
         _bestScore = CascadingCourseStatistics.CourseStatisticResponse.PlayerStatistics
-            .OrderBy(x => x.BestScore.Score)
-            .ThenBy(x => x.BestScore.Date)
-            .Select(x => new BestScoreModel(x.Name, x.BestScore.Date, x.BestScore.Score))
+            .Where(x => x.BestScore is not null)
+            .OrderBy(x => x.BestScore!.Score)
+            .ThenBy(x => x.BestScore!.Date)
+            .Select(x => new BestScoreModel(x.Name, x.BestScore!.Date, x.BestScore!.Score))
             .FirstOrDefault();
     }
 
