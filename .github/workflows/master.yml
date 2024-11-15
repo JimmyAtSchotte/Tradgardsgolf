@@ -119,7 +119,7 @@ jobs:
       - name: Setup DotNet Environment
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ secrets.DOTNET_VERSION }}
+          dotnet-version: '9.0.x'
           
       - name: Resolve Project Dependencies Using Dotnet
         shell: bash
