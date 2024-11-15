@@ -120,7 +120,7 @@ public static class SetupDatabaseExtensions
 
     private static void AddScorecard(this TradgardsgolfContext context, Course course, DateTime date, string[] players,  Tournament tournament = null)
     {
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         scorecard.TournamentId = tournament?.Id ?? Guid.Empty;
         scorecard.Date = date;
 

@@ -20,7 +20,7 @@ public class UpdatePlayerName
     {
         var repositorySpy = default(Mock<IRepository>);
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard.AddPlayerScores("Test", 1,1,1,1,1,1);
         
         var arrange = Arrange.Dependencies<UpdatePlayerNameHandler, UpdatePlayerNameHandler>(dependencies =>
@@ -59,7 +59,7 @@ public class UpdatePlayerName
     public async Task ShouldThrowForbbidenWhenNotTheCourseOwner()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard.AddPlayerScores("Test", 1,1,1,1,1,1);
         
         var arrange = Arrange.Dependencies<UpdatePlayerNameHandler, UpdatePlayerNameHandler>(dependencies =>

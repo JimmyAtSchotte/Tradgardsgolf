@@ -13,8 +13,8 @@ public class UpdatePlayerStatisticsHandler(IRepository repository) : INotificati
     {
         foreach (var player in notification.Scorecard.Scores.Keys)
         {
-            var playerStatistic = await repository.FirstOrDefaultAsync(Specs.PlayerStatistic.ByCoursePlayer(notification.Scorecard.CourseId, notification.Scorecard.CourseRevision.GetValueOrDefault(0), player), cancellationToken) ??
-                                  Core.Entities.PlayerStatistic.Create(notification.Scorecard.CourseId, notification.Scorecard.CourseRevision, player);
+            var playerStatistic = await repository.FirstOrDefaultAsync(Specs.PlayerStatistic.ByCoursePlayer(notification.Scorecard.CourseId, notification.Scorecard.GetCourseRevision(), player), cancellationToken) ??
+                                  Core.Entities.PlayerStatistic.Create(notification.Scorecard.CourseId, notification.Scorecard.GetCourseRevision(), player);
 
             playerStatistic.Add(notification.Scorecard);
             

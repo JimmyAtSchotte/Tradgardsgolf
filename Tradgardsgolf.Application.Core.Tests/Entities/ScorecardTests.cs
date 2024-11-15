@@ -10,7 +10,7 @@ public class ScorecardTests
     public void ShouldCreateScorecardOnCourse()
     {
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         
         scorecard.CourseId.Should().Be(course.Id);
         scorecard.Date.Should().NotBe(DateTime.MinValue);
@@ -20,7 +20,7 @@ public class ScorecardTests
     public void ShouldAddPlayerScores()
     {
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         
         scorecard.AddPlayerScores("Test", 1, 2, 3);
         
@@ -32,7 +32,7 @@ public class ScorecardTests
     public void ShouldReplaceName()
     {
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         
         scorecard.AddPlayerScores("Test", 1, 2, 3);
         
@@ -46,7 +46,7 @@ public class ScorecardTests
     public void ShouldNotThrowWhenReplaceNameDoesntExists()
     {
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         
         scorecard.AddPlayerScores("Test", 1, 2, 3);
         

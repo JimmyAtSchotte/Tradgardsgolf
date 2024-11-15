@@ -118,13 +118,13 @@ public class RecalculateStatistics
     public async Task MultipleScorecardsForPlayerWithDifferentRevisions()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard1 = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard1 = Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard1.AddPlayerScores("Player 1", 1, 1, 1);
         scorecard1.Date = DateTime.Now.AddDays(-1);
 
         course.ResetScore(DateTime.Today);
         
-        var scorecard2 = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard2 = Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard2.AddPlayerScores("Player 1", 1, 1, 1);
 
         var repositorySpy = default(Mock<IRepository>);
@@ -171,12 +171,12 @@ public class RecalculateStatistics
     public async Task LegacyScoreReset()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard1 = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard1 = Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard1.AddPlayerScores("Player 1", 1, 1, 1);
         scorecard1.Date = DateTime.Now.AddDays(-1);
         course.ScoreReset = DateTime.Today;
         
-        var scorecard2 = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard2 = Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard2.AddPlayerScores("Player 1", 1, 1, 1);
 
         var repositorySpy = default(Mock<IRepository>);

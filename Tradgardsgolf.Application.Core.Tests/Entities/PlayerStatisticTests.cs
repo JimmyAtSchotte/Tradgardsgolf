@@ -12,7 +12,7 @@ public class PlayerStatisticTests
         const string playerName = "Jimmy";
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         scorecard.AddPlayerScores(playerName, 1, 2, 3);
         var playerStatistic = PlayerStatistic.Create(course.Id,0, playerName);
 
@@ -34,7 +34,7 @@ public class PlayerStatisticTests
         const string playerName2 = "Patrik";
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         scorecard.AddPlayerScores(playerName1, 1, 2, 3);
         scorecard.AddPlayerScores(playerName2, 3, 4, 5);
         var playerStatistic1 = PlayerStatistic.Create(course.Id,0, playerName1);
@@ -71,14 +71,14 @@ public class PlayerStatisticTests
         var playerStatistic1 = PlayerStatistic.Create(course.Id,0, playerName1);
         var playerStatistic2 = PlayerStatistic.Create(course.Id,0, playerName2);
         
-        var scorecard1 = Scorecard.Create(course.Id, course.Revision);
+        var scorecard1 = Scorecard.Create(course.Id, course.GetRevision());
         scorecard1.AddPlayerScores(playerName1, 1, 1, 1);
         scorecard1.AddPlayerScores(playerName2, 2, 2, 2);
 
         playerStatistic1.Add(scorecard1);
         playerStatistic2.Add(scorecard1);
         
-        var scorecard2 = Scorecard.Create(course.Id, course.Revision);
+        var scorecard2 = Scorecard.Create(course.Id, course.GetRevision());
         scorecard2.AddPlayerScores(playerName1, 3, 3, 3);
         scorecard2.AddPlayerScores(playerName2, 4, 4, 4);
         
@@ -106,7 +106,7 @@ public class PlayerStatisticTests
         
         var playerStatistic = PlayerStatistic.Create(course.Id,0, playerName);
         
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         scorecard.Date = new DateTime(2020, 01, 01);
         scorecard.AddPlayerScores("Random player", 1, 1, 1);
         playerStatistic.Add(scorecard);
@@ -131,7 +131,7 @@ public class PlayerStatisticTests
         
         var playerStatistic = PlayerStatistic.Create(course.Id, 0, playerName);
         
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         scorecard.Date = new DateTime(2020, 01, 01);
         scorecard.AddPlayerScores(playerName, 1, 1, 1);
         

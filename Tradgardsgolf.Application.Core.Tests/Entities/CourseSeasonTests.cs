@@ -12,7 +12,7 @@ public class CourseSeasonTests
         const string playerName = "Jimmy";
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         scorecard.AddPlayerScores(playerName, 1, 2, 3);
         var courseSeason = CourseSeason.Create(course.Id, "2024");
 
@@ -27,7 +27,7 @@ public class CourseSeasonTests
     {
         
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
         scorecard.AddPlayerScores("test a", 1, 2, 3);
         scorecard.AddPlayerScores("test b", 1, 2, 3);
         var courseSeason = CourseSeason.Create(course.Id, "2024");
@@ -46,15 +46,15 @@ public class CourseSeasonTests
 
         var courseSeason = CourseSeason.Create(course.Id, "2024");
         
-        var scorecard1 =Scorecard.Create(course.Id, course.Revision);
+        var scorecard1 =Scorecard.Create(course.Id, course.GetRevision());
         scorecard1.AddPlayerScores(playerName, 1, 2, 3);
         courseSeason.Add(scorecard1);
         
-        var scorecard2 = Scorecard.Create(course.Id, course.Revision);
+        var scorecard2 = Scorecard.Create(course.Id, course.GetRevision());
         scorecard2.AddPlayerScores(playerName, 1, 2, 3);
         courseSeason.Add(scorecard2);
         
-        var scorecard3 = Scorecard.Create(course.Id, course.Revision);
+        var scorecard3 = Scorecard.Create(course.Id, course.GetRevision());
         scorecard3.AddPlayerScores(playerName, 1, 2, 3);
         courseSeason.Add(scorecard3);
 

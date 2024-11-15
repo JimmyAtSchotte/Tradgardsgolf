@@ -16,7 +16,7 @@ public class AddTournamentRoundScore
     public async Task ShouldUpdateScorecard()
     {
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard.Id = Guid.NewGuid();
         
         var tournament = Core.Entities.Tournament.Create("Tournament");

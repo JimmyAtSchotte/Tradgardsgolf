@@ -26,7 +26,7 @@ public class CourseStatisticService
 
     public bool ShouldMigrateCourseToRevision()
     {
-        return _course.ScoreReset.HasValue && _course.Revision.GetValueOrDefault(0) == 0;
+        return _course.ScoreReset.HasValue && _course.GetRevision() == 0;
     }
 
     public Course MigrateCourseToRevision()
@@ -44,7 +44,7 @@ public class CourseStatisticService
         
         foreach (var scorecard in _scorecards)
         {
-            if(scorecard.CourseRevision != 0)
+            if(scorecard.GetCourseRevision() != 0)
                 continue;
 
             if (scorecard.Date < _course.ScoreReset.Value)
@@ -74,13 +74,12 @@ public class CourseStatisticService
 
     private PlayerStatistic FindOrCreatePlayerStatistic(string playerName, Scorecard scorecard)
     {
-        var playerStatistic = _playerStatistics.FirstOrDefault(x =>
-            x.Name == playerName && x.CourseRevision == scorecard.CourseRevision);
+        var playerStatistic = _playerStatistics.FirstOrDefault(x => x.Name == playerName && x.CourseRevision == scorecard.GetCourseRevision());
 
         if (playerStatistic != null) 
             return playerStatistic;
         
-        playerStatistic = PlayerStatistic.Create(scorecard.CourseId, scorecard.CourseRevision, playerName);
+        playerStatistic = PlayerStatistic.Create(scorecard.CourseId, scorecard.GetCourseRevision(), playerName);
         _playerStatistics.Add(playerStatistic);
 
         return playerStatistic;

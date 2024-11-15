@@ -58,7 +58,7 @@ public class QueryTournamentResults
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         tournament.AddCourseDate(course.Id, DateTime.Today);
 
-        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         
         scorecard.AddPlayerScores("player A", 1, 1);
         scorecard.AddPlayerScores("player B", 1, 2);
@@ -98,12 +98,12 @@ public class QueryTournamentResults
         var tournament = Core.Entities.Tournament.Create("Test");
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         tournament.AddCourseDate(course.Id, DateTime.Today);
-        var scorecard1 = Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard1 = Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard1.AddPlayerScores("player A", 1, 1);
         scorecard1.AddPlayerScores("player B", 1, 2);
         scorecard1.TournamentId = tournament.Id;
         
-        var scorecard2 =  Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard2 =  Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard2.AddPlayerScores("player A", 1, 1);
         scorecard2.AddPlayerScores("player B", 1, 2);
         scorecard2.TournamentId = tournament.Id;
@@ -143,13 +143,13 @@ public class QueryTournamentResults
         var tournament = Core.Entities.Tournament.Create("Test");
         var course = Core.Entities.Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         tournament.AddCourseDate(course.Id, DateTime.Today);
-        var scorecard1 =  Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard1 =  Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard1.AddPlayerScores("player A", 1, 2);
         scorecard1.AddPlayerScores("player B", 1, 1);
         scorecard1.AddPlayerScores("player C", 1, 1);
         scorecard1.TournamentId = tournament.Id;
         
-        var scorecard2 =  Core.Entities.Scorecard.Create(course.Id, course.Revision);
+        var scorecard2 =  Core.Entities.Scorecard.Create(course.Id, course.GetRevision());
         scorecard2.AddPlayerScores("player A", 1, 2);
         scorecard2.AddPlayerScores("player B", 1, 1);
         scorecard2.TournamentId = tournament.Id;

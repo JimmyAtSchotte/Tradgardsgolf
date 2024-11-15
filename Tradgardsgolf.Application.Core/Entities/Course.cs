@@ -6,7 +6,6 @@ namespace Tradgardsgolf.Core.Entities;
 [SuppressMessage("ReSharper", "UnusedMember.Local")]
 public class Course : BaseEntity
 {
-
     public string Name { get; set; }
     public int Holes { get; set; }
     public double Longitude { get; set; }
@@ -16,7 +15,7 @@ public class Course : BaseEntity
     public string Image { get; set; }
     public Guid OwnerGuid { get; set; }
     public int? Revision { get; set; }
-    
+
     private Course() { }
 
     private Course(Guid ownerGuid)
@@ -36,6 +35,8 @@ public class Course : BaseEntity
     public void ResetScore(DateTime date)
     {
         ScoreReset = date;
-        Revision = Revision.GetValueOrDefault(0) + 1;
+        Revision = Revision.GetValueOrDefault() + 1;
     }
+
+    public int GetRevision() => Revision.GetValueOrDefault(0);
 }

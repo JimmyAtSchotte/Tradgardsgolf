@@ -41,9 +41,9 @@ public class PlayerStatistic : BaseEntity
         Name = name;
     }
 
-    public static PlayerStatistic Create(Guid courseId, int? courseRevision, string name)
+    public static PlayerStatistic Create(Guid courseId, int courseRevision, string name)
     {
-        return new PlayerStatistic(courseId, courseRevision.GetValueOrDefault(0), name);
+        return new PlayerStatistic(courseId, courseRevision, name);
     }
 
     public void Add(Scorecard scorecard)
@@ -51,7 +51,7 @@ public class PlayerStatistic : BaseEntity
         if(!scorecard.Scores.TryGetValue(Name, out var scores))
             return;
         
-        if(scorecard.CourseRevision != CourseRevision)
+        if(scorecard.GetCourseRevision() != CourseRevision)
             return;
             
         var sum = scores.Sum();

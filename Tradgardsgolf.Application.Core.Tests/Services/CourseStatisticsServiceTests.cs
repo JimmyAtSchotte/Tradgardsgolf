@@ -10,7 +10,7 @@ public class CourseStatisticsServiceTests
     public void CourseHasNoRevision()
     {
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
 
         var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
@@ -24,7 +24,7 @@ public class CourseStatisticsServiceTests
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         course.ScoreReset = DateTime.Today;
         
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
 
         var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
@@ -38,7 +38,7 @@ public class CourseStatisticsServiceTests
         course.ScoreReset = DateTime.Today;
         course.Revision = 1;
         
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
 
         var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
@@ -52,13 +52,13 @@ public class CourseStatisticsServiceTests
         var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
         course.ScoreReset = DateTime.Today;
         
-        var scorecard = Scorecard.Create(course.Id, course.Revision);
+        var scorecard = Scorecard.Create(course.Id, course.GetRevision());
 
         var courseMigrator = new CourseStatisticService(course, [scorecard]);
 
         var result = courseMigrator.MigrateCourseToRevision();
         
-        result.Revision.Should().Be(1);
+        result.GetRevision().Should().Be(1);
         result.ScoreReset.Should().Be(course.ScoreReset);
     }
     
@@ -76,7 +76,7 @@ public class CourseStatisticsServiceTests
         var result = courseMigrator.MigrateScorecardsToRevision();
 
         result.Should().HaveCount(1);
-        scorecard.CourseRevision.Should().Be(1);
+        scorecard.GetCourseRevision().Should().Be(1);
     }
     
     
@@ -94,7 +94,7 @@ public class CourseStatisticsServiceTests
         var result = courseMigrator.MigrateScorecardsToRevision();
 
         result.Should().HaveCount(0);
-        scorecard.CourseRevision.Should().Be(1);
+        scorecard.GetCourseRevision().Should().Be(1);
     }
     
     [Test]
@@ -112,7 +112,7 @@ public class CourseStatisticsServiceTests
         var result = courseMigrator.MigrateScorecardsToRevision();
 
         result.Should().HaveCount(0);
-        scorecard.CourseRevision.Should().Be(0);
+        scorecard.GetCourseRevision().Should().Be(0);
     }
     
     [Test]
@@ -127,7 +127,7 @@ public class CourseStatisticsServiceTests
         var result = courseMigrator.MigrateScorecardsToRevision();
 
         result.Should().HaveCount(0);
-        scorecard.CourseRevision.Should().Be(0);
+        scorecard.GetCourseRevision().Should().Be(0);
     }
     
     [Test]
@@ -155,7 +155,7 @@ public class CourseStatisticsServiceTests
         var scorecard = Scorecard.Create(course.Id, 0);
         scorecard.AddPlayerScores("Player1", 1,1,1);
         
-        var playerStatistic = PlayerStatistic.Create(scorecard.CourseId, scorecard.CourseRevision, "Player1");
+        var playerStatistic = PlayerStatistic.Create(scorecard.CourseId, scorecard.GetCourseRevision(), "Player1");
         playerStatistic.Add(scorecard);
         
         var courseMigrator = new CourseStatisticService(course, [scorecard], [playerStatistic], []);
@@ -216,5 +216,27 @@ public class CourseStatisticsServiceTests
         result.First().Players.ContainsKey("Player1").Should().BeTrue();
         result.First().Players["Player1"].Should().HaveCount(2);
         result.First().Season.Should().Be(scorecard.GetSeason());
+    }
+    
+    [Test]
+    public void MigratePlayerStatsRevisionNull()
+    {
+        var course = Course.Create(Guid.NewGuid(), p => p.Id = Guid.NewGuid());
+        var scorecardNullRevision = Scorecard.Create(course.Id, 0);
+        scorecardNullRevision.CourseRevision = null;
+        scorecardNullRevision.AddPlayerScores("Player1", 1,1,1);
+        
+        var scorecardRevision0 = Scorecard.Create(course.Id, 0);
+        scorecardRevision0.CourseRevision = 0;
+        scorecardRevision0.AddPlayerScores("Player1", 2,2,2);
+
+        var courseMigrator = new CourseStatisticService(course, [scorecardNullRevision, scorecardRevision0]);
+
+        var result = courseMigrator.GeneratePlayerStatistics().ToList();
+
+        result.Should().HaveCount(1);
+        result.First().Name.Should().Be("Player1");
+        result.First().BestScore.Score.Should().Be(3);
+        result.First().AverageScore.Should().Be(4.5);
     }
 }

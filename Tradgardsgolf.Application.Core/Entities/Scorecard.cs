@@ -8,8 +8,6 @@ namespace Tradgardsgolf.Core.Entities;
 public class Scorecard : BaseEntity
 {
     private IDictionary<string, int[]> _scores;
-    
-    
     public int? CourseRevision { get; set; }
     public Guid CourseId { get; private set; }
     public DateTime Date { get; set; }
@@ -45,12 +43,14 @@ public class Scorecard : BaseEntity
         return true;
     }
 
-    public static Scorecard Create(Guid courseId, int? courseRevision)
+    public static Scorecard Create(Guid courseId, int courseRevision)
     {
-        var scorecard = new Scorecard(courseId, courseRevision.GetValueOrDefault(0));
+        var scorecard = new Scorecard(courseId, courseRevision);
         return scorecard;
     }
 
     public string GetSeason() => Date.Year.ToString();
+    
+    public int GetCourseRevision() => CourseRevision.GetValueOrDefault(0);
     
 }
