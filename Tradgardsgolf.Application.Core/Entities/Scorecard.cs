@@ -10,7 +10,7 @@ public class Scorecard : BaseEntity
     private IDictionary<string, int[]> _scores;
     
     
-    public int CourseRevision { get; set; }
+    public int? CourseRevision { get; set; }
     public Guid CourseId { get; private set; }
     public DateTime Date { get; set; }
     public IDictionary<string, int[]> Scores

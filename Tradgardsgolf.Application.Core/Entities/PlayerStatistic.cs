@@ -41,9 +41,9 @@ public class PlayerStatistic : BaseEntity
         Name = name;
     }
 
-    public static PlayerStatistic Create(Guid courseId, int courseRevision, string name)
+    public static PlayerStatistic Create(Guid courseId, int? courseRevision, string name)
     {
-        return new PlayerStatistic(courseId, courseRevision, name);
+        return new PlayerStatistic(courseId, courseRevision.GetValueOrDefault(0), name);
     }
 
     public void Add(Scorecard scorecard)
