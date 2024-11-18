@@ -45,7 +45,7 @@ jobs:
                       throw
                   }
                   Write-Host "Waiting for emulator to be ready... (Attempt $attempts)"
-                  Start-Sleep -Seconds 5
+                  Start-Sleep -Seconds 10
                   $attempts++
               }
           } while ($true)  
