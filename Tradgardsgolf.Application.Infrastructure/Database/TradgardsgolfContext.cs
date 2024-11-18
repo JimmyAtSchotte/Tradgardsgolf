@@ -17,7 +17,9 @@ public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options
         {
             builder.ToContainer("Course");
             builder.HasPartitionKey(x => x.Id);
+            builder.Property(x => x.Id);
             builder.HasNoDiscriminator();
+            builder.HasShadowId();
         });
 
         modelBuilder.Entity<Scorecard>(builder =>
@@ -26,6 +28,7 @@ public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options
             builder.HasPartitionKey(x => x.CourseId);
             builder.HasKey(x => x.Id);
             builder.HasNoDiscriminator();
+            builder.HasShadowId();
         });
 
         modelBuilder.Entity<Tournament>(builder =>
@@ -34,6 +37,7 @@ public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options
             builder.HasPartitionKey(x => x.Id);
             builder.HasKey(x => x.Id);
             builder.HasNoDiscriminator();
+            builder.HasShadowId();
         });
         
         
@@ -43,6 +47,7 @@ public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options
             builder.HasPartitionKey(x => x.CourseId);
             builder.HasKey(x => x.Id);
             builder.HasNoDiscriminator();
+            builder.HasShadowId();
         });
         
         modelBuilder.Entity<PlayerStatistic>(builder =>
@@ -51,6 +56,7 @@ public class TradgardsgolfContext(DbContextOptions<TradgardsgolfContext> options
             builder.HasPartitionKey(x => x.CourseId);
             builder.HasKey(x => x.Id);
             builder.HasNoDiscriminator();
+            builder.HasShadowId();
         });
 
 
